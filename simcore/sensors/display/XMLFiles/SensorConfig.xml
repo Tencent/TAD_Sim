@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Sensor version="1.0">
+    <Camera Active="0">
+       <Config ID="0" Device=".0" InstallSlot="C0" LocationX="43.6787" LocationY=" 12.0906" LocationZ="160.995" RotationX="179.117566" RotationY="-178.602565" RotationZ="-179.525995" Enabled="false" Frequency="25" IntrinsicParamType="intrinsic" FOV_Horizontal="60" FOV_Vertical="36.280000000000001" Res_Horizontal="1920" Res_Vertical="1208" Blur_Intensity="0" MotionBlur_Amount="0" Vignette_Intensity="0" Noise_Intensity="Off" Intrinsic_Matrix="1.9451674168728503e+003, 0., 9.4611889604089231e+002, 0,1.9381372280069070e+003, 6.1970485474739780e+002, 0., 0., 1." Distortion_Parameters="-5.3336804278253547e-001, 4.5773462092698042e-001,-4.8360765272003647e-001,-2.3929586859060227e-003, 1.8364297357014352e-003" CCD_Width="10" CCD_Height="10" Focal_Length="10" TargetType="Ego" />
+    </Camera>
+	<Semantic Active="0">
+       <Config ID="1" Device=".0" InstallSlot="C0" LocationX="29.698" LocationY="1.3" LocationZ="211.0363" RotationX="0" RotationY="0" RotationZ="0" Enabled="false" Frequency="25" IntrinsicParamType="intrinsic" SaveData="true" DisplayMode="Color" FOV_Horizontal="60" FOV_Vertical="36.280000000000001" Res_Horizontal="1920" Res_Vertical="1208" Blur_Intensity="0" MotionBlur_Amount="0" Vignette_Intensity="0" Noise_Intensity="Off" Intrinsic_Matrix="1.7917371775337467e+003,0.,9.7766415779259546e+002,0.,1.7915280099578922e+003,6.7849796781372993e+002,0,0,1" Distortion_Parameters="-3.0512760659353499e-001,1.6300954108211410e-001,-7.9097611583510266e-002,1.6054823369678842e-003,-2.1726014623314795e-005" CCD_Width="10" CCD_Height="10" Focal_Length="10" TargetType="Ego" />
+    </Semantic>
+    <TraditionalLidar Active="0">
+        <Config ID="1" Device=".0" InstallSlot="C0" LocationX="50.920000" LocationY="-84.390100" LocationZ="126.000000" RotationX="1.723310" RotationY="-11.600193 " RotationZ=" -83.759466" Enabled="false" Frequency="10" DrawPoint="false" DrawRay="false" Model="RS16" uChannels="16" uRange="15000" uHorizontalResolution="1" uUpperFov="10" uLowerFov="-30" TargetType="Ego" />      
+		<Config ID="2" Device=".0" LocationX=" 56.550600" LocationY="84.390100" LocationZ=" 124.000000" RotationX=" 177.163282" RotationY="-169.491305 " RotationZ="  -92.475492" Enabled="false" Frequency="10" DrawPoint="false" DrawRay="false" Model="RS16" uChannels="16" uRange="15000" uHorizontalResolution="1" uUpperFov="10" uLowerFov="-30" TargetType="Ego" />      
+		<Config ID="3" Device=".0" LocationX=" 34.920" LocationY="0" LocationZ="157.000000" RotationX=" 177.655875" RotationY="-175.926400" RotationZ=" -136.673386" Enabled="false" Frequency="10" DrawPoint="false" DrawRay="false" Model="RS32" uChannels="16" uRange="15000" uHorizontalResolution="1" uUpperFov="10" uLowerFov="-30" TargetType="Ego" />      
+    </TraditionalLidar>
+	 <Truth Active="0">
+        <Config ID="1" Device=".0" InstallSlot="C0" LocationX="38.1828" LocationY="-5.8805" LocationZ="41.4636" RotationX="0" RotationY="0" RotationZ="0" Enabled="false" vfov="43.2" hfov="52" drange="20100" TargetType="Ego" />
+    </Truth>
+    <Radar Active="0">
+        <Config ID="1" InstallSlot="C0" LocationX="0" LocationY="0" LocationZ="171" RotationX="0" RotationY="0" RotationZ="0" Enabled="false" Frequency="10" Device=".0" F0_GHz="77" Pt_dBm="10" Gt_dBi="15" Gr_dBi="15" Ts_K="300" Fn_dB="12" L0_dB="10" SNR_min_dB="18" radar_angle="0" R_m="50" rcs="7.9000000000000004" weather="0" tag="0" anne_tag="1" hwidth="3" vwidth="3" vfov="10" hfov="20" ANTENNA_ANGLE_path1="" ANTENNA_ANGLE_path2="" TargetType="Ego" />
+    </Radar>
+</Sensor>

@@ -1,0 +1,78 @@
+#include "/Engine/Private/Common.ush"
+
+StructuredBuffer<float4> RefDef;
+float f_noise_dev;
+float f_accuracy;
+float f_rainfall;
+float f_snowfall_range;
+float f_snowfall_prob;
+float f_fog;
+float t_intensity;
+
+float rand_gen(in float d)
+{
+    float y = frac(sin(d) * 10000.0);
+    return y * 2 - 1;
+}
+
+float lidar_reflection(in int tag, in float d)
+{
+    float minr = RefDef[tag].x;
+    float maxr = RefDef[tag].y;
+    float deta = RefDef[tag].z;
+    float u = 0.5f + deta * rand_gen(d);
+    return minr + (maxr - minr) * clamp(u, 0.0, 1.0);
+}
+
+float factor_rain(in float d, in float rainfall)
+{
+    return pow(rainfall, d);
+}
+
+float factor_fog(in float d, in float fog)
+{
+    return factor_rain(d, fog);
+}
+
+float gausswhite_noise(in float d)
+{
+    return (d + f_accuracy * rand_gen(d) * f_noise_dev);
+}
+
+float snow_noise(in float d)
+{
+    float p = rand_gen(d);
+    if (p < f_snowfall_prob)
+        return d;
+    float nd = f_snowfall_range * (rand_gen(d) * 0.5 + 0.5) + 0.2;
+    return min(nd, d);
+}
+
+float2 lidar_simulation(in float d, in float cosita, in int tag)
+{
+    float ref = lidar_reflection(tag, d);
+    float v = clamp(cosita + 0.2 * (rand_gen(d * cosita) + 0.5), 0.0, 1.0) * ref / (d * d);    
+    if (f_rainfall < 1.f)
+    {
+		// road water
+        if (tag >= 9 && tag <= 19)
+        {
+            v *= exp((f_rainfall - 1) * 1024);
+        }
+        v *= factor_rain(d, f_rainfall);
+    }
+    if (f_fog < 1.f)
+    {
+        v *= factor_fog(d, f_fog);
+    }
+    if (v < t_intensity)
+    {
+         return float2(0, 0);
+    }
+    d = gausswhite_noise(d);
+    if (f_snowfall_prob < 1.f)
+    {
+        d = snow_noise(d);
+    }
+    return float2(d, ref);
+}

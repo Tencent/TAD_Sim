@@ -1,0 +1,76 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "4.27",
+	"Category": "",
+	"Description": "",
+	"Modules": [
+		{
+			"Name": "Display",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"UMG",
+				"FunctionalTesting"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "ThirdPartyTest",
+			"Enabled": false
+		},
+		{
+			"Name": "RawInput",
+			"Enabled": true
+		},
+		{
+			"Name": "HoudiniEngine",
+			"Enabled": false
+		},
+		{
+			"Name": "SunPosition",
+			"Enabled": true
+		},
+		{
+			"Name": "RuntimeTests",
+			"Enabled": true
+		},
+		{
+			"Name": "EditorTests",
+			"Enabled": true
+		},
+		{
+			"Name": "FunctionalTestingEditor",
+			"Enabled": true
+		},
+		{
+			"Name": "RHITests",
+			"Enabled": true
+		}
+	],
+	"PostBuildSteps":
+	{
+		"Win64": [
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\freexl.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\freexl.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\geos_c.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\geos_c.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\iconv.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\iconv.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\libcrypto-1_1-x64.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\libcrypto-1_1-x64.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\libcurl-x64.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\libcurl-x64.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\libssl-1_1-x64.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\libssl-1_1-x64.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\libxml2.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\libxml2.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\proj.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\proj.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\spatialite.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\spatialite.dll",
+			"copy $(ProjectDir)\\Plugins\\HadMap\\ThirdParty\\HadMapSDK\\Lib\\x64\\Release\\sqlite3.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\sqlite3.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\cudnn_ops_infer64_8.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\cudnn_ops_infer64_8.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\cudnn_ops_train64_8.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\cudnn_ops_train64_8.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\display_cuda_ext.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\display_cuda_ext.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\nvinfer.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\nvinfer.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\nvinfer_builder_resource.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\nvinfer_builder_resource.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\nvinfer_plugin.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\nvinfer_plugin.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\nvonnxparser.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\nvonnxparser.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\nvrtc-builtins64_115.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\nvrtc-builtins64_115.dll",
+			"copy $(ProjectDir)\\Plugins\\CudaResource\\ThirdParty\\TxExt\\lib\\windows\\zlibwapi.dll $(ProjectDir)\\Binaries\\$(TargetPlatform)\\zlibwapi.dll"
+		]
+	}
+}

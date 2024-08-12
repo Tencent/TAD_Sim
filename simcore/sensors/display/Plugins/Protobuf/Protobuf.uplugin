@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Protobuf",
+	"Description": "Google Protocol Buffer",
+	"Category": "Other",
+	"CreatedBy": "jiangyulin",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+    {
+      "Name": "Protobuf",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+	]
+}

@@ -1,0 +1,76 @@
+<Environment>
+	<!-- RainFall(中国气象局规定：24小时内的降雨量称之为日降雨量，
+	小于10 毫米为小雨，
+	10.0－24.9毫米为中雨，
+	25.0－49.9毫米为大雨，
+	暴雨为50.0－99.9毫米，
+	大暴雨为100.0－250.0毫米，
+	超过250.0毫米的称为特大暴雨) -->
+	
+	<!-- SnowFall(24小时内的降雪量，
+	小雪：0.1-2.4毫米，
+	中雪：2.5-4.9毫米，
+	大雪：5.0-9.9毫米，
+	暴雪：大于10毫米) -->
+	
+	<!-- Visibility(
+	20-30公里能见度极好,
+	15-25公里能见度好,
+	10-20公里能见度一般,
+	1-10公里轻雾,
+	0.3-1公里大雾,
+	小于0.3公里重雾,
+	小于0.1公里浓雾) -->
+	
+	<!-- WindScale(以蒲式风力等级，将风力等级由12级（一般指台风的风力）补充到17级，
+	0级：0.0-0.2m/s，
+	1级：0.3-1.5m/s，
+	2级：1.6-3.3m/s，
+	3级：3.4-5.4m/s，
+	4级：5.5-7.9m/s，
+	5级：8.0-10.7m/s，
+	6级：10.9-13.8m/s，
+	7级：13.9-17.1m/s，
+	8级：17.2-20.7m/s，
+	9级：20.8-24.4m/s，
+	10级：24.5-28.4m/s，
+	11级：28.5-32.6m/s，
+	12级：32.6-36.9m/s，
+	13级：37.0-41.4m/s，
+	14级：41.5-46.1m/s，
+	15级：46.2-50.9m/s，
+	16级：51.0-56.0m/s，
+	17级：56.1-61.2m/s，) -->
+	
+	<!-- CloudDensity(
+	0-1
+	云层覆盖天空百分比) -->
+	
+	<Weather Visibility="30" RainFall="0.0" SnowFall="0" WindSpeed="1" CloudDensity="0.9">
+		<Custom Name="Sunny" Visibility="30" RainFall="0" SnowFall="0" WindSpeed="2" CloudDensity="0.2" />
+		<Custom Name="Cloudy" Visibility="20" RainFall="0" SnowFall="0" WindSpeed="1" CloudDensity="0.8" />
+		<Custom Name="Foggy" Visibility="5" RainFall="0" SnowFall="0" WindSpeed="1" CloudDensity="0.8" />
+		<Custom Name="Rainy" Visibility="10" RainFall="150" SnowFall="0" WindSpeed="1" CloudDensity="0.8" />
+		<Custom Name="Snowy" Visibility="5" RainFall="0" SnowFall="10" WindSpeed="2" CloudDensity="0.8" />
+	</Weather>
+	<Date Year="2020" Month="4" Day="20">
+		<Custom Name="Spring" Year="2020" Month="3" Day="20" />
+		<Custom Name="Summer" Year="2020" Month="8" Day="20" />
+		<Custom Name="Autumn" Year="2020" Month="10" Day="20" />
+		<Custom Name="Winter" Year="2020" Month="12" Day="20" />
+	</Date>
+	<Time Hour="10" Minute="0" Second="0" Millisecond="0">
+		<Custom Name="Noon" Hour="12" Minute="0" Second="0"  Millisecond="0"/>
+		<Custom Name="MidNight" Hour="1" Minute="0" Second="0" Millisecond="0" />
+		<Custom Name="SunRise" Hour="6" Minute="0" Second="0" Millisecond="0" />
+		<Custom Name="SunSet" Hour="18" Minute="0" Second="0" Millisecond="0" />
+	</Time>
+	<TimeLine>
+<!-- 	<Date TimeStamp="0" Name="Spring" />
+		<Date TimeStamp="0" Year="2020" Month="4" Day="20" />
+		<Time TimeStamp="0" Name="Noon" />
+		<Time TimeStamp="0" Hours="17" Minutes="0" Seconds="0" />
+		<Weather TimeStamp="0" Name="Sunny" /> 
+		<Weather TimeStamp="0" Visibility="" RainFall="" SnowFall="" WindSpeed="" CloudDensity="" /> -->
+	</TimeLine>
+</Environment>

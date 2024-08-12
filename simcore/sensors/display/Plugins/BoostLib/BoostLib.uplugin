@@ -1,0 +1,23 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "BoostLib",
+	"Description": "BoostLib",
+	"Category": "Other",
+	"CreatedBy": "skk",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "BoostLib",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

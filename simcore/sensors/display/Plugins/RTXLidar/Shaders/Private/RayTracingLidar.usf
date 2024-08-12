@@ -1,0 +1,120 @@
+// Copyright Epic Games, Inc. All Rights Reserved.
+
+#include "/Engine/Private/Common.ush"
+#include "/Engine/Private/RayTracing/RayTracingCommon.ush"
+#include "/Engine/Private/SceneData.ush"
+#include "LidarSimulation.ush"
+
+float4x4    CameraMatrix;
+float4x4	MirrorMatrix;
+float MirrorThreshold;
+StructuredBuffer<float2>  RayDirs;
+RWTexture2D<float4> Output;
+RaytracingAccelerationStructure TLAS;
+
+float random(in float2 st1, in float3 st2)
+{
+    return frac(sin(dot(st1.xy, st2.xy)) * st2.z);
+}
+
+float3 GetDirection(in float2 Index)
+{
+	int bufferIndex = Index.y * DispatchRaysDimensions().x + Index.x;
+	float yaw = radians(RayDirs[bufferIndex].x);
+	float pitch = radians(RayDirs[bufferIndex].y);
+	float3 d0 = float3(cos(pitch)*cos(yaw), cos(pitch)*sin(yaw), sin(pitch));
+	return mul(float4(d0, 0), CameraMatrix).xyz;	
+}
+
+float3 GetMirrorDirection(in float2 Index)
+{
+    int bufferIndex = Index.y * DispatchRaysDimensions().x + Index.x;
+    float yaw = radians(RayDirs[bufferIndex].x);
+    float pitch = -radians(RayDirs[bufferIndex].y);   
+    float3 d0 = float3(cos(pitch) * cos(yaw), cos(pitch) * sin(yaw), sin(pitch));
+    return mul(float4(d0, 0), MirrorMatrix).xyz;
+}
+
+
+RAY_TRACING_ENTRY_RAYGEN(RayTracingLidarMainRGS)
+{
+    float2 DispatchIndex = DispatchRaysIndex().xy;
+	RayDesc Ray;
+	Ray.Origin = mul(float4(0,0,0,1), CameraMatrix).xyz;
+	Ray.Direction = GetDirection(DispatchIndex.xy);
+	Ray.TMin = 0.0f;
+	Ray.TMax = POSITIVE_INFINITY;
+
+
+	const uint InstanceInclusionMask = RAY_TRACING_MASK_OPAQUE; //opaque only
+	const bool bEnableSkyLightContribution = false;
+	const bool bIgnoreTranslucentMaterials = true;
+	FRayCone RayCone = (FRayCone) 0;
+	RayCone.SpreadAngle = 0; 
+	uint2 PixelCoord = DispatchIndex.xy;
+
+	uint RayFlags = 0;
+	FMaterialClosestHitPayload Payload = TraceMaterialRay(
+		TLAS,
+		RayFlags,
+		InstanceInclusionMask,
+		Ray,
+		RayCone,
+		PixelCoord,
+		bEnableSkyLightContribution,
+		bIgnoreTranslucentMaterials);
+
+	float4 Result = float4(0, 0, 0, 0);
+	if (Payload.IsHit())
+	{
+		uint d = Payload.HitT * 2;
+		float label = Payload.Roughness;
+		int tag = round(label * 255);
+		float c = abs(dot(Payload.WorldNormal, Ray.Direction));
+		if(MirrorThreshold > 0 && (tag == 12 || tag == 16))
+		{
+			float rdm = random(DispatchIndex, Ray.Origin);
+			if (rdm < MirrorThreshold)
+			{
+				if (rdm < MirrorThreshold*0.7)
+				{
+					d = 65536;
+				}
+				else
+				{
+					Ray.Origin = mul(float4(0,0,0,1), MirrorMatrix).xyz;
+					Ray.Direction = GetMirrorDirection(DispatchIndex.xy);
+					RayFlags = RAY_FLAG_FORCE_OPAQUE | RAY_FLAG_CULL_BACK_FACING_TRIANGLES;
+					Payload = TraceMaterialRay(
+						TLAS,
+						RayFlags,
+						InstanceInclusionMask,
+						Ray,
+						RayCone,
+						PixelCoord,
+						bEnableSkyLightContribution,
+						bIgnoreTranslucentMaterials);
+					if (Payload.IsHit() )
+					{	
+						tag = round(Payload.Roughness * 255);
+						if(tag >= 100 && tag <= 121)
+						{
+							label = Payload.Roughness;
+							d = Payload.HitT * 2;	
+							c = abs(dot(Payload.WorldNormal, Ray.Direction));
+						}
+
+					}
+				}
+			}
+		}		
+		if(d < 65535)
+		{
+			float2 sim = lidar_simulation(d * 0.005, c, tag);
+			d = round(sim.x * 200);
+			if(d > 1 && d < 65535)
+				Result = float4((d / 256) / 255.0, (d % 256) / 255.0, sim.y / 255.0, label);
+		}		
+	}
+	Output[DispatchIndex] = Result;
+}

@@ -1,0 +1,64 @@
+{
+	"Example": {
+		"name": "model/generator.opt.onnx",
+		"width": 1408,
+		"height": 768,
+		"Sun-not support in UI": {
+			"min": 0.0,
+			"max": 1.0,
+			"better": 0.5
+		},
+		"Rain": {
+			"min": 0.0,
+			"max": 1.0,
+			"better": 0.5
+		},
+		"Snow": {
+			"min": 0.0,
+			"max": 1.0,
+			"better": 0.5
+		},
+		"Visibility": {
+			"min": 0.0,
+			"max": 1.0,
+			"better": 0.5
+		},
+		"Cloud": {
+			"min": 0,
+			"max": 1.0,
+			"better": 0.5
+		},
+		"Month": {
+			"min": 1,
+			"max": 12,
+			"better": 7
+		},
+		"Hours": {
+			"min": 0,
+			"max": 24,
+			"better": 12
+		},
+		"Fov": {
+			"min": 30,
+			"max": 900,
+			"better": 60
+		},
+		"LOC": {
+			"loc": [
+				0,
+				0,
+				0
+			],
+			"dis": 100.0
+		},
+		"RPY": {
+			"rpy": [
+				0,
+				0,
+				0
+			],
+			"dot": 0.5
+		}
+    },
+    "Model": [] 
+}
