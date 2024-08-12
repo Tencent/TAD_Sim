@@ -1,0 +1,426 @@
+{
+	"kpi" : 
+	[
+		{
+			"category" : "General",
+			"finishCondition" : 
+			{
+				"desc" : "加速度过大次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxAcceleration_V",
+			"parameters" : 
+			{
+				"calculationMethod" : "根据连续帧序列数据判断主车纵向加速度>正阈值的次数,连续超出行为记为一次",
+				"definition" : "纵向加速度过大次数",
+				"indicatorName" : "主车加速度过大检测",
+				"labels" : 
+				[
+					"COMFORTABILITY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "3.6",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "主车最大加速度",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m/s²"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "加速度过大次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "General",
+			"finishCondition" : 
+			{
+				"desc" : "减速度过大次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxDeceleration_V",
+			"parameters" : 
+			{
+				"calculationMethod" : "根据连续帧序列数据判断主车纵向加速度<负阈值的次数,连续超出行为记为一次",
+				"definition" : "纵向刹车过大次数",
+				"indicatorName" : "主车减速度过大检测",
+				"labels" : 
+				[
+					"COMFORTABILITY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "-3.6",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "主车最大减速度",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m/s²"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "减速度过大次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "General",
+			"finishCondition" : 
+			{
+				"desc" : "主车横向加速度过大次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxTurningAccelerate",
+			"parameters" : 
+			{
+				"calculationMethod" : "根据连续帧序列数据判断主车横摆加速度绝对值>阈值的次数,连续超出行为记为一次",
+				"definition" : "横向转向加速度过大次数",
+				"indicatorName" : "主车横向加速度过大检测",
+				"labels" : 
+				[
+					"COMFORTABILITY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "2",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "主车最大横向加速度（绝对值）",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m/s²"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车横向加速度过大次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "General",
+			"finishCondition" : 
+			{
+				"desc" : "超速次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxSpeed_V",
+			"parameters" : 
+			{
+				"calculationMethod" : "根据连续帧序列数据判断主车车速>道路限速阈值的次数,连续超出行为记为一次",
+				"definition" : "超过道路限速次数",
+				"indicatorName" : "主车超速检测",
+				"labels" : 
+				[
+					"COMPLIANCE"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "22",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "主车最大速度",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m/s"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "超速次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "General",
+			"finishCondition" : 
+			{
+				"desc" : "超时次数",
+				"relation" : ">=",
+				"value" : 1
+			},
+			"name" : "TotalTime",
+			"parameters" : 
+			{
+				"calculationMethod" : "累计时长与最大时长阈值比较",
+				"definition" : "是否超过场景最大运行时长",
+				"indicatorName" : "超时检测",
+				"labels" : 
+				[
+					"EFFICIENCY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "300",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "场景运行最大时间",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "s"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "超时次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Planning",
+			"finishCondition" : 
+			{
+				"desc" : "碰撞次数",
+				"relation" : ">=",
+				"value" : 1
+			},
+			"name" : "Collision",
+			"parameters" : 
+			{
+				"calculationMethod" : "检查主车包围盒与交通参与者包围盒是否重叠",
+				"definition" : "主车是否与交通参与者发生碰撞",
+				"indicatorName" : "碰撞检测",
+				"labels" : 
+				[
+					"SECURITY"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "碰撞次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Planning",
+			"finishCondition" : 
+			{
+				"desc" : "预主车压实线次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "CrossSolidLine",
+			"parameters" : 
+			{
+				"calculationMethod" : "主车车轮是否与实线重叠",
+				"definition" : "车轮接触道路实线的次数",
+				"indicatorName" : "主车压实线检测",
+				"labels" : 
+				[
+					"COMPLIANCE"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车压实线次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Planning",
+			"finishCondition" : 
+			{
+				"desc" : "主车到达终点",
+				"relation" : ">=",
+				"value" : 1
+			},
+			"name" : "EndPoint",
+			"parameters" : 
+			{
+				"calculationMethod" : "距离终点位置是否小于阈值,小于阈值时速度是否为零",
+				"definition" : "主车是否到达终点",
+				"indicatorName" : "主车是否到达终点检测",
+				"labels" : 
+				[
+					"EFFICIENCY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "0",
+						"thresholdID" : "NeedParking",
+						"thresholdName" : "主车到达终点速度是否强制为0",
+						"thresholdType" : "ThresholdType_BOOL",
+						"thresholdUnit" : "N/A"
+					},
+					{
+						"threshold" : "5.0",
+						"thresholdID" : "ParkingRadius",
+						"thresholdName" : "主车到达终点检测半径阈值",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车到达终点",
+				"relation" : ">=",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Planning",
+			"finishCondition" : 
+			{
+				"desc" : "主车闯红灯次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "RunTrafficLight",
+			"parameters" : 
+			{
+				"calculationMethod" : "所在路口红灯时,主车连续出现在停车线外计为一次",
+				"definition" : "主车通过路口时信号灯为红灯的次数",
+				"indicatorName" : "主车闯红灯检测",
+				"labels" : 
+				[
+					"COMPLIANCE"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车闯红灯次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Control",
+			"finishCondition" : 
+			{
+				"desc" : "主车轨迹跟踪最大横向偏移距离过大次数",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxPosError_H",
+			"parameters" : 
+			{
+				"calculationMethod" : "与给定轨迹的横向偏移大于阈值的次数",
+				"definition" : "与规划路径的横向偏移绝对值与阈值的对比",
+				"indicatorName" : "主车与匹配的轨迹点的横向偏移距离过大检测",
+				"labels" : 
+				[
+					"SECURITY"
+				],
+				"thresholds" : 
+				[
+					{
+						"threshold" : "1",
+						"thresholdID" : "Default_Thresh_ID",
+						"thresholdName" : "主车与匹配的轨迹点最大横向偏移距离（绝对值）阈值",
+						"thresholdType" : "ThresholdType_DOUBLE",
+						"thresholdUnit" : "m"
+					}
+				]
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车轨迹跟踪最大横向偏移距离过大次数",
+				"relation" : "<",
+				"value" : 1
+			}
+		},
+		{
+			"category" : "Control",
+			"finishCondition" : 
+			{
+				"desc" : "主车与轨迹平均横向偏移距离",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxAveragePosError_H",
+			"parameters" : 
+			{
+				"calculationMethod" : "左右偏移值统计的算术平均值",
+				"definition" : "规划路径的横向偏移值,左右偏移的平均值",
+				"indicatorName" : "主车与轨迹平均横向偏移距离统计",
+				"labels" : 
+				[
+					"STATISTICS"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车与轨迹平均横向偏移距离",
+				"relation" : "<",
+				"value" : 0
+			}
+		},
+		{
+			"category" : "Control",
+			"finishCondition" : 
+			{
+				"desc" : "主车与匹配的轨迹点左侧最大横向偏移距离统计",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxPosError_H_L",
+			"parameters" : 
+			{
+				"calculationMethod" : "与给定轨迹的横向偏移最大值",
+				"definition" : "通过规划路径的横向偏移值,向左偏移的最大值",
+				"indicatorName" : "主车与匹配的轨迹点左侧最大横向偏移距离统计",
+				"labels" : 
+				[
+					"STATISTICS"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车与匹配的轨迹点左侧最大横向偏移距离统计",
+				"relation" : "<",
+				"value" : 0
+			}
+		},
+		{
+			"category" : "Control",
+			"finishCondition" : 
+			{
+				"desc" : "主车与匹配的轨迹点右侧最大横向偏移距离统计",
+				"relation" : ">=",
+				"value" : 0
+			},
+			"name" : "MaxPosError_H_R",
+			"parameters" : 
+			{
+				"calculationMethod" : "与给定轨迹的横向偏移最大值",
+				"definition" : "通过与规划路径的横向偏移值,向右偏移的最大值",
+				"indicatorName" : "主车与匹配的轨迹点右侧最大横向偏移距离统计",
+				"labels" : 
+				[
+					"STATISTICS"
+				],
+				"thresholds" : []
+			},
+			"passCondition" : 
+			{
+				"desc" : "主车与匹配的轨迹点右侧最大横向偏移距离统计",
+				"relation" : "<",
+				"value" : 0
+			}
+		}
+	]
+}

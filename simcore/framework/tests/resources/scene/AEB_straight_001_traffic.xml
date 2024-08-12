@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<traffic version="1.0">
+    <routes>
+        <route id="0" type="start_end" start="121.17653404395172,31.279910211616414" end="121.1802038523704,31.277094053304197" />
+        <route id="1" type="start_end" start="121.17650158692382,31.279939661607216" />
+    </routes>
+    <accs>
+        <acc id="1" profile="0.000000,0.000000" />
+        <acc id="2" profile="0.000000,0.000000" />
+    </accs>
+    <accs_event>
+        <acc id="1" profile="ttc 0.000000,0.000000" />
+        <acc id="2" profile="ttc 0.000000,0.000000" />
+    </accs_event>
+    <merges>
+        <merge id="1" profile="0.000000,0" />
+        <merge id="2" profile="0.000000,0" />
+    </merges>
+    <merges_event>
+        <merge id="1" profile="ttc 0.000000,0" />
+        <merge id="2" profile="ttc 0.000000,0" />
+    </merges_event>
+    <velocities />
+    <velocities_event />
+    <pedestrians_event />
+    <vehicles>
+        <vehicle id="1" routeID="1" laneID="-1" start_s="450" start_t="0" start_v="0" max_v="0" l_offset="0" length="4.5060000000000002" width="1.8089999999999999" height="1.6850000000000001" accID="2" mergeID="2" vehicleType="SUV" behavior="UserDefine" />
+    </vehicles>
+    <obstacles />
+    <pedestrians />
+    <signlights />
+</traffic>

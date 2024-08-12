@@ -1,0 +1,207 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Data protocol corresponding to the persistence of the simulation results
+// of ego and traffic participants.
+// 主车及交通参与者仿真结果持久化对应的数据协议.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "trajectory.proto";
+import "location.proto";
+import "grading.proto";
+import "traffic.proto";
+import "laneMarks.proto";
+import "control.proto";
+import "vehState.proto";
+import "traffic_billboard.proto";
+import "environment.proto";
+import "debugmessage.proto";
+import "control_v2.proto";
+//import "v2x_asn1_2020.proto";
+//import "v2x_earlywarning.proto";
+
+enum EgoType {
+  Ego_Type_Car = 0;
+  Ego_Type_Truck = 1;
+  Ego_Type_AIV_FullLoad_001 = 2;
+  Ego_Type_AIV_Empty_001 = 3;
+  Ego_Type_Mpv = 4;
+  Ego_Type_AIV_FullLoad_002 = 5;
+  Ego_Type_AIV_Empty_002 = 6;
+  Ego_Type_MIFA_01 = 7;
+}
+
+message TrafficEgo {
+  // ego id.
+  // 主车 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int64 id = 1;
+
+  // Ego vehicle type enum.
+  // 主车类型 enum.
+  //
+  // Unit: N/A, Range: [0..7], Default: 0
+  //
+  // \note Due to the frequent addition of ego vehicle types, \n
+  // it has been changed to the string type variable below, \n
+  // This enum is not deleted here for compatibility considerations.
+  // 因经常添加主车类型改为下面 string 类型变量, 此处不删除 enum 是为了兼容性考虑
+  //
+  EgoType type = 2;
+
+  // Ego vehicle location information.
+  // 主车位置信息.
+  //
+  Location loc = 3;
+
+  // Ego vehicle multi-section trailer location information.
+  // 主车多节拖车位置信息.
+  //
+  repeated Location trailer = 4;
+
+  // Ego vehicle planned trajectory line information.
+  // 主车规划轨迹线信息.
+  //
+  Trajectory planning_line = 5;
+
+  // Ego vehicle type string.
+  // 主车类型 string.
+  //
+  string egoType = 6;
+
+  // Ego vehicle evaluation information.
+  // 主车评测信息.
+  //
+  Grading grading = 7;
+
+  //
+  string feedback = 8;
+}
+
+message TrafficFrame {
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 frame_id = 1;
+
+  //
+  Traffic traffic = 2;
+
+  //
+  repeated TrafficEgo egos = 3;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 job_id = 4;
+
+  // maybe sceneid or subjobid (traffic sim).
+  // 可能是 sceneid 或 subjobid (交通仿真).
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 world_id = 5;
+
+  //
+  int64 dgtworld_id = 6;
+
+  // EGO, WORLD, SCENE, LOG2WORLD.
+  //
+  string source = 7;
+
+  // Information on evaluation indicators.
+  // 评测指标信息.
+  //
+  // \note 多主车情况下, 应废弃
+  //
+  Grading grading = 8;
+
+  //
+  Traffic logsim_traffic = 9;
+
+  //
+  repeated TrafficEgo logsim_egos = 10;
+
+  // Switching time for front-end inputs.
+  // 前端输入的切换时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint64 switch_time = 11;
+
+  // Simulation time for logsim.
+  // logsim 的仿真时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint64 log_time = 12;
+
+  // Simulation time of the simulation system.
+  // 仿真系统的仿真时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint64 sim_time = 13;
+
+  // Operating system time.
+  // 操作系统时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint64 sys_time = 14;
+
+  //
+  LaneMarks lane_marks = 15;
+
+  //
+  Control control = 16;
+
+  //
+  VehicleState vehicle_state = 17;
+
+  //
+  Billboard traffic_billboard = 18;
+
+  //
+  EnvironmentalConditions environmental_conditions = 19;
+
+  //
+  DebugMessage debugmessage = 23;
+
+  // cloud city begin frame id, use record log sim.
+  // 虚拟城市开始帧 ID, 使用记录仿真日志.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 begin_frame_id = 24;
+
+  // v2x_asn1_2020.
+  //
+	// v2x_asn1_2020.V2X_ASN1 v2x_asn1_2020 = 25;
+
+  //
+	Control_V2 control_v2 = 26;
+
+  //
+	// V2xEarlyWarning v2x_early_warning = 27;
+
+  // Total distance traveled by ego.
+  // 主车行驶总里程.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+	double ego_mileage = 28;
+
+  // Real log2world switching time.
+  // 真实的 log2world 切换时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+	uint64 real_switch_time = 29;
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="true" ?>
+<config>
+    <player>
+		<lanemark enable="0" forwardlength="101" forwardinterval="10" />
+	</player>
+	<editor>
+		<saveXOSC enable="1" />
+		<controlPath enable="0" />
+		<templateSetting current="byl0731">
+			<template map="d2d_20190726.xodr" tpl="byl0731"/>
+		</templateSetting>
+		<hadmapIndexSetting>
+			<map name="d2d_20190726.xodr" id="1"/>
+		</hadmapIndexSetting>
+	</editor>
+	<l3_state_machine>
+		<type name="chassis_state">
+			<state name="speed_signal_valid" />
+			<state name="brake_pressure_signal_valid" />
+			<state name="gear_selection_signal_valid" />
+			<state name="steering_wheel_angle_signal_valid" />
+			<state name="ESP_system_status" />
+			<state name="steering_wheel_angle_sensor_status" />
+			<state name="AEB_activated" />
+			<state name="EPB_status" />
+			<state name="brake_pressed" />
+			<state name="VDC_TSC_AVH_activated" />
+			<state name="accelerator_override" />
+			<state name="left_turn_signal_switch_toggled" />
+			<state name="right_turn_signal_switch_toggled" />
+			<state name="steer_wheel_takeover_state" />
+		</type>
+		<type name="srr_state">
+			<state name="srr_connection_valid" />
+		</type>
+		<type name="scala_state">
+			<state name="scala_connection_valid" />
+		</type>
+		<type name="hppu_state">
+			<state name="power_state" />
+			<state name="key_state" />
+		</type>
+		<type name="car_state">
+			<state name="brake_ped_sts" />
+			<state name="acc_pedal_pos" />
+			<state name="steering_wheel_angle" />
+		</type>
+		<type name="hmi_state">
+			<state name="HMI_button_pressed" />
+		</type>
+		<type name="planning_state">
+			<state name="leading_car_id" />
+		</type>
+	</l3_state_machine>
+</config>

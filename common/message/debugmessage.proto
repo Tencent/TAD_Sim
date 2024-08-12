@@ -1,0 +1,102 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Used for users to output custom debugging information and display it on the front-end.
+// 用于用户输出自定义调试信息并在前端显示.
+//
+// TOPIC: DEBUG_MESSAGE
+
+syntax = "proto3";
+
+package sim_msg;
+
+message DebugMessage {
+  //
+  double debug0 = 1;
+
+  //
+  double debug1 = 2;
+
+  //
+  double debug2 = 3;
+
+  //
+  double debug3 = 4;
+
+  //
+  double debug4 = 5;
+
+  //
+  double debug5 = 6;
+
+  //
+  double debug6 = 7;
+
+  //
+  double debug7 = 8;
+
+  //
+  double debug8 = 9;
+
+  //
+  double debug9 = 10;
+
+  //
+  int64 n_debug0 = 11;
+
+  //
+  int64	n_debug1 = 12;
+
+  //
+  int64	n_debug2 = 13;
+
+  //
+  int64	n_debug3 = 14;
+
+  //
+  int64	n_debug4 = 15;
+
+  //
+  int64	n_debug5 = 16;
+
+  //
+  int64	n_debug6 = 17;
+
+  //
+  int64	n_debug7 = 18;
+
+  //
+  int64	n_debug8 = 19;
+
+  //
+  int64	n_debug9 = 20;
+
+  //
+  string s_debug0 = 21;
+
+  //
+  string s_debug1 = 22;
+
+  //
+  string s_debug2 = 23;
+
+  //
+  string s_debug3 = 24;
+
+  //
+  string s_debug4 = 25;
+
+  //
+  string s_debug5 = 26;
+
+  //
+  string s_debug6 = 27;
+
+  //
+  string s_debug7 = 28;
+
+  //
+  string s_debug8 = 29;
+
+  //
+  string s_debug9 = 30;
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0">
+    <mapfile lon="121.16389756" lat="31.28060511" alt="13.199999999999999" unrealLevelIndex="-1">../hadmap/d2d_20190726.xodr</mapfile>
+    <traffic>AEB_straight_001_traffic.xml</traffic>
+    <planner>
+        <route id="0" type="start_end" start="121.17653404395172,31.279910211616414" end="121.1802038523704,31.277094053304197" />
+        <start_v>0</start_v>
+        <theta>-0.8127998326537593</theta>
+        <Velocity_Max>16.67</Velocity_Max>
+        <InputPath points="121.17653404,31.27991021,0.000;121.18020385,31.27709405,14.252" />
+    </planner>
+</simulation>

@@ -1,0 +1,32 @@
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    white-space: normal;
+}
+
+table {
+    font-family: "Lato", "proxima-nova", "Helvetica Neue", Arial, sans-serif;
+    border: 1px solid #e1e4e5;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+}
+
+thead {
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+}
+
+figure.center-video {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    /* 这确保了子元素沿着垂直轴居中 */
+    align-items: center;
+    /* 这确保了子元素在水平轴上居中 */
+}

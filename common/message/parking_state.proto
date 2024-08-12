@@ -1,0 +1,64 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Parking related status information.
+// 泊车相关状态信息.
+//
+// TOPIC: PARKING_STATE
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "parking_space.proto";
+
+enum APA_test_flag {
+  // Default state.
+  // 默认状态.
+  //
+  APA_Parking_default = 0;
+
+  // Parking searching.
+  // 正在搜索停车位.
+  //
+  APA_Parking_searching = 1;
+
+  // Parking in process.
+  // 停车过程中.
+  //
+  APA_Parking_in = 2;
+
+  // Parking success.
+  // 停车成功.
+  //
+  APA_Parking_Completed = 3;
+
+  // Parking out process.
+  // 出库过程中.
+  //
+  APA_Parking_out = 4;
+
+  // Parking failed.
+  // 停车失败.
+  APA_Parking_failed = 5;
+}
+
+message ParkingState {
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double t = 1;
+
+  // Parking status.
+  // 停车状态.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  APA_test_flag stage = 2;
+
+  // List of parking information.
+  // 停车信息列表.
+  //
+  repeated Parking parking = 3;
+}

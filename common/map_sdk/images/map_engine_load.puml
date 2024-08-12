@@ -1,0 +1,31 @@
+@startuml
+    actor Application
+    activate Application 
+    participant MapEngine
+    participant MapImport
+    participant MemSearch 
+    Application -> MapEngine : 1. 用户hadmapconnect选择加载地图路径和地图类型
+    activate MapEngine
+    MapEngine -> MapImport:2. parse data ，进行地图文件解析
+    activate MapImport
+    MapImport -> MapImport : 3.trasform data to datamodel，构建地图几何数据模型， 
+    MapImport -> MemSearch : 4.insert data to rtree ，将地图保存到Rtee树中
+    activate MemSearch
+    MemSearch --> MapImport : 5.返回状态码
+    MapImport --> MapEngine : 6.返回状态码
+    deactivate MapImport
+    MapEngine --> Application : 7.返回状态码
+    Application -> MapEngine : 8.getRoads，用户查询道路信息
+    MapEngine -> MemSearch: 9.searchRoads，Rtee树中查询道路
+    MemSearch -> MemSearch: 10.searchLanes，Rtee树中查询车道信息
+    MemSearch --> MapEngine: 11.txRoads，返回道路指针集合
+    MapEngine --> Application: 12.txRoads，返回道路指针集合
+    Application -> MapEngine : 13.getLaneLinks，用户查询道路连接线信息
+    MapEngine -> MemSearch: 14.searchLaneLinks，Rtee树中查询连接线信息
+    MemSearch --> MapEngine:15.txLaneLinks，返回车道连接线信息
+    MapEngine --> Application: 16.txLaneLinks，返回车道连接线信息
+    Application -> MapEngine : 17.getObjects，用户查询道路上物体信息
+    MapEngine -> MemSearch: 18.searchObjects，Rtee树中查询道路上物体信息
+    MemSearch --> MapEngine: 19.txObjects，返回道路上物体信息
+    MapEngine --> Application: 20.txObjects，返回道路上物体信息
+@enduml

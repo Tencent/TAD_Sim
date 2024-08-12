@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Icon/14px/ Traffic Lights / 窗口化缩小 / 常态</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Icon/14px/-Traffic-Lights-/-窗口化缩小-/-常态" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M13.0909091,0 C13.5929861,0 14,0.407013864 14,0.909090909 L14,9.09090909 C14,9.59298614 13.5929861,10 13.0909091,10 L10,10 L10,8.181 L12.1818182,8.18181818 L12.1818182,1.81818182 L5.81818182,1.81818182 L5.818,4 L4,4 L4,0.909090909 C4,0.407013864 4.40701386,0 4.90909091,0 L13.0909091,0 Z" id="形状结合" fill="currentColor" fill-rule="nonzero"></path>
+        <path d="M9.09090909,4 C9.59298614,4 10,4.40701386 10,4.90909091 L10,13.0909091 C10,13.5929861 9.59298614,14 9.09090909,14 L0.909090909,14 C0.407013864,14 0,13.5929861 0,13.0909091 L0,4.90909091 C0,4.40701386 0.407013864,4 0.909090909,4 L9.09090909,4 Z M8.18181818,5.81818182 L1.81818182,5.81818182 L1.81818182,12.1818182 L8.18181818,12.1818182 L8.18181818,5.81818182 Z" id="矩形" fill="currentColor" fill-rule="nonzero"></path>
+    </g>
+</svg>

@@ -1,0 +1,2 @@
+/* Define macros for specific OS. Nothing for Windows
+*/

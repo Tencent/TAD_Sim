@@ -1,0 +1,1137 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief This is the definition of the scene file information,
+// which will be assigned once in the initial stage of tadsim
+// 这是场景文件信息的定义, 将在 tadsim 初始阶段分配一次.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "settings.proto";
+import "waypoint.proto";
+import "environment.proto";
+import "vehicle_interaction.proto";
+import "vehicle_geometry.proto";
+import "scene_sensor_group.proto";
+import "scene_infrastructure_group.proto";
+
+enum CategoryVehicle {
+  CATEGORY_VEHICLE_CAR = 0;
+  CATEGORY_VEHICLE_BUS = 1;
+  CATEGORY_VEHICLE_TRUCK = 2;
+  CATEGORY_VEHICLE_TRALLER = 3;
+  CATEGORY_VEHICLE_BIKE = 4;
+  CATEGORY_VEHICLE_ELECTRIC_BIKE = 5;
+  CATEGORY_VEHICLE_MOTORBIKE = 6;
+  CATEGORY_VEHICLE_ELECTRIC_MOTORBIKE = 7;
+  CATEGORY_VEHICLE_ELECTRIC_SEMITRAILER = 8;
+  CATEGORY_VEHICLE_ELECTRIC_CRANE = 9;
+}
+
+enum CategoryVru {
+  CATEGORY_VRU_ANIMAL = 0;
+  CATEGORY_VRU_PEDESTRIAN = 1;
+  CATEGORY_VRU_WHEELCHAIR = 2;
+}
+
+enum CategoryMisc {
+  CATEGORY_MISC_BARRIER = 0;
+  CATEGORY_MISC_BUILDING = 1;
+  CATEGORY_MISC_CROSSING = 2;
+  CATEGORY_MISC_GANTRY = 3;
+  CATEGORY_MISC_OBSTACLE = 4;
+  CATEGORY_MISC_PARKING_SPACE = 5;
+  CATEGORY_MISC_PATCH = 6;
+  CATEGORY_MISC_POLE = 7;
+  CATEGORY_MISC_RAILING = 8;
+  CATEGORY_MISC_ROADMARK = 9;
+  CATEGORY_MISC_SOUND_BARRIER = 10;
+  CATEGORY_MISC_STREET_LAMP = 11;
+  CATEGORY_MISC_TRAFFIC_IS_LAND = 12;
+  CATEGORY_MISC_TREE = 13;
+  CATEGORY_MISC_VEGETATION = 14;
+  CATEGORY_MISC_NONE = 15;
+}
+
+enum Color {
+  // RGB(255,255,255)
+  COLOR_WHITE = 0;
+  // RGB(192,192,192)
+  COLOR_SILVER = 1;
+  // RGB(128,128,128)
+  COLOR_GRAY = 2;
+  // RGB(0,0,0)
+  COLOR_BLACK = 3;
+  // RGB(255,0,0)
+  COLOR_RED = 4;
+  // RGB(128,0,0)
+  COLOR_MAROON = 5;
+  // RGB(255,255,0)
+  COLOR_YELLOW = 6;
+  // RGB(128,128,0)
+  COLOR_OLIVE = 7;
+  // RGB(0,255,0)
+  COLOR_LIME = 8;
+  // RGB(0,128,0)
+  COLOR_GREEN = 9;
+  // RGB(0,255,255)
+  COLOR_AQUA = 10;
+  // RGB(0,128,128)
+  COLOR_TEAL = 11;
+  // RGB(0,0,255)
+  COLOR_BLUE = 12;
+  // RGB(0,0,128)
+  COLOR_NAVY = 13;
+  // RGB(255,255,0)
+  COLOR_FUCHSIA = 14;
+  // RGB(255,0,255)
+  COLOR_PURPLE = 15;
+}
+
+enum BehaviorType {
+  // USER DEFINE
+  // 用户自定义模式
+  //
+  BEHAVIOR_TYPE_USER_DEFINE = 0;
+
+  // AI TRAFFIC VEHICLE HIGHWAY
+  // AI 模式高速
+  //
+  BEHAVIOR_TYPE_TRAFFIC_VEHICLE = 1;
+
+  // AI TRAFFIC VEHICLE ARTERIAL
+  // AI 模式城区
+  //
+  BEHAVIOR_TYPE_TRAFFIC_VEHICLE_ARTERIAL = 2;
+
+  // TRAJECTORY FOLLOW mode
+  // 轨迹跟踪模式
+  //
+  BEHAVIOR_TYPE_TRAJECTORY_FOLLOW = 3;
+}
+
+enum Rule {
+  RULE_EQUAL_TO = 0;
+  RULE_GREATER_THEN = 1;
+  RULE_GREATER_THEN_EQUAL = 2;
+  RULE_LESS_THEN = 3;
+  RULE_LESS_THEN_EQUAL = 4;
+  // reverse
+  RULE_NOT_EQUAL_TO = 5;
+}
+
+enum DirDimension {
+  DIR_DIMENSION_LONGITUDINAL = 0;
+  DIR_DIMENSION_LATERAL = 1;
+  DIR_DIMENSION_VERTICAL = 2;
+}
+
+enum ConditionEdge {
+  // A condition defined with a 'none' edge shall return true at discrete time t,
+  // if its logical expression is true at discrete time t.
+  // 定义为“无边缘”的条件在离散时间t处返回true,
+  // 如果其逻辑表达式在离散时间t处为真.
+  //
+  CONDITION_EDGE_NONE = 0;
+
+  // A condition defined with a rising edge shall return true at discrete time t,
+  // if its logical expression is true at discrete time t and
+  // its logical expression was false at discrete time t-ts, where ts is simulation sampling time.
+  // 定义为上升沿的条件在离散时间t处返回true,
+  // 如果其逻辑表达式在离散时间t处为真, 且
+  // 在离散时间t-ts处逻辑表达式为假, 其中ts为仿真采样时间.
+  //
+  CONDITION_EDGE_RISING = 1;
+
+  // A condition defined with a falling edge shall return true at discrete time t,
+  // if its logical expression is false at discrete time t and
+  // its logical expression was true at discrete time t-ts, where ts is simulation sampling time.
+  // 定义为下降沿的条件在离散时间t处返回true,
+  // 如果其逻辑表达式在离散时间t处为假, 且
+  // 在离散时间t-ts处逻辑表达式为真, 其中ts为仿真采样时间.
+  //
+  CONDITION_EDGE_FALLING = 2;
+
+  // A condition defined with a 'risingOrFalling' edge shall return true at discrete time t,
+  // if its logical expression is true at discrete time t and its logical expression was false,
+  // at discrete time t-ts OR if its logical expression is false at discrete time t and
+  // its logical expression was true at discrete time t-ts. ts is the simulation sampling time
+  // 定义为“上升或下降沿”的条件在离散时间t处返回true,
+  // 如果其逻辑表达式在离散时间t处为真, 且在离散时间t-ts处逻辑表达式为假,
+  // 或者如果其逻辑表达式在离散时间t处为假, 且在离散时间t-ts处逻辑表达式为真.ts是仿真采样时间.
+  //
+  CONDITION_EDGE_BOTH = 3;
+}
+
+enum DistanceType {
+  DISTANCE_TYPE_EUCLIDEAN = 0;
+  DISTANCE_TYPE_LANEPROJECTION = 1;
+}
+
+enum StoryboardElementType {
+  STORYBOARD_ELEMENT_TYPE_STORY = 0;
+  STORYBOARD_ELEMENT_TYPE_ACT = 1;
+  STORYBOARD_ELEMENT_TYPE_MANEUVER = 2;
+  STORYBOARD_ELEMENT_TYPE_EVENT = 3;
+  STORYBOARD_ELEMENT_TYPE_ACTION = 4;
+  STORYBOARD_ELEMENT_TYPE_MANEUVER_GROUP = 5;
+}
+
+enum StoryboardElementState {
+  STORYBOARD_ELEMENT_STATE_START_TRANSITION = 0;
+  STORYBOARD_ELEMENT_STATE_END_TRANSITION = 1;
+  STORYBOARD_ELEMENT_STATE_STOP_TRANSITION = 2;
+  STORYBOARD_ELEMENT_STATE_SKIP_TRANSITION = 3;
+  STORYBOARD_ELEMENT_STATE_COMPLETE_STATE = 4;
+  STORYBOARD_ELEMENT_STATE_RUNNING_STATE = 5;
+  STORYBOARD_ELEMENT_STATE_STANDBY_STATE = 6;
+}
+
+message DynamicConstraints {
+  // Maximum acceleration of the vehicle.
+  // 车辆的最大加速度.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  double max_acceleration = 1;
+
+  // Maximum deceleration of the vehicle.
+  // 车辆的最大减速度.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  double max_deceleration = 2;
+
+  // Maximum speed of the vehicle.
+  // 车辆的最大速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double max_speed = 3;
+}
+
+message BoundingBox {
+  // Center x, y, z of boundingbox.
+  // 包围盒中心点.
+  //
+  Vec3 center = 1;
+
+  // Length of the entity's bounding box.
+  // 实体边界框的长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double length = 2;
+
+  // Width of the entity's bounding box.
+  // 实体边界框的宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double width = 3;
+
+  // Height of the entity's bounding box.
+  // 实体边界框的高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double higth = 4;
+}
+
+message Performance {
+  // Maximum speed of the vehicle.
+  // 车辆的最大速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double max_speed = 1;
+
+  // Maximum acceleration of the vehicle.
+  // 车辆的最大加速度.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  double max_accel = 2;
+
+  // Maximum deceleration of the vehicle.
+  // 车辆的最大减速度.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  double max_decel = 3;
+}
+
+//
+// \brief Condition checking the time to collision between two entities. \n
+// 检查两个实体之间的碰撞时间的条件.
+//
+message ConditionTimeToCollision {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // Distance type.
+  // 距离类型.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  DistanceType distance_type = 2;
+
+  // The operator (less, greater, equal).
+  // 运算符(小于, 大于, 等于).
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 3;
+
+  // The time to collision value.
+  // 碰撞时间值.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double value = 4;
+}
+
+//
+// \brief Condition checking the current speed of the referenced entities.
+// 检查引用实体当前速度的条件.
+//
+message ConditionSpeed {
+  // Direction of the speed (if not given, the total speed is considered).
+  // 速度的方向(如果未给出, 则考虑总速度).
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  DirDimension direction = 1;
+
+  // The operator (less, greater, equal).
+  // 运算符(小于, 大于, 等于).
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 2;
+
+  // Speed value of the speed condition.
+  // 速度条件的速度值.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  double value = 3;
+}
+
+//
+// \brief Condition checking the relative speed between two entity.
+// 检查两个实体之间的相对速度的条件.
+//
+message ConditionRelativeSpeed {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // Direction of the speed (if not given, the total speed is considered).
+  // 速度的方向(如果未给出, 则考虑总速度).
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  DirDimension direction = 2;
+
+  // The operator (less, greater, equal).
+  // 运算符(小于, 大于, 等于).
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 3;
+
+  // Relative speed value.
+  // 相对速度值.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  double value = 4;
+}
+
+//
+// \brief Condition checking whether the reference entity has reached a given position, within a given uncertainty.
+// 检查参考实体是否已达到给定的位置, 给定的不确定性内.
+//
+// \note deprecated, With version OpenSCENARIO 1.2, Use DistanceCondition instead.
+// 已废弃, 在 OpenSCENARIO 1.2 版本中, 使用 DistanceCondition 替代.
+//
+message ConditionReachPosition {
+  // Radius of tolerance circle around given position.
+  // 给定位置周围的容差圆的半径.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double radius = 1;
+
+  // The position to be reached with the defined radius.
+  // 定义半径要达到的位置.
+  //
+  Position position = 2;
+}
+
+//
+// \brief Condition checking the relative distance between two entities.
+// 检查两个实体之间的相对距离的条件.
+//
+message ConditionRelativeDistance {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // Distance type.
+  // 距离类型.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  DistanceType distance_type = 2;
+
+  // The operator (less, greater, equal).
+  // 运算符(小于, 大于, 等于).
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 3;
+
+  // The distance value.
+  // 距离值.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double value = 4;
+}
+
+//
+// \brief tadsim only.
+//
+message ConditionEgoAttachLaneidCustom {
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  uint64 road_id = 1;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  uint64 section_id = 2;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  int64 lane_id = 3;
+}
+
+//
+// \brief The current simulation time is compared to a reference value.
+// 当前仿真时间与参考值进行比较.
+//
+message ConditionSimulationTime {
+  // The operator (less, greater, equal), reverse.
+  // 运算符(小于, 大于, 等于), 反向.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 1;
+
+  // Time value of the simulation time condition.
+  // 仿真时间条件的时间值.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double value = 2;
+}
+
+//
+// \brief Condition checking the time headway between two entities.
+// 检查两个实体之间的时间间隔的条件.
+//
+message ConditionTimeHeadway {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // The time headway value.
+  // 时间间隔值.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double value = 2;
+
+  // True: time headway is measured using the distance between closest bounding box points,
+  // False: reference point distance is used.
+  // True: 使用最近边界框点之间的距离测量时间间隔,
+  // False: 使用参考点距离.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool freespace = 3;
+
+  // True: routing is taken into account, e.g. turns will increase distance,
+  // False: straight line distance is used.
+  // True: 考虑路由, 例如转弯会增加距离,
+  // False: 使用直线距离.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool along_route = 4;
+
+  // The operator (less, greater, equal), reverse.
+  // 运算符(小于, 大于, 等于), 反向.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 5;
+}
+
+//
+// \brief not used.
+//
+message ConditionReachDistance {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // The distance value.
+  // 距离值.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double value = 2;
+
+  // True: distance is measured between closest bounding box points,
+  // 测量最近边界框点之间的距离,
+  // False: reference point distance is used.
+  // 使用参考点距离.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool freespace = 3;
+
+  // True: routing is taken into account, e.g. turns will increase distance,
+  // 考虑路由, 例如转弯会增加距离,
+  // False: straight line distance is used.
+  // 使用直线距离.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool along_route = 4;
+
+  // The operator (less, greater, equal).
+  // 运算符(小于, 大于, 等于).
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  Rule rule = 5;
+}
+
+//
+// \brief Condition becomes true if referenced StoryboardElement terminates according to given rule.
+// 如果参考的 StoryboardElement 根据给定的规则终止, 条件变为真.
+//
+message ConditionStoryboardElementState {
+  // Type of storyboard element instance.
+  // Storyboard 元素实例的类型.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  StoryboardElementType type = 1;
+
+  // Name of the referenced Storyboard instance.
+  // 参考的 Storyboard 实例的名称.
+  //
+  string storyboard_ref = 2;
+
+  // The state or the transition of storyboard element instance for which condition becomes true.
+  // Storyboard 元素实例的状态或转换, 使得条件变为真.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  StoryboardElementState state = 3;
+}
+
+//
+// \brief A condition represents a set of logical expressions that evaluate relationship of values provided by user.
+// These values may be entity states, scenario properties, scenario states or external signals.
+// Conditions are the main components in triggers.
+// 条件表示一组逻辑表达式, 用于评估用户提供的值之间的关系.
+// 这些值可能是实体状态, 场景属性, 场景状态或外部信号.
+// 条件是触发器中的主要组件
+//
+message Condition {
+  // Specifies the edge when the condition is evaluated to true.
+  // 指定条件评估为真时的边.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  ConditionEdge edge = 1;
+
+  // Time elapsed after edge condition is verified, until condition returns true to the scenario.
+  // 验证边缘条件后经过的时间, 直到条件返回场景为真.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double delay = 2;
+
+  // Number of times this condition has been met.
+  // 满足此条件的次数.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 count = 3;
+
+  //
+  oneof type {
+    // ByEntityCondition
+    ConditionTimeToCollision ttc = 4;
+    ConditionSpeed speed = 5;
+    ConditionRelativeSpeed relative_speed = 6;
+    ConditionReachPosition reach_position = 7;
+    ConditionRelativeDistance relative_distance = 8;
+    ConditionEgoAttachLaneidCustom ego_attach_laneid_custom = 9;
+    ConditionTimeHeadway time_headway = 10;
+    ConditionStoryboardElementState storyboard_element_state = 11;
+    // ByValueCondition
+    ConditionSimulationTime simulation_time = 12;
+  }
+}
+
+//
+// \brief describes the transition between the current speed of an entity and its target speed.
+// 描述实体当前速度与目标速度之间的过渡.
+//
+message ActionSpeed {
+  // Defines the target speed as absolute speed.
+  // 将目标速度定义为绝对速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  double value = 1;
+
+  // Direction of travel, Only for VRU.
+  // 行进方向, 仅适用于 VRU.
+  //
+  // Unit: degree, Range: [-inf..inf], Default: 0.0
+  //
+  double angle = 2;
+}
+
+//
+// \brief tadsim only.
+//
+message ActionAccel {
+  enum EndType {
+    END_TYPE_NONE = 0;
+    END_TYPE_TIME = 1;
+    END_TYPE_SPEED = 2;
+  }
+
+  // acceleration value.
+  // 加速度值.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double value = 1;
+
+  // Direction of travel, Only for VRU.
+  // 行进方向, 仅适用于 VRU.
+  //
+  // Unit: degree, Range: [-inf..inf], Default: 0.0
+  //
+  // \note reserve
+  //
+  double angle = 2;
+
+  // Type of action end.
+  // 动作结束类型.
+  //
+  EndType end_type = 3;
+
+  // Value of action end.
+  // 动作结束的值.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  double end_value = 4;
+}
+
+//
+// \brief tadsim only.
+//
+message ActionLaneChange {
+  enum Dir {
+    DIR_LEFT = 0;
+    DIR_RIGHT = 1;
+    DIR_LEFT_IN_LANE = 2;
+    DIR_RIGHT_IN_LANE = 3;
+  }
+
+  // Lane change direction.
+  // 车道变更方向.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  Dir dir = 1;
+
+  // Lane changing process time.
+  // 车道变换过程时间.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double duration = 2;
+
+  // Distance from centerline of lane at end of lane change.
+  // 车道变更结束时距离车道中心线的距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double offset = 3;
+}
+
+//
+// \brief This action describes a continuously kept lateral distance of an entity
+// with respect to a reference entity.
+// 该动作描述了一个实体相对于参考实体持续保持的横向距离.
+//
+message ActionLateralDistance {
+  // Lateral distance value. Missing value is interpreted as 0.
+  // 横向距离值.缺失值解释为 0.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double distance = 1;
+
+  // If false, reference point distance is used,
+  // If true distance is measured between closest bounding box points.
+  // 如果为 false, 使用参考点距离.
+  // 如果为 true, 在最近的边界框点之间测量距离、
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool freespace = 2;
+
+  // If false, the action ends when the target distance is reached,
+  // If true it does not end and can only be stopped.
+  // 如果为 false, 当达到目标距离时动作结束,
+  // 如果为 true, 它不会结束, 只能停止.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool continuous = 3;
+
+  // Parameter that assigns either unlimited dynamics (if omitted) or limited
+  // maxAcceleration/maxDeceleration/maxSpeed to the action.
+  // 为动作分配无限动力学(如果省略)或有限最大加速度/最大减速度/最大速度 的参数.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  DynamicConstraints dynamic_constraints = 4;
+}
+
+//
+// \brief A trigger is then defined as an association of condition groups.
+// A trigger evaluates to true if at least one of the associated condition groups evaluates to true
+// otherwise it evaluates to false (OR operation)
+// 触发器被定义为条件组的关联. 如果至少有一个关联的条件组评估为真, 触发器将评估为真, 否则它评估为假(OR 操作)
+//
+message Trigger {
+  // trigger name, reverse.
+  // 触发器名称, 预留.
+  //
+  string name = 1;
+
+  // A condition group is an association of conditions,
+  // that is assessed during simulation time and signals true,
+  // when all associated conditions are evaluated to true.
+  // 条件组是条件的关联,
+  // 在仿真时间内进行评估, 并在所有关联条件都评估为真时发出真信号.
+  //
+  repeated Condition conditions = 2;
+}
+
+//
+// \brief An action serves to create or modify all dynamic elements of a scenario.
+// 动作的作用是创建或修改场景中的所有动态元素.
+//
+message Action {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // one of a action.
+  oneof action {
+    ActionSpeed speed = 2;
+    ActionAccel accel = 3;
+    ActionLaneChange lane_change = 4;
+    ActionLateralDistance lateral_distance = 5;
+    Status status = 6;
+    // The following is only used for Ego
+    Activate activate = 7;
+    Assign assign = 8;
+    Override override = 9;
+    Command command = 10;
+  }
+}
+
+//
+// \brief Container for Actions. Its priority settings determine how to interact,
+// with other events within the same scope (maneuver).
+// 行动容器.它的优先级设置决定了如何与同一范围(机动)内的其他事件进行交互.
+//
+message Event {
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  //
+  string name = 2;
+
+  // Actions are executed as soon as the start trigger fires.
+  // 一旦启动触发器触发, 就会立即执行操作.
+  //
+  Trigger trigger = 3;
+
+  //
+  repeated Action actions = 4;
+
+  //
+  string info = 5;
+}
+
+message PhysicleCommon {
+  // Defines geometric properties of the entities as a simplified three dimensional bounding box.
+  // 将实体的几何属性定义为简化的三维边界框.
+  //
+  BoundingBox bounding_box = 1;
+
+  // physical color, reserve.
+  // 物理颜色, 预留.
+  //
+  // Unit: N/A, Range: [0..15], Default: 0
+  //
+  Color color = 2;
+
+  // physical mass, reserve.
+  // 物理质量, 预留.
+  //
+  // Unit: kg, Range [0...inf], Default: 0.0
+  //
+  double mass = 3;
+
+  // The front-end displays the id of the physical model.
+  // 前端显示使用的物理模型的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 model_id = 4;
+
+  // Relative path of model 3d.
+  // 相对 model 3d 文件的路径.
+  //
+  // \note eg: "mainsuv/sm_mainsuv1.fbx"
+  //
+  string model_3d = 5;
+}
+
+message PhysicleEgo {
+  //
+  PhysicleCommon common = 1;
+
+  //
+  Performance performance = 2;
+
+  //
+  VehicleGeometory geometory = 3;
+}
+
+message PhysicleVehicle {
+  //
+  PhysicleCommon common = 1;
+
+  //
+  Performance performance = 2;
+
+  //
+  VehicleGeometory geometory = 3;
+}
+
+message PhysicleVru {
+  //
+  PhysicleCommon common = 1;
+
+  //
+  Performance performance = 2;
+}
+
+message InitialCommon {
+  // List of waypoint.
+  // 航点列表.
+  //
+  repeated Waypoint waypoints = 1;
+
+  // Initial speed.
+  // 初始速度
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double speed = 2;
+}
+
+message InitialEgo {
+  //
+  InitialCommon common = 1;
+
+  //
+  Assign assign = 3;
+
+  //
+  Activate activate = 4;
+
+  // Whether or not to activate trajectory mode.
+  // 是否激活轨迹模式.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool trajectory_enabled = 5;
+}
+
+message InitialVehicle {
+  //
+  InitialCommon common = 1;
+
+  // Type of behavior.
+  // 行为类型.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  BehaviorType behavior_type = 2;
+
+  // aggress.
+  // 激进程度.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  double aggress = 3;
+}
+
+message InitialVru {
+  InitialCommon common = 1;
+
+  // Type of behavior.
+  // 行为类型.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  BehaviorType behavior_type = 2;
+
+  // aggress.
+  // 激进程度.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  double aggress = 3;
+}
+
+message Dynamic {
+  // List of event.
+  // 事件列表.
+  //
+  repeated Event events = 1;
+}
+
+message Ego {
+  // id of ego.
+  // 主车 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  //
+  string name = 2;
+
+  //
+  string objectname = 3;
+
+  // Category of the vehicle.
+  // 车辆类型.
+  //
+  // Unit: N/A, Range: [0..9], Default: 0
+  //
+  CategoryVehicle category = 4;
+
+  // List of physicle.
+  // 物理参数列表.
+  //
+  repeated PhysicleEgo physicles = 5;
+
+  //
+  InitialEgo initial = 6;
+
+  //
+  Dynamic dynamic = 7;
+
+  //
+  SensorGroup sensor_group = 8;
+
+  //
+  // VehicleDynamic vehicle_dynamic = 9;
+    string group = 9;
+}
+
+message Vehicle {
+  // id of vehicle of traffic.
+  // 交通车辆的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  //
+  string name = 2;
+
+  //
+  string objectname = 3;
+
+  // Category of the vehicle.
+  // 交通车辆类型.
+  //
+  // Unit: N/A, Range: [0..9], Default: 0
+  //
+  CategoryVehicle category = 4;
+
+  //
+  PhysicleVehicle physicle = 5;
+
+  //
+  InitialVehicle initial = 6;
+
+  //
+  Dynamic dynamic = 7;
+
+  //
+  SensorGroup sensor_group = 8;
+}
+
+message VulnerableRoadUser {
+  // id of VRU.
+  // 交通参与者弱势群体 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  //
+  string name = 2;
+
+  //
+  string objectname = 3;
+
+  // Categories for entity objects of type pedestrian.
+  // 行人类型实体对象的类别.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  CategoryVru category = 4;
+
+  //
+  PhysicleVru physicle = 5;
+
+  //
+  InitialVru initial = 6;
+
+  //
+  Dynamic dynamic = 7;
+
+  //
+  SensorGroup sensor_group = 8;
+}
+
+message MiscellaneousObject {
+  // id of MiscellaneousObject.
+  // 静态障碍物 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  //
+  string name = 2;
+
+  //
+  string objectname = 3;
+
+  // Categories for entity objects which are not pedestrians or vehicles.
+  // 非行人或车辆的实体对象类别.
+  //
+  // Unit: N/A, Range: [0..15], Default: 0
+  //
+  CategoryMisc category = 4;
+
+  //
+  PhysicleCommon physicle = 5;
+
+  //
+  InitialCommon initial = 6;
+
+  //
+  Dynamic dynamic = 7;
+
+  //
+  SensorGroup sensor_group = 8;
+}
+
+message MapModel {
+  //
+  string name = 1;
+
+  //
+  PhysicleCommon common = 2;
+}
+
+message Scene {
+  // settings of scene.
+  // 场景相关配置信息.
+  //
+  Setting setting = 1;
+
+  // List of ego.
+  // 主车列表.
+  //
+  repeated Ego egos = 2;
+
+  // List of traffic vehicle.
+  // 交通车列表.
+  //
+  repeated Vehicle vehicles = 3;
+
+  // List of VRU (pedestrians, animal).
+  // 交通参与者弱势群体列表.
+  //
+  repeated VulnerableRoadUser vrus = 4;
+
+  // List of obstacles.
+  // 障碍物列表.
+  //
+  repeated MiscellaneousObject miscs = 5;
+
+  //
+  map<int64, EnvironmentalConditions> environment = 6;
+
+  //
+  InfrastructureGroup infrastructure_group = 7;
+
+  //
+  repeated MapModel map_models = 8;
+}

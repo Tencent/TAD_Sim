@@ -1,0 +1,31 @@
+@import "./var";
+
+.el-slider {
+  .el-slider__runway {
+    border-radius: 1px;
+    height: 4px;
+    background-color: #303030;
+  }
+
+  .el-slider__bar {
+    height: 4px;
+    background-color: @global-primary-color;
+    border-radius: 0;
+  }
+
+  .el-slider__button-wrapper {
+    top: -5px;
+    width: 14px;
+    height: 14px;
+
+    .el-slider__button {
+      box-sizing: border-box;
+      display: block;
+      border-radius: 50%;
+      background-color: #808080;
+      border: 2px solid @active-bg-color;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}

@@ -1,0 +1,437 @@
+html,
+body,
+#app {
+  --font-size: 12px;
+
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-size: var(--font-size);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+p {
+  padding: 0;
+  margin: 0;
+}
+input {
+  background-color: var(--input-background);
+  color: var(--text-color);
+  border: var(--input-border);
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-resizer {
+  background-color: transparent;
+}
+
+// 主题配色下，element-plus 定制化的 UI 样式调整
+.dark-theme {
+  .sim-message {
+    padding: 10px 10px;
+    border-radius: 2px;
+  }
+  .fullscreen-loading {
+    .el-loading-spinner {
+      .path {
+        stroke: var(--active-color);
+      }
+      .el-loading-text {
+        color: var(--active-color);
+      }
+    }
+  }
+
+  .el-select-dropdown .el-select-dropdown__empty {
+    background-color: var(--component-area-color);
+  }
+  // 下拉菜单支持多选时的样式
+  .el-select-dropdown.is-multiple .el-select-dropdown__item.selected {
+    background-color: transparent;
+    &::after {
+      background-color: var(--active-color);
+    }
+  }
+
+  .el-select__popper[data-popper-placement^='left'] > .el-popper__arrow:before,
+  .el-select__popper[data-popper-placement^='top'] > .el-popper__arrow:before,
+  .el-select__popper[data-popper-placement^='bottom']
+    > .el-popper__arrow:before {
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+  }
+  .color-picker[data-popper-placement^='left'] > .el-popper__arrow:before,
+  .color-picker[data-popper-placement^='bottom'] > .el-popper__arrow:before {
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+  }
+  .light-type-picker[data-popper-placement^='left'] > .el-popper__arrow:before,
+  .light-type-picker[data-popper-placement^='bottom']
+    > .el-popper__arrow:before {
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+  }
+
+  .toggle-view-popper[data-popper-placement^='bottom'] {
+    border-color: var(--property-border-color);
+    background-color: var(--component-area-color);
+    border-radius: 0;
+    .el-dropdown-menu {
+      background-color: var(--component-area-color);
+      .el-dropdown-menu__item {
+        color: var(--text-color);
+        height: 20px;
+        font-size: var(--font-size);
+        &:not(.is-disabled):focus {
+          background-color: var(--property-border-color);
+        }
+        &.active,
+        &.active:focus {
+          background-color: var(--property-border-color);
+          color: var(--active-color);
+        }
+        span {
+          margin-left: 8px;
+        }
+      }
+    }
+    .el-popper__arrow:before {
+      background-color: var(--component-area-color);
+      border-color: var(--property-border-color);
+    }
+  }
+
+  .el-select__popper,
+  .el-select__popper.is-light {
+    border-color: var(--property-border-color);
+    border-radius: 0;
+    background-color: transparent;
+    .el-select-dropdown__wrap {
+      background-color: var(--component-area-color);
+      .el-select-dropdown__item {
+        height: 24px;
+        line-height: 24px;
+        padding-left: 6px;
+        padding-right: 6px;
+        text-align: center;
+        font-size: 12px;
+        &.selected {
+          color: var(--active-color);
+        }
+        &.hover {
+          color: var(--active-color);
+          background-color: var(--input-disabled-background);
+        }
+        &:hover {
+          color: var(--active-color);
+          background-color: var(--input-disabled-background);
+        }
+      }
+      // 树形结构下拉菜单样式
+      .el-tree {
+        background-color: var(--component-area-color);
+        color: var(--text-color);
+
+        .el-tree-node__content {
+          background-color: transparent;
+        }
+        .el-tree-node__content:hover {
+          background-color: var(--input-disabled-background);
+        }
+
+        .el-select-dropdown__item {
+          color: var(--text-color);
+          text-align: left;
+          &.selected {
+            color: var(--active-color);
+          }
+          &.hover {
+            color: var(--active-color);
+            background-color: var(--input-disabled-background);
+          }
+          &:hover {
+            color: var(--active-color);
+            background-color: var(--input-disabled-background);
+          }
+        }
+      }
+    }
+  }
+  .el-input__wrapper {
+    box-shadow: none !important;
+  }
+  .el-select .el-input__wrapper {
+    background-color: var(--main-dark-color);
+    border-radius: 1px;
+    height: 24px;
+    border: var(--input-border);
+    background-color: var(--main-dark-color);
+    .el-input__inner {
+      color: var(--text-color);
+    }
+  }
+  .el-select .el-input.is-focus .el-input__wrapper {
+    box-shadow: none !important;
+  }
+  .el-select .el-input__wrapper.is-focus {
+    box-shadow: none !important;
+  }
+  .el-input__wrapper.is-focus {
+    box-shadow: none !important;
+  }
+
+  .el-dialog {
+    --el-dialog-padding-primary: 0;
+  }
+  
+  .el-input {
+    --el-component-size: 24px;
+    --el-input-border-color: #666;
+  }
+  .el-select__wrapper {
+    min-height: var(--el-component-size);
+  }
+  .el-input-group__append, .el-input-group__prepend {
+    background-color: var(--main-dark-color);
+  }
+  .el-input-group--append .el-input-group__append .el-select .el-select__wrapper {
+    box-shadow: none;
+  }
+
+  .el-popper.color-picker {
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 0;
+  }
+  // 针对属性面板中切换信号灯的弹框样式
+  .el-popper.light-type-picker {
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 210px;
+    min-width: 210px;
+    height: 500px;
+    .type-ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .type-li {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 84px;
+        margin: 4px;
+        cursor: pointer;
+
+        .icon-box {
+          width: 60px;
+          height: 60px;
+          background-color: var(--object-item-background);
+          border: 2px solid transparent;
+          box-sizing: border-box;
+          .icon {
+            width: 56px;
+            height: 56px;
+          }
+        }
+        &.active {
+          cursor: default;
+          .icon-box {
+            border-color: var(--active-color);
+          }
+          .title {
+            color: var(--active-color);
+          }
+        }
+        &:hover {
+          .icon-box {
+            border-color: var(--active-color);
+          }
+          .title {
+            color: var(--active-color);
+          }
+        }
+      }
+    }
+  }
+
+  .el-dialog.tip-dialog {
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog__body {
+      background-color: var(--dialog-area-color);
+      padding: 20px 16px;
+      .title {
+        color: var(--text-color);
+        margin-bottom: 20px;
+        text-align: center;
+        font-size: 18px;
+        .el-icon {
+          background-color: #ec8215;
+          border-radius: 12px;
+          margin-right: 8px;
+          svg {
+            font-size: 16px;
+          }
+        }
+      }
+      .tips {
+        color: var(--text-color);
+        margin-bottom: 20px;
+      }
+      .button-part {
+        text-align: right;
+        button {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  //  自定义确认框样式
+  .basic-custom-confirm-box() {
+    background-color: var(--dialog-area-color);
+    border-radius: 0;
+    border-color: var(--dialog-area-color);
+    color: var(--text-color);
+    padding: 20px 16px;
+    width: 260px;
+
+    .el-message-box__header {
+      padding: 0;
+      margin-bottom: 20px;
+      .el-message-box__title {
+        font-size: 18px;
+        color: var(--text-color);
+      }
+      .el-message-box__status {
+        width: 24px;
+        height: 24px;
+        font-size: 24px !important;
+        transform: translateY(0px);
+      }
+    }
+    .el-message-box__content {
+      padding: 0;
+      margin-bottom: 20px;
+    }
+    .el-message-box__message {
+      color: var(--text-color);
+      text-align: left;
+    }
+
+    .el-message-box__btns {
+      justify-content: right;
+      padding: 0;
+
+      button {
+        font-size: 12px;
+        cursor: pointer;
+        padding: 4px 12px;
+        color: #9b9b9b;
+        background-color: var(--component-area-color);
+        border: 1px solid var(--property-border-color);
+        border-radius: 0;
+        height: 24px;
+        line-height: 24px;
+        &:hover {
+          color: var(--active-color);
+          background-color: var(--main-area-color);
+          border-color: var(--active-color);
+        }
+        &:active,
+        &:focus {
+          color: #9b9b9b;
+          background-color: var(--component-area-color);
+          border-color: var(--property-border-color);
+        }
+        &:focus-visible {
+          outline: none;
+        }
+      }
+      .el-button--primary {
+        color: #242424;
+        background-color: var(--active-color);
+        border-color: var(--active-color);
+
+        &:hover {
+          color: #242424;
+          background-color: #67b7c4;
+          border-color: #67b7c4;
+        }
+        &:active {
+          color: #242424;
+          background-color: #67b7c4;
+          border-color: #67b7c4;
+        }
+      }
+    }
+  }
+
+  .custom-confirm-box {
+    .basic-custom-confirm-box();
+  }
+
+  .custom-confirm-box-que {
+    .basic-custom-confirm-box();
+
+    .el-message-box__header {
+      .el-message-box__title {
+        font-size: 18px;
+        color: var(--text-color);
+      }
+      .el-message-box__status {
+        font-size: 16px !important;
+        background-color: #ec8215;
+        border-radius: 50%;
+        margin-right: 8px;
+        padding-right: 0;
+      }
+    }
+  }
+
+  // 导入模型“检测到物体尺寸，是否自动填入”弹窗样式
+  .auto-fill-size-popup {
+    background-color: var(--dialog-area-color);
+    border-radius: 1px;
+    border-color: var(--dialog-area-color);
+    font-size: 16px;
+
+    .el-icon, .el-icon > svg{
+      width: 1.5em;
+      height: 1.5em;
+    }
+
+    .content {
+      color: var(--text-color);
+      margin-bottom: 15px;
+    }
+    .btn-container {
+    }
+  }
+}

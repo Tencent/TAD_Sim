@@ -1,0 +1,52 @@
+@import "./var";
+
+.time-select {
+  padding: 5px 0;
+}
+
+.time-select-item {
+  color: @active-default-color;
+  height: 24px;
+  line-height: 24px;
+  font-size: 12px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+
+  &:focus,
+  &:not(.is-disabled):hover {
+    background-color: @active-bg-color;
+    color: @active-default-color;
+    font-weight: normal;
+  }
+
+  &.is-disabled {
+    color: @disable-default-color;
+    cursor: not-allowed;
+  }
+}
+
+.el-time-panel {
+  padding-top: 5px;
+}
+
+.el-time-spinner__item {
+  color: @global-default-color;
+  &.active:not(.disabled) {
+    color: @active-default-color;
+  }
+}
+
+.el-time-panel__footer {
+  border-top-color: @global-bd-color;
+}
+
+.el-time-panel__content {
+  &::after,
+  &::before {
+    border-color: @global-bd-color;
+  }
+}
+.el-time-panel__btn{
+  color: @global-default-color;
+}

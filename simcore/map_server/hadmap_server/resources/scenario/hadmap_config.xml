@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <hadmap lon="121.2405081" lat="30.3391933" alt="20.0" unrealLevelIndex="6">1801-1-002-180417.sqlite</hadmap>
+    <hadmap lon="116.2872841" lat="39.9815776" alt="40.0" unrealLevelIndex="7">1001-1-101-180324-v0.0.1.sqlite</hadmap>
+    <hadmap lon="115.68661964" lat="38.9787220929" alt="3.73329630680382" unrealLevelIndex="3">1001-1-018-170509.sqlite</hadmap>
+    <hadmap lon="115.68661964" lat="38.9787220929" alt="3.73329630680382" unrealLevelIndex="4">1001-1-018-170510.sqlite</hadmap>
+    <hadmap lon="116.097391318485" lat="39.7735092185849" alt="51.2017056150362" unrealLevelIndex="2">1001-1-029-170306.sqlite</hadmap>
+    <hadmap lon="116.1767915355885" lat="39.86443026827959" alt="63.57694912953013" unrealLevelIndex="1">1001-1-013-160629.sqlite</hadmap>
+    <hadmap lon="116.1767915355885" lat="39.86443026827959" alt="63.57694912953013" unrealLevelIndex="1">1001-1-013-160629_test.sqlite</hadmap>
+    <hadmap lon="116.097391318485" lat="39.7735092185849" alt="51.2017056150362" unrealLevelIndex="2">1001-1-029-170306_test.sqlite</hadmap>
+    <hadmap lon="113.9296344000" lat="22.5435132900" alt="0" unrealLevelIndex="2">1004-1-002-181121.sqlite</hadmap>
+    <hadmap lon="121.6399661" lat="31.2825813" alt="27.485584" unrealLevelIndex="2">1002-1-015-190217.sqlite</hadmap>
+    <hadmap lon="120.7606108" lat="31.3487812" alt="28.635592" unrealLevelIndex="2">1012-1-015-190518.sqlite</hadmap>
+    <hadmap lon="121.1727619" lat="31.2729225" alt="31.817392" unrealLevelIndex="2">1002-1-015-190521.sqlite</hadmap>
+    <hadmap lon="116.2872841" lat="39.9815776" alt="40" unrealLevelIndex="2">beijing.sqlite</hadmap>
+    <hadmap lon="116.2872841" lat="39.9815776" alt="40.0">fourthring.sqlite</hadmap>
+	<hadmap lon="116.1767915355885" lat="39.86443026827959" alt="63.57694912953013">yby.sqlite</hadmap>
+    <hadmap lon="121.2405081" lat="30.3391933" alt="20.0" unrealLevelIndex="6">geely.sqlite</hadmap>
+	<hadmap lon="113.937195" lat="22.532631" alt="14.633242">shenzhen.sqlite</hadmap>
+	<hadmap lon="121.1638975600" lat="31.2806051100" alt="13.2" unrealLevelIndex="2">d2d_20190726.xodr</hadmap>
+    <hadmap lon="0.062752" lat="0.0236947" alt="0">svwmap_polygeo3_ver3_CUT.xodr</hadmap>
+    <hadmap lon="0.062752" lat="0.0236947" alt="0">svwmap_polygeo3_ver3_CUT_1.xodr</hadmap>
+<hadmap lon="112.87348169" lat="28.10595762" alt="0">CS43_20200529_BandZ_CJ02.sqlite</hadmap>
+</config>

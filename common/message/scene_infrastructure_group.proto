@@ -1,0 +1,70 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component, used in scenarios for infrastructure information group information.
+// 基础组件, 用于场景中基础设施信息组信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "waypoint.proto";
+
+enum InfrastructureType {
+  INFRASTRUCTURE_TYPE_USER_DEFINE = 0;
+  INFRASTRUCTURE_TYPE_TRAFFIC_SIGNAL = 1;
+  INFRASTRUCTURE_TYPE_RSU = 2;
+  INFRASTRUCTURE_TYPE_CAMERA = 3;
+  INFRASTRUCTURE_TYPE_LIDAR = 4;
+  INFRASTRUCTURE_TYPE_RADAR = 5;
+}
+
+message Infrastructure {
+  message Intrinsic {
+    // pass-through field.
+    //
+    map<string, string> params = 1;
+  }
+
+  message Extrinsic {
+    //
+    int64 ID = 1;
+
+    //
+    string Device = 2;
+  }
+
+  //
+  InfrastructureType type = 1;
+
+  //
+  Extrinsic extrinsic = 2;
+
+  //
+  Intrinsic intrinsic = 3;
+
+  //
+  Waypoint waypoint = 4;
+}
+
+message InfrastructureGroup {
+  // Name of InfrastructureGroup.
+  // 基础设施组名称.
+  //
+  string name = 1;
+
+  // List of Infrastructure.
+  // 基础设施信息列表.
+  //
+  repeated Infrastructure Infrastructure = 2;
+
+  // Enable the signaling configuration number.
+  // 启用信控配置编号.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  // \note 为 -1 时代表, 不使用信控配置
+  //
+  int32 active_plan = 3;
+}

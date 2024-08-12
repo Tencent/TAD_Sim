@@ -1,0 +1,522 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Vehicle chassis feedback message, sent by the dynamics module.
+// 车辆底盘反馈消息, 由动力学模块发送.
+//
+// \note The perfect_control module does not send change messages. \n
+// perfect_control 模块不发送改消息
+//
+// TOPIC: VEHICLE_STATE
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+message VehicleState {
+  enum Direction {
+      Dir_StandStill = 0;
+      Dir_Forward = 1;
+      Dir_Backward = 2;
+  }
+
+  message WheelSpinDirection {
+    // left front wheel rotation direction.
+    // 左前轮旋转方向.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Direction fl = 1;
+
+    // right front wheel rotation direction.
+    // 右前轮旋转方向.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Direction fr = 2;
+
+    // left rear wheel rotation direction.
+    // 左后轮旋转方向.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Direction rl = 3;
+
+    // right rear wheel rotation direction.
+    // 右后轮旋转方向.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Direction rr = 4;
+  }
+
+  message Wheel4 {
+    // left front wheel speed.
+    // 左前轮速度.
+    //
+    double frontLeft = 1;
+
+    // right front wheel speed.
+    // 右前轮速度.
+    //
+    double frontRight = 2;
+
+    // left rear wheel speed.
+    // 左后轮速度.
+    //
+    double rearLeft = 3;
+
+    // right rear wheel speed.
+    // 右后轮速度.
+    //
+    double rearRight = 4;
+  }
+
+  message WheelContact {
+    // left front contact.
+    // 左前接触.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    Vec3 fl = 1;
+
+    // right front contact.
+    // 右前接触.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    Vec3 fr = 2;
+
+    // right rear contact.
+    // 右后接触.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    Vec3 rr = 3;
+
+    // left rear contact.
+    // 左后接触.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    Vec3 rl = 4;
+  }
+
+  enum GEAR_MODE {
+    NO_CONTROL = 0;
+    PARK = 1;
+    REVERSE = 2;
+    NEUTRAL = 3;
+    DRIVE = 4;
+  }
+
+  message Door4 {
+    // left front door.
+    // 左前门.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    int32 frontLeft = 1;
+
+    // right front door.
+    // 右前门.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    int32 frontRight = 2;
+
+    // left rear door.
+    // 左后门.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    int32 rearLeft = 3;
+
+    // right rear door.
+    // 右后门.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    int32 rearRight = 4;
+  }
+
+  message PowerTrainState {
+    message BMSState {
+      // battery temperature.
+      // 电池温度
+      //
+      // Unit: Celsius, Range: [-273.15..600], Default: 0.0
+      //
+      float bat_temperature = 1;
+
+      // battery soc.
+      // 电池 SOC
+      //
+      // Unit: Ah, Range: [0..1], Default: 0.0
+      //
+      float bat_soc = 2;
+
+      // battery power.
+      // 电池功率
+      //
+      // Unit: kwh, Range: [0..inf], Default: 0.0
+      //
+      float bat_pwr = 3;
+
+      // battery voltage.
+      // 电池电压
+      //
+      // Unit: V, Range: [-inf..inf], Default: 0.0
+      //
+      float bat_voltage = 4;
+
+      // battery charging time.
+      // 电池充电时间
+      //
+      // Uint: s, Range: [0..inf], Default: 0.0
+      //
+      int32 bat_charge_time = 5;
+
+      // battery charging time sequence.
+      // 电池充电时间序列
+      //
+      // Uint: s, Range: [0..inf], Default: 0
+      //
+      repeated uint32 chaging_time_seq = 6;
+
+      // whether is charging of battery.
+      // 电池是否正在充电
+      //
+      // Unit: N/A, Range: [0..1], Default: 0
+      //
+      bool bat_charging = 7;
+    }
+
+    // gear lever.
+    // 档位.
+    //
+    // Unit: N/A, Range: [1..4], Default: 1
+    //
+    GEAR_MODE gead_mode = 1;
+
+    // vehicle total mileage.
+    // 车辆总里程.
+    //
+    // Unit: km, Range: [0..inf], Default: 0.0
+    //
+    float total_mileage = 2;
+
+    // vehicle engine speed.
+    // 车辆发动机转速.
+    //
+    // Unit: rpm, Range: [0..inf], Default: 0.0
+    //
+    double engine_speed = 3;
+
+    // throttle position.
+    // 油门位置.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double accpedal_position = 4;
+
+    // actual gear of gear box.
+    // 变速器实际档位.
+    //
+    // Unit: N/A, Range: [-1..6], Default: 0
+    //
+    int32 gear_engaged = 5;
+
+    // driving distance in this drive cycle trip A.
+    // 行驶周期行程 A 中的行驶距离.
+    //
+    // Unit: km, Range: [0..inf], Default: 0.0
+    //
+    float trip_A = 6;
+
+    // battery management system state.
+    // 电池管理系统状态.
+    //
+    BMSState bms_state = 7;
+
+    // vehicle speed.
+    // 车速.
+    //
+    // Unit: km/h, Range: [-inf..inf], Default: 0.0
+    //
+    float speed_kph = 8;
+
+    // thermal management energy power ratio.
+    // 热管理能量功率比.
+    //
+    // Uint: kwh, Range: [0..inf], Default: 0.0
+    //
+    float thermal_energy = 9;
+
+    // actual total drive torque.
+    // 实际总驱动扭矩.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double actualDriveTroque = 10;
+
+    // motor request torque.
+    // 电机请求扭矩.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double motorRequestTorque = 11;
+
+    // motor actual torque.
+    // 电机实际扭矩.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double motorActualTorque = 12;
+
+    // energy source level, eg. gasline or SoC.
+    // 能源水平, 例如汽油线或电池剩余电量.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double energySourceLevel = 13;
+
+    // front motor speed.
+    // 前电机速度.
+    //
+    // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+    //
+    double frontMotorSpeed = 14;
+
+    // rear motor speed.
+    // 后电机速度.
+    //
+    // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+    //
+    double rearMotorSpeed = 15;
+
+    // transmission out or motor out rotation speed.
+    // 变速器输出或电机输出转速.
+    //
+    // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+    //
+    double omegaGearSpeed = 16;
+  }
+
+  message BodyState {
+    // airbag status.
+    // 安全气囊状态.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    int32 SAS_Status = 1;
+
+    // left turn lamp status.
+    // 左转向灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool LeftTurnSigLampSts = 2;
+
+    // right turn lamp status.
+    // 右转向灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool RightTurnSigLampSts = 3;
+
+    // brake pedal status.
+    // 刹车踏板状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool BrakePedSts = 4;
+
+    // door status.
+    // 门状态.
+    //
+    Door4 DoorStatus = 5;
+
+    // indoor temperature.
+    // 室内温度.
+    //
+    // Unit: Celsius, Range: [-273.15..600], Default: 0.0
+    //
+    double ACAmbtTemp = 6;
+
+    // cabin temperature.
+    // 车厢温度.
+    //
+    // Unit: Celsius, Range: [-273.15..600], Default: 0.0
+    //
+    float cabin_temperature = 7;
+
+    // \sub bodyFrameVelocity.x, Current velocity of the body frame in the x-direction.
+    // \sub bodyFrameVelocity.x, 车体框架在x方向上的当前速度.
+    //
+    // Unit: m/s, Range: [-inf..inf], Default: 0.0
+    //
+    // \sub bodyFrameVelocity.y, Current velocity of the body frame in the y-direction.
+    // \sub bodyFrameVelocity.y, 车体框架在y方向上的当前速度.
+    //
+    // Unit: m/s, Range: [-inf..inf], Default: 0.0
+    //
+    // \sub bodyFrameVelocity.z, Current velocity of the body frame in the z-direction.
+    // \sub bodyFrameVelocity.z, 车体框架在z方向上的当前速度.
+    //
+    // Unit: m/s, Range: [-inf..inf], Default: 0.0
+    //
+    Vec3 bodyFrameVelocity = 8;
+
+    // sin value of current slope, vehicle head above tail means positive sin value.
+    // 当前坡度的正弦值, 车头高于车尾意味着正弦值为正.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double sinSlope = 9;
+
+    // vehicle direction.
+    // 车辆方向.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    Direction vehDirection = 10;
+
+    // slip angle of vehicle.
+    // 车辆的滑移角.
+    //
+    // Unit: rad, Range: [0..inf], Default: 0.0
+    //
+    double slipAngle = 11;
+  }
+
+  message ChassisState {
+    // four wheel tire pressure.
+    // 四轮轮胎压力.
+    //
+    // Unit: bar, Range: [0..inf], Default: 0.0
+    //
+    Wheel4 tire_pressure = 1;
+
+    // steering angle.
+    // 转向角.
+    //
+    // Unit: degree, Range: [-inf..inf], Default: 0.0
+    //
+    // \note 项目原因目前该处发出实际信息为 前轮转角, 左 + 右 -
+    //
+    double SteeringWheelAngle = 2;
+
+    // steering angle sign.
+    // 转向角标志.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    // \note 项目原因目前该处发出实际信息为 方向盘转角, 左 + 右 -
+    //
+    double SteeringWheelAngleSign = 3;
+
+    // brake cylinder pressure.
+    // 制动主缸压力.
+    //
+    // Unit: MPa, Range: [0..1000], Default: 0.0
+    //
+    double ESP_MasterCylindBrakePress = 4;
+
+    // wheel speed.
+    // 轮速.
+    //
+    // Unit: m/s, Range: [0..inf], Default: 0.0
+    //
+    Wheel4 wheel_speed = 5;
+
+    // vehicle dynamic yaw rate.
+    // 车辆动态偏航率.
+    //
+    // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+    //
+    double VehDynYawRate = 6;
+
+    // brake pedal postion.
+    // 刹车踏板位置.
+    //
+    // Unit: %, Range: [0..100], Default: 0
+    //
+    double BrakePedalPos = 7;
+
+    // Whether failure of EPS.
+    // EPS 是否故障.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool ESPFailSts = 8;
+
+    // Whether to turn on Esp Function.
+    // 是否打开 Esp 功能.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool EspFuncOffSts = 9;
+
+    // wheel contact in wgs84.
+    // WGS84 坐标系下的轮胎接触点.
+    //
+    WheelContact wheel_contact = 10;
+
+    // steering wheel angle speed.
+    // 方向盘转角速度.
+    //
+    // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+    //
+    double SteeringWheelSpd = 11;
+
+    // steering wheel torque.
+    // 方向盘扭矩.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double SteeringWheelTorque = 12;
+
+    // wheel spin direction.
+    // 轮胎旋转方向.
+    //
+    WheelSpinDirection wheelSpinDir = 13;
+
+    // vehicle curvature.
+    // 车辆曲率.
+    //
+    // Unit: rad/m, Range: [0..inf], Default: 0.0
+    //
+    double vehCurvature = 14;
+
+    // wheel rotation speed.
+    // 轮胎旋转速度.
+    //
+    // Unit: m/s^2 Range: [0..inf], Default: 0.0
+    //
+    Wheel4 wheelRotSpd = 15;
+  }
+
+  // simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double time_stamp = 1;
+
+  // vehicle chassis state.
+  // 车辆底盘状态信息.
+  //
+  ChassisState chassis_state = 2;
+
+  // vehicle powertrain state.
+  // 车辆传动动力系统状态信息.
+  //
+  PowerTrainState	powertrain_state = 3;
+
+  // vehicle body state.
+  // 车辆车身状态信息.
+  //
+  BodyState	body_state = 4;
+}

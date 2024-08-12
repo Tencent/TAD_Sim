@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<OpenSCENARIO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OpenSCENARIO.xsd">
+  <FileHeader author="TAD Sim" date="2021-03-25T11:58:23" description="Multi" revMajor="1" revMinor="0"/>
+  <CatalogLocations>
+    <VehicleCatalog>
+      <Directory path="../xosc/Catalogs/Vehicles"/>
+    </VehicleCatalog>
+  </CatalogLocations>
+  <RoadNetwork>
+    <LogicFile filepath="../hadmap/test.xodr"/>
+  </RoadNetwork>
+  <Entities>
+    <ScenarioObject name="Ego">
+      <Vehicle name="suv" vehicleCategory="EgoCar">
+        <BoundingBox>
+          <Center x="1.339" y="0.0" z="0.676"/>
+          <Dimensions height="1.808" length="4.394" width="1.352"/>
+        </BoundingBox>
+        <Performance maxAcceleration="null" maxDeceleration="null" maxSpeed="null"/>
+        <Axles>
+          <FrontAxle maxSteering="0.46" positionX="2.536" positionZ="0.31997" trackWidth="1.608" wheelDiameter="0.63994"/>
+          <RearAxle maxSteering="0" positionX="0" positionZ="0.31997" trackWidth="1.608" wheelDiameter="0.63994"/>
+        </Axles>
+        <Properties>
+          <Property name="StartV" value="4.17"/>
+          <Property name="MaxV" value="20"/>
+        </Properties>
+      </Vehicle>
+    </ScenarioObject>
+  </Entities>
+  <Storyboard>
+    <Init>
+      <Actions>
+        <Private entityRef="Ego">
+          <PrivateAction>
+            <LongitudinalAction>
+              <SpeedAction>
+                <SpeedActionDynamics dynamicsDimension="rate" dynamicsShape="step" value="0.000000"/>
+                <SpeedActionTarget>
+                  <AbsoluteTargetSpeed value="0.000000"/>
+                </SpeedActionTarget>
+              </SpeedAction>
+            </LongitudinalAction>
+          </PrivateAction>
+          <PrivateAction>
+            <TeleportAction>
+              <Position>
+                <WorldPosition h="1.2786411271227018" p="0" r="0" x="326222.477885" y="3460930.390787" z="0.000000"/>
+              </Position>
+            </TeleportAction>
+          </PrivateAction>
+          <PrivateAction>
+            <RoutingAction>
+              <AssignRouteAction>
+                <Route closed="false" name="EgoRoute">
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition h="0" p="0" r="0" x="1248.439202" y="1640.799183" z="0"/>
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition h="0" p="0" r="0" x="1297.452061" y="1794.545343" z="0"/>
+                    </Position>
+                  </Waypoint>
+                  <Waypoint routeStrategy="shortest">
+                    <Position>
+                      <WorldPosition h="0" p="0" r="0" x="1446.828346" y="2276.023948" z="0"/>
+                    </Position>
+                  </Waypoint>
+                </Route>
+              </AssignRouteAction>
+            </RoutingAction>
+          </PrivateAction>
+        </Private>
+      </Actions>
+    </Init>
+    <Story name="Story">
+        <Act name="Act0">
+            <ManeuverGroup name="0" maximumExecutionCount="1">
+                <Actors selectTriggeringEntities="0" />
+            </ManeuverGroup>
+            <StartTrigger />
+        </Act>
+    </Story>
+    <StopTrigger/>
+  </Storyboard>
+</OpenSCENARIO>

@@ -1,0 +1,26 @@
+@echo off
+
+@REM Get system variables: VCPKG_ROOT
+if defined VCPKG_ROOT (
+    @REM echo VCPKG_ROOT: %VCPKG_ROOT%
+) else (
+    echo Please set system variables: VCPKG_ROOT
+    pause
+)
+
+@REM Setting build parmameters
+set "LANEMARK_DETECTOR_ROOT=%~dp0"
+set "LANEMARK_DETECTOR_ROOT=%LANEMARK_DETECTOR_ROOT:~0,-1%"
+set "LANEMARK_DETECTOR_BUILD=%LANEMARK_DETECTOR_ROOT%\build"
+
+@REM Clean & mkdir
+IF EXIST "%LANEMARK_DETECTOR_BUILD%" rmdir /s /q "%LANEMARK_DETECTOR_BUILD%"
+mkdir "%LANEMARK_DETECTOR_BUILD%"
+
+@REM build
+cd "%LANEMARK_DETECTOR_BUILD%"
+cmake .. -DCMAKE_TOOLCHAIN_FILE="%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake"
+cmake --build . --config Release
+
+@REM Change the working directory back to the original directory where the script was run
+cd "%LANEMARK_DETECTOR_ROOT%"

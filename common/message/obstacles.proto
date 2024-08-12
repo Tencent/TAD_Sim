@@ -1,0 +1,135 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "header.proto";
+
+//
+// \brief classification type.
+// 分类类型.
+//
+enum ObstacleType {
+  TYPE_UNCLASSIFIED = 0;
+  TYPE_UNKNOWN_SMALL = 1;
+  TYPE_UNKNOWN_BIG = 2;
+  TYPE_PEDESTRIAN = 3;
+  TYPE_BIKE = 4;
+  TYPE_CAR = 5;
+  TYPE_TRUCK = 6;
+  TYPE_STATIC = 7;
+  TYPE_RESERVED = 8;
+}
+
+message Obstacle {
+  // Id of obstacle.
+  // 障碍物 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // classification of obstacle.
+  // 障碍物分类.
+  //
+  // Unit: N/A, Range: [0..8], Default: 0
+  //
+  ObstacleType classification = 2;
+
+  // simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp = 3;
+
+  // Center x, y, z of boundingbox.
+  // 边界框中心 x、y、z.
+  //
+  Vec3 box_center = 4;
+
+  // length width height of boundingbox.
+  // 边界框长宽高.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  Vec3 box_size = 5;
+
+  // box orientation angle from x axis, counter clockwise.
+  // 从x轴开始的盒子方向角度, 逆时针方向.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  float yaw  = 6;
+
+  // \sub velocity.x, Current speed in the x-direction.
+  // \sub velocity.x, 当前在x方向的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub velocity.y, Current speed in the y-direction.
+  // \sub velocity.y, 当前在y方向的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub velocity.z, Current speed in the z-direction.
+  // \sub velocity.z, 当前在z方向的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 velocity = 7;
+
+  // along lane speed.
+  // 沿车道的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  float absolute_longitude_v = 8;
+
+  // vertical to lane speed, left positive.
+  // 垂直于车道的速度, 左侧为正.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  float absolute_lateral_v  = 9;
+
+  // longitudinal acc.
+  // 纵向加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  float absolute_longitude_a  = 10;
+
+  // lateral distance to ego vehicle along lane.
+  // 沿车道到主车的横向距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float dl = 11;
+
+  // cofidence of obstacle position.
+  // 障碍物位置的置信度.
+  //
+  // Unit: m, Range: [0..1], Default: 0.0
+  //
+  float confidence = 12;
+}
+
+message Obstacles {
+  // header info.
+  // 报头信息.
+  //
+  Header header = 1;
+
+  // List of obstacle
+  // 障碍物列表.
+  //
+  repeated Obstacle obstacles = 2;
+}

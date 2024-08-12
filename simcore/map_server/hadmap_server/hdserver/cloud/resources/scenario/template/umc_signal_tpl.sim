@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0" date_version="1664331404766" sim_id="-1">
+    <mapfile lon="118.51601603" lat="-7.7949999999999997e-05" alt="12.275145309999999" unrealLevelIndex="31">../hadmap/umc_map_20220929.xodr</mapfile>
+    <traffic>umc_signal_tpl_traffic.xml</traffic>
+    <planner>
+        <ego type="suv" />
+        <route id="0" type="start_end" start="118.51620138246199,-0.00038468672869579936" />
+        <start_v>0</start_v>
+        <theta>0.5224006659253446</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <altitude start="1.9964411174878478" end="1.9964411174878478" />
+        <InputPath points="118.516201380988,-0.000384687468,1.996" />
+    </planner>
+</simulation>

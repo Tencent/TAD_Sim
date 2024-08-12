@@ -1,0 +1,519 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Define the display fields for tadsim grading report.
+// 定义评测报告内容前端显示字段.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "grading_kpi.proto";
+
+message TestReport {
+  //
+  // \brief state of test step or test case.
+  // 测试步骤或测试用例的状态.
+  //
+  enum TestState {
+    UN_DEFINED = 0;
+    PASS = 1;
+    SKIPPED = 2;
+    FAIL = 3;
+  }
+
+  message TestResult {
+    // state.
+    // 状态.
+    //
+    TestState state = 1;
+
+    // reason of state.
+    // 状态原因.
+    //
+    string reason = 2;
+
+    // eval score.
+    // 评估分数.
+    //
+    // Unit: N/A, Range: [0..100], Default: 0.0
+    //
+    double score = 3;
+
+    // grade of eval.
+    // 评估等级.
+    //
+    // Unit: N/A, Range: [0..100], Default: 0.0
+    //
+    double grade = 4;
+
+    // additional information, like score or star, feel free to add.
+    // 附加信息, 如分数或星级, 可随意添加.
+    //
+    repeated PairData additional = 100;
+  }
+
+  //
+  // \brief report date.
+  //
+  message TestDate {
+    // report date start.
+    // 报告开始日期.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double start_second = 1;
+
+    // report date end.
+    // 报告结束日期.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double end_second = 2;
+
+    // duration.
+    // 持续时间.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double duration_second = 3;
+  }
+
+  //
+  // \brief pair data.
+  // 键值对数据.
+  //
+  message PairData {
+    string key = 1;
+    string value = 2;
+  }
+
+  //
+  // \brief xlsx sheet
+  //
+  message XlsxSheet {
+    enum SheetDataType {
+      Column_Sheet = 0;
+      Row_Sheet = 1;
+    }
+
+    message SheetData {
+      // name of row/column.
+      // 行/列名称.
+      //
+      string header = 1;
+
+      // one row/column data.
+      // 单行/列数据.
+      //
+      repeated string data = 2;
+    }
+
+    // sheet name.
+    // 表格名称.
+    //
+    string name = 1;
+
+    // sheet description.
+    // 表格描述.
+    //
+    string description = 2;
+
+    // sheet data.
+    // 表格数据.
+    //
+    repeated SheetData sheet_data = 3;
+
+    // row/column data sheet.
+    // 行/列数据表.
+    //
+    SheetDataType type = 4;
+  }
+
+  enum IntervalSpace {
+    // above threshold.
+    // 高于临界值.
+    //
+    INTERVAL_SPACE_UP = 0;
+
+    // below threshold.
+    // 低于临界值.
+    INTERVAL_SPACE_DOWN = 1;
+  }
+
+  enum IntervalType {
+    // Open interval.
+    // 开区间.
+    //
+    INTERVAL_TYPE_OPEN = 0;
+
+    // Closed interval.
+    // 闭区间.
+    //
+    INTERVAL_TYPE_CLOSED = 1;
+  }
+
+  message ThesholdInfo {
+    //
+    // \note default INT32_MIN or INT32_MAX \n
+    // if length = 1, threshold is constant. \n
+    // 默认值为 INT32_MIN 或 INT32_MAX \n
+    // 如果长度为 1, 则阈值为常数.
+    //
+    repeated double value = 1;
+
+    // threshold unit.
+    // 阈值单位.
+    //
+    string unit = 2;
+
+    // threshold description.
+    // 阈值描述.
+    //
+    string desc = 3;
+
+    // Interval space.
+    // 区间范围.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0.0
+    //
+    IntervalSpace space = 5;
+
+    // Interval type.
+    // 区间类型.
+    //
+    IntervalType type = 6;
+  }
+
+  //
+  // \brief x-y plot, y axis data(support multiple axis).
+  // x-y 图, y 轴数据(支持多个轴).
+  //
+  message Axis {
+    // name of axis.
+    // 轴名称.
+    string name = 1;
+
+    // unit of axis.
+    // 轴单位.
+    //
+    string unit = 2;
+
+    // axis data.
+    // 轴数据.
+    //
+    repeated double axis_data = 3;
+
+    // threshold upper info.
+    // 阈值上限信息.
+    //
+    ThesholdInfo threshold_upper = 4;
+
+    // threshold lower info.
+    // 阈值下限信息.
+    //
+    ThesholdInfo threshold_lower = 5;
+  }
+
+  message XYPlot {
+    // plot name.
+    // 图名称.
+    //
+    string name = 1;
+
+    // plot description.
+    // 图描述.
+    //
+    string description = 2;
+
+    // x axis data.
+    // x 轴数据.
+    //
+    Axis x_axis = 3;
+
+    // y axis data(support multiple axis).
+    // y 轴数据(支持多个轴).
+    //
+    repeated Axis y_axis = 4;
+  }
+
+  //
+  // \brief attach data.
+  // 附件数据.
+  //
+  message Attach {
+    // attach name.
+    // 附件名称.
+    //
+    string name = 1;
+
+    // attach description.
+    // 附件描述.
+    //
+    string description = 2;
+
+    // pair data.
+    // 键值对数据.
+    //
+    repeated PairData pair_data  = 3;
+
+    // sheet data.
+    // 表格数据.
+    //
+    repeated XlsxSheet sheet_data = 4;
+
+    // xyplot data.
+    // xyplot 数据.
+    //
+    repeated XYPlot xyplot = 5;
+  }
+
+  //
+  // \brief category.
+  //
+  message Category {
+    //
+    string level1 = 1;
+
+    //
+    string level2 = 2;
+
+    //
+    repeated string levels = 3;
+  }
+
+  //
+  // \brief step info.
+  // 步骤信息.
+  //
+  message StepInfo {
+    // step name.
+    // 步骤名称.
+    //
+    string name = 1;
+
+    // step state.
+    // 步骤状态.
+    //
+    TestResult result = 2;
+
+    // reason of state.
+    // 状态原因.
+    //
+    string reason = 3;
+
+    // case description.
+    // 用例描述.
+    //
+    string desc = 4;
+
+    // step additional information.
+    // 步骤附加信息.
+    //
+    repeated PairData additionals = 100;
+  }
+
+  //
+  // \brief test step, base unit of Case.
+  // 测试步骤, Case 的基本单位.
+  //
+  message Step {
+    // step info.
+    // 步骤信息.
+    //
+    StepInfo info = 1;
+
+    // list of step attach data.
+    // 步骤附件数据列表.
+    //
+    repeated Attach attach = 5;
+  }
+
+  //
+  // \brief KPI info.
+  // KPI 信息.
+  //
+  message CaseInfo {
+    //
+    string name = 1;
+
+    // eval state.
+    // 评估状态.
+    //
+    TestResult result = 2;
+
+    // description.
+    //
+    string desc = 3;
+
+    // category of kpi.
+    // KPI 类别.
+    //
+    Category category = 4;
+
+    // thresh value.
+    // 阈值.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double thresh = 5;
+
+    //
+    GradingKpiGroup.GradingKpi grading_kpi = 6;
+
+    // whether request stop scenario.
+    // 是否请求停止场景.
+    //
+    bool request_stop  = 7;
+
+    // check count.
+    // 检查次数.
+    //
+    int32  detected_count= 8;
+
+    // kpi eval additional information.
+    // KPI 评估附加信息.
+    //
+    repeated PairData additionals = 100;
+  }
+
+  //
+  // \brief Case, also can be used as one KPI.
+  // case, 也可作为一个 KPI 使用.
+  //
+  message Case {
+    // case info
+    //
+    CaseInfo info = 1;
+
+    // case exec steps
+    // case 执行步骤
+    //
+    repeated Step steps = 3;
+  }
+
+  //
+  // \brief EgoCase, KPI list of different ego car.
+  // EgoCase, 不同主车的kpi列表.
+  //
+  message EgoCase {
+    // ego object ID
+    //
+    string ego_id = 1;
+
+    // kpi list
+    //
+    repeated Case cases = 2;
+  }
+
+  //
+  // \brief EgoMeta, Meta list of different ego car.
+  // EgoMeta, 不同主车的meta列表.
+  //
+  message EgoMeta {
+    // ego object ID
+    //
+    string ego_id = 1;
+
+    // meta list
+    //
+    repeated XYPlot meta = 2;
+  }
+
+  //
+  // \brief report info, also can be used as one scenario.
+  // 报告信息, 也可用作一个场景.
+  //
+  message ReportInfo {
+    //
+    string report_id = 1;
+
+    //
+    string scene_name = 2;
+
+    //
+    string scene_id = 3;
+
+    // scene description
+    //
+    string scene_desc = 4;
+
+    // report date
+    //
+    TestDate date = 5;
+
+    // mileage
+    //
+    // Unit: km, Range: [0..inf], Default: 0.0
+    //
+    double mileage = 6;
+
+    // eval result
+    //
+    TestResult result = 7;
+
+    // module configs
+    //
+    repeated XlsxSheet module_cfg = 8;
+
+    // reprot version
+    //
+    string report_version = 9;
+
+    // Ego configs
+    //
+    repeated XlsxSheet ego_cfg = 10;
+
+    // report additional information
+    //
+    repeated PairData additionals = 100;
+  }
+
+  //
+  // \brief report summary
+  //
+  message Summary {
+    //
+    int32 case_size = 1;
+
+    //
+    int32 case_undefined_size = 2;
+
+    //
+    int32 case_pass_size = 3;
+
+    //
+    int32 case_skipped_size = 4;
+
+    //
+    int32 case_fail_size = 5;
+
+    //
+    repeated XlsxSheet case_summary = 6;
+  }
+
+  //
+  // \brief report, also can be used as one scenario
+  //
+  message Report {
+    // report info
+    //
+    ReportInfo info = 1;
+
+    // report summary
+    //
+    Summary summary = 2;
+
+    // egos' kpi list
+    //
+    repeated EgoCase ego_cases = 3;
+  }
+
+  //
+  Report report = 1;
+
+  // egos' meta list
+  //
+  repeated EgoMeta ego_meta = 2;
+}

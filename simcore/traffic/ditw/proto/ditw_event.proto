@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package sim_msg;
+	
+enum CommandState
+{
+	DITW_NONE=0;
+	DITW_ISSUED=1;
+	DITW_BEINGEXCUTED=2;
+	DITW_SUCCESS=3;
+	DITW_FAILED=4;
+}
+
+enum CommandType
+{
+	CT_NONE=0;
+	CT_SWITCHALL=1;
+	CT_SWITCHMUTIPLE=2;
+}
+
+enum SwitchType
+{
+	ST_NONE=0;
+	ST_LOGTOWORLD=1;
+	ST_WORLDTOLOG=2;
+}
+
+message DITW_Event { 
+	
+	message SwitchInfo
+	{
+		int64 id=1;
+		SwitchType switchType=2;
+	}
+	
+	double timestamp = 1;
+	uint64 command_id = 2;
+	string command_name = 3;
+	CommandState command_state = 4;
+	string msg = 5;
+	CommandType command_type = 6;
+	SwitchType switch_type = 7;
+	repeated SwitchInfo info_array = 8;
+}

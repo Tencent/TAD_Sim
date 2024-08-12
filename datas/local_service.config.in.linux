@@ -1,0 +1,311 @@
+{
+  "configs": [{
+    "name": "Traffic",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 60000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "",
+    "binPath": "@{InstallDirectory}/traffic/txSimTraffic",
+    "binArgs": [ "--app_name", "Traffic", "--ip_addr_port", "" ],
+    "category": 1
+  },{
+    "name": "Perfect_Planning",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 60000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/perfect_planning/libtx_perfect_planning.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 103
+  },{
+    "name": "Dummy_Driver",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {"ego_use_trajectory_follow":"true"},
+    "cmdTimeout": 60000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/perfect_planning/libtx_perfect_planning.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 111
+  },{
+    "name": "AD_Arbitrary",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/arbitrary/libsim_arbitrary.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 111
+  },{
+    "name": "Perfect_Control",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": { "option": "global" },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/perfect_control/libtxSimPerfectControl.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 104
+  },{
+    "name": "tx_simvehicle",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "ParaFile": "@{InstallDirectory}/vehicle_dynamics/txcar.json",
+      "enableTerrain": 1,
+      "useCatalog": 0
+    },
+    "cmdTimeout": 60000,
+    "stepTimeout": 60000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/vehicle_dynamics", "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/vehicle_dynamics/libtx_simvehicle.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 105
+  },{
+    "name": "Grading",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "log-folder": "@{appDataPath}/sim_data/pblog",
+      "enableGrading": "1",
+      "enablePBLogger": "0",
+      "channels": "CONTROL||CONTROL_V2||LOCATION||TRAJECTORY||VEHICLE_STATE||TRAFFIC||GRADING||ENVIRONMENTAL",
+      "post-script": "@{appDataPath}/../../sys/service_data/script/post_process",
+      "_log_level":"0"
+    },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/grading/libtxSimGrading.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 51
+  },{
+    "name": "Protobuf_Logger",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "log-folder": "@{appDataPath}/sim_data/pblog",
+      "channels": "CONTROL||CONTROL_V2||LOCATION||TRAJECTORY||VEHICLE_STATE||TRAFFIC",
+      "post-script": "ls"
+    },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/protobuf_log/libtxSimLogger.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 1001
+  },{
+    "name": "Protobuf_Log_Player",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "log-file": "@{appDataPath}/sim_data/pblog/some_xxx.pblog",
+      "channels": "CONTROL||CONTROL_V2||LOCATION||TRAJECTORY||VEHICLE_STATE||TRAFFIC"
+    },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/protobuf_log/libtxSimLogplayer.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 1001
+  },{
+    "name": "Display",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 60000,
+    "stepTimeout": 60000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "",
+    "binPath": "@{InstallDirectory}/Display/Display.sh",
+    "binArgs": [ "UserDir=@{appDataPath}/display" ],
+    "category": 1001
+  },{
+    "name": "camera&lidar&ultrasonic",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 60000,
+    "stepTimeout": 60000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "",
+    "binPath": "@{InstallDirectory}/Display/Display.sh",
+    "binArgs": [ "-name=camera&lidar&ultrasonic", "-mode=FrameSync", "UserDir=@{appDataPath}/display" ],
+    "category": 112
+  },{
+    "name": "Sensor_Truth",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/sensor_truth/libtxsimSensorTruth.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 112
+  },{
+    "name": "imu_gps",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/imu_gps/libimu_gps.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 112
+  },{
+    "name": "radar",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "IgnoreZ":1
+    },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/radar/libtxsim_radar.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 112
+  },{
+    "name": "synthetic_data",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "DataSavePath": "@{appDataPath}/sim_data/synthetic_data"
+    },
+    "cmdTimeout": 30000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/sim_label/libsim_label.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 112
+  },{
+    "name": "V2X",
+    "execPeriod": 20,
+    "responseTime": 20,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 120000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/v2x/libtxsim_v2x.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 112
+  },{
+    "name": "OSI_Adaptor",
+    "execPeriod": 10,
+    "responseTime": 10,
+    "endpoint": "",
+    "initArgs": {
+      "enableAdaptor":"1",
+      "channels": "TXSIM_DETECTED_LINES||ENVIRONMENTAL||TRAFFIC"
+    },
+    "cmdTimeout": 60000,
+    "stepTimeout": 60000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/osi/libtxSimOSIAdaptor.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 1001
+  }],
+  "scheme": {
+    "active": 1,
+    "schemes": [{
+      "id": 1,
+      "name": "Custom",
+      "modules": [ {"name": "Perfect_Planning", "priority": 50}, {"name": "Perfect_Control", "priority": 50}, {"name": "Grading", "priority": 50}]
+    },{
+      "id": 0,
+      "name": "L4_Planning",
+      "modules": [ {"name": "Perfect_Planning", "priority": 50}, {"name": "Perfect_Control", "priority": 50}, {"name": "Grading", "priority": 50}]
+    },{
+      "id": 99999,
+      "name": "TADSIM_GLOBAL",
+      "modules": [ {"name": "Traffic", "priority": 50}]
+    }]
+  },
+  "moduleLauncherPath": "@{InstallDirectory}/txsim-module-launcher",
+  "moduleLogDirectory": "@{ModuleLogDirectory}",
+  "playControlRate": 100,
+  "scenarioTimeLimit": 0,
+  "coordinationMode": 1,
+  "autoReset": true,
+  "log2world": {
+    "logsimConfig": {
+    },
+    "worldsimConfig": {
+    }
+  },
+  "gradingKpiDirectory": "./scenario/scene",
+  "addingInitialLocationMsg": true,
+  "defaultLaunch": [{
+    "name": "Enviroment",
+    "execPeriod": 1000,
+    "responseTime": 1000,
+    "endpoint": "",
+    "initArgs": {},
+    "cmdTimeout": 60000,
+    "stepTimeout": 30000,
+    "autoLaunch": true,
+    "depPaths": [ "@{InstallDirectory}/simdeps" ],
+    "soPath": "@{InstallDirectory}/envpb/libenvpb.so",
+    "binPath": "",
+    "binArgs": [],
+    "category": 1
+  }]
+}

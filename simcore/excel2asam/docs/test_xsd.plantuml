@@ -1,0 +1,40 @@
+@startuml test_xsd
+actor 仿真工程师
+仿真工程师 -> 仿真工程师 : 本地具备 docker 环境
+仿真工程师 -> 磁盘 : 准备数据
+note right
+- 准备需要验证的 xosc 和 xodr 数据,
+存放在一个文件夹下 (可以自定义各种子文件夹)
+end note
+仿真工程师 -> 主程序 : 通过命令行启动校验
+note right
+- 如果当前路径就是被校验文件所在根目录
+docker run --rm -v $(pwd):/work test_xsd
+- 如果不是需要将 $(pwd) 替换为本地实际路径
+end note
+主程序 -> 主程序 : 加载全部 xsd 文件, 以字典形式全局存储
+loop 并发校验(自动调用系统最大CPU资源)
+主程序 -> 获取文件 : 选择检验文件
+note right
+- 获取文件地址
+- 获取文件后缀是 xosc 或 xodr, 其余后缀log记录, 跳过
+end note
+获取文件 -> 结构良好性验证 : XML 语法校验
+note right
+- 解析文件,检查是否正常解析
+end note
+结构良好性验证 -> 结构良构性验证 : XSD 语法校验
+note right
+- 获取文件版本号 (通过文件中revMajor和revMinor)
+- 结合文件后缀, 获得 XSD 库的 key
+- 通过第2步的 key 获得 XSD 文件路径
+- 进行 XSD 语法检查
+end note
+end
+
+主程序 -> 磁盘 : 生成 html 格式报告至本地数据根目录
+note right
+- 报告命名为:
+OpenSCENARIO_OpenDRIVE_Syntax_Check_Report_YYYY-MM-DD_HH-mm-ss.html
+end note
+@enduml

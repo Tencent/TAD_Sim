@@ -1,0 +1,20 @@
+{
+  "name": "service dev",
+  "image": "nemoforif/simcore_dev_vsc_ubuntu1604:v1.0",
+  "workspaceMount": "src=${localWorkspaceFolder}/..,dst=/home/dev/workspace,type=bind,consistency=cached",
+  "workspaceFolder": "/home/dev/workspace/service",
+  "runArgs": [
+    "-u", "dev",
+    "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined",
+    "-v", "${env:HOME}${env:USERPROFILE}/.ssh:/root/.ssh-localhost:ro"
+  ],
+  "settings": {
+    "terminal.integrated.shell.linux": "/bin/bash"
+  },
+  "appPort": [],
+  "postCreateCommand": "sudo cp -r /root/.ssh-localhost ~ && sudo chown -R $(id -u):$(id -g) ~/.ssh-localhost && mv ~/.ssh-localhost ~/.ssh && chmod 700 ~/.ssh && chmod 600 ~/.ssh/* && gcc -v",
+  "extensions": [
+    "ms-vscode.Go",
+    "VisualStudioExptTeam.vscodeintellicode"
+  ]
+}

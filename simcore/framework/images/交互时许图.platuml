@@ -1,0 +1,86 @@
+@startuml
+actor 仿真开发工程师
+仿真开发工程师 -> simService : 开始并行仿真任务
+simService -> scheduler : 创建并发仿真任务
+note right
+1.选择主车
+(非必须)
+如未选将使用
+场景文件中信息
+2.选择动力学
+控制模式
+(非必须)
+end note
+scheduler -> k8s调度系统 : 创建tadSim Pod
+k8s调度系统 -> tadsim镜像 : 创建容器
+tadsim镜像 -> agent : 启动进程
+
+loop 场景循环
+scheduler -> agent : evninit，初始化仿真系统
+agent -> 对象存储 : 下载算法包(自动驾驶算法)
+agent -> 对象存储 : 下载算法包(SimProVehicleDynamic.zip)
+note right
+桶地址/share/simulation/vehicledynamic/1.0/SimProVehicleDynamic.zip
+压缩包内容格式
+SimProVehicleDynamic
+- lib
+    - libSimProVehicleDynamic.so
+- conf
+    - A58/*.csv
+    - A12/*.csv
+- 工程文件相关
+end note
+scheduler -> agent : sceneinit，初始化场景有关数据
+agent -> 对象存储 : 下载地图、场景
+agent -> tadsim进程: 启动tadsim进程
+tadsim进程 -> tadsim进程 : 进程初始化,根据算法类型启动子进程，可执行程序通过CreateProcess启动，动态库通过LoadSharedLibrary动态导出的方式导出相应的方法
+tadsim进程 -> 接入代码 : 调用init
+接入代码 -> tadsim进程 : 调用helper.GetParameter()获得初始化参数
+接入代码 -> tadsim进程 : 调用helper.Publish()通知需要发布的topic
+接入代码 -> tadsim进程 : 调用helper.Subcribe()注册需要订阅的topic
+接入代码 -> tadsim进程 : 根据helper.GetParameter()获得的车型名称
+接入代码 -> tadsim进程 : 根据helper.GetParameter()获得的动力学控制模式
+接入代码 -> 赛目动力学模块 : 初始化
+接入代码 -> 接入代码 : 通过车型名称拼接路径
+接入代码 -> 赛目动力学模块 : 传入车型动力学参数路径
+note left
+举例：/usr/local/app/tadsim/SimProVehicleDynamic/conf/车型名称/
+end note
+赛目动力学模块 -> 赛目动力学模块 : 加载动力学配置文件
+tadsim进程 -> tadsim进程 : 加载场景及地图
+tadsim进程 -> 接入代码 : 调用reset
+' 接入代码 -> 接入代码 : 通过车型名称拼接路径,从而获取动力学参数
+' note right
+' /usr/local/app/tadsim/SimProVehicleDynamic/conf/车型名称
+' end note
+接入代码 -> tadsim进程 : 通过helper获得speed_limit,ego_start,ego_location,map_path等信息
+接入代码 -> 赛目动力学模块 : 通过高程回调函数注册高程查询函数
+接入代码 -> 赛目动力学模块 : 对动力学模块reset，并传入helper获得的信息
+赛目动力学模块 -> 赛目动力学模块 : 内部重置
+tadsim进程 -> tadsim进程 : 其他初始化
+tadsim进程 -> agent : 初始化完成
+agent -> scheduler : 初始化完成,SceneRunning
+loop step循环
+tadsim进程 -> 接入代码 : 调用step
+接入代码 -> tadsim进程 : 通过helper.GetSubcribeMessage获得订阅的内容
+activate 赛目动力学模块
+接入代码 -> 赛目动力学模块 : 传入订阅内容，调用动力学内部演算函数
+赛目动力学模块 -> 赛目动力学模块 : 发起高程信息查询,返回高程信息结果
+' 接入代码 -> tadsim进程 : 发起高程信息查询
+' tadsim进程 -> 接入代码 : 返回高程信息结果
+赛目动力学模块 -> 赛目动力学模块 : 内部演算
+接入代码 -> 赛目动力学模块 : 获得演算结果
+接入代码 -> tadsim进程 : 通过helper.PublishMessage发布演算结果
+deactivate 赛目动力学模块
+end
+tadsim进程 -> 接入代码 : 场景结束，调用stop
+接入代码 -> tadsim进程 : 通过helper.set_feedback反馈额外数据（如有）
+tadsim进程 -> tadsim进程 : 其他收尾工作
+tadsim进程 -> agent : 场景结束,scenefinished
+agent -> scheduler : 场景结束,scenefinished
+scheduler -> agent : sceneFinish， 日志上传，关闭tadsim进程
+agent -> agent : 日志上传及结果上传
+agent -> tadsim进程 : 关闭进程
+
+end
+@enduml

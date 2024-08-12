@@ -1,0 +1,9 @@
+{
+  "name": "editLaneNumber",
+  "description": "车道数量编辑",
+  "iconDesc": "addLane",
+  "iconComponentName": "AddLaneSvg",
+  "componentPaths": {
+    "property": ["laneNumberProperty.vue"]
+  }
+}

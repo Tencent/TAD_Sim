@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "car_basic.proto";
+import "brake.proto";
+package tx_car;
+
+message WheelTireDD{
+    message Tire {
+        StringVariable TNO_tir_path = 1;    // TNO MF-Tire file path
+        RealScalar wheel_radius = 3;
+    }
+
+    Tire tire = 1;
+    BrakeDD brake = 2;
+
+    RealScalar fl_init_height = 4;      // wheel init height, unit m, notic: this is not user input value
+    RealScalar fr_init_height = 5;      // wheel init height, unit m, notic: this is not user input value
+    RealScalar rl_init_height = 6;      // wheel init height, unit m, notic: this is not user input value
+    RealScalar rr_init_height = 7;      // wheel init height, unit m, notic: this is not user input value
+}

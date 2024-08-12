@@ -1,0 +1,152 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Define the display fields for tadsim grading content.
+// 定义评测内容前端显示字段.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+//
+// \brief Kpi Group.
+// 绩效指标组.
+//
+message GradingKpiGroup {
+  enum ThresholdType {
+    ThresholdType_DOUBLE = 0;
+    ThresholdType_BOOL = 1;
+    ThresholdType_STRING = 2;
+  }
+
+  //
+  // \brief Kpi info.
+  // 绩效指标信息.
+  //
+  message GradingKpi {
+    message Category {
+      // Indicator category, classified based on evaluation dimensions.
+      // 指标分类, 基于评测维度分类.
+      //
+      repeated string labels = 1;
+
+      // Indicator category, classified based on the tested algorithm.
+      // 指标分类, 基于被测算法分类.
+      //
+      repeated string features = 2;
+    }
+
+    message Parameters {
+      message ScoreMap1D {
+        // strictly increasing order, length is same as y axis, should be at least 2 elements.
+        // 严格递增顺序, 长度与 y 轴相同, 至少应有 2 个元素.
+        //
+        repeated double u = 1;
+
+        // score value.
+        // 分数值.
+        //
+        repeated double y = 2;
+
+        // info for u axis.
+        // u 轴的信息.
+        //
+        map<string, string> uInfo = 3;
+
+        // info for y axis.
+        // y 轴的信息.
+        //
+        map<string, string> yInfo = 4;
+      }
+
+      message Threshold {
+        //
+        string threshold = 1;
+
+        //
+        string thresholdName = 2;
+
+        //
+        string thresholdUnit = 3;
+
+        //
+        ThresholdType thresholdType = 4;
+
+        //
+        string thresholdID = 5;
+
+        // used to calculate score by this thresh.
+        // 用于根据此阈值计算分数.
+        //
+        ScoreMap1D scoreMap1d = 6;
+      }
+
+      //
+      repeated Threshold thresholds = 1;
+
+      // Kpi name of the Chinese.
+      // 中文的 KPI 名称.
+      //
+      string indicatorName = 2;
+
+      //
+      string definition = 3;
+
+      //
+      string calculationMethod = 4;
+
+      // Kpi name of the English.
+      // 英文的 KPI 名称.
+      //
+      string indicatorNameEng = 5;
+
+      //
+      map<string,string> additional = 6;
+
+      // used to calculate score of case.
+      // 用于计算案例得分.
+      //
+      ScoreMap1D scoreMap1d = 7;
+    }
+
+    message Condition {
+      //
+      // \note must be >, <, <=, >=
+      //
+      string relation = 1;
+
+      //
+      // Unit: N/A, Range: [0..inf], Default: 0.
+      //
+      int32 value = 2;
+
+      //
+      string desc = 3;
+    }
+
+    // KPI ID.
+    //
+    string name = 1;
+
+    // kpi category.
+    // KPI 类别.
+    //
+    Category category = 2;
+
+    //
+    Parameters parameters = 3;
+
+    //
+    Condition passCondition = 4;
+
+    //
+    Condition finishCondition = 5;
+  }
+
+  //
+  repeated GradingKpi kpi = 1;
+
+  //
+  repeated string defaultGroup = 2;
+}

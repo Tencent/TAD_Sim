@@ -1,0 +1,29 @@
+@import "./var";
+
+.el-switch {
+  .el-switch__core {
+    background-color: @global-bg-color;
+    border-color: @global-bd-color;
+
+    .el-switch__action {
+      background-color: @global-default-color;
+    }
+  }
+
+  &.is-checked {
+    .el-switch__core {
+      background-color: @global-bg-color;
+      border-color: @global-bd-color;
+
+      .el-switch__action {
+        background-color: @global-primary-color;
+      }
+    }
+  }
+
+  &:hover:not(.is-disabled) {
+    .el-switch__core {
+      border-color: @global-primary-color;
+    }
+  }
+}

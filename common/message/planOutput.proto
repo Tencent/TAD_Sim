@@ -1,0 +1,91 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "trajectory.proto";
+
+message GridMap {
+  //
+  double x = 1;
+
+  //
+  double y = 2;
+
+  //
+  double theta = 3;
+
+  //
+  int32 width = 4;
+
+  //
+  int32 height = 5;
+
+  //
+  double dx = 6;
+
+  //
+  double dy = 7;
+
+  //
+  repeated float data = 8;
+
+}
+
+message CarInfo {
+  //
+	int32 id = 1;
+
+  //
+	int32 option = 2;
+
+  //
+	double s = 3;
+
+  //
+	double l = 4;
+
+  //
+	double targetL = 5;
+
+  //
+	double fultureL = 6;
+
+  //
+	double d = 7;
+}
+
+//
+// \brief Our address book file is just one of these.
+//
+message PlanOutput {
+  //
+  repeated Trajectory trj = 1;
+
+  //
+  repeated GridMap grid = 2;
+
+  //
+  repeated CarInfo car = 3;
+
+  //
+  int32 targetLane = 4;
+
+  //
+  int32 mainLane = 5;
+
+  //
+  int32 laneChange = 6;
+
+  //
+  double s = 7;
+
+  //
+  double l = 8;
+}

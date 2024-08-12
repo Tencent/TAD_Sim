@@ -1,0 +1,43 @@
+@startuml
+class ParserFactory {
+  -names : list
+  +get_dataframe_define() : pd.DataFrame
+  +get_dataframe_param() : pd.DataFrame
+  +get_dataframe_settings_user() : pd.DataFrame
+  +get_dataframe_classify_user() : pd.DataFrame
+  +delete_explain_line() : pd.DataFrame
+  +get_names() : pd.DataFrame
+  +to_dataframe() : pd.DataFrame
+}
+
+class ExcelParserFactory {
+  -pathfile_xlsx : Path
+  -_xlsx : pd.ExcelFile
+  -names : list
+  +get_names() : list
+  +to_dataframe() : pd.DataFrame
+}
+
+class FeishuBittableParserFactory {
+  -app_id : str
+  -app_secret : str
+  -app_token : str
+  -tenant_access_token : str
+  -tables_dict : dict
+  -names : list
+  +get_names() : list
+  +to_dataframe() : pd.DataFrame
+}
+
+class Parser {
+  -factory : ParserFactory
+  -param : pd.DataFrame
+  -define : pd.DataFrame
+  -settings_user : pd.DataFrame
+  -classify_user : pd.DataFrame
+}
+
+ParserFactory <|.. ExcelParserFactory
+ParserFactory <|.. FeishuBittableParserFactory
+Parser *-- ParserFactory
+@enduml

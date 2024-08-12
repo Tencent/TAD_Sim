@@ -1,0 +1,6 @@
+{
+  "sensorUseGlobal": false,
+  "sensorGlobalFilePath": "sensor_global.xml",
+  "environmentUseGlobal": false,
+  "environmentGlobalFilePath": "environment_global.xml"
+}

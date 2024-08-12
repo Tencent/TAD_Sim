@@ -1,0 +1,25 @@
+@startuml
+object ODNode
+object ODLane
+object ODHeader
+object ODGeometry
+object ODLink
+object ODRoad
+object ODJunction
+object ODConnection
+object ODParamPoly3
+object ODParamArc
+object ODParamLine
+
+ODNode <|-- "public" ODLane
+ODNode <|-- "public" ODHeader
+ODNode <|-- "public" ODGeometry
+ODNode <|-- "public" ODLink
+ODNode <|-- "public" ODRoad
+ODNode <|-- "public" ODJunction
+ODNode <|-- "public" ODConnection
+ODGeometry <|-- "public" ODParamPoly3
+ODGeometry <|-- "public" ODParamArc
+ODGeometry <|-- "public" ODParamLine
+
+@enduml

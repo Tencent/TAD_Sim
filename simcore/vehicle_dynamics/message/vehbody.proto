@@ -1,0 +1,42 @@
+syntax = "proto3";
+import "car_basic.proto";
+package tx_car;
+
+message AeroDynamics {
+    RealScalar VehicleBody6DOF_Cd = 1; //Longitudinal drag coefficient
+    RealScalar VehicleBody6DOF_Cl = 2; //Longitudinal lift coefficient
+    RealScalar VehicleBody6DOF_Cpm = 3; //Longitudinal drag pitch moment
+    //RealArray VehicleBody6DOF_beta_w = 4; //Relative wind angle vector
+    //RealArray VehicleBody6DOF_Cs = 5; //Side force coefficient vector
+    Real1DMap beta_w_cs_1dmap = 4; // beta_w, Cs 1d map
+    //RealArray VehicleBody6DOF_Cym = 6; //Yaw moment coefficient vector
+    Real1DMap beta_w_cym_1dmap = 5; // beta_w, Cym 1d map
+    RealScalar VehicleBody6DOF_Pabs = 7; //Absolute Pressure, default 101325
+    RealScalar VehicleBody6DOF_Tair = 8; //Air temperature, unit K
+}
+
+message VehBodySim {
+    /*
+    RealScalar VehicleBody6DOF_xdot_tol = 1; //Longitudinal velocity tolerance
+    RealScalar VehicleBody6DOF_longOff = 2; //Geometric longitudinal offset from axle plane
+    RealScalar VehicleBody6DOF_latOff = 3; //Geometric lateral offset from axle plane
+    RealScalar VehicleBody6DOF_vertOff = 4; //Geometric vertical offset from axle plane
+    */
+}
+
+message VehBodyChassis{
+    //RealScalar VehicleBody6DOF_d = 1; //Lateral distance from geometric centerline to center of mass
+    /*
+    RealArray VehicleBody6DOF_Xe_o = 2; //Initial position in inertial frame [Xeo,Yeo,Zeo]
+    RealArray VehicleBody6DOF_xbdot_o = 3; //Initial velocity in body axes [xdot_o,ydot_o,zdot_o]
+    RealArray VehicleBody6DOF_eul_o = 4; //Initial Euler orientation [roll, pitch, yaw]
+    RealArray VehicleBody6DOF_p_o = 5; //Initial body rotation rates [p,q,r]
+    RealArray VehicleBody6DOF_Iveh = 6; //Chassis inertia tensor, size 9
+    */
+}
+
+message VehBodyDD{
+    //VehBodyChassis chassis = 1; //body chassis and initial state
+    AeroDynamics aerodynamics = 2;  // aerodynamics
+    //VehBodySim simulation = 3; //body simulation
+}

@@ -1,0 +1,28 @@
+@import "./var";
+
+.el-collapse-item {
+  margin-bottom: 2px;
+
+  .el-collapse-item__header {
+    background-color: @active-bg-color;
+    height: 28px;
+    line-height: 28px;
+    display: flex;
+    padding: 0 4px 0 22px;
+    border: none;
+    color: @global-default-color;
+
+    &.focusing:focus:not(:hover) {
+      color: @global-default-color;
+    }
+  }
+
+  .el-collapse-item__wrap {
+    border: none;
+    background-color: transparent;
+  }
+
+  .el-collapse-item__content {
+    color: @global-default-color;
+  }
+}

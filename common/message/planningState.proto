@@ -1,0 +1,59 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component, Planning Algorithm State Machine.
+// 基础组件, planning 算法状态机.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+
+message PlanningState {
+  //
+  Header header = 1;
+
+  //
+  bool inside_map = 2;
+
+  //
+  bool has_leader_car = 3;
+
+  //
+  int64 leader_car_id = 4;
+
+  //
+  double leader_car_distance = 5;
+
+  //
+  double leader_car_dl = 6;
+
+  //
+  uint32 leader_car_speed = 7;
+
+  //
+  uint32 speed_limit = 8;
+
+  //
+  uint32 ego_speed = 9;
+
+  //
+  uint32 lane_change_state = 10;
+
+  //
+  bool lane_change_safe = 11;
+
+  //
+  bool lane_change_solid_line = 12;
+
+  //
+  bool lane_markers_valid = 13;
+
+  //
+  bool map_location_valid = 14;
+
+  //
+  bool odd_pre_warning_distance = 15;
+}

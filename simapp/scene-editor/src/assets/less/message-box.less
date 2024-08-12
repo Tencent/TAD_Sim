@@ -1,0 +1,49 @@
+@import "./var";
+
+.el-message-box {
+  background-color: @active-bg-color;
+  border-radius: 2px;
+  border: none;
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.14);
+  width: 260px;
+  padding-bottom: 15px;
+}
+
+.sim-message-box {
+
+  .el-message-box__title {
+    color: @global-default-color;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+
+  .el-message-box__btns {
+    justify-content: flex-end;
+  }
+
+  .el-message-box__status {
+    position: static;
+    transform: none;
+    padding-right: 10px;
+
+    &.el-message-box-icon--error {
+      color: @global-danger-color;
+    }
+
+    &.el-message-box-icon--success {
+      color: @global-success-color;
+    }
+
+    &.el-message-box-icon--info {
+      color: @global-info-icon-color;
+    }
+
+    &.el-message-box-icon--warning {
+      color: @global-warning-color;
+    }
+  }
+
+  .el-message-box__content {
+    color: @global-default-color;
+  }
+}

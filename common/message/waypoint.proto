@@ -1,0 +1,497 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component, defines Waypoint.
+// 基础组件, 定义 Waypoint.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "google/protobuf/wrappers.proto";
+import "scene_common.proto";
+
+//
+// \brief Orientation is defined in terms of the Heading/Pitch/Roll orientation angles
+// in the Cartesian coordinate system and considered in the absolute or relative reference context.
+// 方向是用笛卡尔坐标系中的航向/俯仰/滚动角定义的, 并在绝对或相对参考上下文中考虑.
+//
+message Orientation {
+    // Heading angle.
+    // 航向角.
+    //
+    // Unit: degree, Range: [-inf..inf], Default: 0.0
+    //
+    double h = 1;
+
+    // Pitch angle.
+    // 俯仰角.
+    //
+    // Unit: rad, Range: [-inf..inf], Default: 0.0
+    //
+    double p = 2;
+
+    // Roll angle.
+    // 滚动角.
+    //
+    // Unit: rad, Range: [-inf..inf], Default: 0.0
+    //
+    double r = 3;
+}
+
+//
+// \brief Position that uses global coordinates.
+// 使用全局坐标的位置.
+//
+message PositionWorld {
+  // The x coordinate value.
+  // x坐标值.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 1;
+
+  // The y coordinate value.
+  // y坐标值.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 2;
+
+  // The z coordinate value.
+  // z坐标值.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double z = 3;
+
+  // Heading angle of the object defining a mathematically positive rotation about the z-axis.
+  // 定义物体绕z轴正向旋转的航向角.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  // \par References: ISO 8855:2011
+  //
+  double h = 4;
+
+  // The pitch angle of the object, defining a mathematically positive rotation about the y-axis.
+  // 定义物体绕y轴正向旋转的俯仰角.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  // \par References: ISO 8855:2011
+  //
+  double p = 5;
+
+  // The heading angle of the object defining a mathematically positive rotation about the z-axis.
+  // 定义物体绕z轴正向旋转的航向角.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  // \par References: ISO 8855:2011
+  //
+  double r = 6;
+}
+
+//
+// \brief Position is given relative to an entity, expressed in world coordinates.
+// 位置是相对于一个实体给出的, 以世界坐标表示.
+//
+message PositionRelativeWorld {
+  // Reference entity from which the relative world position is measured.
+  // 用于测量相对世界位置的参考实体.
+  //
+  string entity_ref = 1;
+
+  // Relative x coordinate in the world coordinate system.
+  // 在世界坐标系统中的相对x坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double dx = 2;
+
+  // Relative y coordinate in the world coordinate system.
+  // 在世界坐标系统中的相对y坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double dy = 3;
+
+  // Relative z coordinate in the world coordinate system.
+  // 在世界坐标系统中的相对z坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double dz = 4;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 5;
+}
+
+//
+// \brief Position is given relative to an entity.
+// 位置是相对于一个实体给出的.
+//
+message PositionRelativeObject {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // Relative position in the x axis, using the coordinate system of the reference entity.
+  // 在x轴上的相对位置, 使用参考实体的坐标系统.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double dx = 2;
+
+  // Relative position in the y axis, using the coordinate system of the reference entity.
+  // 在y轴上的相对位置, 使用参考实体的坐标系统.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double dy = 3;
+
+  // Relative position in the z axis, using the coordinate system of the reference entity.
+  // 在z轴上的相对位置, 使用参考实体的坐标系统.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double dz = 4;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 5;
+}
+
+//
+// \brief Position in road coordinates (t,s) applied to a given road.
+// 应用于给定道路的道路坐标(t,s)中的位置.
+//
+message PositionRoad {
+  // The ID of the target road taken from the respective road network definition file.
+  // 目标道路的ID, 从相应的道路网络定义文件中获取.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  uint64 road_id = 1;
+
+  // The s-coordinate taken along the road's reference line from start point of target road.
+  // 从目标道路的起点沿道路参考线取得的S坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double s = 2;
+
+  // The t-coordinate taken on the axis orthogonal to the reference line of the road.
+  // 在与道路参考线正交的轴上取得的T坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double t = 3;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 5;
+}
+
+//
+// \brief Position relative to an entity's road position (ds, dt).
+// 相对于实体道路位置(ds, dt)的位置.
+//
+message PositionRelativeRoad {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // Offset along the road's reference line relative to the s-coordinate of the reference entity.
+  // 相对于参考实体的s坐标, 沿道路参考线的偏移量.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double ds = 2;
+
+  // The offset on the axis orthogonal to the road's reference line relative to
+  // the t-coordinate of the reference entity.
+  // 相对于参考实体的t坐标, 在与道路参考线正交的轴上的偏移量.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double dt = 3;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 4;
+}
+
+//
+// \brief Position that is determined by a lane (lane ID) and the s coordinate of a given road.
+// 由车道(车道ID)和给定道路的s坐标确定的位置.
+//
+message PositionLane {
+  // The ID of the target road taken from the respective road network definition file.
+  // 目标道路的ID, 从相应的道路网络定义文件中获取.
+  //
+  // Unit: N/A, Range: 0..inf], Default: 0
+  //
+  uint64 road_id = 1;
+
+  // The ID of the target lane belonging to the target road
+  // (taken from the respective road network definition file).
+  // 属于目标道路的目标车道的ID(从相应的道路网络定义文件中获取).
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int64 lane_id = 3;
+
+  // The lateral offset to the center line of the target lane
+  // (along the normal to the road's reference line)
+  // The positive value means the offset is applied
+  // in the direction of the t-axis being imagined at the target s-position.
+  // 到目标车道中心线的横向偏移(沿着道路参考线的法线)
+  // 正值表示偏移量应用在目标s位置想象的t轴的方向上.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double offset = 4;
+
+  // S-coordinate taken along the road's reference line from the start point of the target road.
+  // 从目标道路的起点沿道路参考线取得的S坐标.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double s = 5;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 6;
+}
+
+//
+// \brief Position that is determined relative to the lane coordinates of a given entity
+// (Relative lane and relative s to this entity).
+// 位置是相对于给定实体的车道坐标确定的(相对于该实体的相对车道和相对s).
+//
+message PositionRelativeLane {
+  // Reference entity.
+  // 参考实体.
+  //
+  string entity_ref = 1;
+
+  // The deviation value between the laneId of the lane, where the reference entity is located,
+  // and the target laneId.
+  // 参考实体所在的车道的laneId和目标laneId之间的偏差值.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 dlane = 2;
+
+  // The offset along the road's reference line relative to
+  // the s-coordinate of the reference entity, Mutually exclusive with dsLane.
+  // 相对于参考实体的s坐标, 沿道路参考线的偏移量, 与dsLane互斥.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double ds = 3;
+
+  // The lateral offset to the center line of the target lane
+  // (along the normal to the road's reference line).
+  // 到目标车道中心线的横向偏移(沿着道路参考线的法线).
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double offset = 4;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 5;
+}
+
+//
+// \brief Position that is determined by a given route.
+// 由给定路线确定的位置.
+//
+message PositionRoute {
+  // Either a route definition or a catalog reference to the route position is calculated from.
+  // 路线定义或者用于计算路线位置的目录引用.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 route_ref = 1;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 2;
+
+  //
+  // inRoutePosition in_route_position = 3;
+}
+
+//
+// \brief Position that uses geo coordinates.
+// 使用地理坐标的位置.
+//
+message GeoPosition {
+  // The longitude of a point on earth's surface is the angle east or west of
+  // a reference meridian to another meridian that passes through that point.
+  // 地球表面上一个点的经度是从参考子午线到经过该点的另一条子午线的东或西角度.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  double longitude = 1;
+
+  // The latitude of a point on earth's surface is the angle between the equatorial plane
+  // and the straight line that passes through that point and through the center of the earth.
+  // 地球表面上一个点的纬度是赤道平面与通过该点和地球中心的直线之间的夹角.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  double latitude = 2;
+
+  // Altitude is the Earth gravity-related vertical distance from the target position.
+  // 高度是与地球重力相关的从目标位置的垂直距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double altitude = 3;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 4;
+}
+
+//
+// \brief Position that is determined by a given trajectory.
+// 由给定轨迹确定的位置.
+//
+message TrajectoryPosition {
+  // The s coordinate from the start of the trajectory.
+  // 从轨迹开始的s坐标.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double s = 1;
+
+  // The t coordinate orthogonal to the arclength of the trajectory.
+  // 与轨迹弧长正交的t坐标.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Absolute reference context refers to the orientation with respect to the World coordinate.
+  // 绝对参考上下文是指相对于世界坐标的方向.
+  //
+  Orientation orientation = 3;
+}
+
+message Position {
+  //
+  PositionWorld world = 1;
+
+  //
+  PositionRelativeWorld relative_world = 2;
+
+  //
+  PositionRelativeObject relative_object = 3;
+
+  //
+  PositionRoad road = 4;
+
+  //
+  PositionRelativeRoad relative_road = 5;
+
+  //
+  PositionLane lane = 6;
+
+  //
+  PositionRelativeLane relative_lane = 7;
+
+  //
+  PositionRoute route = 8;
+
+  //
+  GeoPosition geo = 9;
+
+  //
+  TrajectoryPosition trajectory = 10;
+}
+
+//
+// \brief Reference position used to form a route.
+// 用于形成路线的参考位置.
+//
+message Waypoint {
+  // Waypoint id.
+  // 路径点id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Position.
+  // 位置.
+  //
+  Position position = 2;
+
+  // Vehicle speed in the direction of travel.
+  // 行驶方向上的车辆速度.
+  //
+  // Unit: m/s, Range: [0, inf], Default: null
+  //
+  // \note If the field is not set, the decoded value will be null. \n
+  // 如果字段未设置, 解码值将为null.
+  //
+  google.protobuf.DoubleValue speed = 3;
+
+  // Vehicle acceleration in direction of travel.
+  // 行驶方向上的车辆加速度.
+  //
+  // Unit: m/s^2, Range: [0, inf], Default: null
+  //
+  // \note If the field is not set, the decoded value will be null. \n
+  // 如果字段未设置, 解码值将为null.
+  //
+  google.protobuf.DoubleValue accel = 4;
+
+  // Angle between the direction of travel of vehicle and the centerline of the road.
+  // 车辆行驶方向与道路中心线之间的夹角.
+  //
+  // Unit: degree, Range: [-inf, inf], Default: null
+  //
+  // \note If the field is not set, the decoded value will be null. \n
+  // 如果字段未设置, 解码值将为null.
+  //
+  google.protobuf.DoubleValue heading_angle = 5;
+
+  // Front wheel steer angle.
+  // 前轮转向角.
+  //
+  // Unit: degree, Range: [-inf, inf], Default: null
+  //
+  // \note If the field is not set, the decoded value will be null. \n
+  // 如果字段未设置, 解码值将为null.
+  //
+  google.protobuf.DoubleValue front_wheel_steer_angle = 6;
+
+  // State of gear.
+  // 档位状态.
+  //
+  // Unit: N/A, Range: [0..10], Default: 0
+  //
+  // \note Mandatory. \n
+  // 强制性.
+  //
+  GearSts gear = 7;
+}

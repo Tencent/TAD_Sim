@@ -1,0 +1,1058 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief A simulated object that is neither a moving object (vehicle or
+// \c MovingObject e.g. pedestrian, animal, or vehicle) nor a traffic related
+// object (\c TrafficLight, \c TrafficSign).
+//
+// \image html OSI_BaseStationary.svg
+//
+// \c StationaryObject excludes traffic lights, traffic signs and road marking
+//
+message StationaryObject {
+  // The ID of the object.
+  //
+  // \rules
+  // is_globally_unique
+  // \endrules
+  //
+  Identifier id = 1;
+
+  // The base parameters of the stationary object.
+  //
+  BaseStationary base = 2;
+
+  // The classification of the stationary object.
+  //
+  Classification classification = 3;
+
+  // Opaque reference of an associated 3D model of the stationary object.
+  //
+  // \note It is implementation-specific how model_references are resolved to
+  // 3d models.
+  //
+  string model_reference = 4;
+
+  // External reference to the stationary-object source.
+  //
+  // The external reference points to the source of a stationary object, if it
+  // is derived from an external sources like OpenDRIVE or OpenSCENARIO.
+  //
+  // For example, to reference an object defined in an OpenDRIVE map
+  // the items should be set as follows:
+  // * reference = URI to map, can remain empty if identical with definiton
+  //               in \c GroundTruth::map_reference
+  // * type = "net.asam.opendrive"
+  // * identifier[0] = "object" for t_road_objects_object and
+  //                   "bridge" for t_road_objects_bridge
+  // * identifier[1] = id of t_road_objects_object or t_road_objects_bridge
+  //
+  // For example, to reference OpenSCENARIO entities of the type MiscObject,
+  // which describe partly stationary objects, the items should be set as
+  // follows:
+  // * reference = URI to the OpenSCENARIO File
+  // * type = "net.asam.openscenario"
+  // * identifier[0] = Entity-Type ("MiscObject")
+  // * identifier[1] = name of MiscObject in Entity
+  //
+  // \note The following rule, described in OpenDRIVE, also applies:
+  // * Objects derived from OpenSCENARIO shall not be mixed with objects
+  //   described in OpenDRIVE.
+  //
+  // \note For non-ASAM Standards, it is implementation-specific how
+  //       source_reference is resolved.
+  //
+  // \note The value has to be repeated because one object may be derived
+  //       from more than one origin source, for example, from a scenario file
+  //       and from sensors.
+  //
+  repeated ExternalReference source_reference = 5;
+
+  // The dominating color of the material of the structure.
+  //
+  ColorDescription color_description = 6;
+
+  //
+  // \brief Classification data for a stationary object.
+  //
+  message Classification {
+    // The type of the object.
+    //
+    Type type = 1;
+
+    // The dominating material of the structure.
+    //
+    Material material = 2;
+
+    // The dominating density of the material of the structure.
+    //
+    Density density = 3;
+
+    // The dominating color of the material of the structure.
+    //
+    // \attention DEPRECATED: This color enum will be removed in version
+    // 4.0.0. Use the field \c #color_description (\c ColorDescription) of
+    // \c StationaryObject instead.
+    //
+    Color color = 4;
+
+    // The attributes of the emitting structure if stationary object is classified as such.
+    //
+    EmittingStructureAttribute emitting_structure_attribute = 5;
+
+    // The IDs of the lanes that the object is assigned to.
+    //
+    // \note Might be multiple IDs if the object stretches over multiple lanes.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated Identifier assigned_lane_id = 6;
+
+    // Percentage values of the object width in the corresponding lane.
+    //
+    // \note Might be multiple percentages if the object stretches over multiple lanes.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated double assigned_lane_percentage = 7;
+
+    // Assignment of this object to logical lanes.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated LogicalLaneAssignment logical_lane_assignment = 8;
+
+    // Definition of object types.
+    //
+    enum Type {
+      // Type of the object is unknown (must not be used in ground truth).
+      //
+      TYPE_UNKNOWN = 0;
+
+      // Other (unspecified but known) type of object.
+      //
+      TYPE_OTHER = 1;
+
+      // Object is a bridge.
+      //
+      TYPE_BRIDGE = 2;
+
+      // Object is a building.
+      //
+      TYPE_BUILDING = 3;
+
+      // Object is a pole (e.g. from a traffic light).
+      //
+      TYPE_POLE = 4;
+
+      // Object is a pylon.
+      //
+      TYPE_PYLON = 5;
+
+      // Object is a delineator (e.g. at a construction site).
+      //
+      TYPE_DELINEATOR = 6;
+
+      // Object is a tree.
+      //
+      TYPE_TREE = 7;
+
+      // Object is a barrier.
+      //
+      TYPE_BARRIER = 8;
+
+      // Object is vegetation.
+      //
+      TYPE_VEGETATION = 9;
+
+      // Object is a curbstone.
+      //
+      TYPE_CURBSTONE = 10;
+
+      // Object is a wall.
+      //
+      TYPE_WALL = 11;
+
+      // Landmarks corresponding to vertical structures in the
+      // environment.
+      //
+      TYPE_VERTICAL_STRUCTURE = 12;
+
+      // Landmarks corresponding to rectangular structures in the
+      // environment, like walls.
+      //
+      TYPE_RECTANGULAR_STRUCTURE = 13;
+
+      // Landmarks corresponding to overhead structures in the
+      // environment, like sign bridges.
+      //
+      TYPE_OVERHEAD_STRUCTURE = 14;
+
+      // Landmarks corresponding to reflective structures
+      // in the environment, like reflective poles on the
+      // road boarder.
+      //
+      TYPE_REFLECTIVE_STRUCTURE = 15;
+
+      // Landmarks corresponding to construction site elements in the
+      // environment, like beacons.
+      //
+      TYPE_CONSTRUCTION_SITE_ELEMENT = 16;
+
+      // Object is a speed bump.
+      //
+      TYPE_SPEED_BUMP = 17;
+
+      // Landmarks corresponding to sources of electromagnetic waves
+      // in the environment, like street lights.
+      //
+      TYPE_EMITTING_STRUCTURE = 18;
+    }
+
+    // Definition of material types.
+    //
+    enum Material {
+      // Type of the material is unknown (must not be used in ground
+      // truth).
+      //
+      MATERIAL_UNKNOWN = 0;
+
+      // Other (unspecified but known) type of material.
+      //
+      MATERIAL_OTHER = 1;
+
+      // Wooden structure.
+      //
+      MATERIAL_WOOD = 2;
+
+      // Plastic structure.
+      //
+      MATERIAL_PLASTIC = 3;
+
+      // Concrete structure.
+      //
+      MATERIAL_CONCRETE = 4;
+
+      // Metal structure.
+      //
+      MATERIAL_METAL = 5;
+
+      // Natural stone structure.
+      //
+      MATERIAL_STONE = 6;
+
+      // Glas structure.
+      //
+      MATERIAL_GLAS = 7;
+
+      // Mud structure.
+      //
+      MATERIAL_MUD = 8;
+    }
+
+    // Definition of material density types.
+    //
+    enum Density {
+      // Type of the material density is unknown (must not be used in
+      // ground truth).
+      //
+      DENSITY_UNKNOWN = 0;
+
+      // Other (unspecified but known) type of material density.
+      //
+      DENSITY_OTHER = 1;
+
+      // No perforation - solid;
+      //
+      DENSITY_SOLID = 2;
+
+      // Perforation max. ]0; 100] mm
+      //
+      DENSITY_SMALL_MESH = 3;
+
+      // Perforation max. ]100; 500] mm
+      //
+      DENSITY_MEDIAN_MESH = 4;
+
+      // Perforation max. ]500; 5000] mm
+      //
+      DENSITY_LARGE_MESH = 5;
+
+      // Perforation max. ]5000; infinity[ mm
+      //
+      DENSITY_OPEN = 6;
+    }
+
+    // Definition of colors for structures.
+    //
+    // \attention DEPRECATED: This color enum will be removed in version
+    // 4.0.0. Use \c ColorDescription instead.
+    //
+    //
+    enum Color {
+      // Color is unknown (must not be used in ground truth).
+      //
+      COLOR_UNKNOWN = 0;
+
+      // Other (unspecified but known) color.
+      //
+      COLOR_OTHER = 1;
+
+      // Yellow.
+      //
+      COLOR_YELLOW = 2;
+
+      // Green.
+      //
+      COLOR_GREEN = 3;
+
+      // Blue.
+      //
+      COLOR_BLUE = 4;
+
+      // Violet.
+      //
+      COLOR_VIOLET = 5;
+
+      // Red.
+      //
+      COLOR_RED = 6;
+
+      // Orange.
+      //
+      COLOR_ORANGE = 7;
+
+      // Black.
+      //
+      COLOR_BLACK = 8;
+
+      // GREY.
+      //
+      COLOR_GREY = 9;
+
+      // White.
+      //
+      COLOR_WHITE = 10;
+    }
+
+    //
+    // \brief Attributes of type emitting structure. The horizontal_angle and the vertical_angle in
+    // emitted_spatial_intensity are symmetrical across the normal, which is defined by the mounting position
+    // of the emitting structure.
+    //
+    message EmittingStructureAttribute {
+      // This message determines the range of the emitted wavelength and its
+      // desired number of samples.
+      //
+      repeated WavelengthData wavelength_data = 1;
+
+      // Spatial signal strength distribution of the emitted electromagnetic wave.
+      // For every sample in wavelength_data an emitted_spatial_signal_strength has to be defined.
+      //
+      // \note emitted_spatial_signal_strength.size() = WavelengthData.samples_number.size()
+      //
+      repeated SpatialSignalStrength emitted_spatial_signal_strength = 3;
+    }
+  }
+}
+
+//
+// \brief A simulated object that is either a vehicle or another
+// moving object (animal, pedestrian, etc), but not a stationary
+// object (\c TrafficLight, \c TrafficSign, or \c StationaryObject).
+//
+// \image html OSI_MovingObject.svg
+//
+// \image html OSI_HostVehicle.svg
+//
+// \note The field \c MovingObject::vehicle_extension has to be
+// filled if the \c MovingObject::Type is a vehicle.
+//
+message MovingObject {
+  // The ID of the object.
+  //
+  // \rules
+  // is_globally_unique
+  // \endrules
+  //
+  Identifier id = 1;
+
+  // The base parameters of the vehicle.
+  //
+  // \note The bounding box does NOT include side mirrors for vehicles.
+  // \note The height includes the ground_clearance. It always goes from the
+  // top to the ground.
+  //
+  BaseMoving base = 2;
+
+  // The type of the object.
+  //
+  Type type = 3;
+
+  // The IDs of the lanes that this object is assigned to.
+  //
+  // \note Might be multiple if the object is switching lanes or moving from
+  // one lane into another following lane.
+  //
+  // \note DEPRECATED: Use assigned_lane_id in MovingObjectClassification
+  // instead.
+  //
+  repeated Identifier assigned_lane_id = 4;
+
+  // Specific information about the vehicle.
+  //
+  // \note This field is mandatory if the \c #type is
+  // #TYPE_VEHICLE .
+  //
+  // \rules
+  // check_if this.type is_equal_to 2 else do_check is_set
+  // \endrules
+  //
+  VehicleAttributes vehicle_attributes = 5;
+
+  // Specific information about the classification of the vehicle.
+  //
+  //
+  // \note This field is mandatory if the \c #type is
+  // #TYPE_VEHICLE .
+  //
+  // \rules
+  // check_if this.type is_equal_to 2 else do_check is_set
+  // \endrules
+  //
+  VehicleClassification vehicle_classification = 6;
+
+  // Opaque reference of an associated 3D model of the moving object.
+  //
+  // \note It is implementation-specific how model_references are resolved to
+  // 3d models.
+  //
+  string model_reference = 7;
+
+  // The trajectory that this moving object expects to follow in the future.
+  //
+  // This is not externally perceivable information, rather this is to aid
+  // realistic simulation of traffic participants that are not under test.
+  // This information should not be made available to the stack under test.
+  //
+  // \note Moving objects are not required to stick to this trajectory, it is
+  // indicative, and equivalent to the output of a perception + prediction
+  // system.
+  //
+  repeated StatePoint future_trajectory = 8;
+
+  // Specific information about the classification of the vehicle.
+  //
+  MovingObjectClassification moving_object_classification = 9;
+
+  // Optional external reference to the moving-object source
+  //
+  // The external reference points to the source of an moving object, if it
+  // is derived from an external sources like OpenSCENARIO.
+  //
+  // For example, to reference OpenSCENARIO entities of the type Vehicle or
+  // Pedestrian, which describe moving objects, the items should be set as
+  // follows:
+  // * reference = URI to the OpenSCENARIO File
+  // * type = "net.asam.openscenario"
+  // * identifier[0] = Entity-Type ("Vehicle" or "Pedestrian")
+  // * identifier[1] = name of Vehicle/Pedestrian in Entity
+  //
+  // \todo OpenSCENARIO currently does not provide an animal type.
+  //
+  // \note For non-ASAM Standards, it is implementation-specific how
+  //       source_reference is resolved.
+  //
+  // \note The value has to be repeated because one object may be derived
+  //       from more than one origin source, for example, from a scenario file
+  //       and from sensors.
+  //
+  repeated ExternalReference source_reference = 10;
+
+  // The dominating color of the material of the moving object.
+  //
+  ColorDescription color_description = 11;
+
+  // Definition of object types.
+  //
+  enum Type {
+    // Type of the object is unknown (must not be used in ground truth).
+    //
+    TYPE_UNKNOWN = 0;
+
+    // Other (unspecified but known) type of moving object.
+    //
+    TYPE_OTHER = 1;
+
+    // Object is a vehicle.
+    //
+    TYPE_VEHICLE = 2;
+
+    // Object is a pedestrian.
+    //
+    TYPE_PEDESTRIAN = 3;
+
+    // Object is an animal.
+    //
+    TYPE_ANIMAL = 4;
+  }
+
+  //
+  // \brief The vehicle attributes for \c MovingObject (host or other).
+  //
+  // This is an extension to the \c MovingObject with additional attributes,
+  // such as type and lights. The origin of the rear (front) axis coordinate
+  // system in global coordinates is calculated as:
+  // \c MovingObject::base . \c BaseMoving::position + R * \c
+  // MovingObject::VehicleAttributes::bbcenter_to_rear (front) for the host
+  // vehicle (R rotates from vehicle to world frame, i.e. inverse orientation
+  // of \c MovingObject::base . \c BaseMoving::orientation).
+  //
+  // For all vehicles, including host vehicles, the position given in
+  //  \c MovingObject::base . \c BaseMoving::position points to the center of
+  //  the vehicle's bounding box.
+  //
+  // The vehicle object coordinates are defined as x-axis is the direction
+  // from rear to front of the vehicle, y-axis corresponds to rear axle and
+  // z-axis points to vehicle ceiling [1]. The coordinate system is
+  // right-handed. Therefore the positive y-axis points to the left of the
+  // vehicle.
+  //
+  // \par Reference:
+  // [1] DIN Deutsches Institut fuer Normung e. V. (2013). <em>DIN ISO 8855 Strassenfahrzeuge -
+  // Fahrzeugdynamik und Fahrverhalten - Begriffe</em>. (DIN ISO 8855:2013-11). Berlin, Germany.
+  //
+  message VehicleAttributes {
+    // The ID of the driver of the (host) vehicle.
+    //
+    // \note Field need not be set if host_vehicle is set to false or use
+    // value for non valid id.
+    //
+    Identifier driver_id = 1;
+
+    // Deprecated: Will be removed in next major release. Moved to WheelData.
+    // Median radius of the wheels measured from a center of the wheel
+    // including tire.
+    //
+    // Unit: m
+    //
+    // \rules
+    // is_greater_than_or_equal_to: 0
+    // \endrules
+    //
+    double radius_wheel = 2;
+
+    // Number of independent wheels.
+    //
+    // \rules
+    // is_greater_than_or_equal_to: 1
+    // \endrules
+    //
+    uint32 number_wheels = 3;
+
+    // The vector pointing from the bounding box center point (\c
+    // MovingObject::base . \c BaseMoving::position) to the middle (in x, y
+    // and z) of the rear axle under neutral load conditions. In object
+    // coordinates.
+    //
+    Vector3d bbcenter_to_rear = 4;
+
+    // The vector pointing from the bounding box center point (\c
+    // MovingObject::base . \c BaseMoving::position) to the middle (in x, y
+    // and z) of the front axle under neutral load conditions. In object
+    // coordinates.
+    //
+    Vector3d bbcenter_to_front = 5;
+
+    // Static minimal distance or space from the lowest point of the vehicle's
+    // body to the surface plane below it under neutral load conditions. This
+    // distance disregards, for example, driving-dynamic effects or
+    // road-surface effects. Can be useful to approximate the clearance area
+    // under a vehicle that a sensor can see through.
+    // \note \c ground_clearance is included in the bounding box height.
+    //
+    double ground_clearance = 6;
+
+    // Description of each wheel.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated WheelData wheel_data = 7;
+
+    // Angle of the steering wheel.
+    // Zero means the steering wheel is in its center postion, a positive value
+    // means the steering wheel is turned to the left and a negative value
+    // means the steering wheel is turned to the right of the center position.
+    //
+    // Unit: rad
+    //
+    double steering_wheel_angle = 8;
+
+    // \brief Detailed wheel data.
+    // The focus is on the description of a wheel regarding the perceivable
+    // information from the outside.
+    // It is not intended to be used for dynamic calculations, for example.
+    //
+    message WheelData {
+      // The axle which contains this wheel. A value of 0 represents the
+      // front-most axle of the vehicle with higher numbers incrementing
+      // towards the rear-most axle.
+      //
+      uint32 axle = 1;
+
+      // The index of the wheel on the axle, counting in the direction
+      // of positive-y, that is, right-to-left.
+      //
+      // For example, on a standard 2-axle, 4-wheel car, the rear-right
+      // wheel would be (axle=1, index=0).
+      // This concept works also for twin tires.
+      //
+      uint32 index = 2;
+
+      // A vector pointing from the vehicle's reference system (center of bounding
+      // box) to the geometric center of the wheel.
+      //
+      Vector3d position = 3;
+
+      // Median radius of the wheel measured from the center of the wheel to
+      // the outer part of the tire.
+      //
+      // Unit: m
+      //
+      double wheel_radius = 4;
+
+      // Median radius of the rim measured from the center to the outer, visible part of the rim.
+      //
+      // Unit: m
+      //
+      double rim_radius = 5;
+
+      // Median width of the tire.
+      //
+      // Unit: m
+      //
+      double width = 6;
+
+      // Orientation of the wheel.
+      //
+      // The reference system is the vehicle frame (center of bounding box).
+      //
+      Orientation3d orientation = 7;
+
+      // Rotation rate of the wheel.
+      // The rotation rate around the y-axis with respect to the wheel's coordinate system.
+      //
+      // Unit: rad/s.
+      //
+      // The sign convention is defined using the right-hand rule.
+      // It is applied on the y-axis of the vehicle's reference system (center of bounding box).
+      // Counterclockwise is positive and clockwise is negative.
+      //
+      // \image html OSI_RotationRate.svg
+      // \note The vehicle's reference coordinate system is only used to determine
+      // the sign convention of the rotation rate.
+      //
+      double rotation_rate = 8;
+
+      // Opaque reference of an associated 3D model of the wheel.
+      //
+      // \note It is implementation-specific how model_references are resolved to
+      // 3d models.
+      //
+      string model_reference = 9;
+
+      // The value describes the kinetic friction of the tyre's contact point.
+      // If different friction coefficients due to more than one contact points are available,
+      // this value contains the average.
+      //
+      // Unit: Dimensionless
+      //
+      // \par References:
+      // [1] Britannica, T. Editors of Encyclopaedia. (2020, June 24).
+      // <em>coefficient of friction</em>. Retrieved May 18, 2022,
+      // from https://www.britannica.com/science/coefficient-of-friction
+      //
+      double friction_coefficient = 10;
+    }
+  }
+
+  //
+  // \brief Information for the classification of moving objects regarding
+  // \c MovingObject (host or other).
+  //
+  message MovingObjectClassification {
+    // The IDs of the lanes that this object is assigned to.
+    //
+    // \note Might be multiple if the object is switching lanes or moving from
+    // one lane into another following lane.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated Identifier assigned_lane_id = 1;
+
+    // Percentage value of the object width in the corresponding lane.
+    //
+    // \note Might be multiple if the object is switching lanes or moving from
+    // one lane into another following lane.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated double assigned_lane_percentage = 2;
+
+    // Assignment of this object to logical lanes.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated LogicalLaneAssignment logical_lane_assignment = 3;
+  }
+
+  //
+  // \brief Information for the classification of vehicles regarding
+  // \c MovingObject (host or other).
+  //
+  message VehicleClassification {
+    // The type of the vehicle.
+    //
+    Type type = 1;
+
+    // The light state of the vehicle.
+    //
+    LightState light_state = 2;
+
+    // Flag defining whether the vehicle has an attached trailer.
+    //
+    bool has_trailer = 3;
+
+    // Id of the attached trailer.
+    //
+    // \note Field need not be set if has_Trailer is set to false or use
+    // value for non valid id.
+    //
+    // \rules
+    // check_if this.has_trailer is_equal_to true else do_check is_set
+    // \endrules
+    //
+    Identifier trailer_id = 4;
+
+    // The role of the vehicle.
+    //
+    Role role = 5;
+
+    // Definition of vehicle types.
+    //
+    // \note OSI provides a richer set of vehicle types than is supported by some
+    // other OpenX standards (in particular, OpenScenario 1.x and 2.x, and OpenLabel).
+    // This is primarily for historical reasons.  Where a single type from a
+    // different standard can map to multiple OSI types it is left up to the
+    // discretion of the OSI implementor how that mapping is achieved.  For example,
+    // a simulator may use the dimensions of a provided 3d model of a vehicle with type
+    // "car" in OpenScenario, to determine whether it should be a TYPE_SMALL_CAR or
+    // TYPE_MEDIUM_CAR in OSI.
+    //
+    // \note Vehicle type classification is a complex area and there are no
+    // universally recognised standards.  As such, the boundaries between some of the
+    // OSI vehicle types are not well-defined.  It is left to the implementor to
+    // decide how to distinguish between them and agree that with any applications which
+    // make use of that specific interface instance.  For example, how to distinguish
+    // between a HEAVY_TRUCK and a DELIVERY_VAN, or a TRAILER and a SEMITRAILER.
+    //
+    enum Type {
+      // Type of vehicle is unknown (must not be used in ground truth).
+      //
+      TYPE_UNKNOWN = 0;
+
+      // Other (unspecified but known) type of vehicle.
+      //
+      TYPE_OTHER = 1;
+
+      // Vehicle is a small car.
+      //
+      // Definition: Hatchback car with maximum length 4 m.
+      //
+      TYPE_SMALL_CAR = 2;
+
+      // Vehicle is a compact car.
+      //
+      // Definition: Hatchback car with length between 4 and 4.5 m.
+      //
+      TYPE_COMPACT_CAR = 3;
+
+      // Vehicle is a medium car.
+      //
+      // Definition: Hatchback or sedan with lenght between 4.5 and 5 m.
+      //
+      TYPE_MEDIUM_CAR = 4;
+
+      // Vehicle is a luxury  car.
+      //
+      // Definition: Sedan or coupe that is longer then 5 m.
+      //
+      TYPE_LUXURY_CAR = 5;
+
+      // Vehicle is a delivery van.
+      //
+      // \image html OSI_TYPE_DELIVERY_VAN.svg
+      //
+      TYPE_DELIVERY_VAN = 6;
+
+      // Vehicle is a (heavy) truck.
+      //
+      // \image html OSI_TYPE_HEAVY_TRUCK.svg
+      //
+      TYPE_HEAVY_TRUCK = 7;
+
+      // Vehicle is a tractor capable of pulling a semi-trailer.
+      //
+      // \image html OSI_TYPE_SEMITRACTOR.svg
+      //
+      TYPE_SEMITRACTOR = 16;
+
+      // This vehicle is a semi-trailer that can be pulled by a
+      // semi-tractor.
+      //
+      // \note The vehicle can be, but doesn't need to be,
+      // attached to another vehicle.
+      //
+      // \image html OSI_TYPE_SEMITRAILER.svg
+      //
+      TYPE_SEMITRAILER = 8;
+
+      // Vehicle is a trailer.
+      //
+      // \note The vehicle can be, but doesn't need to be,
+      // attached to another vehicle.
+      //
+      // \image html OSI_TYPE_TRAILER.svg
+      //
+      TYPE_TRAILER = 9;
+
+      // Vehicle is a motorbike or moped.
+      //
+      TYPE_MOTORBIKE = 10;
+
+      // Vehicle is a bicycle (without motor and specific lights).
+      //
+      TYPE_BICYCLE = 11;
+
+      // Vehicle is a bus.
+      //
+      TYPE_BUS = 12;
+
+      // Vehicle is a tram.
+      //
+      TYPE_TRAM = 13;
+
+      // Vehicle is a train.
+      //
+      TYPE_TRAIN = 14;
+
+      // Vehicle is a wheelchair.
+      //
+      TYPE_WHEELCHAIR = 15;
+    }
+
+    //
+    // \brief The state of the lights of a vehicle.
+    //
+    message LightState {
+      // State of the object's indicators.
+      //
+      IndicatorState indicator_state = 1;
+
+      // State of the front fog light.
+      //
+      GenericLightState front_fog_light = 2;
+
+      // State of the rear fog light.
+      //
+      GenericLightState rear_fog_light = 3;
+
+      // State of the head lights.
+      //
+      GenericLightState head_light = 4;
+
+      // State of the high beam.
+      //
+      GenericLightState high_beam = 5;
+
+      // State of the reversing light.
+      //
+      GenericLightState reversing_light = 6;
+
+      // State of the brake lights.
+      //
+      BrakeLightState brake_light_state = 7;
+
+      // State of the (rear) license plate illumination.
+      //
+      GenericLightState license_plate_illumination_rear = 8;
+
+      // Lighting of emergency vehicles (ambulance, fire engine, police
+      // car, etc.). Must be set only if a vehicle is allowed to use this
+      // illumination type.
+      //
+      GenericLightState emergency_vehicle_illumination = 9;
+
+      // Lighting of service vehicles (snow removal, garbage truck, towing
+      // vehicle, slow or wide vehicle, etc.). Must be set only if a
+      // vehicle is allowed to use this illumination type.
+      //
+      GenericLightState service_vehicle_illumination = 10;
+
+      // Definition of indicator states.
+      //
+      enum IndicatorState {
+        // Indicator state is unknown (must not be used in ground
+        // truth).
+        //
+        INDICATOR_STATE_UNKNOWN = 0;
+
+        // Other (unspecified but known) state of indicator.
+        //
+        INDICATOR_STATE_OTHER = 1;
+
+        // Indicators are off.
+        //
+        INDICATOR_STATE_OFF = 2;
+
+        // Left indicator is on.
+        //
+        INDICATOR_STATE_LEFT = 3;
+
+        // Right indicator is on.
+        //
+        INDICATOR_STATE_RIGHT = 4;
+
+        // Hazard/warning light, i.e. both indicators, are on.
+        //
+        INDICATOR_STATE_WARNING = 5;
+      }
+
+      // Definition of generic light states for light that may be on or
+      // off.
+      //
+      enum GenericLightState {
+        // Light state is unknown (must not be used in ground truth).
+        //
+        GENERIC_LIGHT_STATE_UNKNOWN = 0;
+
+        // Other (unspecified but known) state of light.
+        //
+        GENERIC_LIGHT_STATE_OTHER = 1;
+
+        // Light is off.
+        //
+        GENERIC_LIGHT_STATE_OFF = 2;
+
+        // Light is on.
+        //
+        GENERIC_LIGHT_STATE_ON = 3;
+
+        // Light is flashing blue.
+        // To be used for emergency vehicles.
+        //
+        GENERIC_LIGHT_STATE_FLASHING_BLUE = 4;
+
+        // Light is flashing blue and red.
+        // To be used for emergency vehicles.
+        //
+        GENERIC_LIGHT_STATE_FLASHING_BLUE_AND_RED = 5;
+
+        // Light is flashing amber.
+        // To be used for service vehicles.
+        //
+        GENERIC_LIGHT_STATE_FLASHING_AMBER = 6;
+      }
+
+      // Definition of brake light states.
+      //
+      enum BrakeLightState {
+        // Brake light state is unknown (must not be used in ground
+        // truth).
+        //
+        BRAKE_LIGHT_STATE_UNKNOWN = 0;
+
+        // Other (unspecified but known) state of brake light.
+        //
+        BRAKE_LIGHT_STATE_OTHER = 1;
+
+        // Brake lights are off.
+        //
+        BRAKE_LIGHT_STATE_OFF = 2;
+
+        // Brake lights are on with normal intensity.
+        //
+        BRAKE_LIGHT_STATE_NORMAL = 3;
+
+        // Brake lights are on with extra bright intensity (indicating
+        // stronger braking).
+        BRAKE_LIGHT_STATE_STRONG = 4;
+      }
+    }
+
+    // Definition of vehicle roles.
+    //
+    // The role specifies the perceived role of a vehicle. Therefore, a
+    // civil police car is set to ROLE_CIVIL as long as it cannot be
+    // perceived as a ROLE_POLICE.
+    // The normal use case will consist of 99% ROLE_CIVIL, as this role is
+    // used for normal vehicles.
+    // These roles may influence the behavior in traffic of the surrounding vehicles.
+    // To check whether a role is "active" (e.g. blue flashing light of an
+    // ambulance or an amber flashing light of a sweeper) can be looked up
+    // in message LightState.
+    //
+    //
+    enum Role {
+      // Role of vehicle is unknown (must not be used in ground truth).
+      //
+      ROLE_UNKNOWN = 0;
+
+      // Other (unspecified but known) role of vehicle.
+      //
+      ROLE_OTHER = 1;
+
+      // The vehicle role is civil, e.g. a "normal" car.
+      //
+      ROLE_CIVIL = 2;
+
+      // The vehicle role is ambulance.
+      //
+      ROLE_AMBULANCE = 3;
+
+      // The vehicle role is fire fighting, e.g. fire engine.
+      //
+      ROLE_FIRE = 4;
+
+      // The vehicle role is police.
+      //
+      ROLE_POLICE = 5;
+
+      // The vehicle role is public transport, e.g. a school bus.
+      //
+      ROLE_PUBLIC_TRANSPORT = 6;
+
+      // The vehicle role is roadside assistance, e.g. tow truck.
+      //
+      ROLE_ROAD_ASSISTANCE = 7;
+
+      // The vehicle role is garbage collection, e.g. a garbage truck or sweeper.
+      //
+      ROLE_GARBAGE_COLLECTION = 8;
+
+      // The vehicle role is road construction, e.g. a excavator or tipper truck.
+      //
+      ROLE_ROAD_CONSTRUCTION = 9;
+
+      // The vehicle role is military, e.g. camouflaged truck.
+      //
+      ROLE_MILITARY = 10;
+    }
+  }
+}

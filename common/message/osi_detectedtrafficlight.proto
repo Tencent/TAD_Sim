@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_common.proto";
+import "osi_trafficlight.proto";
+import "osi_detectedobject.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief A traffic light in the environment as detected by the sensor.
+//
+// \image html OSI_DetectedTrafficLight.svg
+//
+// One detected traffic light message defines a single 'bulb' and not a box of
+// several bulbs, e.g. red, yellow, green are three separate detected traffic
+// lights.
+//
+message DetectedTrafficLight {
+  // Common information of one detected item.
+  //
+  DetectedItemHeader header = 1;
+
+  // The base parameters of the traffic light.
+  //
+  // \c BaseStationary::orientation x-axis is view normal of the traffic
+  // light's icon.
+  //
+  BaseStationary base = 2;
+
+  // The root mean squared error of the base parameters of the detected
+  // traffic light's geometry. \c TrafficLight::base has to be identical
+  // for all \c #candidate traffic lights.
+  //
+  BaseStationary base_rmse = 3;
+
+  // A list of candidates for this traffic light as estimated by the
+  // sensor.
+  //
+  repeated CandidateTrafficLight candidate = 4;
+
+  // The visual color of the traffic light.
+  //
+  // \note This does not represent the semantic classification but the visual
+  // appearance.  For semantic classification of the traffic light use the color
+  // field in \c CandidateTrafficLight::classification.
+  //
+  ColorDescription color_description = 5;
+
+  //
+  // \brief A candidate for a detected traffic light as estimated by
+  // the sensor.
+  //
+  message CandidateTrafficLight {
+    // The estimated probability that this candidate is the true value.
+    //
+    // \note The sum of all \c #probability must be one. This probability is
+    // given under the condition of
+    // \c DetectedItemHeader::existence_probability.
+    //
+    // \rules
+    // is_less_than_or_equal_to: 1
+    // is_greater_than_or_equal_to: 0
+    // \endrules
+    //
+    double probability = 1;
+
+    // The classification of one traffic light that define this candidate.
+    //
+    // \note IDs, which are referenced in this message, usually
+    // reference to \c DetectedXXX::tracking_id IDs.
+    //
+    TrafficLight.Classification classification = 2;
+  }
+}

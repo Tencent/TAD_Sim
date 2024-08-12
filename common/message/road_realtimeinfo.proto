@@ -1,0 +1,389 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Traffic simulation is a protocol that perceives real-time information about roads in the perception system.
+// 交通仿真, 感知系统感知道路实时信息的协议.
+//
+// \note Only used for traffic simulation. \n
+// 仅用于交通仿真.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+message HeadInfo {
+  //
+  string source_name = 1;
+  string processor_name = 2;
+  sint64 timestamp = 3;
+}
+
+message SignalInfo {
+  //
+  string id = 1;
+
+  //
+  int32 status = 2;
+
+  //
+  int32 color = 3;
+
+  //
+  float time = 4;
+
+  //
+  string deviceID = 5;
+
+  //
+  string subdeviceID = 6;
+
+  //
+  sint64 hardTimestamp = 7;
+}
+
+message DetectorInfo {
+  //
+  string id = 1;
+
+  //
+  int32 status = 2;
+
+  //
+  int32 control = 3;
+
+  //
+  float value = 4;
+
+  //
+  int32 type = 5;
+
+  //
+  string deviceID = 6;
+
+  //
+  string subdeviceID = 7;
+
+  //
+  sint64 hardTimestamp = 8;
+}
+
+message PropertyInfo {
+  //
+  string name = 1;
+
+  //
+  string desc = 2;
+
+  // discrete or derivative.
+  //
+  int32 type = 3;
+
+  //
+  float min = 4;
+
+  //
+  float max = 5;
+
+  //
+  float step = 6;
+
+  //
+  float value = 7;
+}
+
+message MachineInfo {
+  //
+  string id = 1;
+
+  //
+  int32 status = 2;
+
+  //
+  repeated PropertyInfo properties = 3;
+
+  //
+  string deviceID = 4;
+
+  //
+  string subdeviceID = 5;
+
+  //
+  sint64 hardTimestamp = 6;
+
+  //
+  double posx = 7;
+
+  //
+  double posy = 8;
+
+  //
+  int32 type = 9;
+}
+
+message StatusInfo {
+  //
+  string type = 1;
+
+  //
+  string eventid = 2;
+}
+
+message ExtraInfo {
+  //
+  float length = 1;
+
+  //
+  float width = 2;
+
+  //
+  float height = 3;
+
+  //
+  int32 color = 4;
+
+  //
+  string licensePlate = 5;
+
+  //
+  int32 vehicleBrand = 6;
+
+  //
+  repeated int32 status = 7;
+
+  //
+  // repeated StatusInfo statusList = 7;
+}
+
+message EventInfo {
+  //
+  string id = 1;
+
+  //
+  string type = 2;
+
+  //
+  string deviceID = 3;
+
+  //
+  string subdeviceID = 4;
+
+  //
+  sint64 hardTimestamp = 5;
+
+  //
+  repeated string picture = 6;
+
+  //
+  repeated string video = 7;
+
+  // json
+  //
+  string detail = 8;
+
+  //
+  double lat = 9;
+
+  //
+  double lng = 10;
+}
+
+message ObjectInfo {
+  //
+  string id = 1;
+
+  //
+  int32 source = 2;
+
+  //
+  int32 type = 3;
+
+  //
+  double lat = 4;
+
+  //
+  double lng = 5;
+
+  //
+  double ele = 6;
+
+  //
+  string roadId = 7;
+
+  //
+  float speed = 8;
+
+  //
+  float heading = 9;
+
+  //
+  repeated int32 lanes = 10;
+
+  //
+  ExtraInfo extraInfo = 11;
+
+  //
+  string deviceID = 12;
+
+  //
+  string subdeviceID = 13;
+
+  //
+  sint64 hardTimestamp = 14;
+}
+
+message AirIndexInfo {
+  //
+  float aqi = 1;
+
+  //
+  float co = 2;
+
+  //
+  float no2 = 3;
+
+  //
+  float o3 = 4;
+
+  //
+  float pm10 = 5;
+
+  //
+  float pm25 = 6;
+
+  //
+  float so2 = 7;
+}
+
+message WeatherInfo {
+  //
+  string cityName = 1;
+
+  //
+  string cityCode = 2;
+
+  //
+  string descript = 3;
+
+  //
+  string time = 4;
+
+  //
+  int32 weatherCode = 5;
+
+  //
+  int32 windDirectionCode = 6;
+
+  //
+  int32 windForceCode = 7;
+
+  //
+  float windDirectionValue = 8;
+
+  //
+  float windSpeedValue = 9;
+
+  //
+  float tempreture = 10;
+
+  //
+  float humidity = 11;
+
+  // 实况降水量.
+  //
+  // Unit: mm, Range: [0..inf], Default: 0.0
+  //
+  float precipitation = 12;
+
+  // 实况大气压强.
+  //
+  // Unit: hPa, Range: [0..1000], Default: 0.0
+  //
+  float pressure = 13;
+
+  // 实况能见度.
+  //
+  // Unit: km, Range: [0..inf], Default: 0.0
+  //
+  float visibility = 14;
+
+  //
+  float uv = 15;
+
+  //
+  AirIndexInfo airindex = 16;
+}
+
+message EventMessageData {
+  //
+  repeated HeadInfo heads = 1;
+
+  //
+  repeated EventInfo dataList = 2;
+}
+
+message PerceptionMessageData {
+  //
+  repeated HeadInfo heads = 1;
+
+  //
+  repeated ObjectInfo dataList = 2;
+}
+
+message TrafficLightMessageData {
+  //
+  repeated HeadInfo heads = 1;
+
+  //
+  repeated SignalInfo dataList = 2;
+}
+
+message SystemDetectorMessageData {
+  //
+  repeated HeadInfo heads = 1;
+
+  //
+  repeated DetectorInfo dataList = 2;
+}
+
+message MachineMessageData {
+  //
+  repeated HeadInfo heads = 1;
+
+  //
+  repeated MachineInfo dataList = 2;
+}
+
+message ComposePackMessage {
+  //
+  string devicetopic = 1;
+
+  //
+  string packindex = 2;
+
+  //
+  string packtime = 3;
+
+  //
+  repeated PerceptionMessageData perception_frames = 4;
+
+  //
+  repeated TrafficLightMessageData light_frames = 5;
+
+  //
+  repeated SystemDetectorMessageData detector_frames = 6;
+}
+
+message ComposePackRequest {
+  //
+  string devicetopic = 1;
+
+  //
+  string packindex = 2;
+
+  //
+  string type = 3;
+}
+
+service PackServer {
+  //
+  rpc queryPack(ComposePackRequest) returns (ComposePackMessage) {}
+}

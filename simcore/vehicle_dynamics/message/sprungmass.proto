@@ -1,0 +1,47 @@
+syntax = "proto3";
+import "car_basic.proto";
+package tx_car;
+
+message StaticNormalFrontLoad{
+    RealScalar FR = 1;
+    RealScalar FL = 2;
+}
+message StaticNormalRearLoad{
+    RealScalar RR = 1;
+    RealScalar RL = 2;
+}
+
+message SprungMassDD{
+    RealScalar Mass = 1;
+    //StaticNormalFrontLoad StaticNormalFrontLoad = 2;
+    //StaticNormalRearLoad StaticNormalRearLoad = 3;
+    RealScalar WheelBase = 4;
+    RealScalar FrontAxlePositionfromCG = 5;
+    RealScalar RearAxlePositionfromCG = 6;
+    RealScalar HeightCG = 7;
+    RealScalar FrontalArea = 8;
+    RealScalar DragCoefficient = 9;
+    RealScalar NumberOfWheelsPerAxle = 10;
+    RealScalar PitchMomentInertia = 11;
+    RealScalar RollMomentInertia = 12;
+    RealScalar YawMomentInertia = 13;
+    RealScalar SteeringRatio = 14;
+    // RealScalar TrackWidth = 15;
+    RealScalar SprungMass = 16;
+    RealScalar InitialLongPosition = 17;
+    RealScalar InitialLatPosition = 18;
+    RealScalar InitialVertPosition = 19;
+    RealScalar InitialRollAngle = 20;
+    RealScalar InitialPitchAngle = 21;
+    RealScalar InitialYawAngle = 22;
+    RealScalar InitialLongVel = 23;
+    RealScalar InitialLatVel = 24;
+    RealScalar InitialVertVel = 25;
+    RealScalar InitialRollRate = 26;
+    RealScalar InitialPitchRate = 27;
+    RealScalar InitialYawRate = 28;
+    RealScalar UnsprungMassRearAxle = 29;
+    RealScalar UnsprungMassFrontAxle = 30;
+    RealScalar TrackWidthFront = 31;
+    RealScalar TrackWidthRear = 32;
+}

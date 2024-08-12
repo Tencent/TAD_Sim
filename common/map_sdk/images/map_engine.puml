@@ -1,0 +1,12 @@
+@startuml
+object SearchInterface
+object LocalSearch
+object MemSearch
+object OpenDriveSearch
+
+SearchInterface <|-- "public" LocalSearch
+SearchInterface <|-- "public" MemSearch
+
+MemSearch <|-- "public" OpenDriveSearch
+
+@enduml

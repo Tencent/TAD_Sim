@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<traffic version="1.1">
+    <data randomseed="55" aggress="0.500" />
+    <routes>
+        <route id="0" type="start_end" start="118.51620138246199,-0.00038468672869579936" />
+		<route id="1011" type="start_end" start="118.4938001,0.0239594" info="101E" />
+		<route id="1012" type="start_end" start="118.4932339,0.0237028" info="101S" />
+		<route id="1013" type="start_end" start="118.4930208,0.0243741" info="101W" />
+		<route id="1014" type="start_end" start="118.4936089,0.0245437" info="101N" />
+		<route id="1021" type="start_end" start="118.5043653,0.0204854" info="102E" />
+		<route id="1022" type="start_end" start="118.5034613,0.0202367" info="102S" />
+		<route id="1023" type="start_end" start="118.5030462,0.0210669" info="102W" />
+		<route id="1024" type="start_end" start="118.5036354,0.0213649" info="102N" />
+		<route id="1031" type="start_end" start="118.5055121,-0.0042284" info="103E" />
+		<route id="1032" type="start_end" start="118.5046967,-0.0048766" info="103S" />		
+		<route id="1034" type="start_end" start="118.5046552,-0.0036296" info="103N" />
+		<route id="1041" type="start_end" start="118.5154555,-0.0007286" info="104E" />
+		<route id="1042" type="start_end" start="118.5152982,-0.0013676" info="104S" />
+		<route id="1043" type="start_end" start="118.5148823,-0.0011354" info="104W" />
+		<route id="1044" type="start_end" start="118.5149377,-0.0005873" info="104N" />
+		<route id="1051" type="start_end" start="118.4955177,-0.0198025" info="105E" />
+		<route id="1052" type="start_end" start="118.4948878,-0.0205458" info="105S" />
+		<route id="1053" type="start_end" start="118.4941375,-0.0198538" info="105W" />
+		<route id="1054" type="start_end" start="118.4947752,-0.0190088" info="105N" />
+		<route id="1061" type="start_end" start="118.5051542,-0.0197570" info="106E" />
+		<route id="1062" type="start_end" start="118.5046251,-0.0203328" info="106S" />
+		<route id="1063" type="start_end" start="118.5040638,-0.0198377" info="106W" />
+		<route id="1064" type="start_end" start="118.5045390,-0.0192471" info="106N" />
+		<route id="1071" type="start_end" start="118.5173075,-0.0199035" info="107E" />
+		<route id="1072" type="start_end" start="118.5169093,-0.0206748" info="107S" />
+		<route id="1073" type="start_end" start="118.5165186,-0.0200175" info="107W" />
+		<route id="1074" type="start_end" start="118.5167068,-0.0192508" info="107N" />
+
+    </routes>
+    <accs>
+        <acc id="1" profile="0.000,0.000" endCondition="None,0.000" />
+    </accs>
+    <accs_event>
+        <acc id="1" profile="ttc 0,0" endCondition="None,0" />
+    </accs_event>
+    <merges>
+        <merge id="1" profile="0.000,0,4.500" />
+    </merges>
+    <merges_event>
+        <merge id="1" profile="ttc 0,0" />
+    </merges_event>
+    <velocities />
+    <velocities_event />
+    <pedestrians_event />
+    <vehicles />
+    <obstacles />
+    <pedestrians />
+	<signlights>
+		<signlight id="1011" routeID="1011" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1012" routeID="1012" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1013" routeID="1013" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1014" routeID="1014" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1021" routeID="1021" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1022" routeID="1022" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1023" routeID="1023" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1024" routeID="1024" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1031" routeID="1031" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="20" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />		
+		<signlight id="1032" routeID="1032" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="20" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1034" routeID="1034" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="20" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1041" routeID="1041" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1042" routeID="1042" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1043" routeID="1043" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1044" routeID="1044" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1051" routeID="1051" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1052" routeID="1052" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1053" routeID="1053" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1054" routeID="1054" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1061" routeID="1061" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1062" routeID="1062" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1063" routeID="1063" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1064" routeID="1064" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1071" routeID="1071" start_s="0.10000000000000001" start_t="1" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1072" routeID="1072" start_s="0.10000000000000001" start_t="10" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1073" routeID="1073" start_s="0.10000000000000001" start_t="19" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+		<signlight id="1074" routeID="1074" start_s="0.10000000000000001" start_t="28" l_offset="0.1" time_green="5" time_yellow="2" time_red="29" direction="180" compliance="1.0" lane="ALL" phase="A" status="Activated" />
+	</signlights>	
+    <scene_event version="1.0.0.0" />
+</traffic>

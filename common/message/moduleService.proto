@@ -1,0 +1,194 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+enum Topic {
+  LOCATION = 0;
+  TRAFFIC = 1;
+  TRAJECTORY = 2;
+  PLAN_OUTPUT = 3;
+  CONTROL = 4;
+  IBEO_DATA = 5;
+  LANE_MARKS = 6;
+  LOCAL_LOCATION = 7;
+  GRADING = 8;
+  PLAN_DEBUG_INFO = 9;
+  GROUND_TRUTH = 10;
+  CAMERA_SENSOR_VIEW = 11;
+  GT_SENSOR_DATA = 12;
+  PLAN_STATUS = 13;
+  L3_STATE_MACHINE = 14;
+  L3_SYSTEM_STATE = 15;
+  EGO_TRAFFIC = 16;
+  VEHICLE_STATE = 17;
+}
+
+enum ErrorCode {
+  SUCCESS = 0;
+  MODULE_STOP = 1;
+  ERROR_INIT = 2;
+  ERROR_RESET = 3;
+  ERROR_STEP = 4;
+  ERROR_STOP = 5;
+  ERROR_NOT_INIT = 6;
+  ERROR_MULTI_CONNECT = 7;
+  ERROR_CONNECT = 8;
+  ERROR_INVALID_CAR = 9;
+  ERROR_NOT_BELONG = 10;
+  ERROR_UNKNOWN = 11;
+}
+
+// just for declaration
+// service ModuleService {
+//   rpc Init (InitParams) returns (InitResult);
+//
+//   rpc Reset (ResetParams) returns (ErrorStatus);
+//
+//   rpc Step (SimMessage) returns (StepResult);
+//
+//   rpc Stop (StopParams) returns (StopResult);
+//
+//   rpc Run (stream SimMessage) returns (stream StepResult);
+//
+//   rpc Heartbeat (HeartbeatRequest) returns (HeartbeatResponse);
+// }
+
+message ErrorStatus {
+  //
+  ErrorCode errorCode = 1;
+
+  //
+  string errorMessage = 2;
+}
+
+message InitParams {
+  //
+  map<string, string> params = 1;
+}
+
+message TopicList {
+  //
+  repeated Topic topic = 1;
+}
+
+message InitResult {
+  //
+  TopicList topics = 1;
+
+  //
+  ErrorStatus errorStatus = 2;
+
+  //
+  repeated string str_topics = 3;
+}
+
+message ResetParams {
+  //
+  string scenarioPath = 1;
+
+  //
+  string hadmapPath = 2;
+
+  //
+  Vec3 startPos = 3;
+
+  //
+  Vec3 endPos = 4;
+
+  //
+  double startVel = 5;
+
+  //
+  double maxVel = 6;
+
+  //
+  double theta = 7;
+
+  // For grading ,add by JiangyuLin.
+  //
+  double speedLimit_Max = 8;
+
+  //
+  double speedLimit_Min = 9;
+
+  //
+  double accelerationLimit_Max = 10;
+
+  //
+  double accelerationLimit_Min = 11;
+
+  // for rosbag replay.
+  // 用于 rosbag 回放.
+  //
+  string rosbagFilePath = 12;
+
+  //
+  Vec3 localOrigin = 13;
+
+  // For grading ,add by JiangyuLin.
+  //
+  double timeheadway_Min = 14;
+
+  //
+  int32 job_id = 15;
+
+  //
+  int32 scene_id = 16;
+
+  //
+  int32 ego_id = 17;
+
+  //
+  repeated Vec2 geo_fence = 18;
+
+  // [startPos, control points..., endPos].
+  //
+  repeated Vec3 ego_path = 19;
+}
+
+message SimMessage {
+  //
+  map<string, bytes> messages = 1;
+
+  //
+  uint64 frameId = 2;
+
+  // simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timeStamp = 3;
+}
+
+message StepResult {
+  //
+  SimMessage result = 1;
+
+  //
+  ErrorStatus errorStatus = 2;
+
+  // simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timeCost = 3;
+}
+
+message StopResult {
+  //
+  map<string, string> feedback = 1;
+
+  //
+  ErrorStatus errorStatus = 2;
+}

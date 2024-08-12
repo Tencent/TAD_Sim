@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<Sensor version="1.0">
+    <Camera Active="1">
+        <Config ID="0" LocationX="43.678699999999999" LocationY="-12.0906" LocationZ="160.995" RotationX="179.11756600000001" RotationY="178.602565" RotationZ="179.52599499999999" Enabled="false" Frequency="25" Device=".0" IntrinsicParamType="intrinsic" DisplayMode="Color" FOV_Horizontal="60" FOV_Vertical="36.280000000000001" Res_Horizontal="1920" Res_Vertical="1208" Blur_Intensity="0" MotionBlur_Amount="0" Vignette_Intensity="0" Noise_Intensity="Off" Intrinsic_Matrix="1945.1674168728503, 0., 946.11889604089231, 0,1938.1372280069070, 619.70485474739780, 0., 0., 1." Distortion_Parameters="-0.53336804278253547, 0.45773462092698042,-0.48360765272003647,-0.0023929586859060227, 0.0018364297357014352" CCD_Width="10" CCD_Height="10" Focal_Length="10" />
+    </Camera>
+    <Truth Active="1">
+        <Config ID="1" LocationX="-135.194" LocationY="0" LocationZ="34.838" RotationX="0" RotationY="0" RotationZ="0" Enabled="false" Device=".0" vfov="180" hfov="90" drange="20100" />
+    </Truth>
+    <IMU Active="1">
+        <Config ID="1" LocationX="-154.09999999999999" LocationY="0" LocationZ="58" RotationX="1.0992770000000001" RotationY="2.1303169999999998" RotationZ="-90.614903499999997" Enabled="false" Quaternion="0.0081246,-0.0064694,-0.7106605,0.7034585" />
+    </IMU>
+    <GPS Active="1">
+        <Config ID="1" LocationX="0" LocationY="15.800000000000001" LocationZ="170.59999999999999" RotationX="0" RotationY="0" RotationZ="0" Enabled="false" Quaternion="0,0,0,0" />
+    </GPS>
+</Sensor>

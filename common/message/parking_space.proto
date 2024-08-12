@@ -1,0 +1,261 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Parking space information.
+// 泊车车位信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum ParkingType {
+  TYPE_PARALLEL = 0;
+	TYPE_VERTICAL = 1;
+	TYPE_SLANTED = 2;
+}
+
+message ParkingPoint {
+  // Local coordinate system corner x.
+  // 局部坐标系角点 x.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 1;
+
+  // Local coordinate system corner y.
+  // 局部坐标系角点 y.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 2;
+
+  // Local coordinate system corner z.
+  // 局部坐标系角点 z.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double z = 3;
+}
+
+message Parking {
+  // id of parking.
+  // 停车位的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Parking type.
+  // 车位类型.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  // \note Parallel, Vertical, Diagonal, \n
+  // 平行, 垂直, 斜列
+  //
+  ParkingType type = 2;
+
+  // Width (in the direction perpendicular to the road).
+  // 宽(垂直路方向).
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double length = 3;
+
+  // Length (in the direction parallel to the road).
+  // 长(平行路方向).
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double depth = 4;
+
+  // Orientation (long side).
+  // 朝向(长边).
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double yaw = 5;
+
+  // Center point.
+  // 中心点.
+  //
+  ParkingPoint center = 6;
+
+  // Left top point.
+  // 左上点.
+  //
+  ParkingPoint lt  = 7;
+
+  // Left bottom point.
+  // 左下点.
+  //
+  ParkingPoint lb = 8;
+
+  // Right top point.
+  // 右上点.
+  //
+  ParkingPoint rt = 9;
+
+  // Right bottom point.
+  // 右下点.
+  //
+  ParkingPoint rb = 10;
+}
+
+message Obstacle {
+  // id of Obstacle.
+  // 障碍物的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Central angle.
+  // 中心角.
+  //
+  ParkingPoint pos = 2;
+
+  // Heading angle.
+  // 航向角.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double heading = 3;
+}
+
+message EgoVehicle {
+  // id of EgoVehicle.
+  // EgoVehicle 的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id  = 1;
+
+  // Center point.
+  // 中心点.
+  //
+  ParkingPoint pos = 2;
+
+  // Heading angle.
+  // 航向角.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double heading = 3;
+}
+
+message TrafficVehicle {
+  // id of TrafficVehicle.
+  // TrafficVehicle 的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id  = 1;
+
+  // Center point.
+  // 中心点.
+  //
+  ParkingPoint pos = 2;
+
+  // Coordinate in the ego vehicle coordinate system.
+  // 主车坐标系的坐标.
+  //
+  ParkingPoint vehicle_pos = 3;
+
+  // Heading angle.
+  // 航向角.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double heading = 4;
+
+  // Velocity.
+  // 速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double v = 5;
+
+  // Acceleration and deceleration.
+  // 加速度和减速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double acc = 6;
+}
+
+message Ultrasonic {
+  // id of Ultrasonic.
+  // 超声波的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Distance of Ultrasonic detection.
+  // 超声波检测的距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double distance = 2;
+
+  // Type of hit.
+  // 命中的类型.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  // \note Traffic vehicle, Dynamic obstacle, Static obstacle, \n
+  // 交通车, 动态障碍物, 静态障碍物
+  //
+  int32 source_type = 3;
+}
+
+message ParkingData {
+  // One ego.
+  // 一个自主车辆.
+  //
+  EgoVehicle ego = 1;
+
+  // List of traffic.
+  // 交通车辆列表.
+  //
+  repeated TrafficVehicle traffic = 2;
+
+  // List of obstacles (dynamic and static).
+  // 障碍物列表(动态和静态).
+  //
+  repeated Obstacle obstacle = 3;
+
+  // List of parking spaces.
+  // 停车位列表.
+  //
+  repeated Parking parking = 4;
+}
+
+message ParkingSpace {
+  // Timestamp.
+  // 时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double t = 1;
+
+  // World coordinates.
+  // 世界坐标.
+  //
+  ParkingData world = 2;
+
+  // ST coordinates.
+  // ST 坐标.
+  //
+  ParkingData st = 3;
+
+  // List of ultrasonic info.
+  // 超声波信息列表.
+  //
+  // \note Configuration ultrasonic required in tadsim, \n
+  // 在 tadsim 中需要配置超声波.
+  //
+  repeated Ultrasonic ultrasonic = 4;
+}

@@ -1,0 +1,57 @@
+.. txSimSDK documentation master file, created by
+   sphinx-quickstart on Wed Nov  6 06:09:14 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Welcome to txSimSDK's documentation!
+====================================
+
+.. WARNING::
+
+   Currently this documentation is **work in progress**, more detailed contents should be added in.
+
+算法接入简要流程
+----------------
+用户算法(C/C++)接入TADSim仿真系统只需要实现四个C++的接口函数(回调函数/Callback)即可，支持编译的产出为：
+
+* 将自己的算法编译为动态库(so/dll)，然后通过仿真系统进行加载，并在运行时调用用户实现的对应的接口函数以执行相应的用户算法逻辑。该方式只需要用户的代码工程添加仿真的头文件即可，无需额外链接任何仿真的依赖库；
+* 将自己的算法编译为可执行文件(binary/exe)，该方式除了添加仿真相关的头文件外，还需再额外链接仿真系统的动态库。
+
+算法接入本身无需依赖任何其他第三方库，但是由于仿真系统内置的消息定义采用了谷歌开源的 `Protocol Buffers <https://developers.google.com/protocol-buffers>`_ 格式，所以为了解析仿真系统发出的消息，需要额外依赖protobuf库，任意版本均可（推荐3.0以上任意版本）。
+另外本文档使用的example工程使用cmake生成工程文件，如果需要编译示例工程则需要再安装 `cmake <https://cmake.org>`_ （Ubuntu下直接sudo apt install cmake即可，Windows下可直接去官网下载安装包）。
+
+以Ubuntu 16.04下编译example为例：
+
+1. 解压txSimSDK.tar.gz，在解压出的txSim目录中包含以下子目录：
+
+   * ``examples``: 示例工程源码；
+   * ``inc``: 算法接入仿真系统所需要的头文件；
+   * ``lib``: 编译为可执行文件时需要额外链接的仿真系统动态库；
+   * ``msgs``: 仿真系统内消息的protocol buffers定义；
+   * ``doc``: 本文档内容。
+
+2. 进入examples目录执行如下命令::
+
+     mkdir build && cd build
+     cmake ..
+     make
+
+   编译成功后产出在 ``examples/build/lib/libmy-module.so`` (动态库)和 ``examples/build/bin/my-module-main`` (可执行文件)。
+
+| 具体的接口函数说明参考API文档 :doc:`tx_sim::SimModule <api/classtx__sim_1_1SimModule>` 。
+| 如果需要将算法编译为可执行程序，还需参考 :doc:`tx_sim::SimModuleService <api/classtx__sim_1_1SimModuleService>` 。
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   api/library_root
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`search`
+

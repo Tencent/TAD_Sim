@@ -1,0 +1,25 @@
+# 目录结构
+    --arbitrary                   仲裁模块（驾驶员模型结合使用）
+    --catalogs                    车辆行人障碍物模型参数
+    --cmake                       编译使用
+    --envpb                       环境信息处理模块
+    --excel2asam                  通过语义定义生成场景和地图
+    --framework                   调度引擎
+    --grading                     评测模块
+    --lanemark_detector           车道线处理模块, 使用场景单机版和云平台场景仿真
+    --map_server                  解析地图文件(支持XODR)，提供地图道路/车道/路口/对象等元素插叙服务, 及支持地图/场景编辑功能
+            --service             hadmap_server 接入层
+    --imu_gps                     传感器模块 - 真值 imu and gps
+    --perfect_control             完美控制模块
+    --perfect_planning            完美规划 & 驾驶员模型
+    --post_script                 仿真过程数据后处理脚本
+    --protobuf_log                仿真过程数据记录
+    --sensor                      传感器相关模块汇总
+        --display                 三维可视化 & 传感器模块 Camera/Lidar/Ultrasonic
+        --imu_gps                 传感器模块 - 惯导 & 定位
+        --radar                   传感器模块 - 毫米波雷达
+        --sensor_truth            传感器模块 - 真值camera/真值lidar/真值ultra/真值传感器
+        --sim_label               数据标注模块
+        --v2x                     传感器模块 - 车联网
+    --traffic                     交通流模块 (包含 worldsim & logsim & logworld & 云端虚拟城市模式)
+    --vehicle_dynamics            车辆动力学

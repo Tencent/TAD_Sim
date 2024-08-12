@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+import "its_sim.proto";
+
+package its;
+option java_outer_classname = "its_semantic_map";
+
+enum txDirection {
+   Dir_Null = 0;
+   Dir_East = 1;
+   Dir_West = 2;
+   Dir_Sorth = 3;
+   Dir_North = 4;
+}
+
+message txPositionLL {
+    float lng = 1;
+    float lat = 2;
+}
+message txBaseRoad {
+    uint64 id = 1;
+    repeated uint64 map_road_id = 2;
+}
+
+message txSemanticRoad {
+    uint64 road_id = 1;
+    string cn_name = 2;
+    txDirection dir = 3;
+    txPositionLL pos = 4;
+    repeated uint64 base_road_id = 5;
+    txRoadType road_type = 6;
+}
+
+message txSemanticNode {
+    uint64 node_id = 1;
+    string cn_name = 2;  
+    txPositionLL pos = 3;  
+    map<uint32, uint64> entry = 4; //<txDirection, txBaseRoadId>
+    map<uint32, uint64> out = 5;   //<txDirection, txBaseRoadId>
+}
+
+message txSemanticMap {
+    map<uint64, txBaseRoad> base_road_dict = 1;
+    map<uint64, txSemanticRoad> semantic_road_dict = 2;
+    map<uint64, txSemanticNode> semantic_node_dict = 3;
+}

@@ -1,0 +1,8 @@
+FROM adamrehn/ue4-runtime:18.04-vulkan-noaudio
+USER root
+
+COPY --chown=ue4:ue4 --chmod=777 build/bin/Display /home/ue4/Display
+
+USER ue4
+
+WORKDIR /home/ue4

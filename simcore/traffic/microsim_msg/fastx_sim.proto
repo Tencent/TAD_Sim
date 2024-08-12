@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package fastx;
+
+import "its_sim.proto";
+
+//###################################Od Demand Service Data#######################################
+service ODProducer {
+  rpc convertOD (ODConvertRequest) returns (ODReply) {}
+}
+
+message ODConvertRequest {
+  uint32 city_id = 1;
+  uint32 map_id = 2;
+  uint64 timestamp = 3;                       // 单位：ms
+  repeated its.txVehicle vehicle = 4;
+}
+
+service ODSupplier {
+  rpc getRealOD (ODRealRequest) returns (ODReply) {}
+  rpc getEventOD (ODEventRequest) returns (ODReply) {}
+}
+
+message ODRealRequest {
+  uint32 city_id = 1;
+  uint32 map_id = 2;
+  uint64 timestamp = 3;                       // 单位：ms
+}
+
+message ODEventRequest {
+  uint32 city_id = 1;
+  uint32 map_id = 2;
+  uint64 curr_timestamp = 3;                  // 单位：ms
+  uint64 st_timestamp = 4;                    // 单位：ms
+  uint64 en_timestamp = 5;                    // 单位：ms
+}
+
+message ODReply {
+  uint32 status = 1;
+  string msg = 2;
+  its.txDynamicData dynamic_data = 3;
+}

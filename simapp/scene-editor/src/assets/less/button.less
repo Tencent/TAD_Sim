@@ -1,0 +1,203 @@
+@import "./var";
+
+.el-button {
+  --el-color-primary: @global-primary-color;
+  --el-button-height: 26px;
+  --el-button-text-color: @global-default-color;
+  --el-button-hover-text-color: @global-primary-color;
+  --el-button-disabled-text-color: @disable-default-color;
+  --el-button-bg-color: @global-bg-color;
+  --el-button-hover-bg-color: @global-bg-color;
+  --el-button-border-color: @global-bd-color;
+  --el-button-hover-border-color: @global-primary-color;
+
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  padding: 0.5em 1em;
+  border-radius: 0;
+  height: var(--el-button-height);
+
+  i {
+    flex: none;
+  }
+
+  span {
+    flex: auto;
+    //overflow-x: hidden;
+    //text-overflow: ellipsis;
+    //white-space: nowrap;
+  }
+
+  &.is-round {
+    border-radius: 1em;
+    padding: 0.5em 1em;
+  }
+
+  &.is-circle {
+    padding: 0.75em;
+  }
+
+  &.el-button--medium {
+    font-size: 14px;
+    padding: 0.5em 1em;
+  }
+
+  &.el-button--small {
+    font-size: 12px;
+    padding: 0.5em 1em;
+  }
+
+  &.el-button--mini {
+    font-size: 12px;
+    padding: 0.4em 0.8em;
+  }
+
+  &--default {
+    color: @global-default-color;
+    background-color: @global-bg-color;
+    border-color: @global-bd-color;
+
+    &:active,
+    &:focus {
+      color: @global-default-color;
+      background-color: @global-bg-color;
+      border-color: @global-bd-color;
+    }
+
+    &:hover {
+      color: @global-primary-color;
+      background-color: @active-bg-color;
+      border-color: @global-primary-color;
+    }
+  }
+
+  &.is-disabled {
+    &--primary {
+      color: @global-fore-color;
+      background-color: @disable-primary-color;
+      border-color: @disable-primary-color;
+    }
+
+    &--success {
+      color: @global-fore-color;
+      background-color: @disable-success-color;
+      border-color: @disable-success-color;
+    }
+
+    &--warning {
+      color: @global-fore-color;
+      background-color: @disable-warning-color;
+      border-color: @disable-warning-color;
+    }
+
+    &--danger {
+      color: @global-fore-color;
+      background-color: @disable-danger-color;
+      border-color: @disable-danger-color;
+    }
+
+    &--info {
+      color: @global-fore-color;
+      background-color: @disable-info-color;
+      border-color: @disable-info-color;
+    }
+
+    &--text {
+      color: inherit;
+      background: none;
+      border-color: transparent;
+    }
+
+  }
+
+  &.is-plain {
+    //todo 朴素样式
+  }
+
+  &--primary {
+    color: @active-bg-color;
+    background-color: @global-primary-color;
+    border-color: @global-primary-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: @active-bg-color;
+      background-color: @active-primary-color;
+      border-color: @active-primary-color;
+    }
+  }
+
+  &--success {
+    color: @global-fore-color;
+    background-color: @global-success-color;
+    border-color: @global-success-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: @active-success-color;
+      border-color: @active-success-color;
+    }
+  }
+
+  &--warning {
+    color: @global-fore-color;
+    background-color: @global-warning-color;
+    border-color: @global-warning-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: @active-warning-color;
+      border-color: @active-warning-color;
+    }
+  }
+
+  &--danger {
+    color: @global-fore-color;
+    background-color: @global-danger-color;
+    border-color: @global-danger-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: @active-danger-color;
+      border-color: @active-danger-color;
+    }
+  }
+
+  &--info {
+    color: @global-fore-color;
+    background-color: @global-info-color;
+    border-color: @global-info-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: @active-info-color;
+      border-color: @active-info-color;
+    }
+  }
+
+  &--text {
+    color: inherit;
+    background: none;
+    border-color: transparent;
+    padding-left: 0;
+    padding-right: 0;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: inherit;
+    }
+  }
+}
+
+.el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {
+  color: @disable-default-color;
+  background-color: @global-bd-color;
+  border-color: @disable-bd-color;
+}

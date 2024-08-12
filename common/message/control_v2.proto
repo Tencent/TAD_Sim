@@ -1,0 +1,379 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Control commands, generally publish by control module and received by dynamics module.
+// 控制命令, 一般由控制模块发布, 动力学模块接收.
+//
+// TOPIC: CONTROL_V2
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+
+//
+// \brief Decoupled control message, acceleration, deceleration, steer are decoupled.
+// 解耦控制信息, 加速/制动/转向都是解耦的.
+//
+message Control_V2 {
+  enum GEAR_MODE {
+    NO_CONTROL = 0;
+    PARK = 1;
+    REVERSE = 2;
+    NEUTRAL = 3;
+    DRIVE = 4;
+  }
+
+  //
+  // \brief Control type, longitudinal and lateral decoupled.
+  // 控制类型, 纵向和横向解耦.
+  //
+  message CONTROL_TYPE {
+    enum ACCEL_CONTROL_TYPE {
+      // Target acc control.
+      // 加速度控制
+      //
+      TARGET_ACC_CONTROL = 0;
+
+      // Request torque control.
+      // 扭矩控制.
+      //
+      REQUEST_TORQUE_CONTROL = 1;
+
+      // Request distance to stop and max allowed velocity.
+      // 停车剩余距离和最大允许车速.
+      //
+      REQUEST_DISTANCE_AND_VELOCITY = 2;
+
+      // Request throttle control.
+      // 节气门控制.
+      //
+      REQUEST_THROTTLE = 3;
+
+      // No accel control.
+      // 无加速度控制.
+      //
+      ACCEL_NO_CONTROL = 7;
+    }
+
+    enum BRAKE_CONTROL_TYPE {
+      // Target decel control.
+      // 减速度控制.
+      //
+      BRAKE_TARGET_ACC_CONTROL = 0;
+
+      // Request brake pressure control.
+      // 制动压力控制.
+      //
+      REQUEST_BRAKE_PRESSURE_CONTROL = 1;
+
+      // No brake control.
+      // 无制动控制.
+      //
+      BRAKE_NO_CONTROL = 7;
+    }
+
+    enum STEER_CONTROL_TYPE {
+      // Target steering wheel angle control.
+      // 转向角度控制.
+      //
+      TARGET_STEER_ANGLE = 0;
+
+      // Request steer torque control.
+      // 转向扭矩控制.
+      //
+      REQUEST_STEER_TORQUE_CONTROL = 1;
+
+      // Request front wheel angle.
+      // 前轮转角控制.
+      //
+      REQUEST_FRONT_WHEEL_ANGLE = 2;
+
+      // No steer control.
+      // 无转向控制.
+      //
+      STEER_NO_CONTROL = 7;
+    }
+
+    // Type of acceleration control.
+    // 加速控制类型.
+    //
+    // Unit: N/A, Range: [0..7], Default: 7
+    //
+    ACCEL_CONTROL_TYPE acc_control_type = 1;
+
+    // Brake control type.
+    // 制动控制类型.
+    //
+    // Unit: N/A, Range: [0..7], Default: 7
+    //
+    BRAKE_CONTROL_TYPE brake_control_type = 2;
+
+    // Steering control type.
+    // 转向控制类型.
+    //
+    // Unit: N/A, Range: [0..7], Default: 7
+    //
+    STEER_CONTROL_TYPE steer_control_type= 3;
+  }
+
+  //
+  // \brief Control cmd, vehicle dynamics module should use
+  // various combinations of elements in this message
+  // according to message CONTROL_TYPE.
+  // 控制命令, 车辆动力学模块应使用 CONTROL_TYPE 中的各种元素组合.
+  //
+  message ControlCmd {
+    // Longitudinal target acceleration value, used for acc or brake.
+    // 纵向加减速度控制值, 用于动力和制动控制.
+    //
+    // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+    //
+    double request_acc = 1;
+
+    // Longitudinal request torque value, used for acc.
+    // 纵向加减扭矩控制值, 用于动力和制动控制.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double request_torque = 2;
+
+    // Longitudinal request master cylinder brake pressure, used for brake.
+    // 纵向主缸压力控制值, 用于制动控制.
+    //
+    // Unit: MPa, Range: [0..inf], Default: 0.0
+    //
+    double request_brake_pressure = 3;
+
+    // Lateral request steer wheel angle.
+    // 横向方向盘转角控制值.
+    //
+    // Unit: degree, Range: [-inf..inf], Default: 0.0
+    //
+    double request_steer_wheel_angle = 4;
+
+    // Lateral request steer torque.
+    // 横向方向盘扭矩控制值.
+    //
+    // Unit: Nm, Range: [-inf..inf], Default: 0.0
+    //
+    double request_steer_torque = 5;
+
+    // Longitudinal request distance to stop, used for REQUEST_DISTANCE_AND_VELOCITY.
+    // 停车的纵向距离请求值, 用于 REQUEST_DISTANCE_AND_VELOCITY.
+    //
+    // Unit: m, Range: [-inf..inf], Default: 0.0
+    //
+    double request_distance_2_stop = 6;
+
+    // Longitudinal request max velocity, used for REQUEST_DISTANCE_AND_VELOCITY.
+    // 纵向最大允许车速请求值, 用于 REQUEST_DISTANCE_AND_VELOCITY.
+    //
+    // Unit: km/h, Range: [-inf..inf], Default: 0.0
+    //
+    double max_velocity = 7;
+
+    // Longitudinal request throttle.
+    // 纵向节气门请求值.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double request_throttle = 8;
+
+    // Lateral request front wheel angle.
+    // 横向前轮转角请求值.
+    //
+    // Unit: rad, Range: [-inf..inf], Default: 0.0
+    //
+    double request_front_wheel_angle = 9;
+  }
+
+  //
+  // \brief On off state.
+  //
+  enum OnOff {
+    OFF = 0;
+    ON = 1;
+  }
+
+  //
+  // \brief Body control command.
+  // 车身控制指令.
+  //
+  message BodyCommand {
+    // Whether to turn on horn.
+    // 是否请求开启喇叭.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff horn = 1;
+
+    // Whether to turn on turn left.
+    // 是否请求左转.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff left_turn = 2;
+
+    // Whether to turn on turn right.
+    // 是否请求右转.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff right_turn = 3;
+
+    // Whether to turn on front fog lamp.
+    // 是否请求开启前雾灯.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff front_fog_lamp = 4;
+
+    // Whether to turn on rear fog lamp.
+    // 是否请求开启后雾灯.
+    ///
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff rear_fog_lamp = 5;
+
+    // Whether to turn on position lamp.
+    // 是否请求开启示宽灯(位置灯).
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff position_lamp = 6;
+
+    // Whether to turn on low beam.
+    // 是否请求开启近光灯.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff low_beam = 7;
+
+    // Whether to turn on high beam.
+    // 是否请求开启远光灯.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff high_beam = 8;
+
+    // Whether to turn on hazard light.
+    // 是否请求开启双闪灯.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff hazard_light = 9;
+  }
+
+  //
+  // \brief Chassis system command.
+  // 底盘系统控制.
+  //
+  // \note reserve
+  //
+  message ChassisCommand {
+  }
+
+  //
+  // \brief Powertrain system command.
+  // 动力传动系统控制.
+  //
+  // \note reserve
+  //
+  message PowerTrainCommand {
+  }
+
+  //
+  // \brief Control flags, adapted for custom defined flags.
+  // 控制标志, 适用于自定义.
+  //
+  message ControlFlags {
+    // flag 1, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_1 = 1;
+
+    // flag 2, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_2 = 2;
+
+    // flag 3, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_3 = 3;
+
+    // flag 4, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_4 = 4;
+
+    // flag 5, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_5 = 5;
+
+    // flag 6, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_6 = 6;
+
+    // flag 7, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_7 = 7;
+
+    // flag 8, custom is response for the meaning of this flags.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint32 flag_8 = 8;
+  }
+
+  //
+  Header header = 1;
+
+  // Control type.
+  // 控制类型.
+  //
+  CONTROL_TYPE control_type = 2;
+
+  // Gear control cmd.
+  // 档位控制命令.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  GEAR_MODE gear_cmd = 3;
+
+  // Control cmd for acc / brake / steer.
+  // 控制命令, 加速 / 制动 / 转向.
+  //
+  ControlCmd control_cmd = 4;
+
+  // Body control cmd.
+  // 车身控制命令.
+  //
+  BodyCommand body_cmd = 5;
+
+  // Chassis control cmd, reserve.
+  // 底盘控制命令, 预留.
+  //
+  ChassisCommand chassis_cmd = 6;
+
+  // Powertrain control cmd, reserve.
+  // 动力传动系统控制, 预留.
+  //
+  PowerTrainCommand powertrain_cmd = 7;
+
+  // Control flags, reserved for custom use.
+  // 控制标志, 适用于自定义.
+  //
+  ControlFlags control_flags = 8;
+}

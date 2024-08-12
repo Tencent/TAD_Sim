@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0" date_version="1702389947411" sim_id="32">
+    <controlPath>888_controlpath.txt</controlPath>
+    <mapfile lon="121.987228" lat="30.754235999999999" alt="37.523178000000001" unrealLevelIndex="6">../hadmap/od_ysgfz_20200529.new.xodr</mapfile>
+    <traffic>888_traffic.xml</traffic>
+    <planner>
+        <ego type="truck" />
+        <route id="0" type="start_end" start="121.9850153353384,30.690538091977256" end="121.98897123151554,30.685637780337146" />
+        <start_v>0</start_v>
+        <theta>-0.959496935436996</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <altitude start="30.77600375842303" end="30.892613097093999" />
+        <InputPath points="121.985015000000,30.690538000000,30.776;121.988158780000,30.686704440000,31.240;121.988971230000,30.685637780000,30.893" />
+        <ControlPath points="121.98501500,30.69053800,30.776,0.00,drive;121.98815878,30.68670444,31.240,6.00,drive;121.98897123,30.68563778,30.893,6.00,drive" sampleInterval="0.10" />
+    </planner>
+</simulation>

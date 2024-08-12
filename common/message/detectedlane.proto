@@ -1,0 +1,79 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Detected lane information.
+// 检测到的车道线信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message DetectedLaneBoundary {
+  //
+  int32 valid = 1;
+
+  //
+  int32 track_id = 2;
+
+  //
+  int32 age = 3;
+
+  //
+  repeated CandidateLaneBoundary candidate = 4;
+
+  //
+  float start = 5;
+
+  //
+  float end = 6;
+
+  //
+  int32 is_crossing = 7;
+
+  //
+  float width = 8;
+
+  //
+  float width_std = 9;
+
+  //
+  float dash_length = 10;
+
+  //
+  float dash_gap = 11;
+
+  //
+  repeated float line_coefficient = 12;
+
+  //
+  repeated float line_coefficient_std = 13;
+
+  message CandidateLaneBoundary {
+    //
+    float probability = 1;
+
+    //
+    int32 color = 2;
+
+    //
+    int32 classification = 3;
+
+    //
+    int32 double_line_type = 4;
+
+    //
+    int32 decel_type = 5;
+  }
+}
+
+message DetectedLaneBoundarySeries {
+  //
+  repeated DetectedLaneBoundary left = 1;
+
+  //
+  repeated DetectedLaneBoundary right = 2;
+
+  //
+  float host_lane_width = 3;
+}

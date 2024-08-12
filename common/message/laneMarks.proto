@@ -1,0 +1,329 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Truth data related to lanemark in the neighborhood of the ego.
+// 主车附近车道线相关的真值数据.
+//
+// TOPIC: LANE_MARKS
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+import "basic.proto";
+
+message LaneMark {
+  // Lane marking color.
+  // 车道线颜色.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  // \note
+  // 0: white \n
+  // 1: yellow \n
+  // 2: red \n
+  // 3: green \n
+  // 4: blue \n
+  // 5: other \n
+  //
+  int32 color = 1;
+
+  // Refer to MAPSDK Lane Line Types, support multiple.
+  // 参考 MAPSDK 车道线类型, 支持多种.
+  //
+  // Unit: N/A, Range: [-1..inf], Default: -1
+  //
+  // \note
+  // LANE_MARK_None = -1 \n
+  // LANE_MARK_Solid = 0x1 \n
+  // LANE_MARK_Broken = 0x2 \n
+  // LANE_MARK_Solid2 = 0x10 \n
+  // LANE_MARK_Broken2 = 0x20 \n
+  // LANE_MARK_SolidSolid = LANE_MARK_Solid | LANE_MARK_Solid2 (for double solid line) 0x3 \n
+  // LANE_MARK_SolidBroken = LANE_MARK_Solid | LANE_MARK_Broken2, \n
+  // (from inside to outside, exception: center lane - from left to right) \n
+  // LANE_MARK_BrokenSolid = LANE_MARK_Broken | LANE_MARK_Solid2, \n
+  // (from inside to outside, exception: center lane - from left to right) \n
+  // LANE_MARK_BrokenBroken = LANE_MARK_Broken | LANE_MARK_Broken2 \n
+  // LANE_MARK_Curb = 0x100 \n
+  // LANE_MARK_Fence = 0x200 \n
+  // LANE_MARK_RoadEdge = 0x400 \n
+  // LANE_MARK_Bold = 0x1000 (bold lines) \n
+  // LANE_MARK_Yellow = 0x10000 (yellow lines, default white) \n
+  // LANE_MARK_Yellow2 = 0x20000 (blue green red) \n
+  // LANE_MARK_YellowYellow = 0x30000 \n
+  // LANE_MARK_OtherColors = 0x40000 \n
+  // LANE_MARK_Red = 0x50000 \n
+  // LANE_MARK_Green = 0x60000 \n
+  // LANE_MARK_Blue	= 0x70000 \n
+  // LANE_MARK_LDM = 0x100000 \n
+  // LANE_MARK_VGL = 0x200000 \n
+  // LANE_MARK_Shielded = 0x1000000 (virture mark) \n
+  // LANE_MARK_Absent = 0x2000000 (virture mark" {-1,0~65538})
+  //
+  int32 type = 2;
+
+  // Lane marking confidence.
+  // 车道线置信度.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0.0
+  //
+  float confidence = 3;
+
+  // \sub points.x, Discrete coordinate points of the lane line, \n
+  // from the current position of ego forward, in the x-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // 车道线的离散坐标点, 从主车当前位置向前, x 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub points.y, Discrete coordinate points of the lane line, \n
+  // from the current position of ego forward, in the y-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // 车道线的离散坐标点, 从主车当前位置向前, y 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub points.z, Discrete coordinate points of the lane line, \n
+  // from the current position of ego forward, in the z-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // \车道线的离散坐标点, 从主车当前位置向前, z 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  repeated Vec3 points = 4;
+
+  // \sub backward_points.x, 车道线的离散坐标点, 从主车当前位置向后, x 轴方向, 默认每隔 3m, 可以配置,
+  // 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub backward_points.y, 车道线的离散坐标点, 从主车当前位置向后, y 轴方向, 默认每隔 3m, 可以配置,
+  // 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub backward_points.z, 车道线的离散坐标点, 从主车当前位置向后, z 轴方向, 默认每隔 3m, 可以配置,
+  // 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+
+  // \sub points.x, Discrete coordinate points of the lane line, \n
+  // from the current position of ego backward, in the x-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // 车道线的离散坐标点, 从主车当前位置向后, x 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub points.y, Discrete coordinate points of the lane line, \n
+  // from the current position of ego backward, in the y-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // 车道线的离散坐标点, 从主车当前位置向后, y 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub points.z, Discrete coordinate points of the lane line, \n
+  // from the current position of ego backward, in the z-axis direction, \n
+  // with a default interval of 3m, configurable, \n
+  // and the same coordinate system as the geoReference in the map file.
+  // \车道线的离散坐标点, 从主车当前位置向后, z 轴方向, 默认每隔 3m, 可以配置, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  repeated Vec3 backward_points = 5;
+
+  // lanemarking id.
+  // 车道线 id.
+  //
+  string id = 6;
+}
+
+message LaneMarks {
+  //
+  Header header = 1;
+
+  // Collection of lane lines on the left side of ego, from inside to outside, two are cached by default, configured.
+  // 主车左侧车道线集合, 从内到外, 默认缓存两个, 可配置.
+  //
+  repeated LaneMark left = 2;
+
+  // Collection of lane lines on the right side of ego, from inside to outside, two are cached by default, configured.
+  // 主车右侧车道线集合, 从内到外, 默认缓存两个, 可配置.
+  //
+  repeated LaneMark right = 3;
+
+  // The distance from the current position of ego to the next intersection.
+  // 主车当前位置距离下一个路口的距离.
+  //
+  // Unit: m, Range: [0..1000], Default: 0.0
+  //
+  double remain_length = 4;
+
+  // Distance from the center line of the lane, positive on the left and negative on the right.
+  // 距车道中心线的距离, 左正右负.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  float dis_to_center_line = 5;
+
+  // Distance to the left lane line, negative on the left and positive on the right.
+  // 距左车道线距离, 左负右正.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  float dis_to_left_boundary = 6;
+
+  // Distance to the right lane line, positive on the left and negative on the right.
+  // 距右车道线距离, 左正右负.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  float dis_to_right_boundary = 7;
+
+  // Lane number, from left to right, starting from 0 and incrementing by 1.
+  // 车道编号, 从左至右, 从 0 开始 +1 递增.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 lane_no = 8;
+
+  // The duration of lane keeping in the current lane.
+  // 当前车道行驶保持时长.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  float lane_keep_duration = 9;
+
+  // The number of vehicles around ego, starting from 0 and incrementing by 1.
+  // 主车周围的周车数目, 从 0 开始 +1 递增.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 car_count_in_perception_range = 10;
+
+  // Arrow direction of ego's lane.
+  // 主车所在车道箭头方向.
+  //
+  // Unit: N/A, Range: [0..11], Default: 0
+  //
+  // \note
+  // 00: None \n
+  // 01: Straight \n
+  // 02: Left \n
+  // 03: Right \n
+  // 04: Uturn \n
+  // 05: Skew Left \n
+  // 06: SkewRight \n
+  // 07: StraightLeft \n
+  // 08: StraightRight \n
+  // 09: LeftRight \n
+  // 10: LeftUturn \n
+  // 11: StraightUturn
+  //
+  int32 lane_arrow = 11;
+
+  // Number of lane lines to the left of ego, starting from 0 and incrementing by 1.
+  // 主车左侧车道线数, 从 0 开始 +1 递增.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 left_lanemark_num = 12;
+
+  // Number of lane lines to the right of ego, starting from 0 and incrementing by 1.
+  // 主车右侧车道线数, 从 0 开始 +1 递增.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 right_lanemark_num = 13;
+
+  // \sub middle_points.x, Discrete coordinate points of the lane line in the x-axis direction, \n
+  // with the same coordinate system as the geoReference in the map file. \n
+  // 车道线的离散坐标点, x 轴方向, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub middle_points.y, Discrete coordinate points of the lane line in the y-axis direction, \n
+  // with the same coordinate system as the geoReference in the map file. \n
+  // 车道线的离散坐标点, y 轴方向, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub middle_points.z, Discrete coordinate points of the lane line in the z-axis direction, \n
+  // with the same coordinate system as the geoReference in the map file. \n
+  // 车道线的离散坐标点, z 轴方向, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  repeated Vec3 middle_points = 14;
+
+  // Left lane ID, the leftmost lane is -1, and it decreases from left to right: -1, -2, -3.
+  // 左边车道ID, 车道最左边是-1, 从左往右依次是-1, -2, -3递减.
+  //
+  // Unit: N/A, Range: [-inf..-1], Default: 0
+  //
+  // \note If the current lane is not a motor vehicle lane, do not output.
+  // \note 如果当前车道不是机动车车道, 则不输出
+  //
+  int32 left_lane_id = 15;
+
+  // Right lane ID, the leftmost lane is -1, and it decreases from left to right: -1, -2, -3.
+  // 右边车道ID, 车道最左边是-1, 从左往右依次是-1, -2, -3递减.
+  //
+  // Unit: N/A, Range: [-inf..-1], Default: 0
+  //
+  // \note If the current lane is not a motor vehicle lane, do not output.
+  // \note 如果当前车道不是机动车车道, 则不输出
+  //
+  int32 right_lane_id = 16;
+
+  // Distance from ego to the starting point of the lane.
+  // 主车距离车道起点长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double begin_lanemark_to_ego = 17;
+
+  // Distance from ego to the end point of the lane.
+  // 主车距离车道终点长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double end_lanemark_to_ego = 18;
+
+  // Angle of ego heading to lanemarking.
+  // 主车航向角与车道线夹角.
+  //
+  // Unit: degree, Range: [-pi..pi], Default: 0.0
+  //
+  float ego_direction_with_lane = 19;
+
+  // Current lane ID, leftmost is -1, from left to right is -1, -2, -3 decreasing.
+  // 当前车道ID, 最左边是-1, 从左往右依次是-1, -2, -3递减.
+  //
+  // Unit: N/A, Range: [-inf..-1], Default: 0
+  //
+  // \note If the current lane is not a driving lane, then no output is given. \n
+  // 如果当前车道不是机动车车道, 则不输出.
+  //
+  int32 lane_id = 20;
+
+  // Current section id.
+  // 当前路段 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 section_id = 21;
+
+  // Current road id.
+  // 当前道路 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 road_id = 22;
+}

@@ -1,0 +1,71 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum DriveMode {
+  HUMAN = 0;
+  AUTO = 1;
+}
+
+enum ProcessMode {
+  START = 0;
+  STOP = 1;
+  PAUSE = 2;
+  RESET = 3;
+}
+
+enum GearMode {
+  DRIVE = 0;
+  REVERSE = 1;
+  PARK = 2;
+  NEUTRAL = 3;
+}
+
+message Sim2Car {
+  //
+  bool en_angle = 1;
+
+  //
+  double angle = 2;
+
+  //
+  GearMode gear = 3;
+}
+
+message Car2Sim {
+  //
+  DriveMode drive_mode = 1;
+
+  //
+  ProcessMode process_mode = 2;
+
+  //
+  double steering_angle = 3;
+
+  //
+  double steering_torque = 4;
+
+  //
+  double brake_pressure = 5;
+
+  //
+  double throttle_value = 6;
+
+  //
+  GearMode gear = 7;
+}
+
+message ControlSim {
+  //
+  Sim2Car sim2car = 1;
+
+  //
+  Car2Sim car2sim = 2;
+}

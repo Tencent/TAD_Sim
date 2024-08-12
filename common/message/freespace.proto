@@ -1,0 +1,52 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Define the FreeSpace in polar coordinate form.
+// 定义极坐标形式的可行驶区域.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+
+package sim_msg;
+
+message RingPoint {
+  //
+  int32 valid = 1;
+
+  //
+  int32 x = 2;
+
+  //
+  int32 y = 3;
+}
+
+message FreeSpaceRing {
+  //
+  repeated RingPoint elements = 1;
+}
+
+message Pointd {
+  //
+  double x = 1;
+
+  //
+  double y = 2;
+
+  //
+  int32 label = 3;
+}
+
+message GridUTM {
+  //
+  int64 timestamp = 1;
+
+  //
+  int32 nPointsNum = 2;
+
+  //
+  float fResolution = 3;
+
+  //
+  repeated Pointd pts = 4;
+}

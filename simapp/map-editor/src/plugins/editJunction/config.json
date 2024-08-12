@@ -1,0 +1,10 @@
+{
+  "name": "editJunction",
+  "description": "交叉路口编辑",
+  "iconDesc": "junction",
+  "iconComponentName": "JunctionSvg",
+  "componentPaths": {
+    "leftArea": [],
+    "property": ["junctionProperty.vue", "roadEdgeProperty.vue"]
+  }
+}

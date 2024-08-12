@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="20px" viewBox="0 0 14 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 2</title>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="模块/操作面板/回放-3D-300%" transform="translate(-58.000000, -592.000000)">
+            <g id="编组-2" transform="translate(58.466667, 592.066667)">
+                <polyline id="路径" fill="#00BBBF" points="6.5 1.19491269e-12 13 19 6.5 14.0726509"></polyline>
+                <polyline id="路径" fill="#00FAFF" points="6.5 14.0726509 3.74797491e-13 19 6.5 1.71106185e-13"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>

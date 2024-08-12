@@ -1,0 +1,28 @@
+@import "./var";
+
+.el-tree {
+  background-color: @global-bg-color;
+
+  .el-tree-node__label {
+    font-size: 12px;
+
+  }
+
+  .el-tree-node {
+    &:focus {
+      & > .el-tree-node__content {
+        background-color: @global-bg-color;
+      }
+    }
+  }
+
+  .el-tree-node__content {
+    height: 24px;
+    line-height: 24px;
+    color: @global-default-color;
+
+    &:hover {
+      background-color: @global-bg-color;
+    }
+  }
+}

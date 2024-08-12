@@ -1,0 +1,81 @@
+syntax = "proto3";
+import "car_basic.proto";
+package tx_car;
+
+message SuspensionDD{
+    // shock
+    message Shock {
+        Real1DMap ShockDampingForce_Front = 35; // damping force(N) vs shock compression rate(mm/s)
+        Real1DMap ShockDampingForce_Rear = 1; // damping force(N) vs shock compression rate(mm/s)
+        RealScalar JounceRatio_Front = 38;  // front suspension jounce ratio
+        RealScalar JounceRatio_Rear = 39;  // rear suspension jounce ratio
+    }
+
+    // bounce
+    message Bounce {
+        Real1DMap BumpToe_Front = 2;   // front toe vs vs compression, deg/m
+        Real1DMap BumpToe_Rear = 3;   // rear toe vs vs compression, deg/m
+        Real1DMap BumpCamber_Front = 4; // front camber vs vs compression, deg/m
+        Real1DMap BumpCamber_Rear = 5; // front camber vs vs compression, deg/m
+        Real1DMap BumpCaster = 6; // caster of front wheels vs vs compression, deg/m
+        Real1DMap LatWhlCtrDisplacement_Front = 7; // front Lateral wheel center displacement vs compression
+        Real1DMap LatWhlCtrDisplacement_Rear = 8; // rear Lateral wheel center displacement vs compression
+        Real1DMap LngWhlCtrDisp_Front = 9; // front Longitudinal wheel center displacement vs compression
+        Real1DMap LngWhlCtrDisp_Rear = 10; // rear Longitudinal wheel center displacement vs compression
+        RealScalar NrmlWhlRates_Front = 11; // front froce vs compression
+        RealScalar NrmlWhlRates_Rear = 12; // rear froce vs compression
+        Real1DMap BumpCaster_Rear = 13; // caster of rear wheels vs vs compression, deg/m
+    }
+
+    // roll
+    message Roll {
+        RealScalar RollStiff_Front = 13; // roll stiffness of front
+        RealScalar RollStiff_Rear = 14; // roll stiffness of rear
+    }
+
+    // longitudinal compliance
+    message Longitudinal {
+        RealScalar ToeCompliancePerFx_Front = 15; // front toe deflection per unit of tire fx, deg/KN
+        RealScalar ToeCompliancePerFx_rear = 16; // rear toe deflection per unit of tire fx, deg/KN
+        RealScalar CamberCompliancePerFx_Front = 17; // front camber deflection per unit of tire fx, deg/KN
+        RealScalar CamberCompliancePerFx_Rear = 18; // rear camber deflection per unit of tire fx, deg/KN
+        RealScalar CasterComplianceFx_Front = 36; // front caster deflection per unit of tire fx, deg/KN
+        RealScalar CasterComplianceFx_Rear = 37; // rear caster deflection per unit of tire fx, deg/KN
+        RealScalar WhlDispCompliancePerFx_Front = 19; // front wheel displacement deflection per unit of tire fx, mm/KN
+        RealScalar WhlDispCompliancePerFx_Rear = 20; // rear wheel displacement deflection per unit of tire fx, mm/KN
+    }
+
+    // lateral compliance
+    message Lateral{
+        RealScalar ToeCompliancePerFy_Front = 21; // front toe deflection per unit of tire fy, deg/KN
+        RealScalar ToeCompliancePerFy_rear = 22; // rear toe deflection per unit of tire fy, deg/KN
+        RealScalar CamberCompliancePerFy_Front = 23; // front camber deflection per unit of tire fy, deg/KN
+        RealScalar CamberCompliancePerFy_Rear = 24; // rear camber deflection per unit of tire fy, deg/KN
+        RealScalar WhlDispCompliancePerFy_Front = 25; // front wheel displacement deflection per unit of tire fy, mm/KN
+        RealScalar WhlDispCompliancePerFy_Rear = 26; // front wheel displacement deflection per unit of tire fy, mm/KN
+    }
+
+    // aligning
+    message Align {
+        RealScalar AlignTrqSteer_Front = 27; // front toe deflection per unit of tire Mz, deg/KNm
+        RealScalar AlignTrqSteer_Rear = 28; // rear toe deflection per unit of tire Mz, deg/KNm
+        RealScalar AlignTrqCamber_Front = 29; // front camber deflection per unit of tire Mz, deg/KNm
+        RealScalar AlignTrqCamber_Rear = 30; // rear camber deflection per unit of tire Mz, deg/KNm
+    }
+
+    // static
+    message Static {
+        RealScalar StaticToe_Front = 31; // front static toe, deg
+        RealScalar StaticToe_Rear = 32; // rear static toe, deg
+        RealScalar StaticCamber_Front = 33; // front static camber, deg
+        RealScalar StaticCamber_Rear = 34; // rear static camber, deg
+    }
+
+    Shock           shock = 1;
+    Bounce          bounce = 2;
+    Roll            roll  = 3;
+    Longitudinal    longitudinal = 4;
+    Lateral         lateral = 5;
+    Align           align = 6;
+    Static          static = 7;
+}

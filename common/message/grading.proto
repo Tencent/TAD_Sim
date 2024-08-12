@@ -1,0 +1,726 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Grading module publishes real-time evaluation messages,
+// mainly including the detection status of each enabled KPI.
+// 评测模块发布实时评测消息, 主要包括各个启用的KPI的检测状态.
+//
+// TOPIC: GRADING
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+enum GradingCollisionState {
+  GRADING_COLLISION_NOCOLLISION = 0;
+  GRADING_COLLISION_VEHICLE = 1;
+  GRADING_COLLISION_PEDESTRIAN = 2;
+  GRADING_COLLISION_OBSTACLE = 3;
+}
+
+enum GradingAlgorithmState {
+  GRADING_ALGORITHM_RUNNING = 0;
+  GRADING_ALGORITHM_TIMEOUT = 1;
+  GRADING_ALGORITHM_THROWEXCEPTION = 2;
+}
+
+enum GradingTrafficLightState {
+  GRADING_TRAFFICLIGHT_RUNNING = 0;
+  GRADING_TRAFFICLIGHT_JUMPREDLIGHT = 1;
+}
+
+enum GradingSpeedState {
+  GRADING_SPEED_NORMAL = 0;
+  GRADING_SPEED_OVERHIGH = 1;
+  GRADING_SPEED_OVERLOW = 2;
+}
+
+enum GradingAccelerationState {
+  GRADING_ACCELERATION_NORMAL = 0;
+  GRADING_ACCELERATION_RAPIDACCELERATE = 1;
+  GRADING_ACCELERATION_RAPIDDEACCELERATE = 2;
+}
+
+enum GradingTimeHeadwayState {
+  GRADING_TIMEHEADWAY_NORMAL = 0;
+  GRADING_TIMEHEADWAY_OVERLOW = 1;
+}
+
+enum GradingDistHeadwayState {
+  GRADING_DISTHEADWAY_NORMAL = 0;
+  GRADING_DISTHEADWAY_OVERLOW = 1;
+}
+
+enum GradingPosErrorState {
+  GRADING_PosError_NORMAL = 0;
+  GRADING_PosError_EXCEED = 1;
+}
+
+message Grading {
+  message TimeStamp {
+    // simulation timestamp.
+    // 仿真时间戳.
+    //
+    // Unit: ms, Range: [0..inf], Default: 0
+    //
+    uint64 timeStamp = 1;
+  }
+
+  message Speed {
+    // value of speed.
+    // 速度值.
+    //
+    // Unit: m/s, Range: [-inf..inf], Default: 0.0
+    //
+    double speed = 1;
+
+    // state of speed.
+    // 速度状态.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    GradingSpeedState state = 2;
+
+    // threshold of speed.
+    // 速度阈值.
+    //
+    // Unit: m/s, Range: [-inf..inf], Default: 0.0
+    //
+    double threshold = 3;
+  }
+
+  message Acceleration {
+    // value of acceleration.
+    // 加速度值.
+    //
+    // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+    //
+    double acceleration = 1;
+
+    // state of acceleration.
+    // 加速度状态.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    GradingAccelerationState state = 2;
+
+    // threshold of acceleration.
+    // 加速度阈值.
+    //
+    // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+    //
+    double threshold = 3;
+  }
+
+  message Collision {
+    // state of collision.
+    // 碰撞状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    GradingCollisionState state = 1;
+
+    // \sub location.x, Distance from the origin in the east direction, ENU coordinate system.
+    // 正东方向与原点的距离, ENU 坐标系.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \sub location.y, Distance from the origin in the north direction, ENU coordinate system.
+    // 正北方向与原点的距离, ENU 坐标系.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \sub location.z, Vertical distance from the origin, ENU coordinate system.
+    // 垂直向上与原点的距离, ENU 坐标系.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 location = 2;
+  }
+
+  message TimeHeadway {
+    // value of time headway.
+    // 时距值.
+    //
+    // Unit: s^2/m, Range: [0..inf], Default: 0.0
+    //
+    // \note > 2.7
+    //
+    float ATH = 1;
+
+    // state of time headway.
+    // 时距状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    GradingTimeHeadwayState state = 2;
+
+    // threshold of time headway.
+    // 时距阈值.
+    //
+    // Unit: s^2/m, Range: [0..inf], Default: 0.0
+    //
+    double threshold = 3;
+  }
+
+  message DistHeadway {
+    // Value of distance headway, between the ego and front.
+    // 自车与前车之间的车头距离值.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double dist_to_fellow = 1;
+
+    // State of distance headway.
+    // 车头距离状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    GradingDistHeadwayState dist_state = 2;
+
+    // Threshold of distance headway.
+    // 车头距离阈值.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double threshold = 3;
+  }
+
+  message Algorithm {
+    // State of algorithm.
+    // 算法状态.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    GradingAlgorithmState state = 1;
+  }
+
+  message Lane {
+    // Whether the ego is on the solid line.
+    // 自车是否在实线上.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool isOnSolidLine = 1;
+
+    // Whether the ego is on the dotted line.
+    // 自车是否在虚线上.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool isOnDottedLine = 2;
+
+    // Whether the ego is on the stop line.
+    // 自车是否在停止线上.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool isOnStopLine = 3;
+  }
+
+  message TrafficLight {
+    // State of traffic light.
+    // 交通灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    GradingTrafficLightState state = 1;
+
+    // Threshold for the number of run traffic light.
+    // 闯红灯次数阈值.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint64 run_trafficlight_thresh = 2;
+
+    // Count of the number of run traffic light.
+    // 闯红灯次数统计.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    uint64 run_trafficlight_count = 3;
+  }
+
+  message Control {
+    // Value of pos error.
+    // 位置误差值.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double posError_H = 1;
+
+    // State of pos error.
+    // 位置误差状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    GradingPosErrorState state = 2;
+
+    // Threshold of pos error.
+    // 位置误差阈值.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double threshold = 3;
+  }
+
+  message Planning {
+    // Whether the ego is reach endpoint.
+    // 自车是否到达终点.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool is_reachEndpoint = 1;
+
+    // Current point of the ego in ENU coordinate system.
+    // 自车在ENU坐标系中的当前点.
+    //
+    Vec3 current_point = 2;
+
+    // End point of the ego in ENU coordinate system.
+    // 自车在ENU坐标系中的终点.
+    //
+    Vec3 endpoint = 3;
+  }
+
+  message CarExpData {
+    // ID of car exp data.
+    // 实验数据的ID.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double id = 1;
+
+    // Value of car exp data.
+    // 实验数据的值.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0.0
+    //
+    double value = 2;
+  }
+
+  message ExpData {
+    //
+    repeated CarExpData distFromCar = 1;
+
+    //
+    repeated CarExpData distFromCar_H = 2;
+
+    //
+    repeated CarExpData distFromCar_V = 3;
+
+    //
+    repeated CarExpData thFromCar = 4;
+
+    // ds/dt, traffic.
+    //
+    repeated CarExpData dot_s_fellow = 5;
+
+    // dx/dt, traffic.
+    //
+    repeated CarExpData dot_x_fellow = 6;
+
+    // dy/dt, traffic.
+    //
+    repeated CarExpData dot_y_fellow = 7;
+
+    // ds/dt, ego.
+    //
+    // Unit: m/s, Range: [0..inf], Default: 0.0
+    //
+    double dot_s_ego = 8;
+
+    // dx/dt, ego.
+    //
+    // Unit: m/s, Range: [0..inf], Default: 0.0
+    //
+    double dot_x_ego = 9;
+
+    // dy/dt, ego.
+    //
+    // Unit: m/s, Range: [0..inf], Default: 0.0
+    //
+    double dot_y_ego = 10;
+  }
+
+  message Statistics {
+    //
+    // \brief Count of KPI occurrence, statistics info of KPI, status of KPI.
+    // KPI 发生次数、KPI 统计信息、KPI 状态.
+    //
+    message DetailItem {
+      // Value of this KPI.
+      // KPI的值.
+      //
+      // Unit: N/A, Range: [-inf..inf], Default: 0.0
+      //
+      double eval_value = 1;
+
+      // If KPI is enabled.
+      // KPI是否启用.
+      //
+      // Unit: N/A, Range: [0..1], Default: 0
+      //
+      bool is_enabled = 2;
+
+      // Pass or fail of this KPI.
+      // KPI是否通过.
+      //
+      // Unit: N/A, Range: [0..1], Default: 0
+      //
+      bool is_pass = 3;
+    }
+
+    message Detail {
+      // Count of overSpeed KPI occurrence.
+      // overSpeed KPI出现次数.
+      //
+      DetailItem count_overSpeed = 1;
+
+      // Count of overAcceleration KPI occurrence.
+      // overAcceleration KPI出现次数.
+      //
+      DetailItem count_overAcceleration = 2;
+
+      // Count of overDecelleration KPI occurrence.
+      // overDeceleration KPI出现次数.
+      //
+      DetailItem count_overDecelleration = 3;
+
+      // Count of overTurningAcceleration KPI occurrence.
+      // overTurningAcceleration KPI出现次数.
+      //
+      DetailItem count_overTurningAcceleration = 4;
+
+      // Count of tooCloseTTC KPI occurrence.
+      // tooCloseTTC KPI出现次数.
+      //
+      DetailItem count_tooCloseTTC = 5;
+
+      // Count of tooCloseDistance KPI occurrence.
+      // tooCloseDistance KPI出现次数.
+      //
+      DetailItem count_tooCloseDistance = 6;
+
+      // Count of overMaxPosError_H KPI occurrence.
+      // overMaxPosError_H KPI出现次数.
+      //
+      DetailItem count_overMaxPosError_H = 7;
+
+      // Average of PosError_H KPI occurrence.
+      // PosError_H KPI出现的平均次数.
+      //
+      DetailItem average_PosError_H = 8;
+
+      // Max of PosError_H KPI occurrence.
+      // PosError_H KPI出现的最大次数.
+      //
+      DetailItem max_PosError_H = 9;
+
+      // Max of PosError_H_L KPI occurrence.
+      // PosError_H_L KPI出现的最大次数.
+      //
+      DetailItem max_PosError_H_L = 10;
+
+      // Max of PosError_H_R KPI occurrence.
+      // PosError_H_R KPI出现的最大次数.
+      //
+      DetailItem max_PosError_H_R = 11;
+
+      // Count of CrossSolidLine KPI occurrence.
+      // CrossSolidLine KPI出现次数.
+      //
+      DetailItem count_CrossSolidLine = 12;
+
+      // Count of RanRedLight KPI occurrence.
+      // RanRedLight KPI出现次数.
+      //
+      DetailItem count_RanRedLight = 13;
+
+      // Info of reachEndPoint KPI.
+      // reachEndPoint KPI的信息.
+      //
+      DetailItem reachEndPoint = 14;
+
+      // Info of collision KPI.
+      // collision KPI的信息.
+      //
+      DetailItem collision = 15;
+    }
+
+    message CustomDetail {
+      // Info of custom_ReachEndPoint KPI.
+      // custom_ReachEndPoint KPI的信息.
+      //
+      DetailItem custom_ReachEndPoint = 1;
+
+      // Info of custom_maxPosError_Exceed KPI.
+      // custom_maxPosError_Exceed KPI的信息.
+      //
+      DetailItem custom_maxPosError_Exceed = 2;
+    }
+
+    // Scene name.
+    // 场景名称.
+    //
+    string scene_name = 1;
+
+    // Date of report.
+    // 报告日期.
+    //
+    string report_date = 2;
+
+    // Pass or not.
+    // 是否通过.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool is_pass = 3;
+
+    // Total simulation time of KPI run.
+    // KPI运行的总模拟时间.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double total_time = 4;
+
+    // Total mileage.
+    // 总里程.
+    //
+    // Unit: km, Range: [0..inf], Default: 0.0
+    //
+    double total_milleage = 5;
+
+    // Timeout or not.
+    // 是否超时.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool is_timeout = 6;
+
+    // Grading XML file path.
+    // 评分XML文件路径.
+    //
+    string grading_xml = 7;
+
+    // Detail info.
+    // 详细信息.
+    //
+    Detail detail = 8;
+
+    // Customized details info.
+    // 自定义详细信息.
+    //
+    CustomDetail custom_detail = 9;
+
+    // Set reason if fail, "" if pass.
+    // 如果失败, 设置原因, 如果通过, 则为空.
+    //
+    string reason = 10;
+  }
+
+  //
+  // \brief event detector.
+  //
+  message EventDetector {
+    enum EventState {
+      EventNotDetected = 0;
+      EventDetected = 1;
+    }
+
+    //
+    // \brief Detected event.
+    //
+		message DetectedEvent {
+      // Rise up or falling down edge detection.
+      // 上升或下降边缘检测.
+      //
+			EventState edge = 1;
+
+      // State of KPI.
+			// KPI状态.
+      //
+      EventState state = 2;
+
+      // Additionals.
+			// 附加信息.
+      //
+      // \note reserve
+      //
+      map<string, string> additionals = 3;
+		};
+
+    // Delta t.
+    // 时间差值.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double dt_second = 1;
+
+    // Current simulation timestamp.
+    // 当前仿真时间戳.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double cur_t_second = 2;
+
+    // Acceleration above threshold event state.
+    // 加速度超过阈值的事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState Acceleration_Above_Thresh = 3;
+
+    // Speed above threshold event state.
+    // 速度超过阈值的事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState Speed_Above_Thresh = 4;
+
+    // Collision event state.
+    // 碰撞事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState If_Collision = 5;
+
+    // Time headway below threshold event state.
+    // 车头时距低于阈值的事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState TimeHeadAway_Below_Thresh = 6;
+
+    // Run traffic light event state.
+    // 闯红灯事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState Run_TrafficLight = 7;
+
+    // On solid line event state.
+    // 压实线事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState On_SolidLine = 8;
+
+    // Deceleration above threshold event state.
+    // 减速度超过阈值的事件状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    // \note Off maintenance, 不在维护.
+    //
+    EventState Deceleration_Above_Thresh = 9;
+
+    // Current solution for SimCity event detection, first: ID of KPI, second: detected event.
+    // 当前 step 检测到的问题场景, first 为 KPI 的 ID, second 为 KPI 检测状态.
+    //
+		map<string, DetectedEvent> detectedEvents = 10;
+
+    // Indicator if map contains edge event.
+    // 地图包含边缘事件的指示器.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+		EventState hasEdge = 11;
+  }
+
+  // Speed value and whether speed exceeds threshold.
+  // 速度值以及速度是否超过阈值.
+  //
+  Speed speed = 1;
+
+  // Acceleration value and whether acceleration exceeds threshold.
+  // 加速度值以及加速度是否超过阈值.
+  //
+  Acceleration acceleration = 2;
+
+  // Whether collision occurs, including collision position.
+  // 是否发生碰撞, 包括碰撞位置.
+  //
+  repeated Collision collision = 3;
+
+  // Minimum time headway.
+  // 最小车头时距.
+  //
+  TimeHeadway timeHeadway = 4;
+
+  // Whether the algorithm crashes.
+  // 算法是否崩溃.
+  //
+  Algorithm algorithm = 5;
+
+  // Lane indicator, whether the line is pressed and the type of line pressed.
+  // 压线指标, 是否压线以及所压线的类型.
+  //
+  Lane lane = 6;
+
+  // Traffic light indicator, whether to run a red light.
+  // 交通灯指标, 是否闯红灯.
+  //
+  TrafficLight trafficeLight = 7;
+
+  // Current simulation timestamp info.
+  // 当前模拟时间戳信息.
+  //
+  TimeStamp timeStamp = 8;
+
+  // Mileage walked by the main vehicle since the start of the scene.
+  // 自场景开始, 主车走过的里程.
+  //
+  // Unit: km, Range: [0..inf], Default: 0.0
+  //
+  double mileage = 9;
+
+  // Output of experimental process data, including distance to \n
+  // surrounding traffic vehicles, lateral distance, longitudinal distance, and time distance.
+  // 实验过程数据输出, 包括与周围交通车的距离, 横向距离, 纵向距离, 时距.
+  //
+  ExpData expData = 10;
+
+  // Distance headway, between the ego and front.
+  // 自车与前车之间的车头距离.
+  //
+  DistHeadway distHeadway = 11;
+
+  // Control info.
+  // 控制信息.
+  //
+  Control control = 12;
+
+  // Planning info.
+  // 规划信息.
+  //
+  Planning planning = 13;
+
+  // Lateral acceleration.
+  // 横向加速度.
+  //
+  Acceleration lateral_acc = 14;
+
+  // Deceleration.
+  // 减速度.
+  //
+  Acceleration dec_acc = 15;
+
+  // Detector if event occurs.
+  // 事件发生时的检测器.
+  //
+  EventDetector event_detector = 16;
+}

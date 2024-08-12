@@ -1,0 +1,116 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Data structure for scene simulation and backend communication.
+// 用于场景仿真跟后端通信的数据结构.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_cloud;
+
+enum ErrorCode {
+  // Scenario successfully ended, can proceed to the next scenario.
+  // 场景成功结束, 可以继续下一个场景.
+  //
+  ScenarioFinished = 0;
+
+  // Scenario timeout, can proceed to the next scenario.
+  // 场景超时, 可以继续下一个场景.
+  //
+  ScenarioTimeout = 1;
+
+  // Module error (exception thrown/timeout), current scenario failed, can proceed to the next scenario.
+  // 模块错误(抛出异常/超时), 当前场景失败, 可以继续下一个场景.
+  //
+  ModuleError = 2;
+
+  // Engine/module initialization failed, unrecoverable.
+  // 引擎/模块初始化失败, 不可恢复.
+  //
+  InitiationFailed = 3;
+
+  // Internal system error, unrecoverable.
+  // 系统内部错误, 不可恢复.
+  //
+  InternalError = 4;
+}
+
+enum ModuleStatusCode {
+  // Module calculation completed normally.
+  // 模块计算正常结束.
+  //
+  ModuleSucceed = 0;
+
+  // Module requests scenario stop (if no module requests stop within the configured time limit, ScenarioTimeout will occur).
+  // 模块请求场景停止(配置时限内没有模块请求停止则会ScenarioTimeout).
+  //
+  ModuleRequiredStop = 1;
+
+  // Module timeout (calculation timeout/process crash).
+  // 模块超时(计算超时/进程挂掉).
+  //
+  ModuleTimeout = 2;
+
+  // Module calculation process throws a C++ exception (std::exception).
+  // 模块计算过程中抛出C++异常(std::exception).
+  //
+  ModuleException = 3;
+}
+
+service SimCloudService {
+  //
+  rpc RunScenario (RunArgs) returns (RunResult);
+
+  //
+  rpc CancelCurrentScenario (CancelArgs) returns (CancelResult);
+}
+
+message RunArgs {
+  //
+  string scenario_path = 1;
+
+  //
+  int32 job_id = 2;
+
+  //
+  int32 scene_id = 3;
+
+  //
+  // \note
+  // "egoSwitch" : false,  // 主车Log2World切换开关\n
+  // "trafficSwitch" : true,  // 交通流Log2World切换开关\n
+  // "switchTime": 100,  // 单位毫秒, 均为相对时间\n
+  // "switchType" : "EVENT",  // EVENT, SCENE\n
+  // 其中EVENT代表Log2World切换时机: 第一个事件点前x秒\n
+  // SCENE代表Log2World切换时机: 场景第x秒
+  //
+  string log2world_params = 4;
+}
+
+message ModuleStatus {
+  //
+  string name = 1;
+
+  //
+  ModuleStatusCode sc = 2;
+
+  //
+  string msg = 3;
+}
+
+message RunResult {
+  //
+  ErrorCode ec = 1;
+
+  // Information about the status of each module at the end of the pre-scenario.
+  // 当前场景结束时各个模块的状态信息.
+  //
+  repeated ModuleStatus module_status = 2;
+}
+
+message CancelArgs {
+}
+
+message CancelResult {
+}

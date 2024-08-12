@@ -1,0 +1,114 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief The Data Structure of Virtual City and Backend World Communication.
+// 虚拟城市跟后端 world 通信的数据结构.
+//
+// TOPIC: nothing
+
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "traffic.proto";
+import "location.proto";
+import "grading.proto";
+import "trajectory.proto";
+
+enum ErrorCode {
+  SUCCESS = 0;
+  MODULE_STOP = 1;
+  ERROR_INIT = 2;
+  ERROR_RESET = 3;
+  ERROR_STEP = 4;
+  ERROR_STOP = 5;
+  ERROR_NOT_INIT = 6;
+  ERROR_MULTI_CONNECT = 7;
+  ERROR_CONNECT = 8;
+}
+
+message ErrorStatus {
+  //
+  ErrorCode err_code = 1;
+
+  //
+  string err_msg = 2;
+}
+
+service SimDriverService {
+  //
+  rpc SimInit(InitRequest) returns (InitResponse);
+
+  //
+  rpc SimStep(StepInput) returns (StepOutput);
+}
+
+message InitRequest {
+}
+
+message InitResponse {
+  //
+  ErrorStatus status = 1;
+}
+
+message EntryPointStatus {
+  //
+  Vec3 location = 1;
+
+  //
+  bool generate_traffics = 2;
+
+  //
+  bool safe_to_add_ego_car = 3;
+}
+
+message StepInput {
+  // Around 9 cell cars and obstacles(excluding self ego car).
+  // 约 9 辆 cars 和 obstacles(不包括主车).
+  //
+  Traffic traffic = 1;
+
+  //
+  uint64 frame_id = 2;
+
+  //
+  repeated EntryPointStatus ep_status = 3;
+
+  //
+  // \note logLevel < 0, 日志等级不变
+  //
+  int32 log_level = 4;
+}
+
+message StepOutput {
+  //
+  int64 uuid = 1;
+
+  //
+  oneof output {
+    //
+    Traffic traffic = 2;
+
+    //
+    Location ego_location = 3;
+  }
+
+  //
+  repeated EntryPointStatus ep_status = 4;
+
+  //
+  ErrorStatus status = 5;
+
+  //
+  Grading grading = 6;
+
+  //
+  repeated Location trailer = 7;
+
+  //
+  Trajectory planning_line = 8;
+
+  //
+  uint64 begin_frame_id = 9;
+}

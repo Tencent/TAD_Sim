@@ -1,0 +1,9 @@
+{
+  "name": "editLaneAttr",
+  "description": "车道属性编辑",
+  "iconDesc": "lane",
+  "iconComponentName": "LaneSvg",
+  "componentPaths": {
+    "property": ["laneAttrProperty.vue"]
+  }
+}

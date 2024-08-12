@@ -1,0 +1,38 @@
+/*******************************************************************************
+ * Copyright (c) 2024, Tencent Inc.
+ * All rights reserved.
+ * Project:  hadmap_server
+ * Modify history:
+ ******************************************************************************/
+
+#pragma once
+
+#include <hadmap.h>
+#include "entity_link2.h"
+#include "image_params.h"
+#include "parser_hadmap_json.h"
+
+namespace Json {
+class Value;
+}
+
+class CMapSceneV3;
+
+class CParserHadmapJsonV3 : public CParserHadmapJson {
+ public:
+  CMapSceneV3* ParseV3(const char* strJson);
+
+  int ParseCross(CCross* pCross, hadmap::txLaneLinks& laneLinks, const char* strJson, double dRefLon, double dRefLat,
+                 double dRefAlt);
+  int ParseLink(CLinkEntityV2* pLink, hadmap::txLaneLinkPtr& laneLinkPtr, const char* strJson, double dRefLon,
+                double dRefLat, double dRefAlt);
+  std::string ToJson(CMapSceneV3* pScene);
+
+  int ParseGISImageRenameParams(const char* strJson, sTagGISImageRenameParams& param);
+  int ParseGISImageDeleteParams(const char* strJson, sTagGISImageDeleteParams& param);
+  int ParseGISImageUploadParams(const char* strJson, sTagGISImageUploadParams& param);
+
+ protected:
+  int ExtractOneLinkData(CLinkEntityV2* pLink, hadmap::txLaneLinkPtr& laneLinkPtr, Json::Value& root, double dRefLon,
+                         double dRefLat, double dRefAlt);
+};

@@ -1,0 +1,11 @@
+# 设置自动转换换行符的规则
+* text=auto
+
+# 针对指定文件夹下的所有文件设置特定的换行符风格
+datas/* text eol=crlf
+
+# 将所有扩展名为.bat的文件视为文本文件, 并在Windows系统上使用CRLF作为换行符
+*.bat text eol=crlf
+
+# 将所有扩展名为.sh的文件视为文本文件, 并在Linux系统上使用LF作为换行符
+*.sh text eol=lf

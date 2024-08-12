@@ -1,0 +1,16 @@
+@startuml
+class DbscanClustering {
+  -df : dataframe
+  -X : dataframe
+  -n_features : int
+  -n_row : int
+  +__init__(df : dataframe) : void
+  +data_preprocess() : void
+  +find_closest_ego_npc(row : Series) : Series
+  +ego_feature_trans(row : Series) : Series
+  +feature_select() : void
+  +data_process() : void
+  +pca(n_components : int) : ndarray
+  +dbscan(eps : float, min_samples : int, percentage : float, fig : bool) : Series
+}
+@enduml

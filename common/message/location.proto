@@ -1,0 +1,152 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Current positioning information of the ego.
+// 主车当前定位信息.
+//
+// TOPIC: LOCATION
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+message Location {
+  message EgoLane {
+    // Lane id where ego is located.
+    // 主车所在的车道的 lane id.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0
+    //
+    // \note Off maintenance, 不在维护
+    //
+    int64 lanepkid = 1 [deprecated=true];
+
+    // Section id where ego is located.
+    // 主车所在的车道的 section id.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    // \note Off maintenance, 不在维护
+    //
+    uint64 sectionpkid = 2 [deprecated=true];
+
+    // Road id where ego is located.
+    // 主车所在的车道的 road id.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0
+    //
+    // \note Off maintenance, 不在维护
+    //
+    uint64 roadpkid = 3 [deprecated=true];
+
+    // Lateral distance from ego to the center line of the lane.
+    // 主车距离所在车道中心线的横向距离.
+    //
+    // Unit: m, Range: [-inf..inf], Default: 0.0
+    //
+    // \note Off maintenance, 不在维护
+    //
+    double dist_2_ref_line = 4 [deprecated=true];
+  }
+
+  // Timestamp of the current location of ego.
+  // 主车当前定位的时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double t = 1;
+
+  // \sub position.x, Longitude of the current position of ego, WGS84 coordinate system. \n
+  // 主车当前位置经度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  // \sub position.y, Latitude of the current position of ego, WGS84 coordinate system. \n
+  // 主车当前位置纬度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  // \sub position.z, Altitude of the current position of ego, WGS84 coordinate system. \n
+  // 主车当前位置高度, WGS84 坐标系.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  Vec3 position = 2;
+
+  // \sub velocity.x, Current speed of ego in the x direction, ENU coordinate system. \n
+  // 主车当前速度在 x 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub velocity.y, Current speed of ego in the y direction, ENU coordinate system. \n
+  // 主车当前速度在 y 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub velocity.z, Current speed of ego in the z direction, ENU coordinate system. \n
+  // 主车当前速度在 z 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 velocity = 3;
+
+  // \sub angular.x, Current angular velocity of ego in the x direction, ENU coordinate system. \n
+  // 主车当前角速度在 x 方向上值, ENU 坐标系.
+  //
+  // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub angular.y, Current angular velocity of ego in the y direction, ENU coordinate system. \n
+  // 主车当前角速度在 y 方向上值, ENU 坐标系.
+  //
+  // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub angular.z, Current angular velocity of ego in the z direction, ENU coordinate system. \n
+  // 主车当前角速度在 z 方向上值, ENU 坐标系.
+  //
+  // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 angular = 4;
+
+  // \sub rpy.x, Current roll value of the ego vehicle. \n
+  //  主车当前 roll 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub rpy.y, Current pitch value of the ego vehicle. \n
+  // 主车当前 pitch 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub rpy.z, Current yaw value of the ego vehicle. \n
+  // 主车当前 yaw 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 rpy = 5;
+
+  // \sub acceleration.x, Current acceleration of ego in the x direction, ENU coordinate system. \n
+  // 主车当前加速度在 x 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub acceleration.y, Current acceleration of ego in the y direction, ENU coordinate system. \n
+  // 主车当前加速度在 y 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  // \sub acceleration.z, Current acceleration of ego in the z direction, ENU coordinate system. \n
+  // 主车当前加速度在 z 方向上值, ENU 坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 acceleration = 6;
+
+  // Information about the lane where ego is currently located.
+  // 主车当前所在车道信息.
+  //
+  // \note Off maintenance, always invalid at present. \n
+  // 不在维护, 目前始终为无效值.
+  //
+  EgoLane ego_lane = 7 [deprecated=true];
+}

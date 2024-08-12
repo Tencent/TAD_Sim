@@ -1,0 +1,6 @@
+{
+  "name": "editSection",
+  "description": "车道段编辑",
+  "iconDesc": "section",
+  "iconComponentName": "ObjectSvg"
+}

@@ -1,0 +1,20 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg.cloud;
+
+import "basic.proto";
+
+message MapRange {
+  //
+  sim_msg.Vec2 bottom_left = 1;
+
+  //
+  sim_msg.Vec2 top_right = 2;
+}

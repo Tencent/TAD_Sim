@@ -1,0 +1,50 @@
+@import "./var";
+
+.el-input {
+  --el-color-primary: @global-primary-color;
+  --el-input-height: 24px;
+  --el-input-bg-color: @global-bg-color;
+  --el-input-border-color: @global-bd-color;
+  --el-input-hover-border-color: @global-primary-color;
+  --el-disabled-bg-color: @disable-bg-color;
+  --el-disabled-border-color: @disable-bd-color;
+  --el-border-radius-base: 1px;
+
+  font-size: 12px;
+}
+
+.el-input__wrapper {
+  padding: 1px 6px;
+}
+
+.el-input-group__append,
+.el-input-group__prepend {
+  color: #9d9d9d;
+  background-color: #0f0f0f;
+  border-color: #404040;
+
+  .el-button.el-button--mini {
+    padding: .5em 1em;
+  }
+}
+
+.el-textarea {
+  --el-color-primary: @global-primary-color;
+  --el-input-bg-color: @global-bg-color;
+  --el-input-border-color: @global-bd-color;
+  --el-input-hover-border-color: @global-primary-color;
+  --el-disabled-bg-color: @disable-bg-color;
+  --el-disabled-border-color: @disable-bd-color;
+  --el-border-radius-base: 1px;
+
+  font-size: 12px;
+}
+
+.el-input__icon {
+  line-height: 24px;
+}
+
+.el-input__prefix, .el-input__suffix {
+  display: flex;
+  align-items: center;
+}

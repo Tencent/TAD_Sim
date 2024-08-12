@@ -1,0 +1,227 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Common visual perception targets (dynamic vehicles, driving status and lane markings.).
+//
+// 常用的视觉感知目标 (包括动态车辆, 行驶状态和车道线).
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message CameraObject {
+  enum Type {
+    T_CAR = 0;
+    T_BUS = 1;
+    T_TRUCK = 2;
+    T_PERSON = 3;
+    T_CYCLIST = 4;
+  }
+
+  enum Lane {
+    // Lane_Host_Left.
+    // 主车道-左侧车道线.
+    //
+    L_HL = 0;
+
+    // Lane_Host_Right.
+    // 主车道-右侧车道线.
+    //
+    L_HR = 1;
+
+    // Lane_Next_Left.
+    // 邻车道-左侧车道线.
+    //
+    L_NL = 2;
+
+    // Lane_Next_Right.
+    // 邻车道-右侧车道线.
+    //
+    L_NR = 3;
+
+    // Lane_Other_Left.
+    // 其他车道-左侧车道线.
+    //
+    L_OL = 4;
+
+    // Lane_Other_Right.
+    // 其他车道-右侧车道线.
+    //
+    L_OR = 5;
+  }
+
+  enum MotionStatus {
+    // The target vehicle is moving in the same direction as ego.
+    // 目标车与本车同向运动.
+    //
+    M_MOVING = 0;
+
+    //
+    M_STOP = 1;
+
+    // The target vehicle is moving in the opposite direction as ego.
+    // 目标车与本车相向而行.
+    //
+    M_ONCOMMING = 2;
+
+    // Target vehicle crosses vertically in front of ego (intersection scenario).
+    // 目标车在本车前方垂直横穿过 (路口场景).
+    //
+    M_CROSSING = 3;
+  }
+
+
+  enum CutStatus {
+    C_CUTNONE = 0;
+    C_CUTIN_L = 1;
+    C_CUTIN_R = 2;
+    C_CUTOUT_L = 3;
+    C_CUTOUT_R = 4;
+  }
+
+  // Type of CameraObject.
+  // CameraObject 类型.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  Type type = 1;
+
+  // Id of CameraObject.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 2;
+
+  // 以本车车头中心为原点, x轴为左正右负, y轴为前正后负, x 轴方向距离.
+  // Take center of front end of car as origin, x-axis is left positive and right negative,
+  // y-axis is front positive and back negative, and distance in direction of x-axis.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double distanceX = 3;
+
+  // 以本车车头中心为原点, x轴为左正右负, y轴为前正后负, y 轴方向距离.
+  // Take center of front end of car is origin, x-axis is left positive and right negative,
+  // y-axis is front positive and back negative, and the y-axis direction is distance.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double distanceY = 4;
+
+  // width of vehicle.
+  // 车辆外包围盒宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double sizeW = 5;
+
+  // length of vehicle.
+  // 车辆外包围盒长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double sizeL = 6;
+
+  // heigh of vehicle.
+  // 车辆外包围盒高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double sizeH = 7;
+
+  // Relative to the orientation of the car.
+  // 相对本车朝向.
+  //
+  double angle = 8;
+
+  // Lane lines.
+  // 所在的车道线.
+  //
+  Lane lane = 9;
+
+  // Velocity in the direction of the x-axis.
+  // x 轴方向的速度.
+  //
+  double vX = 10;
+
+  // Velocity in the direction of the y-axis.
+  // y 轴方向的速度.
+  //
+  double vY = 11;
+
+  // Elapsed time.
+  // 存货时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double lifeTime = 12;
+
+  // bounding box in image.
+  // 基于图像坐标系下的 x.
+  //
+  // Unit: pixels, Range: [0..inf], Default: 0.0
+  //
+  int32 bboxX = 13;
+
+  // bounding box in image.
+  // 基于图像坐标系下的 y.
+  //
+  // Unit: pixels, Range: [0..inf], Default: 0.0
+  //
+  int32 bboxY = 14;
+
+  // bounding box in image.
+  // 基于图像坐标系下的 width.
+  //
+  // Unit: pixels, Range: [0..inf], Default: 0.0
+  //
+  int32 bboxW = 15;
+
+  // bounding box in image.
+  // 基于图像坐标系下的 height.
+  //
+  // Unit: pixels, Range: [0..inf], Default: 0.0
+  //
+  int32 bboxH = 16;
+
+  // State of motion.
+  // 运动状态.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  MotionStatus ms = 17;
+
+  // Cropping status.
+  // 裁剪状态.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  CutStatus cs = 18;
+
+  // Whether have Closest In-Path Vehicle.
+  // 最近的路径内是否有车辆.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool cipv = 19;
+
+  // Time To Collision.
+  // 碰撞时间.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double ttc = 20;
+
+  // sensor camera id.
+  // 相机传感器 id
+  //
+  int32 cameraID = 21;
+}
+
+message CameraObjects {
+  // List of CameraObject.
+  // CameraObject 列表
+  //
+  repeated CameraObject objects = 1;
+}

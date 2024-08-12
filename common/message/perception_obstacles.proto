@@ -1,0 +1,315 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Obstacle information observed by prediction algorithms.
+// 预测算法观测到的障碍物信息.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "header.proto";
+import "trajectory.proto";
+
+message LightStatus {
+  // Probability of observing the brake light.
+  // 刹车灯被观测到的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 brake_visible_probability = 1;
+
+  // Probability of the brake light being on.
+  // 刹车灯亮起的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 brake_switch_on_probability = 2;
+
+  // Probability of observing the left turn light.
+  // 左转灯被观测到的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 left_turn_visible_probability = 3;
+
+  // Probability of the left turn light being on.
+  // 左转灯亮起的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 left_turn_switch_on_probability = 4;
+
+  // Probability of observing the right turn light.
+  // 右转灯被观测到的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 right_turn_visible_probability = 5;
+
+  // Probability of the right turn light being on.
+  // 右转灯亮起的概率.
+  //
+  // Unit: %, Range: [0..100], Default: 0
+  //
+  int32 right_turn_switch_on_probability = 6;
+}
+
+//
+// \brief SubObstacle info.
+// 次级障碍信息.
+//
+// \note Currently FLU coordinate system, later converted to odometer ENU coordinate system, \n
+// 当前为 FLU 坐标系, 后续转为里程计 ENU 坐标系.
+//
+message SubObstacle {
+  // The center position of the tracked target.
+  // 跟踪目标的中心点位置.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 position = 1;
+
+  // The standard deviation of the center position of the tracked target.
+  // 跟踪目标的中心点位置标准差.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  Vec3 position_std = 2;
+
+  // The velocity of the tracked target.
+  // 跟踪目标的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 velocity = 3;
+
+  // The standard deviation of the velocity of the tracked target.
+  // 跟踪目标的速度标准差.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  Vec3 velocity_std = 4;
+
+  // The acceleration of the tracked target.
+  // 跟踪目标的加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 acceleration = 5;
+
+  // The standard deviation of the acceleration of the tracked target.
+  // 跟踪目标加速度标准差.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  Vec3 acceleration_std = 6;
+
+  // The length of the target.
+  // 目标长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float length = 7;
+
+  // The standard deviation of the length of the target.
+  // 目标长度标准差.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float length_std = 8;
+
+  // The width of the target.
+  // 目标宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float width = 9;
+
+  // The standard deviation of the width of the target.
+  // 目标宽度标准差.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float width_std = 10;
+
+  // The height of the target.
+  // 目标高度.
+  ///
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float height = 11;
+
+  // The standard deviation of the height of the target.
+  // 目标高度标准差.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float hegiht_std = 12;
+
+  // The heading of the target, in the ego vehicle coordinate system.
+  // 目标航向, 自车坐标系.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  float heading_angle = 13;
+
+  // The standard deviation of the heading of the target.
+  // 目标航向标准差.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  float heading_angle_std = 14;
+
+  // The rate of change of the heading of the target.
+  // 目标航向变化率.
+  //
+  // Unit: rad/s
+  //
+  float heading_rate = 15;
+
+  // The standard deviation of the rate of change of the heading of the target.
+  // 目标航向变化率标准差.
+  //
+  // Unit: rad/s, Range: [-inf..inf], Default: 0.0
+  //
+  float heading_rate_std = 16;
+
+  // The predicted trajectory of the target.
+  // 目标的预测轨迹.
+  //
+  Trajectory predic_trajectory = 17;
+}
+
+message PerceptionObstacle {
+  enum Source {
+    // In convoy mode, the tracking target is distinguished from the self-vehicle sensing.
+    // 车队模式时, 区分跟踪目标来自自车感知.
+    //
+    HOST_VEHICLE = 0;
+
+    // In convoy mode, distinguish the tracking target from the v2x.
+    // 车队模式时, 区分跟踪目标来自 v2x.
+    //
+    PLATOON = 1;
+  }
+
+  enum Type {
+    //
+    UNKNOWN = 0;
+
+    //
+    UNKNOWN_MOVABLE = 1;
+
+    //
+    UNKNOWN_UNMOVABLE = 2;
+
+    //
+    PEDESTRIAN = 3;
+
+    //
+    BICYCLE = 4;
+
+    //
+    VEHICLE = 5;
+
+    //
+    BUS = 6;
+
+    //
+    TRUCK = 7;
+
+    //
+    CONES = 8;
+
+    // In convoy mode, the target type of the preceding vehicle.
+    // 车队模式下, 前车目标类型.
+    //
+    PLATOON_FRONT_VEHICLE = 9;
+
+    // AIV Scene Specific Recognition Requirements.
+    // AIV 场景特别识别需求.
+    //
+    RTG = 10;
+  }
+
+  enum MoveStatus {
+    // Unknown.
+    // 未知.
+    //
+    UNKNOWN_MOVE = 0;
+
+    // Moving target.
+    // 运动目标.
+    //
+    MOVING = 1;
+
+    // Temporarily stationary.
+    // 临时静止.
+    //
+    STOP = 2;
+
+    // Fixed target.
+    // 固定目标.
+    //
+    STATIONARY = 3;
+  }
+
+  // The id of the tracked target.
+  // 跟踪目标的id.
+  //
+  int32 id = 1;
+
+  // The composition of multi-body obstacles.
+  // 多体障碍物的构成.
+  //
+  repeated SubObstacle sub_obstacles = 2;
+
+  // Tracking duration.
+  // 跟踪时长.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  int32 tracking_time_ms = 3;
+
+  // The light status of the target vehicle.
+  // 目标车灯状态.
+  //
+  LightStatus light_status = 4;
+
+  // Distinguishing platoon mode.
+  // 区分车队模式.
+  //
+  Source source = 5;
+
+  // The historical trajectory of the tracked target.
+  // 跟踪目标的历史轨迹.
+  //
+  Trajectory history_trajectory = 6;
+
+  // The type of the tracked target.
+  // 跟踪目标类型.
+  //
+  Type type = 7;
+
+  // The moving status of the target.
+  // 目标移动状态.
+  //
+  MoveStatus move_status = 8;
+}
+
+message PerceptionObstacles {
+  // header.
+  //
+  Header header = 1;
+
+  // The list of obstacles.
+  // 障碍物列表.
+  //
+  repeated PerceptionObstacle perception_obstacles = 2;
+}

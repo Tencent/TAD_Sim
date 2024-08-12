@@ -1,0 +1,339 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief V2X Information Matrix.
+// V2X 信息矩阵.
+//
+// \par References:
+// [1] 01_合作式智能运输系统+车用通信系统应用层及应用数据交互标准.pdf
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package v2x_asn1_2020;
+
+import "header.proto";
+
+message Position3D {
+  int32 Latitude = 1;
+  int32 Longitude = 2;
+  int32 Elevation = 3;
+}
+
+message PositionConfidenceSet {
+  uint32 PositionConfidence = 1;
+  uint32 ElevationConfidence = 2;
+}
+
+message MotionConfidenceSet {
+  uint32 SpeedConfidence = 1;
+  uint32 HeadingConfidence = 2;
+  uint32 SteeringWheelAngleConfidence = 3;
+}
+
+message AccelerationSet4Way {
+  int32 LongAcceleration = 1;
+  int32 LatAcceleration = 2;
+  int32 VerticalAcceleration = 3;
+  int32 YawRate = 4;
+}
+
+message BrakeSystemStatus {
+  uint32 BrakePedalStatus = 1;
+  int32 BrakeAppliedStatus = 2;
+  uint32 TractionControlStatus = 3;
+  uint32 AntiLockBrakeStatus = 4;
+  uint32 StabilityControlStatus = 5;
+  uint32 BrakeBoostApplied = 6;
+  uint32 AuxiliaryBrakeStatus = 7;
+}
+
+message VehicleSize {
+  uint32 VehicleWidth = 1;
+  uint32 VehicleLength = 2;
+  uint32 VehicleHeight = 3;
+}
+
+message VehicleClassification {
+  uint32 BasicVehicleClass = 1;
+}
+
+message DDateTime {
+  uint32 DYear = 1;
+  uint32 DMonth = 2;
+  uint32 DDay = 3;
+  uint32 DHour = 4;
+  uint32 DMinute = 5;
+  uint32 Dsecond = 6;
+  int32 DTimeOffset = 7;
+}
+
+message PathHistoryPoint {
+  Position3D Position3D = 1;
+  uint32 TimeOffset = 2;
+  uint32 Speed = 3;
+  PositionConfidenceSet PositionConfidenceSet = 4;
+  bool PositionConfidenceSetFlag = 5;
+  uint32 CoarseHeading = 6;
+}
+
+message FullPositionVector {
+  DDateTime DDateTime = 1;
+  Position3D Position3D = 2;
+  uint32 Heading = 3;
+  uint32 TransmissionState = 4;
+  uint32 Speed = 5;
+  PositionConfidenceSet PositionAccuracy = 6;
+  bool PositionAccuracyFlag = 7;
+  uint32 TimeConfidence = 8;
+  PositionConfidenceSet PositionConfidenceSet = 9;
+  bool PositionConfidenceSetFlag = 10;
+  MotionConfidenceSet MotionConfidenceSet = 11;
+  bool MotionConfidenceSetFlag = 12;
+}
+
+message PathHistory {
+  FullPositionVector FullPositionVector = 1;
+  bool FullPositionVectorFlag = 2;
+  int32 GNSSstatus = 3;
+  repeated PathHistoryPoint PathHistoryPointList = 4;
+}
+
+message PathPrediction {
+  int32 RadiusOfCurvature = 1;
+  int32 Confidence = 2;
+}
+
+message VehicleSafetyExtensions {
+  int32 VehicleEventFlags = 1;
+  PathHistory PathHistory = 2;
+  bool PathHistoryFlag = 3;
+  PathPrediction PathPrediction = 4;
+  bool PathPredictionFlag = 5;
+  int32 ExteriorLights = 6;
+}
+
+message V2XBSM {
+  uint32 MsgCount = 1;
+  uint32 VehicleID = 2;
+  uint32 PlateNo = 3;
+  uint32 Dsecond = 4;
+  Position3D Position3D = 5;
+  PositionConfidenceSet PositionAccuracy = 6;
+  bool PositionAccuracyFlag = 7;
+  uint32 TransmissionState = 8;
+  uint32 Speed = 9;
+  uint32 Heading = 10;
+  uint32 SteeringWheelAngle = 11;
+  MotionConfidenceSet MotionConfidenceSet = 12;
+  bool MotionConfidenceSetFlag = 13;
+  AccelerationSet4Way AccelerationSet4Way = 14;
+  BrakeSystemStatus BrakeSystemStatus = 15;
+  VehicleSize VehicleSize = 16;
+  VehicleClassification VehicleClassification = 17;
+  VehicleSafetyExtensions VehicleSafetyExtensions = 18;
+  bool VehicleSafetyExtensionsFlag = 19;
+}
+
+message V2XBSMMsg {  // TODO: 无标准
+  uint32 MinuteOfTheYear = 1;
+  repeated V2XBSM V2XBSMs = 2;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+message NodeReferenceID {
+  uint32 RoadRegulatorID = 1;
+  uint32 NodeID = 2;
+}
+
+message RegulatorySpeedLimit {
+  uint32 SpeedLimitType = 1;
+  uint32 Speed = 2;
+}
+
+message Movement {
+  NodeReferenceID RemoteIntersection = 1;
+  int32 PhaseID = 2;
+}
+
+message ConnectingLane {
+  int32 LaneID = 1;
+  int32 AllowedManeuvers = 2;
+}
+
+message Connection {
+  NodeReferenceID NodeReferenceID = 1;
+  ConnectingLane ConnectingLane = 2;
+  bool ConnectingLaneFlag = 3;
+  uint32 PhaseID = 4;
+}
+
+message LaneTypeAttributes {
+  oneof laneTypeValue {
+      int32 Vehicle = 1;
+      int32 Crosswalk = 2;
+      int32 Bike = 3;
+      int32 Sidewalk = 4;
+      int32 Barrier = 5;
+      int32 Striping = 6;
+      int32 TrackedVehicle = 7;
+      int32 Parking = 8;
+  }
+}
+
+message LaneAttributes {
+  int32 LaneSharing = 1;
+  LaneTypeAttributes LaneTypeAttributes = 2;
+  uint32 LaneTypeAttributesFlag = 3;
+}
+
+message Lane {
+  uint32 LaneID = 1;
+  LaneAttributes LaneAttributes = 2;
+  bool LaneAttributesFlag = 3;
+  uint32 AllowedManeuvers = 4;
+  repeated Connection ConnectsToList = 5;
+  bool ConnectsToListFlag = 6;
+  repeated RegulatorySpeedLimit SpeedLimitList = 7;
+  bool SpeedLimitListFlag = 8;
+  repeated Position3D PointList = 9;
+  bool PointListFlag = 10;
+}
+
+message Link {
+  string DescriptiveName = 1;
+  NodeReferenceID NodeReferenceID = 2;
+  repeated RegulatorySpeedLimit SpeedLimitList = 3;
+  bool SpeedLimitFlag = 4;
+  float LaneWidth = 5;
+  repeated Position3D PointList = 6;
+  bool PointListFlag = 7;
+  repeated Movement MovementList = 8;
+  bool MovementListFlag = 9;
+  repeated Lane LaneList = 10;
+}
+
+message Node {
+  string DescriptiveName = 1;
+  NodeReferenceID NodeReferenceID = 2;
+  Position3D Position3D = 3;
+  repeated Link LinkList = 4;
+  bool LinkListFlag = 5;
+}
+
+message V2XMAPMsg {
+  uint32 MsgCount = 1;
+  uint32 MinuteOfTheYear = 2;
+  repeated Node NodeList = 3;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+message TimeChangeDetails {
+  uint32 StartTime = 1;
+  uint32 MinEndTime = 2;
+  uint32 MaxEndTime = 3;
+  uint32 LikelyEndTime = 4;
+  uint32 Confidence =5;
+  uint32 NextStartTime = 6;
+  uint32 NextDuration = 7;
+}
+message PhaseState {
+  uint32 LightState = 1;
+  TimeChangeDetails TimeChangeDetails = 2;
+  uint32 TimeChangeDetailsFlag= 3;
+}
+message Phase {
+  uint32 PhaseID = 1;
+  repeated PhaseState PhaseStateList = 2;
+}
+
+message IntersectionState {
+  NodeReferenceID NodeReferenceID= 1;
+  uint32 IntersectionStatusObject = 2;
+  uint32 MinuteOfTheYear = 3;
+  uint32 Dsecond = 4;
+  repeated Phase PhaseList = 5;
+}
+
+message V2XSPATMsg {
+  uint32 MsgCount = 1;
+  uint32 MinuteOfTheYear = 2;
+  uint32 DSecond = 3;
+  string DescriptiveName = 4;
+  repeated IntersectionState IntersectionStateList = 5;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+message Description {
+  uint32 TextFlag = 1;
+  string TextString = 2;
+  string TextGB2312 = 3;
+}
+
+message Position2D {
+  int32 Latitude = 1;
+  int32 Longitude = 2;
+}
+
+message PositionOffsetLLV {
+  repeated Position2D PositionOffsetLL = 1;
+  int32 VerticalOffset = 2;
+}
+
+message V2XRSIData {
+  uint32 RSIId = 1;
+  uint32 AlertType = 2;
+  Description Description = 3;
+  uint32 DescriptionFlag = 4;
+  uint32 Priority = 5;
+  Position3D Position3D = 6;
+  repeated PositionOffsetLLV PathPointList = 7;
+  int32 AlterRadius = 8;
+}
+
+message V2XRSIMsg {
+  uint32 MsgCount = 1;
+  uint32 MinuteOfTheYear = 2;
+  uint32 RSUId = 3;
+  repeated V2XRSIData RSIList = 4;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+message ParticipantData {
+  uint32 ParticipantType = 1;
+  uint32 PaticipantId = 2;
+  uint32 SourceType = 3;
+  uint32 VehicleID = 4;
+  uint32 PlateNo = 5;
+  uint32 DSecond = 6;
+  PositionOffsetLLV PositionOffsetLLV = 7;
+  PositionConfidenceSet PositionConfidenceSet = 8;
+  uint32 TransmissionState = 9;
+  uint32 Speed = 10;
+  uint32 Heading = 11;
+  uint32 SteeringWheelAngle = 12;
+  MotionConfidenceSet MotionConfidenceSet = 13;
+  bool MotionConfidenceFlag = 14;
+  AccelerationSet4Way AccelerationSet4Way = 15;
+  bool AccelerationSet4WayFlag = 16;
+  VehicleSize VehicleSize= 17;
+  VehicleClassification VehicleClassification = 18;
+  bool VehicleClassificationFlag = 19;
+}
+
+message V2XRSMMsg {
+  uint32 MsgCount = 1;
+  uint32 RSUId = 2;
+  Position3D Position3D = 3;
+  repeated ParticipantData ParticipantList = 4;
+}
+
+message V2X_ASN1 {
+  sim_msg.Header header = 1;
+  map<string, string> option = 2;
+  repeated V2XBSMMsg BSM = 3;
+  repeated V2XMAPMsg MAP = 4;
+  repeated V2XRSIMsg RSI = 5;
+  repeated V2XSPATMsg SPAT = 6;
+  repeated V2XRSMMsg RSM = 7;
+}

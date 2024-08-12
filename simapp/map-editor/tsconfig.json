@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig.web.json",
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "env.d.ts",
+    "src/**/*"
+  ]
+}

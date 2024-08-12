@@ -1,0 +1,228 @@
+cmake_minimum_required(VERSION 3.1)
+project(scene_wrapper)
+
+set(CMAKE_CXX_FLAGS
+    "-std=c++14 -O2 -g -Wall -fPIC -Wno-unused-result -Wno-deprecated-declarations -DROS ${CMAKE_CXX_FLAGS}")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+# set(PROGRAM_CONFIG Release)
+set(PROGRAM_CONFIG Debug)
+set(UPDATOR_PROGRAM updator-scenario)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+set(OPENSSL_ROOT_DIR "/usr/local/ssl")
+find_package(OpenSSL REQUIRED)
+set(OPENSSLLIBS OpenSSL::Crypto OpenSSL::SSL)
+
+set(DEPS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../deps)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${DEPS_DIR})
+# include(sim_msg)
+
+find_package(aws-cpp-sdk-core CONFIG REQUIRED)
+find_package(aws-cpp-sdk-s3 CONFIG REQUIRED)
+include_directories(SYSTEM $<TARGET_PROPERTY:aws-cpp-sdk-s3,INTERFACE_INCLUDE_DIRECTORIES>)
+
+file(GLOB_RECURSE DATABASE_SOURCE ./src/database/*.cpp)
+file(GLOB_RECURSE DATABASE_HEADER ./src/database/*.h)
+file(GLOB_RECURSE DATABASE_INLINE ./src/database/*.inl)
+file(GLOB_RECURSE ENGINE_SOURCE ./src/engine/*.cpp)
+file(GLOB_RECURSE ENGINE_HEADER ./src/engine/*.h)
+file(GLOB_RECURSE ENGINE_INLINE ./src/engine/*.inl)
+file(GLOB_RECURSE MAP_DATA_SOURCE ./src/map_data/*.cpp)
+file(GLOB_RECURSE MAP_DATA_HEADER ./src/map_data/*.h)
+file(GLOB_RECURSE MAP_DATA_INLINE ./src/map_data/*.inl)
+file(GLOB_RECURSE SERVER_HADMAP_SOURCE ./src/server_hadmap/*.cpp)
+file(GLOB_RECURSE SERVER_HADMAP_HEADER ./src/server_hadmap/*.h)
+file(GLOB_RECURSE SERVER_HADMAP_INLINE ./src/server_hadmap/*.inl)
+file(GLOB_RECURSE SERVER_SCENE_SOURCE ./src/server_scene/*.cpp)
+file(GLOB_RECURSE SERVER_SCENE_HEADER ./src/server_scene/*.h)
+file(GLOB_RECURSE SERVER_SCENE_INLINE ./src/server_scene/*.inl)
+file(GLOB_RECURSE XML_PARSER_SOURCE1 ./src/xml_parser/*.cc)
+file(GLOB_RECURSE XML_PARSER_SOURCE2 ./src/xml_parser/*.cpp)
+file(GLOB_RECURSE XML_PARSER_HEADER ./src/xml_parser/*.h)
+file(GLOB_RECURSE XML_PARSER_INLINE ./src/xml_parser/*.inl)
+file(GLOB_RECURSE LOG_SOURCE ./src/log/*.cpp)
+
+file(GLOB_RECURSE LOG_HEADER ./src/log/*.h)
+file(GLOB_RECURSE LOG_INLINE ./src/log/*.inl)
+file(GLOB_RECURSE SERVER_MAP_CACHE_SOURCE ./src/server_map_cache/*.c*)
+
+file(GLOB_RECURSE SERVER_MAP_CACHE_HEADER ./src/server_map_cache/*.h)
+file(GLOB_RECURSE SERVER_MAP_CACHE_INLINE ./src/server_map_cache/*.inl)
+
+file(GLOB_RECURSE TINYXML_SOURCE ./src/third_party/tinyxml/*.cpp)
+file(GLOB_RECURSE TINYXML_INLINE ./src/third_party/tinyxml/*.inl)
+file(GLOB_RECURSE TINYXML_HEADER ./src/third_party/tinyxml/*.h
+                                 ./src/third_party/xml/*.hpp)
+
+file(GLOB_RECURSE OPENSCENARIO_SOURCE ./src/third_party/xosc/*.cxx)
+file(GLOB_RECURSE OPENSCENARIO_HEADER ./src/third_party/xosc/*.hxx)
+
+file(GLOB_RECURSE FLAG_SOURCE ./src/flags.cc)
+
+file(GLOB_RECURSE UTILS_SOURCE ./src/utils/base64.h
+                               ./src/oid_generator.*
+                               ./src/utils/slice.h
+                               ./src/utils/status.*)
+
+file(GLOB_RECURSE IGNORE_SOURCE ./src/xml_parser/entity/xosc_writer.*
+                                ./src/xml_parser/entity/xosc_converter.*)
+list(REMOVE_ITEM XML_PARSER_SOURCE1 ${IGNORE_SOURCE})
+list(REMOVE_ITEM XML_PARSER_SOURCE2 ${IGNORE_SOURCE})
+list(REMOVE_ITEM XML_PARSER_HEADER ${IGNORE_SOURCE})
+list(REMOVE_ITEM XML_PARSER_INLINE ${IGNORE_SOURCE})
+
+if(WIN32)
+
+
+else()
+  file(GLOB SCENE_WRAPPER_SOURCE ./scene_wrapper_linux/*.cpp)
+  file(GLOB SCENE_WRAPPER_HEADER ./scene_wrapper_linux/*.h)
+  find_package(glm)
+  find_package(jsoncpp)
+  include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/datamodel/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/mapdb/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/map_engine/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/map_import/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/route_plan/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/routingmap/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/transmission/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/third_party
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/third_party/xml
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/open_drive_engine/include
+    /usr/local/include/cos)
+  link_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/hadmap/devel/bin
+    ${CMAKE_CURRENT_SOURCE_DIR}/../deps/bin)
+  add_definitions(-DSCENE_WRAPPER_EXPORTS -D__HADMAP_SERVER__ -DTIXML_USE_STL
+                  -DSOCI_DLL -D__COS_DEBUG__ -DBOOST_ALL_NO_LIB)
+  # -D_GLIBCXX_USE_CXX11_ABI=0
+endif()
+
+# set(CMAKE_CXX_FLAGS "-g -std=gnu++11 ${CMAKE_CXX_FLAGS}")
+set(CMAKE_CXX_FLAGS "-o2 -std=gnu++14 ${CMAKE_CXX_FLAGS}")
+
+message( ${CMAKE_CURRENT_SOURCE_DIR}/../deps/bin)
+find_library(XERCES_LIB xerces-c-3.1 PATHS ${CMAKE_CURRENT_SOURCE_DIR}/../deps/bin)
+if (NOT XERCES_LIB)
+  message(FATAL_ERROR "xerces library not found")
+endif()
+
+add_library(
+  ${PROJECT_NAME} SHARED
+  ${UTILS_SOURCE}
+  ${FLAG_SOURCE}
+  ${SCENE_WRAPPER_SOURCE}
+  ${SCENE_WRAPPER_HEADER}
+  ${DATABASE_SOURCE}
+  ${DATABASE_HEADER}
+  ${DATABASE_INLINE}
+  ${ENGINE_SOURCE}
+  ${ENGINE_HEADER}
+  ${ENGINE_INLINE}
+  ${MAP_DATA_SOURCE}
+  ${MAP_DATA_HEADER}
+  ${MAP_DATA_INLINE}
+  ${XML_PARSER_SOURCE1}
+  ${XML_PARSER_SOURCE2}
+  ${XML_PARSER_HEADER}
+  ${XML_PARSER_INLINE}
+  ${LOG_SOURCE}
+  ${LOG_HEADER}
+  ${LOG_INLINE}
+  ${SERVER_MAP_CACHE_SOURCE}
+  ${SERVER_MAP_CACHE_HEADER}
+  ${SERVER_MAP_CACHE_INLINE}
+  ${SERVER_SCENE_SOURCE}
+  ${SERVER_SCENE_HEADER}
+  ${SERVER_SCENE_INLINE}
+  ${SERVER_HADMAP_SOURCE}
+  ${SERVER_HADMAP_HEADER}
+  ${SERVER_HADMAP_INLINE}
+  ${TINYXML_SOURCE}
+  ${TINYXML_HEADER}
+  ${TINYXML_INLINE}
+  ${OPENSCENARIO_HEADER}
+  ${OPENSCENARIO_SOURCE})
+
+# target_compile_definitions(${PROJECT_NAME} PRIVATE
+# _ENABLE_EXTENDED_ALIGNED_STORAGE)
+
+if(WIN32)
+
+else()
+  target_link_libraries(
+    ${PROJECT_NAME}
+    # SceneLoader
+    # txProtoBuf
+    sim_msg_lite
+
+    deps::simmapsdk
+    deps::opendriveio_shared
+
+    tbb
+    routeplan
+    routingmap
+    mapimport
+    mapengine
+    mapdb
+    datamodel
+    spatialite
+    curl
+    sqlite3
+    log4cpp
+    jsoncpp
+    proj
+    aws-cpp-sdk-s3
+    ${OPENSSLLIBS}
+    debug
+    PocoFoundationd
+    debug
+    PocoNetd
+    debug
+    PocoNetSSLd
+    debug
+    PocoCryptod
+    debug
+    PocoUtild
+    debug
+    PocoJSONd
+    debug
+    PocoXMLd
+    optimized
+    PocoFoundation
+    optimized
+    PocoNet
+    optimized
+    PocoNetSSL
+    optimized
+    PocoCrypto
+    optimized
+    PocoUtil
+    optimized
+    PocoJSON
+    optimized
+    PocoXML
+    boost_filesystem
+    boost_system
+    boost_thread
+    boost_locale
+    boost_regex
+    boost_date_time
+    pthread
+    soci_core
+    gflags
+    soci_sqlite3
+    opendrive
+    glog
+    xerces-c-3.1
+    transmission
+    dl)
+endif()
+
+
+include_directories(src)
+# add_subdirectory(test)
+#
+##add_subdirectory(deps/open_drive_engine)
+#

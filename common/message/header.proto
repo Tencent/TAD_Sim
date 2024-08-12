@@ -1,0 +1,29 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message Header {
+  // simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double time_stamp = 1;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  uint64 frame_id = 2;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0.0
+  //
+  double sequence = 3;
+}

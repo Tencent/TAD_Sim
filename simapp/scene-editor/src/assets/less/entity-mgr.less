@@ -1,0 +1,153 @@
+  @import "./mixins";
+
+  .entity-mgr {
+    display: flex;
+    height: 400px;
+    margin-top: 16px;
+    color: @title-font-color;
+    font-size: 12px;
+
+    .icon {
+      cursor: pointer;
+
+      &.disabled {
+        pointer-events: none;
+        opacity: 0.3;
+      }
+    }
+
+    .entity-mgr-workshop {
+      display: flex;
+      flex-direction: column;
+      width: 250px;
+      border-right: 1px solid #111;
+
+      .entity-mgr-workshop-keyword {
+        padding: 0 20px 16px;
+      }
+
+      .entity-mgr-workshop-list {
+        flex: 1;
+        overflow-y: auto;
+
+        .entity-mgr-workshop-list-item {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: 31px;
+          line-height: 32px;
+          padding: 0 20px;
+          border-bottom: 1px solid @list-bd;
+
+          .icon {
+            margin-left: 10px;
+            vertical-align: middle;
+          }
+
+          &.entity-mgr-workshop-list-item-active,
+          &:hover {
+            color: @active-font-color;
+            background-color: @hover-bg;
+          }
+
+          .entity-mgr-workshop-list-item-name {
+            display: inline-block;
+            max-width: 150px;
+            vertical-align: bottom;
+            .text-overflow();
+          }
+        }
+      }
+
+      .entity-mgr-workshop-operation {
+        height: 28px;
+        line-height: 28px;
+        padding: 0 20px;
+        background-color: @darker-bg;
+        text-align: right;
+
+        .icon {
+          margin-left: 10px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .entity-mgr-form {
+      flex: 1;
+      margin-left: 5px;
+      overflow-x: hidden;
+      overflow-y: auto;
+
+      :deep(.el-form-item){
+        .el-form-item__label, .el-form-item__content, .el-radio__label{
+          color: @title-font-color;
+        }
+        .el-radio-button__inner, .el-radio-group, .el-radio{
+          height: 24px;
+        }
+      }
+
+      .entity-mgr-form-item-name {
+      }
+
+      .entity-mgr-form-item-list {
+        .entity-mgr-form-item-list-header {
+          display: flex;
+          justify-content: space-between;
+
+          .icon {
+            margin-left: 10px;
+            vertical-align: middle;
+          }
+        }
+
+        .entity-mgr-form-item-list-body {
+          margin: 10px 0;
+          background-color: #000;
+          height: 290px;
+          overflow-y: auto;
+
+          .entity-mgr-form-item-list-body-list {
+            background-color: #000;
+
+            .entity-mgr-form-item-list-body-list-item {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              height: 28px;
+              line-height: 28px;
+              padding: 0 10px;
+              border-bottom: 1px solid @list-bd;
+
+              .entity-mgr-form-item-list-body-list-item-name {
+                flex: 1;
+                margin-right: 10px;
+                .text-overflow();
+              }
+
+              .icon {
+                margin-left: 10px;
+                vertical-align: middle;
+              }
+
+              &:hover {
+                color: @active-font-color;
+                background-color: @hover-bg;
+              }
+            }
+          }
+
+          .entity-mgr-form-item-list-body-no-data {
+            padding-top: 50px;
+            color: @disabled-color;
+            text-align: center;
+          }
+        }
+
+        .entity-mgr-form-item-list-footer {
+          text-align: right;
+        }
+      }
+    }
+  }

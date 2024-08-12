@@ -1,0 +1,18 @@
+@startuml virtualmap
+actor 仿真工程师
+仿真工程师 -> 配置中心 : 选择内容
+note left
+1.选择已定义好的excel(必须)
+2.选择配置参数文件settings.toml(非必须)
+end note
+仿真工程师 -> 地图生成系统 : 开始生成任务
+地图生成系统 -> 配置中心 : 读取excel
+地图生成系统 -> 配置中心 : 读取配置toml文件
+note right
+1.用户toml和系统toml结合
+2.用户优先级高于系统
+end note
+地图生成系统 -> 地图生成系统 : 矢量化构建地图内部结构
+地图生成系统 -> 磁盘 : 多线程生成OpenDRIVE文件且指定路径存储
+
+@enduml

@@ -1,0 +1,935 @@
+syntax = "proto3";
+
+package osi3;
+
+option optimize_for = SPEED;
+
+//
+// \brief A cartesian 3D vector for positions, velocities or accelerations or
+// its uncertainties.
+//
+// The coordinate system is defined as right-handed.
+//
+// Units are m for positions, m/s for velocities, and m/s^2 for
+// accelerations.
+//
+message Vector3d {
+  // The x-coordinate.
+  //
+  // Unit: m, m/s, or m/s^2
+  //
+  double x = 1;
+
+  // The y-coordinate.
+  //
+  // Unit: m, m/s, or m/s^2
+  //
+  double y = 2;
+
+  // The z-coordinate.
+  //
+  // Unit: m, m/s, or m/s^2
+  //
+  double z = 3;
+}
+
+//
+// \brief A cartesian 2D vector for positions, velocities or accelerations or
+// its uncertainties.
+//
+// Units are m for positions, m/s for velocities, and m/s^2 for
+// accelerations.
+//
+message Vector2d {
+  // The x-coordinate.
+  //
+  // Unit: m, m/s, or m/s^2
+  //
+  double x = 1;
+
+  // The y-coordinate.
+  //
+  // Unit: m, m/s, or m/s^2
+  //
+  double y = 2;
+}
+
+//
+// \brief A timestamp.
+//
+// Names and types of fields are chosen in accordance to
+// google/protobuf/timestamp.proto to allow a possible switch in the future.
+// There is no definition of the zero point in time neither it is the Unix
+// epoch. A simulation may start at the zero point in time but it is not
+// mandatory.
+//
+message Timestamp {
+  // The number of seconds since the start of e.g. the simulation / system /
+  // vehicle.
+  //
+  // Unit: s
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  int64 seconds = 1;
+
+  // The number of nanoseconds since the start of the last second.
+  //
+  // Range: [0, 999.999.999]
+  //
+  // Unit: ns
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // is_less_than_or_equal_to: 999999999
+  // \endrules
+  //
+  uint32 nanos = 2;
+}
+
+//
+// \brief The dimension of a 3D box, e.g. the size of a 3D bounding box or its
+// uncertainties.
+//
+// \image html OSI_Dimension3D.svg
+//
+// The dimensions are positive. Uncertainties are negative or positive.
+//
+// Dimension is defined in the specified reference coordinate frame along the
+// x-axis (=length), y-axis (=width) and z-axis (=height).
+//
+message Dimension3d {
+  // The length of the box.
+  //
+  // Unit: m
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double length = 1;
+
+  // The width of the box.
+  //
+  // Unit: m
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double width = 2;
+
+  // The height of the box.
+  //
+  // Unit: m
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double height = 3;
+}
+
+//
+// \brief A 3D orientation, orientation rate or orientation acceleration (i.e.
+// derivatives) or its uncertainties denoted in euler angles.
+//
+// Units are rad for orientation, rad/s for rates, and rad/s^2 for
+// accelerations
+//
+// The coordinate system is defined as right-handed.
+// For the sense of each rotation, the right-hand rule applies.
+//
+// The rotations are to be performed \b yaw \b first (around the z-axis),
+// \b pitch \b second (around the new y-axis) and \b roll \b third (around the
+// new x-axis) to follow the definition according to [1] (Tait-Bryan / Euler
+// convention z-y'-x''). The preferred angular range is [-pi, pi] for roll
+// and yaw and [-pi/2, pi/2] for pitch.
+//
+// Roll/Pitch are 0 if the objects xy-plane is parallel to its parent's
+// xy-plane. Yaw is 0 if the object's local x-axis is parallel to its parent's
+// x-axis.
+//
+// \f$ Rotation_{yaw,pitch,roll} =
+// Rotation_{yaw}*Rotation_{pitch}*Rotation_{roll} \f$
+//
+// \f$ vector_{gobal coord system} := Rotation_{yaw, pitch, roll} * vector_{local coord system}
+//  +local_{origin::position} \f$
+//
+// \attention This definition changed in OSI version 3.0.0. Previous OSI
+// versions  (V2.xx) had an other definition.
+//
+// \par Reference:
+// [1] DIN Deutsches Institut fuer Normung e. V. (2013). <em>DIN ISO 8855 Strassenfahrzeuge -
+// Fahrzeugdynamik und Fahrverhalten - Begriffe</em>. (DIN ISO 8855:2013-11). Berlin, Germany.
+//
+message Orientation3d {
+  // The roll angle/rate/acceleration.
+  //
+  // Unit: rad, rad/s, or rad/s^2
+  //
+  double roll = 1;
+
+  // The pitch angle/rate/acceleration.
+  //
+  // Unit: rad, rad/s, or rad/s^2
+  //
+  double pitch = 2;
+
+  // The yaw angle/rate/acceleration.
+  //
+  // Unit: rad, rad/s, or rad/s^2
+  //
+  double yaw = 3;
+}
+
+//
+// \brief A common identifier (ID), represented as an integer.
+//
+// Has to be unique among all simulated items at any given time. For ground
+// truth, the identifier of an item (object, lane, sign, etc.) must remain
+// stable over its lifetime. \c Identifier values may be only be reused if the
+// available address space is exhausted and the specific values have not been in
+// use for several timesteps. Sensor specific tracking IDs have no restrictions
+// and should behave according to the sensor specifications.
+//
+// The value MAX(uint64) = 2^(64) -1 =
+// 0b1111111111111111111111111111111111111111111111111111111111111111 is
+// reserved and indicates an invalid ID or error.
+//
+message Identifier {
+  // The identifier's value.
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  uint64 value = 1;
+}
+
+// \brief References to external objects.
+//
+// The external reference is an optional recommendation to refer to objects defined outside of OSI.
+// This could be other OpenX standards, 3rd-party standards or user-defined objects.
+//
+// \note ExternalReference is optional and can be left empty.
+//
+message ExternalReference {
+  // The source of the external references.
+  //
+  // Defines the original source of an object as uniquely identifiable reference.
+  // In case of using \c GroundTruth::map_reference or
+  // \c GroundTruth::model_reference, the reference can be left empty.
+  // If not otherwise required, an URI is suggested. The syntax should follow
+  // \link https://tools.ietf.org/html/rfc3986 RFC 3986\endlink.
+  //
+  //
+  string reference = 1;
+
+  // The type of the external references.
+  //
+  // Mandatory value describing the type of the original source.
+  //
+  // For OpenX/ASAM standards it is specified as follows:
+  // - net.asam.opendrive
+  // - net.asam.openscenario
+  //
+  // For third-party standards and user-defined objects,
+  // reverse domain name notation with lower-case type field
+  // is recommended to guarantee unique and interoperable identification.
+  //
+  string type = 2;
+
+  // The external identifier reference value.
+  //
+  // The repeated string is chosen as a common description of the external
+  // identifier, because a variety of identificatier types could be
+  // involved .
+  //
+  // For example, referencing a unique lane in OpenDRIVE requires the
+  // following identifiers:
+  // * RoadId: String
+  // * S-Value of LaneSection: Double
+  // * LaneId: Int
+  //
+  // \note The detailed description of the identifiers and how they are
+  //       used for referencing external objects is given in the individual
+  //       messages where the external identifier is used.
+  //
+  // \see EnvironmentalConditions::source_reference
+  // \see Lane::source_reference
+  // \see LaneBoundary::source_reference
+  // \see StationaryObject::source_reference
+  // \see MovingObject::source_reference
+  // \see RoadMarking::source_reference
+  // \see TrafficLight::source_reference
+  // \see TrafficSign::source_reference
+  //
+  repeated string identifier = 3;
+}
+
+//
+// \brief Specifies the mounting position of a sensor.
+//
+// Details are specified in each instance where \c MountingPosition is used.
+//
+message MountingPosition {
+  // Offset position relative to the specified reference coordinate system.
+  //
+  Vector3d position = 1;
+
+  // Orientation offset relative to the specified reference coordinate system.
+  //
+  // \f$ Origin_{sensor} :=
+  // Rotation_{yaw,pitch,roll}( \f$ \c #orientation \f$
+  // )*(Origin_{\text{reference coord system}}
+  // - \f$ \c #position \f$ )\f$
+  //
+  Orientation3d orientation = 2;
+}
+
+//
+// \brief A spherical representation for a point or vector in 3D space.
+//
+// Used e.g., for low level representations of radar detections.
+//
+// Azimuth and elevation are defined as the rotations that would have to be
+// applied to the local frame (e.g sensor frame definition in
+// \c SensorDetectionHeader) to make its x-axis point towards the referenced
+// point or to align it with the referenced vector. The rotations are to be
+// performed \b azimuth \b first (around the z-axis) and \b elevation \b second
+// (around the new y-axis) to follow the definition of \c Orientation3d. For the
+// sense of each rotation, the right-hand rule applies.
+//
+// \f$ vector_{cartesian} :=
+// Rotation( \f$ \c #elevation \f$ )*Rotation( \f$ \c #azimuth \f$ )*
+// (Unit_{vector_x}* \f$ \c #distance \f$ ) \f$
+//
+message Spherical3d {
+  // The radial distance.
+  //
+  // Unit: m
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double distance = 1;
+
+  // The azimuth (horizontal) angle.
+  //
+  // Unit: rad
+  //
+  double azimuth = 2;
+
+  // The elevation (vertical) angle.
+  //
+  // Unit: rad
+  //
+  double elevation = 3;
+}
+
+//
+// \brief Assignment of an object to a logical lane
+//
+// An object is assigned to a logical lane if it overlaps the logical lane.
+// Assignment happens even if the reference point is outside the lane, and only
+// a part of the object overlaps (any object overlapping the lane more than 5cm
+// has to be assigned to the lane).
+//
+// As an exception to this, \c TrafficSign and \c TrafficLight are assigned to
+// a logical lane if they control traffic on that lane. For \c TrafficSign and
+// \c TrafficLight , #s_position refers to the position where the sign or light
+// is valid (e.g. where vehicles should stop in case of a red traffic light),
+// not the physical position (where the sign or light is in the world).
+// Typically, t_position and angle_to_lane do not have any meaning in this
+// case, and will be 0.
+//
+message LogicalLaneAssignment {
+  // ID of the LogicalLane the object is assigned to.
+  //
+  // \rules
+  // refers_to: LogicalLane
+  // \endrules
+  //
+  Identifier assigned_lane_id = 1;
+
+  // S position of the object reference point on the lane, in the ST
+  // coordinate system of the lane.
+  //
+  // #s_position might be outside [s_start,s_end] of the lane (and even
+  // outside [startS,endS] of the reference line) if the reference point is
+  // outside the lane, but the object overlaps the lane or a TrafficSign or
+  // TrafficLight is assigned to a lane.
+  //
+  double s_position = 2;
+
+  // T position of the object reference point on the lane, in the ST
+  // coordinate system of the lane.
+  //
+  double t_position = 3;
+
+  // Angle of the object relative to the lane.
+  // See the ReferenceLine description how the angle is calculated.
+  //
+  // Unit: rad
+  //
+  double angle_to_lane = 4;
+}
+
+//
+// \brief The base attributes of a stationary object or entity.
+//
+// This includes the \c StationaryObject , \c TrafficSign ,
+// \c TrafficLight , \c RoadMarking messages.
+//
+// \image html OSI_BaseStationary.svg
+//
+// All coordinates and orientations from ground truth objects are relative to
+// the global ground truth frame (see image). (All coordinates and orientations
+// from detected objects are relative to the host vehicle frame (see:
+// \c Vehicle vehicle reference point).)
+//
+message BaseStationary {
+  // The 3D dimensions of the stationary object (bounding box), e.g. a
+  // landmark.
+  //
+  Dimension3d dimension = 1;
+
+  // The reference point for position and orientation, i.e. the center (x,y,z)
+  // of the bounding box.
+  //
+  Vector3d position = 2;
+
+  // The relative orientation of the stationary object w.r.t. its parent
+  // frame, noted in the parent frame. The orientation becomes global/absolute
+  // if the parent frame is inertial (all parent frames up to ground truth).
+  //
+  // \f$ Origin_{\text{base stationary entity}} :=
+  // Rotation_{yaw,pitch,roll}( \f$ \c #orientation \f$ )*
+  // (Origin_{\text{parent coord system}} -
+  // \f$ \c #position \f$ )\f$
+  //
+  // \note There may be some constraints how to align the orientation w.r.t.
+  // to some stationary object's or entity's definition.
+  //
+  Orientation3d orientation = 3;
+
+  // Usage as ground truth:
+  // The two dimensional (flat) contour of the object. This is an extension of
+  // the concept of a bounding box as defined by \c Dimension3d. The contour
+  // is the projection of the object's outline onto the z-plane in the object
+  // frame (independent of its current position and orientation). The height
+  // is the same as the height of the bounding box.
+  //
+  // Usage as sensor data:
+  // The polygon describes the visible part of the object's contour.
+  //
+  // General definitions:
+  // The polygon is defined in the local object frame: x pointing forward and
+  // y to the left.
+  // The origin is the center of the bounding box.
+  // As ground truth, the polygon is closed by connecting the last with the
+  // first point. Therefore these two points must be different. The polygon
+  // must consist of at least three points.
+  // As sensor data, however, the polygon is open.
+  // The polygon is defined counter-clockwise.
+  //
+  repeated Vector2d base_polygon = 4;
+}
+
+//
+// \brief The base attributes of an object that is moving.
+//
+// This includes the \c MovingObject messages.
+//
+// \image html OSI_BaseMoving.svg
+//
+// \image html OSI_BaseMoving_Top.svg
+//
+// E.g. a vehicle is a base moving object.
+//
+// All coordinates and orientations from ground truth objects are relative to
+// the global ground truth frame. All coordinates and orientations
+// from detected objects are relative to the host vehicle frame
+// (see: \c MovingObject vehicle reference point).
+//
+message BaseMoving {
+  // The 3D dimension of the moving object (its bounding box).
+  //
+  // \note The bounding box does NOT include side mirrors for vehicles.
+  //
+  Dimension3d dimension = 1;
+
+  // The reference point for position and orientation: the center (x,y,z) of
+  // the bounding box.
+  //
+  Vector3d position = 2;
+
+  // The relative orientation of the moving object w.r.t. its parent frame,
+  // noted in the parent frame. The orientation becomes global/absolute if
+  // the parent frame is inertial (all parent frames up to ground truth).
+  //
+  // \f$ Origin_{\text{base moving entity}} :=
+  // Rotation_{yaw,pitch,roll}( \f$ \c #orientation \f$ )*
+  // (Origin_{\text{parent coord system}} -
+  // \f$ \c #position \f$ ) \f$
+  //
+  // \note There may be some constraints how to align the orientation w.r.t.
+  // to some stationary object's or entity's definition.
+  //
+  Orientation3d orientation = 3;
+
+  // The relative velocity of the moving object w.r.t. the parent frame,
+  // noted in the parent frame. The velocity becomes global/absolute if
+  // the parent frame does is inertial (all parent frames up to ground truth).
+  //
+  // \c #position \f$ (t) := \f$ \c #position \f$ (t-dt)+ \f$ \c #velocity \f$
+  // *dt \f$
+  //
+  Vector3d velocity = 4;
+
+  // The relative acceleration of the moving object w.r.t. its parent frame,
+  // noted in the parent frame. The acceleration becomes global/absolute if
+  // the parent frame is inertial (all parent frames up to ground truth).
+  //
+  // \c #position \f$ (t) := \f$ \c #position \f$ (t-dt)+ \f$ \c #velocity \f$
+  // *dt+ \f$ \c #acceleration \f$ /2*dt^2\f$
+  //
+  // \c #velocity \f$ (t) := \f$ \c #velocity \f$ (t-dt)+ \f$ \c #acceleration
+  // \f$ *dt \f$
+  //
+  Vector3d acceleration = 5;
+
+  // The relative orientation rate of the moving object w.r.t. its parent
+  // frame and parent orientation rate in the center point of the bounding box
+  // (origin of the bounding box frame), noted in the parent frame.
+  // The orientation becomes global/absolute if the parent frame is inertial
+  // (all parent frames up to ground truth).
+  //
+  // \c #orientation \f$ .yaw(t) := \f$ \c #orientation_rate \f$ .yaw(t) * dt
+  // + \f$ \c #orientation \f$ .yaw(t-dt) \f$
+  //
+  // \c #orientation \f$ .pitch(t) := \f$ \c #orientation_rate \f$ .pitch(t) *
+  // dt + \f$ \c #orientation \f$ .pitch(t-dt) \f$
+  //
+  // \c #orientation \f$ .roll(t) := \f$ \c #orientation_rate \f$ .roll(t) *
+  // dt + \f$ \c #orientation \f$ .roll(t-dt)\f$
+  //
+  Orientation3d orientation_rate = 6;
+
+  // The relative orientation acceleration of the moving object w.r.t. its
+  // parent frame and parent orientation acceleration in the center point of
+  // the bounding box (origin of the bounding box frame), noted in the parent
+  // frame. The orientation becomes global/absolute if the parent frame is
+  // inertial (all parent frames up to ground truth).
+  //
+  // \c #orientation_rate \f$ .yaw(t) := \f$ \c #orientation_acceleration \f$
+  // .yaw(t) * dt + \f$ \c #orientation_rate \f$ .yaw(t-dt) \f$
+  //
+  // \c #orientation_rate \f$ .pitch(t) := \f$ \c #orientation_acceleration
+  // \f$ .pitch(t) * dt
+  // + \f$ \c #orientation_rate \f$ .pitch(t-dt) \f$
+  //
+  // \c #orientation_rate \f$ .roll(t) := \f$ \c #orientation_acceleration \f$
+  // .roll(t) * dt +
+  //  \f$ \c #orientation_rate \f$ .roll(t-dt) \f$
+  //
+  Orientation3d orientation_acceleration = 8;
+
+  // Usage as ground truth:
+  // The two dimensional (flat) contour of the object. This is an extension of
+  // the concept of a bounding box as defined by \c Dimension3d. The contour
+  // is the projection of the object's outline onto the z-plane in the object
+  // frame (independent of its current position and orientation). The height
+  // is the same as the height of the bounding box.
+  //
+  // Usage as sensor data:
+  // The polygon describes the visible part of the object's contour.
+  //
+  // General definitions:
+  // The polygon is defined in the local object frame: x pointing forward and
+  // y to the left. The origin is the center of the bounding box.
+  // As ground truth, the polygon is closed by connecting the last with the
+  // first point. Therefore these two points must be different. The polygon
+  // must consist of at least three points. As sensor data, however, the
+  // polygon is open.
+  // The polygon is defined counter-clockwise.
+  //
+  repeated Vector2d base_polygon = 7;
+}
+
+//
+// \brief The StatePoint definition
+//
+// A reference to a time and pose.  Typically used in a repeated field to define
+// a trajectory.
+//
+// \note The StatePoint definition does not define mandatory fields.
+// The context defines how and what fields are used.  For example, in some cases
+// only the pose variables are relevant and the timestamp is ignored.
+//
+message StatePoint {
+  // The timestamp of a StatePoint.
+  //
+  // \note Zero time does not need to coincide with the UNIX epoch.
+  //
+  Timestamp timestamp = 1;
+
+  // Position in the global coordinate system.
+  //
+  // \note Remark: The definition of the reference point follows the
+  // specification of the \c BaseMoving message.
+  //
+  Vector3d position = 2;
+
+  // Orientation in the global coordinate system.
+  //
+  Orientation3d orientation = 3;
+}
+
+//
+// \brief Detailed WavelengthRange message.
+//
+// Defines the start (minimum) and the end (maximum) values of the wavelength.
+// Additionally, the number of samples within this range is defined in this message.
+//
+message WavelengthData {
+  // The start, or the minimum wavelength value.
+  //
+  // Unit: m
+  //
+  double start = 1;
+
+  // The end, or the maximum wavelength value.
+  //
+  // Unit: m
+  //
+  double end = 2;
+
+  // Number of samples to be considered within the defined wavelength range.
+  // The number of samples includes the start and the end values that are defined
+  // in this message, starting from the "start" value.
+  // \note This defines the number of wavelengths to be computed during simulation,
+  // not to be confused with samples_per_pixel.
+  //
+  double samples_number = 3;
+}
+
+//
+// \brief Definition of a spatial signal strength distribution
+// for an emitting / transmitting / receiving entity
+// with a horizontal and a vertical angle
+// and the corresponding signal strength in dBm (decibels per milliwatt).
+//
+message SpatialSignalStrength {
+  // Horizontal angle (azimuth) of emission / transmission / reception
+  // in the entity's coordinate system.
+  //
+  // Unit: rad
+  //
+  double horizontal_angle = 1;
+
+  // Vertical angle (elevation) of emission / transmission / reception
+  // in the entity's coordinate system.
+  //
+  // Unit: rad
+  //
+  double vertical_angle = 2;
+
+  // Emitted / transmitted /received signal strength
+  // of the emitting / transmitting / receiving entity
+  // at the previously defined horizontal and
+  // vertical angle for one specific wavelength.
+  // The value for the signal strength
+  // is given in dBm (decibels per milliwatt).
+  //
+  // Unit: dBm
+  //
+  double signal_strength = 3;
+}
+
+//
+// \brief The description of a color within available color spaces.
+//
+// ColorDescription represents the visual, non-semantic appearance of an object,
+// structure or feature within various available color spaces.
+//
+// Depending on the context, this may define the color of an object or
+// structure a priori (e.g. GroundTruth objects)
+// or describe a perceived color (e.g. CameraDetections).
+//
+message ColorDescription {
+  // Greyscale color model
+  //
+  ColorGrey grey = 1;
+
+  // RGB (Red, Green, Blue) color model
+  //
+  ColorRGB rgb = 2;
+
+  // RGBIR (Red, Green, Blue, Infrared) color model
+  //
+  ColorRGBIR rgbir = 3;
+
+  // HSV (Hue, Saturation, Value) color model
+  //
+  ColorHSV hsv = 4;
+
+  // LUV (Luminance, U-coordinate, V-coordinate) color model
+  //
+  ColorLUV luv = 5;
+
+  // CMYK (Cyan, Magenta, Yellow, Key) color model
+  //
+  ColorCMYK cmyk = 6;
+}
+
+//
+// \brief Greyscale color model
+//
+// ColorGrey defines a greyscale.
+//
+message ColorGrey {
+  // Definition of a greyscale
+  //
+  // Range: [0,1]
+  //
+  double grey = 1;
+}
+
+//
+// \brief RGB color model
+//
+// ColorRGB provides values for red, green and blue.
+//
+message ColorRGB {
+  // Red ratio
+  //
+  // Range: [0,1]
+  //
+  double red = 1;
+
+  // Green ratio
+  //
+  // Range: [0,1]
+  //
+  double green = 2;
+
+  // Blue ratio
+  //
+  // Range: [0,1]
+  //
+  double blue = 3;
+}
+
+//
+// \brief RGBIR color model
+//
+// ColorRGBIR provides values for red, green, blue and infrared.
+//
+message ColorRGBIR {
+  // Red ratio
+  //
+  // Range: [0,1]
+  //
+  double red = 1;
+
+  // Green ratio
+  //
+  // Range: [0,1]
+  //
+  double green = 2;
+
+  // Blue ratio
+  //
+  // Range: [0,1]
+  //
+  double blue = 3;
+
+  // Infrared
+  //
+  // Range: [0,1]
+  //
+  double infrared = 4;
+}
+
+//
+// \brief HSV color model
+//
+// ColorHSV provides values for hue, saturation and value/brightness.
+//
+message ColorHSV {
+  // Hue
+  //
+  // Unit: deg
+  // Range: [0,360[
+  //
+  double hue = 1;
+
+  // Saturation
+  //
+  // Range: [0,1]
+  //
+  double saturation = 2;
+
+  // Value
+  //
+  // Range: [0,1]
+  //
+  double value = 3;
+}
+
+//
+// \brief LUV color model
+//
+// ColorLUV provides values for luminance, U- and V-coordinate.
+//
+message ColorLUV {
+  // Luminance
+  //
+  // Range: [0,1]
+  //
+  double luminance = 1;
+
+  // U-coordinate
+  //
+  // Range: [0,1]
+  //
+  double u = 2;
+
+  // V-Coordinate
+  //
+  // Range: [0,1]
+  //
+  double v = 3;
+}
+
+//
+// \brief CMYK colors model
+//
+// ColorCMYK provides values for cyan, magenta, yellow and key/black.
+//
+message ColorCMYK {
+  // Cyan ratio
+  //
+  // Range: [0,1]
+  //
+  double cyan = 1;
+
+  // Magenta ratio
+  //
+  // Range: [0,1]
+  //
+  double magenta = 2;
+
+  // Yellow ratio
+  //
+  // Range: [0,1]
+  //
+  double yellow = 3;
+
+  // Black ratio
+  //
+  // Range: [0,1]
+  //
+  double key = 4;
+}
+
+//
+// \brief A description for the positions of the pedals.
+//
+message Pedalry {
+  // Position of the acceleration pedal.
+  // Range: 0-1 (Unpressed - fully pressed)
+  //
+  double pedal_position_acceleration = 1;
+
+  // Position of the brake pedal.
+  // Range: 0-1 (Unpressed - fully pressed)
+  //
+  double pedal_position_brake = 2;
+
+  // Position of the clutch pedal.
+  // Range: 0-1 (Unpressed - fully pressed)
+  //
+  double pedal_position_clutch = 3;
+}
+
+//
+// \brief A description of the steering wheel.
+//
+message VehicleSteeringWheel {
+  // Angle of the steering wheel.
+  // Zero means the steering wheel is in its center position. A positive value
+  // means the steering wheel is turned to the left. A negative value
+  // means the steering wheel is turned to the right of the center position.
+  //
+  // Unit: rad
+  //
+  double angle = 1;
+
+  // Angular speed of the steering wheel.
+  // Zero means the steering wheel stays in its position. A positive value
+  // means the steering wheel is turned to the left. A negative value
+  // means the steering wheel is turned to the right.
+  //
+  // Unit: rad/s
+  //
+  double angular_speed = 2;
+
+  // Torque of the steering wheel to the hand.
+  // Zero means there is no force from the steering wheel to the hand of the driver.
+  // A positive value means that the steering wheel would turn to the left
+  // without driver intervention.
+  // A negative value means that the steering wheel would turn to the right
+  // without driver intervention.
+  //
+  // Unit: N*m
+  //
+  double torque = 3;
+}
+
+//
+// \brief The geodetic position of an object, that is, the center of the 3D bounding box.
+//
+message GeodeticPosition {
+  // longitude in decimal degrees regarding WGS84.
+  //
+  // Unit: deg
+  // Range: [-180; 180]
+  //
+  double longitude = 1;
+
+  // latitude in decimal degrees regarding WGS84.
+  //
+  // Unit: deg
+  // Range: [-90; 90]
+  //
+  double latitude = 2;
+
+  // Height above sea level regarding EGM96.
+  //
+  // Unit: m
+  // Range: [-300; 10000]
+  //
+  double altitude = 3;
+}
+
+//
+// \brief Generic key-value pair structure
+//
+// A generic key-value pair structure which can be used to capture information
+// which is opaque to the general OSI interface.
+//
+message KeyValuePair {
+  // A generic string key.
+  //
+  string key = 1;
+
+  // A generic string value.
+  //
+  string value = 2;
+}

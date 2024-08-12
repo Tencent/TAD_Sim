@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>TADSim</title>
+    <style>
+      html, body {
+        height: 100%;
+      }
+      html, body, div {
+        margin: 0;
+        padding: 0;
+      }
+      .app {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: #020202;
+      }
+      .title-bar {
+        height: 40px;
+        margin-bottom: 1px;
+        background-color: #111;
+        -webkit-app-region: drag;
+      }
+      .shortcut-button-bar {
+        height: 60px;
+        margin-bottom: 1px;
+        background-color: #191919;
+      }
+      .main {
+        flex: 1;
+        display: flex;
+        background-color: #000;
+      }
+      .left-bar {
+        width: 242px;
+        margin-right: 1px;
+        background-color: #111;
+      }
+      .player-editor {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #191919;
+      }
+      .status-bar {
+        height: 24px;
+        background-color: #111;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="app">
+      <div class="title-bar"></div>
+      <div class="shortcut-button-bar"></div>
+      <div class="main">
+        <div class="left-bar"></div>
+        <div class="player-editor">
+          <div class="status-bar"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

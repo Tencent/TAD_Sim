@@ -1,0 +1,19 @@
+# =========== Stage 1: copy cuda-11.4 ===========
+FROM --platform=linux/amd64 nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04 AS cuda
+
+
+# =========== Stage 2: Create final image ===========
+# must follow Epicgame of github and login in docker
+FROM --platform=linux/amd64 ghcr.io/epicgames/unreal-engine:dev-4.27.2
+
+# Copy cuda from builder stage
+COPY --from=cuda /usr/local/cuda /usr/local/cuda
+
+USER root
+
+RUN apt-get update \
+    && apt-get install -y libboost-dev
+
+#RUN chown -R root /home/ue4/UnrealEngine
+
+USER ue4

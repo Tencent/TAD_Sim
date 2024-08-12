@@ -1,0 +1,88 @@
+// Copyright (C) 2022 Tencent Inc.  All rights reserved.
+//
+// \brief This is Sensor configuration combination on the Ego vehicle,
+// which will be assigned once in the initial stage of tadsim
+// 主车车辆上的传感器配置组合, 将在 tadsim 初始阶段分配一次.
+//
+// note\ Information source: \n
+// 1. default.xosc \n
+// 2. SensorCatalog.xosc
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum SensorType {
+  SENSOR_TYPE_USER_DEFINE = 0;
+  SENSOR_TYPE_CAMERA = 1;
+  SENSOR_TYPE_FISHEYE = 2;
+  SENSOR_TYPE_SEMANTIC = 3;
+  SENSOR_TYPE_DEPTH = 4;
+  SENSOR_TYPE_RADAR = 5;
+  SENSOR_TYPE_TRADITIONAL_LIDAR = 6;
+  SENSOR_TYPE_ULTRASONIC = 7;
+  SENSOR_TYPE_OBU = 8;
+  SENSOR_TYPE_IMU = 9;
+  SENSOR_TYPE_GPS = 10;
+  SENSOR_TYPE_TRUTH = 11;
+}
+
+message Sensor {
+  message Extrinsic {
+    //
+    int64 ID = 1;
+
+    //
+    string InstallSlot = 2;
+
+    //
+    string Device = 3;
+
+    //
+    double LocationX = 4;
+
+    //
+    double LocationY = 5;
+
+    //
+    double LocationZ = 6;
+
+    //
+    double RotationX = 7;
+
+    //
+    double RotationY = 8;
+
+    //
+    double RotationZ = 9;
+  }
+
+  message Intrinsic {
+    // pass-through field.
+    //
+    map<string, string> params = 1;
+  }
+
+  //
+  SensorType type = 1;
+
+  //
+  Extrinsic extrinsic = 2;
+
+  //
+  Intrinsic intrinsic = 3;
+}
+
+message SensorGroup {
+  // name of sensor group.
+  // 传感器组名称.
+  //
+  string name = 1;
+
+  // List of sensor.
+  // 传感器列表.
+  //
+  repeated Sensor sensors = 2;
+}

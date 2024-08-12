@@ -1,0 +1,9 @@
+{
+  "name": "editLaneWidth",
+  "description": "车道宽度编辑",
+  "iconDesc": "laneWidth",
+  "iconComponentName": "LaneWidthSvg",
+  "componentPaths": {
+    "property": ["laneWidthProperty.vue"]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "editCrg",
+  "description": "路面形貌",
+  "iconDesc": "roadSurface",
+  "iconComponentName": "CrgSvg",
+  "componentPaths": {
+    "property": ["crgProperty.vue"]
+  }
+}

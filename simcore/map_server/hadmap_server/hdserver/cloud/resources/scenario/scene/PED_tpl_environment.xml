@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="2023-10-19T15:23:03" author="TAD Sim" />
+    <Catalog>
+        <Environment name="Environment0">
+            <ParameterDeclarations>
+                <ParameterDeclaration name="TimeStamp" parameterType="integer" value="0" />
+                <ParameterDeclaration name="UsingSunByUser" parameterType="boolean" value="false" />
+                <ParameterDeclaration name="wind_speed" parameterType="double" value="2.000000" />
+                <ParameterDeclaration name="tmperature" parameterType="double" value="298.150000" />
+            </ParameterDeclarations>
+            <TimeOfDay animation="false" dateTime="2023-03-20T14:30:00.000" />
+            <Weather cloudState="cloudy">
+                <Sun azimuth="10000" elevation="40" intensity="20" />
+                <Fog visualRange="30000.000000" />
+                <Precipitation intensity="0.500000" precipitationType="dry" />
+            </Weather>
+            <RoadCondition frictionScaleFactor="1" />
+        </Environment>
+    </Catalog>
+</OpenSCENARIO>

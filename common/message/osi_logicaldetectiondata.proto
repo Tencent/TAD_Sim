@@ -1,0 +1,228 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_version.proto";
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief Processed data from one or multiple sensors as a list of logical detections.
+// Logical detections are derived from sensor detections in a logical model through
+// processing steps like fusion filtering, tracking etc.
+//
+// All information is given with respect to the reference frame of the logical/virtual sensor
+// \c SensorView::mounting_position (e.g. center of rear axle of the ego car)
+// in Cartesian coordinates.
+//
+message LogicalDetectionData {
+  // The interface version used by the sender (i.e. the simulation
+  // environment).
+  //
+  InterfaceVersion version = 1;
+
+  // Header attributes of fused detections from multiple sensors and sensor types.
+  //
+  LogicalDetectionDataHeader header = 2;
+
+  // logical detections consisting of transformed (and potentially fused) detections from
+  // one or multiple sensors and sensor types.
+  // Logical detections are given with respect to the reference frame of the logical/virtual sensor
+  // \c SensorView::mounting_position (e.g. center of rear axle of the ego car)
+  //
+  repeated LogicalDetection logical_detection = 3;
+}
+
+//
+// \brief The header attributes of each sensor's logical detections list.
+//
+message LogicalDetectionDataHeader {
+  // Time stamp at which the transformation and optional fusion was finished
+  // in the global synchronized time.
+  //
+  // \note See \c SensorData::timestamp and
+  // \c SensorData::last_measurement_time for detailed discussions on the
+  // semantics of time-related fields.
+  //
+  Timestamp logical_detection_time = 1;
+
+  // Data Qualifier expresses to what extent the content of this event can be
+  // relied on.
+  //
+  DataQualifier data_qualifier = 2;
+
+  // The current number of valid detections in the logical detections list.
+  //
+  // \note This value has to be set if the list contains invalid logical detections.
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  uint32 number_of_valid_logical_detections = 3;
+
+  // The ID(s) of the sensor(s) that produced the detections for transformation
+  // and - in case of multiple sensors - fusion into logical detections.
+  //
+  repeated Identifier sensor_id = 4;
+
+  // Data qualifier communicates the overall availability of the
+  // interface.
+  //
+  enum DataQualifier {
+    // Unknown (must not be used in ground truth).
+    //
+    DATA_QUALIFIER_UNKNOWN = 0;
+
+    // Other (unspecified but known).
+    //
+    DATA_QUALIFIER_OTHER = 1;
+
+    // Data is available.
+    //
+    DATA_QUALIFIER_AVAILABLE = 2;
+
+    // Reduced data is available.
+    //
+    DATA_QUALIFIER_AVAILABLE_REDUCED = 3;
+
+    // Data is not available.
+    //
+    DATA_QUALIFIER_NOT_AVAILABLE = 4;
+
+    // Sensor is blind.
+    //
+    DATA_QUALIFIER_BLINDNESS = 5;
+
+    // Sensor temporary available.
+    //
+    DATA_QUALIFIER_TEMPORARY_AVAILABLE = 6;
+
+    // Sensor invalid.
+    //
+    DATA_QUALIFIER_INVALID = 7;
+  }
+}
+
+//
+// \brief A logical detection that could be based on multiple sensors and sensor types.
+//
+message LogicalDetection {
+  // Existence probability of the logical detection
+  //
+  // \note Use as confidence measure where a low value means less confidence
+  // and a high value indicates strong confidence.
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // is_less_than_or_equal_to: 1
+  // \endrules
+  //
+  double existence_probability = 1;
+
+  // ID of the detected object this logical detection is associated to.
+  //
+  // \note ID = MAX(uint64) indicates no reference to an object.
+  //
+  // \rules
+  // refers_to: DetectedObject
+  // \endrules
+  //
+  Identifier object_id = 2;
+
+  // Measured position of the logical detection given in cartesian coordinates in the
+  // host vehicle coordinate system.
+  //
+  // Unit: m
+  //
+  Vector3d position = 3;
+
+  // Root mean squared error of the measured position of the logical detection.
+  //
+  Vector3d position_rmse = 4;
+
+  // Velocity of the logical detection given in cartesian coordinates in the
+  // host vehicle coordinate system.
+  //
+  // Unit: m/s
+  //
+  Vector3d velocity = 5;
+
+  // Root mean squared error of the logical detection's velocity.
+  //
+  // Unit: m/s
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  Vector3d velocity_rmse = 6;
+
+  // Intensity or equivalent value of the logical detection's echo.
+  //
+  // Unit: %
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // is_less_than_or_equal_to: 100
+  // \endrules
+  //
+  double intensity = 7;
+
+  // The signal to noise ratio (SNR) of the logical detection.
+  //
+  // Unit: dB
+  //
+  double snr = 8;
+
+  // Describes the possibility whether more than one object may have led to
+  // this logical detection.
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // is_less_than_or_equal_to: 1
+  // \endrules
+  //
+  double point_target_probability = 9;
+
+  // The ID(s) of the sensor(s) that produced the detection(s) for transformation
+  // and - in case of multiple sensors - fusion into the single logical detection.
+  //
+  // \note One logical detection can originate from multiple sensors.
+  //
+  repeated Identifier sensor_id = 10;
+
+  // Basic classification of the logical detection.
+  //
+  LogicalDetectionClassification classification = 11;
+}
+
+// Definition of basic logical detection classifications.
+//
+enum LogicalDetectionClassification {
+  // Logical detection is unknown (must not be used in ground truth).
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_UNKNOWN = 0;
+
+  // Other (unspecified but known) logical detection.
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_OTHER = 1;
+
+  // Invalid logical detection, not to be used for object tracking, of unspecified
+  // type (none of the other types applies).
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_INVALID = 2;
+
+  // Clutter (noise, spray, rain, fog etc.).
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_CLUTTER = 3;
+
+  // Over-drivable (ground etc.).
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_OVERDRIVABLE = 4;
+
+  // Under-drivable (sign gantry etc.).
+  //
+  LOGICAL_DETECTION_CLASSIFICATION_UNDERDRIVABLE = 5;
+}

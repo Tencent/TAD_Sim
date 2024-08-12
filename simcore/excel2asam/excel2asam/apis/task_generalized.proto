@@ -1,0 +1,108 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// Define the interface to interact with tadsim cloud platform generalized tasks
+
+syntax = "proto3";
+
+package apis;
+
+option java_outer_classname = "TaskGeneralizedProtos";
+
+// 语义生成 / 泛化场景任务
+enum TaskGeneralizedStatus {
+  TASK_GENERALIZED_STATUS_ING = 0;                    // 生成中
+  TASK_GENERALIZED_STATUS_FINISHED = 1;               // 生成完成
+  TASK_GENERALIZED_STATUS_FAIL = 2;                   // 生成失败
+  TASK_GENERALIZED_STATUS_SUSPENDED = 3;              // 已暂停
+}
+
+enum ParameterType {
+  PARAMETER_TYPE_ENUM = 0;                            // ​枚举型
+  PARAMETER_TYPE_RANGE = 1;                           // 范围型
+}
+
+enum GeneralizedType {
+  GENERALIZED_TYPE_ONE2NE = 0;                        // 一一对应
+  GENERALIZED_TYPE_CARTESIAN_PRODUCT = 1;             // 交叉组合
+}
+
+message Parameter {
+  ParameterType type = 1;                             // 参数类型
+  GeneralizedType generalized_type = 2;               // 组合形式
+  string key = 3;                                     // 参数名称
+  string enum_value = 4;                              // 枚举值
+  double min_value = 5;                               // 最小值
+  double step_value = 6;                              // 步长
+  double max_value = 7;                               // 最大值
+  string unit = 8;                                    // 单位
+}
+
+message TreeSceneSet {
+  repeated string classifys = 1;                      // 场景分类
+}
+
+message FunctionalScenario {
+  repeated string labels = 1;                         // 功能场景标签列表
+  string description = 2;                             // 功能场景描述
+  string func_name = 3;                               // 功能场景名称
+  uint64 group_id = 4;                                // 功能场景组id
+  uint64 logic_number = 5;                            // 逻辑场景数量
+  uint64 concrete_number = 6;                         // 具体场景数量
+  TreeSceneSet tree_scene_set = 7;                    // 场景分类
+}
+
+message LogicalScenario {
+  repeated string labels = 1;                         // 逻辑场景标签列表
+  string description = 2;                             // 逻辑场景描述
+  string func_name = 3;                               // 功能场景名称
+  string logic_name = 4;                              // 逻辑场景名称
+  uint64 group_id = 5;                                // 逻辑场景组id
+  uint64 concrete_number = 6;                         // 具体场景数量
+  repeated Parameter parameters = 7;                  // 参数列表
+  TreeSceneSet tree_scene_set = 8;                    // 场景分类
+}
+
+message ConcreteScenario {
+  repeated string labels = 1;                         // 具体场景标签列表
+  string description = 2;                             // 具体场景描述
+  string virtual_map_name = 3;                        // 虚拟地图名称
+  string func_name = 4;                               // 功能场景名称
+  string logic_name = 5;                              // 逻辑场景名称
+  string concrete_name = 6;                           // 具体场景名称
+  uint64 concrete_id = 7;                             // 具体场景id
+  TreeSceneSet tree_scene_set = 8;                    // 场景分类
+}
+
+message VirtualMap {
+  string id = 1;                                      // 虚拟地图id
+  string name = 2;                                    // 虚拟地图名称
+  string version = 3;                                 // 虚拟地图版本(数据平台管理版本)
+}
+
+message UnqualifiedScenario {
+  string func_name = 1;                               // 功能场景名称 (预留)
+  string logic_name = 2;                              // 逻辑场景名称 (预留)
+  string concrete_name = 3;                           // 具体场景名称
+  int64 id = 4;                                       // 场景序号
+  string assessment_dimensions = 5;                   // 评估维度 (判断不合格的评估维度)
+  string cause_analysis = 6;                          // 不合格原因分析 (当前评估维度下的不合格原因)
+  string status = 7;                                  // 当前状态 (默认为已剔除)
+}
+
+message TaskGeneralized {
+  uint64 task_generalized_id = 1;                     // 语义生成(泛化任务)id
+  string link_symbol = 2;                             // 链接符号
+  TaskGeneralizedStatus status = 3;                   // 任务状态
+  repeated FunctionalScenario funcs = 4;
+  repeated LogicalScenario logics = 5;
+  repeated ConcreteScenario concretes = 6;
+  repeated VirtualMap maps = 7;                       // 虚拟地图列表
+  uint64 func_number = 8;                             // 功能场景数量
+  uint64 logic_number = 9;                            // 逻辑场景数量
+  uint64 concrete_number = 10;                        // 具体场景数量 (场景留存总数)
+  uint64 virtual_map_number = 11;                     // 虚拟地图数量
+  uint64 concrete_number_original = 12;               // 原始具体场景数量 (生成场景总数)
+  double qualification_rate = 13;                     // 合格率
+  repeated UnqualifiedScenario unqualifieds = 14;     // 不合格场景列表
+  repeated TreeSceneSet unique_tree_scene_sets = 15;  // 树状场景集集合 (不重复)
+}

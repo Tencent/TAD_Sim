@@ -1,0 +1,28 @@
+#pragma once
+
+
+#define VER_MAJOR           1
+#define VER_MINOR           0
+#define VER_BUILD           1
+#define VER_REVISION        @PROJECT_REVISION@
+
+
+
+#define Stringizing(v)       #v
+
+
+// generate rights
+#define COPYRIGHT_STR()  \
+    "Copyright (C) " "@PROJECT_BUILD_YEAR@"
+
+// generate version string
+#define VER_STR(major,minor,build,revision)  \
+    "V" Stringizing(major) "." Stringizing(minor) "." Stringizing(build) "." Stringizing(revision) " " __DATE__ " " __TIME__
+
+// generate file version 
+#define FILE_VERSION_STR(branch,commit_id) \
+    "V" Stringizing(branch) "." Stringizing(commit_id) "-" "@PROJECT_BUILD_DATE@" "-" "@PROJECT_BUILD_TIME@"
+
+// generate product version 
+#define PRODUCT_VERSION_STR(major,minor,build,revision) \
+     "V" Stringizing(major) "." Stringizing(minor) "." Stringizing(build) "." Stringizing(revision) "-" "@PROJECT_BUILD_DATE@" "T" "@PROJECT_BUILD_TIME@"

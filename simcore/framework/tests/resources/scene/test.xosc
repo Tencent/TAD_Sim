@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="2021-02-03T15:23:55" description="Multi" author="TAD Sim" />
+    <ParameterDeclarations>
+        <ParameterDeclaration name="$HeadingAngle_Ego" parameterType="double" value="1.2786411271227018" />
+        <ParameterDeclaration name="$Vehicle_Ego" parameterType="string" value="car_white" />
+        <ParameterDeclaration name="$Location_StartX_Ego" parameterType="double" value="1248.444991" />
+        <ParameterDeclaration name="$Location_StartY_Ego" parameterType="double" value="1640.804982" />
+        <ParameterDeclaration name="$Speed_Ini_Ego" parameterType="double" value="4.17" />
+        <ParameterDeclaration name="$Speed_Max_Ego" parameterType="double" value="20" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartX_0" parameterType="double" value="1248.439202" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartY_0" parameterType="double" value="1640.799183" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartX_1" parameterType="double" value="1297.452061" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartY_1" parameterType="double" value="1794.545343" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartX_2" parameterType="double" value="1446.828346" />
+        <ParameterDeclaration name="$Ego_WayPoint_StartY_2" parameterType="double" value="2276.023948" />
+    </ParameterDeclarations>
+    <CatalogLocations>
+        <VehicleCatalog>
+            <Directory path="../xosc/Catalogs/Vehicles" />
+        </VehicleCatalog>
+        <PedestrianCatalog>
+            <Directory path="../xosc/Catalogs/Pedestrians" />
+        </PedestrianCatalog>
+    </CatalogLocations>
+    <RoadNetwork>
+        <LogicFile filepath="../hadmap/test.xodr" />
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="Ego">
+            <CatalogReference catalogName="VehicleCatalog" entryName="$Vehicle_Ego" />
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="Ego">
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" value="0" dynamicsDimension="rate" />
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="$Speed_Ini_Ego" />
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <WorldPosition x="$Location_StartX_Ego" y="$Location_StartY_Ego" z="0" h="$HeadingAngle_Ego" p="0" r="0" />
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <RoutingAction>
+                            <AssignRouteAction>
+                                <Route name="EgoRoute" closed="0">
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <WorldPosition x="$Ego_WayPoint_StartX_0" y="$Ego_WayPoint_StartY_0" z="0" h="0" p="0" r="0" />
+                                        </Position>
+                                    </Waypoint>
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <WorldPosition x="$Ego_WayPoint_StartX_1" y="$Ego_WayPoint_StartY_1" z="0" h="0" p="0" r="0" />
+                                        </Position>
+                                    </Waypoint>
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <WorldPosition x="$Ego_WayPoint_StartX_2" y="$Ego_WayPoint_StartY_2" z="0" h="0" p="0" r="0" />
+                                        </Position>
+                                    </Waypoint>
+                                </Route>
+                            </AssignRouteAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Story">
+            <Act name="Act0">
+                <ManeuverGroup name="0" maximumExecutionCount="1">
+                    <Actors selectTriggeringEntities="0" />
+                </ManeuverGroup>
+                <StartTrigger />
+            </Act>
+        </Story>
+        <StopTrigger />
+    </Storyboard>
+</OpenSCENARIO>

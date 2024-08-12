@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-docstring-first
+      - id: check-merge-conflict
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: requirements-txt-fixer
+      - id: check-added-large-files
+        args: ["--maxkb=50000"]
+      - id: check-json
+        exclude: '^.vscode'
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.13
+    hooks:
+      - id: ruff  # Run the linter.
+        args: [ --fix ]
+      - id: ruff-format  # Run the formatter.
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        name: mypy-python
+        language_version: python3
+        args: [
+          --strict,
+          --ignore-missing-imports,
+          --warn-no-return,
+          --warn-redundant-casts,
+          --disallow-incomplete-defs
+        ]
+        additional_dependencies: [types-all]
+        exclude: "(.*_pb2\\.py|.*_api\\.py|gen_fake_json\\.py)"

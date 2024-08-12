@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package tx_car;
+
+message CarType {
+    // car suspension type
+    //enum Suspension_Type{
+    //    I_I = 0;      // independent-independent passenger car
+    //    I_S = 1;      // independent-solid axle passenger car
+    //}
+
+    // implement p0 priority vehicle type
+    enum Propulsion_Type {
+      ICE_Engine = 0;     // internal combustion engine, <p0 priority>
+      Electric_Drive = 1; // electric drive, <p0 priority>
+      Hybrid_Gen_P2 = 2;  // hybrid generator and P2 Motor
+      Hybrid_Gen_P3 = 3;  // hybrid generator and P3 Motor
+      Hybrid_Gen_P2P4 = 4;  // hybrid generator and P2 Motor
+      Hybrid_Gen_P3P4 = 5;  // hybrid generator and P2 Motor
+    }
+
+    // drivetrain type
+    enum DriveTrain_Type{
+        FrontWheel_Drive = 0;
+        RearWheel_Drive = 1;
+        FourWheel_Drive = 2;
+    }
+
+    // steer type
+    enum Steer_Type{
+        Mapped_Steer = 0;
+        Dynamic_Steer = 1;
+    }
+
+    // Suspension_Type suspension_type = 1;
+    Propulsion_Type propulsion_type = 2;
+    DriveTrain_Type drivetrain_type = 3;
+    Steer_Type      steer_type = 4;
+}

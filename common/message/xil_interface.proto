@@ -1,0 +1,296 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Connecting hardware devices for x-in-loop testing.
+// 用于 x 再环测试连接硬件设备.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg.xil;
+
+message Empty {
+}
+
+message Vec3 {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message RPCState {
+  bool _success = 1;
+}
+
+//
+// \brief XIL Mode.
+//
+enum XILMode {
+  MIL = 0;
+  SIL = 1;
+  HIL = 2;
+}
+
+message XILInterface {
+  //
+  // \brief vendor related infomation.
+  //
+  message Vendor {
+    //
+    // \brief vendor type.
+    //
+    enum VendorType {
+      CONCURRENT = 0;
+      DSPACE = 1;
+      NationalInstrument = 2;
+    }
+
+    message VendorCfg {
+      //
+      // \brief vendor concurrent.
+      //
+      message Concurrent {
+        // user name of RTPC.
+        //
+        string user_name = 1;
+
+        // passwd of RTPC.
+        //
+        string passwd = 2;
+
+        // project id in SimWB provided by concurrent.
+        //
+        string project_id = 3;
+
+        // session id in SimWB provided by concurrent.
+        //
+        string session_id = 4;
+
+        // test id in SimWB provided by concurrent.
+        //
+        string test_id = 5;
+      }
+
+      //
+      // \brief vendor dSPACE.
+      //
+      message dSPACE {
+        // project id in CDNG provided by dSPACE.
+        //
+        string project_id = 1;
+
+        // experiment id in CDNG provided by dSPACE.
+        //
+        string experiment_id = 2;
+      }
+
+      //
+      // \brief vendor NI.
+      //
+      message NationalInstrument {
+        // project id i.
+        //
+        string project_id = 1;
+
+        // experiment id.
+        //
+        string experiment_id = 2;
+      }
+
+      //
+      Concurrent ccur_cfg = 1;
+
+      //
+      dSPACE dspace_cfg = 2;
+
+      //
+      NationalInstrument ni_cfg = 3;
+    }
+
+    // vendor name.
+    //
+    string vendor_name = 1;
+
+    // vendor software version.
+    //
+    string vendor_software_version = 2;
+
+    // vendor type.
+    //
+    VendorType vendor_type = 3;
+
+    // vendor config.
+    //
+    VendorCfg vendor_cfg = 4;
+  }
+
+  // local PC ethernet interface name used to communicate with HIL.
+  //
+  string eth_interface = 1;
+
+  // XIL service ip.
+  //
+  string xil_ip = 2;
+
+  // XIL service port.
+  //
+  uint32 xil_port = 3;
+
+  // XIL file service port.
+  //
+  uint32 xil_file_port = 4;
+
+  // vendor information, only valid in HIL mode.
+  //
+  Vendor vendor = 5;
+
+  //
+  XILMode mode = 6;
+}
+
+
+message XILState {
+  //
+  // \brief connection state
+  //
+  enum XILComState {
+    X_Online = 0;
+    X_Offline = 1;
+  }
+
+  //
+  // \brief plant model state.
+  //
+  enum PlantModelState {
+    MDLStopped = 0;
+    MDLReset = 1;
+    MDLRunning = 2;
+  }
+
+  //
+  int32 t_ms  = 1;
+
+  //
+  XILComState com_state = 2;
+
+  //
+  PlantModelState plant_model_state = 3;
+}
+
+//
+// \brief used for file downloading in HIL mode, files like: lic/par/sqlite/xodr, etc.
+//
+message FileHeader {
+  //
+  string file_name = 1;
+
+  //
+  uint32 file_size = 2;
+}
+
+message FileData {
+  //
+  FileHeader header = 1;
+
+  //
+  int32 block_index = 2;
+
+  //
+  bytes bytes_data = 3;
+}
+
+//
+// \brief file transfer.
+//
+service FileService {
+  //
+  rpc NotifySendFile (FileHeader) returns (RPCState);
+
+  //
+  rpc SendBytes (FileData) returns (RPCState);
+
+  //
+  rpc IsFileSent (FileHeader) returns (RPCState);
+}
+
+//
+// \brief protobuf message map, topic and bytes data.
+//
+message MessageMap {
+  message MessagePair {
+    //
+    string topic = 1;
+
+    //
+    bytes payload = 2;
+  }
+
+  //
+  repeated MessagePair msg_map = 1;
+}
+
+//
+// \brief vehicle dynamics config.
+//
+message VDConfig {
+  //
+  string lic_file = 1;
+
+  //
+  string par_file = 2;
+
+  //
+  string map_file = 3;
+
+  //
+  string sensor_xml_file = 4;
+
+  //
+  Vec3 map_origin = 5;
+
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint32 step_time = 6;
+
+  //
+  bool enable_terrain = 7;
+
+  //
+  bool l3_run_type = 8;
+
+  //
+  bytes start_location_payload = 9;
+
+}
+
+//
+// \brief services for vehicle dynamics.
+//
+service XILService {
+  //
+  rpc SetVDConfig (VDConfig) returns (RPCState);
+
+  //
+  rpc GetAllMessages (Empty) returns (MessageMap);
+
+  //
+  rpc SetMessageByTopic (MessageMap.MessagePair) returns (RPCState);
+
+  //
+  rpc InitVDModule (Empty) returns (XILState);
+
+  //
+  rpc ResetVDModule (Empty) returns (XILState);
+
+  //
+  rpc TriggerPlantModelRun (XILState) returns (XILState);
+
+  //
+  // \note never use in HIL mode.
+  //
+  rpc StepVDModule (XILState) returns (XILState);
+
+  //
+  rpc StopVDModule (Empty) returns (XILState);
+}

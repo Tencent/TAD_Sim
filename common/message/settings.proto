@@ -1,0 +1,122 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief This is the definition of the basic information,
+// which will be assigned once in the initial stage of tadsim
+// 这是基本信息的定义, 将在 tadsim 初始阶段分配一次.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message Setting {
+  message ModuleConfig {
+    //
+    string category = 1;
+  };
+
+  message ParameterDeclaration {
+    //
+    string name = 1;
+
+    // Range of values.
+    // 取值范围.
+    //
+    // \note
+    // integer: 32-bit signed integer OR $-notated Parameter\n
+    // double: IEEE 64-bit floating-point OR $-notated Parameter\n
+    // string: Any String OR $-notated Parameter\n
+    // unsignedInt: Unsigned integer of 32 bits OR $-notated Parameter\n
+    // unsignedShort: Unsigned integer of 16 bits OR $-notated Parameter\n
+    // boolean: Boolean Type (true, false) OR $-notated Parameter
+    //
+    string parameter_type = 2;
+
+    //
+    string value = 3;
+  }
+
+  //
+  string version = 1;
+
+  //
+  string scenario_path = 2;
+
+  //
+  string hadmap_path = 3;
+
+  //
+  string vehicle_dynamic_cfg_path = 4;
+
+  //
+  string sensor_cfg_path = 5;
+
+  //
+  string environment_cfg_path = 6;
+
+  //
+  string default_xosc_path = 7;
+
+  //
+  repeated string scenario_labels = 8;
+
+  //
+  string log_dir = 9;
+
+  //
+  map<string, ModuleConfig> module_cfg = 10;
+
+  //
+  string vehicle_catalog_path = 11;
+
+  //
+  string pedestrian_catalog_path = 12;
+
+  //
+  string miscobject_catalog_path = 13;
+
+  //
+  bytes hadmap_data = 14;
+
+  // Only outermost ParameterDeclaration definition in the OpenSCENARIO file is passthrough here.
+  // 此处只透传 OpenSCENARIO 文件中最外层的 ParameterDeclaration 定义.
+  //
+  repeated ParameterDeclaration parameter_declarations = 15;
+
+  //
+  string traffic_path = 16;
+
+  // Absolute path to the folder of model3d.
+  // 绝对文件夹路径 model3d.
+  //
+  // eg: C:\\Users\\user\\AppData\\Roaming\\tadsim\\data\\scenario\\Catalogs
+  //
+  string model3d_pathdir = 17;
+
+  message SimMode {
+    enum SimModeType {
+      //
+      UNKNOWN = 0;
+
+      //
+      WORLDSIM = 1;
+
+      //
+      LOGSIM = 2;
+
+      //
+      LOG2WORLD = 3;
+
+      //
+      MANUAL_VEHICLE = 4;
+    }
+
+    SimModeType sim_mode_type = 1;
+
+    uint64 ego_switch_time = 2;
+
+    uint64 traffic_switch_time = 3;
+  }
+  SimMode sim_mode = 18;
+}

@@ -1,0 +1,66 @@
+@import "./var";
+
+.el-overlay-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.el-dialog, .el-pager li {
+  background: @global-body-color;
+}
+
+.el-dialog {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.14);
+  width: auto;
+  height: auto;
+  margin: 0;
+  text-align: left;
+  --el-dialog-padding-primary: 0;
+
+  .el-dialog__headerbtn {
+    width: auto;
+    height: auto;
+    .el-dialog__close {
+      color: @global-default-color;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      .el-dialog__close {
+        color: @global-primary-color;
+      }
+    }
+  }
+
+  .el-dialog__header {
+    height: 28px;
+    line-height: 28px;
+    padding: 0 22px;
+    margin: 0;
+    background-color: @global-bg-color;
+  }
+
+  .el-dialog__title {
+    font-size: 12px;
+    color: @active-default-color;
+  }
+
+  .el-dialog__headerbtn {
+    top: 6px;
+    right: 20px;
+    width: auto;
+    height: auto;
+  }
+
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+
+@media screen and (max-height: 830px) {
+  .el-dialog {
+    margin-top: 80px;
+  }
+}

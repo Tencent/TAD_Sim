@@ -1,0 +1,10 @@
+{
+  "name": "editElevation",
+  "description": "高程编辑",
+  "iconDesc": "elevation",
+  "iconComponentName": "RoadHeightSvg",
+  "componentPaths": {
+    "leftArea": [],
+    "property": ["roadProperty.vue"]
+  }
+}

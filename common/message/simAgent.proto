@@ -1,0 +1,41 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_agent;
+
+option objc_class_prefix = "SA";
+
+enum RetCode {
+  Success = 0;
+  Error = 1;
+}
+
+service SimAgent {
+  //
+  rpc UploadLog(SimAgentUploadLogParameter) returns (SimAgentUploadLogRet) {}
+}
+
+message SimAgentUploadLogParameter {
+  //
+  int64 user_id = 1;
+
+  //
+  int64 job_id = 2;
+
+  //
+  string local_path = 3;
+}
+
+message SimAgentUploadLogRet {
+  //
+  RetCode ret_code = 1;
+
+  //
+  string error_msg = 2;
+}

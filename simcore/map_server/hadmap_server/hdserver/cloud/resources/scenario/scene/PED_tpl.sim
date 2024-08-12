@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0" date_version="1697700183314" sim_id="125">
+    <environment>PED_tpl_environment.xml</environment>
+    <mapfile lon="115.51576225404847" lat="39.441572569999998" alt="0.00020919999999999999" unrealLevelIndex="0">../hadmap/PED_tpl_map.xodr</mapfile>
+    <traffic>PED_tpl_traffic.xml</traffic>
+    <planner>
+        <ego type="car" name="suv" />
+        <route id="0" type="start_end" start="115.51286127382126,39.4415549310713" end="115.5161156868463,39.441562292288765" />
+        <start_v>0</start_v>
+        <theta>0.0016664704398887389</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <control_longitudinal>true</control_longitudinal>
+        <control_lateral>true</control_lateral>
+        <acceleration_max>12</acceleration_max>
+        <deceleration_max>10</deceleration_max>
+        <sensorGroup>12</sensorGroup>
+        <trajectory_enabled>false</trajectory_enabled>
+        <scene_event version="1.2.0.0" />
+        <altitude start="0.00022242311388254166" end="0.000" />
+        <InputPath points="115.512861273821,39.441554933540,0.000;115.516115700000,39.441562300000,0.000" />
+    </planner>
+</simulation>

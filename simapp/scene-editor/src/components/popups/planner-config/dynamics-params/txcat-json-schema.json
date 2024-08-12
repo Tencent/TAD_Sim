@@ -1,0 +1,6125 @@
+{
+  "type": "object",
+  "required": [
+    "propulsion",
+    "driveline",
+    "steerSystem",
+    "body",
+    "susp",
+    "wheelTire",
+    "sprungMass",
+    "ecu",
+    "carType"
+  ],
+  "properties": {
+    "propulsion": {
+      "type": "object",
+      "required": [
+        "frontMotorParameter",
+        "rearMotorParameter",
+        "engineParameter",
+        "battParamter"
+      ],
+      "properties": {
+        "frontMotorParameter": {
+          "type": "object",
+          "required": [
+            "motTcS",
+            "motMaxTorMap",
+            "motLossMapSpdTor"
+          ],
+          "properties": {
+            "motTcS": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "motMaxTorMap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "motLossMapSpdTor": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "rearMotorParameter": {
+          "type": "object",
+          "required": [
+            "motTcS",
+            "motMaxTorMap",
+            "motLossMapSpdTor"
+          ],
+          "properties": {
+            "motTcS": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "motMaxTorMap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "motLossMapSpdTor": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "engineParameter": {
+          "type": "object",
+          "required": [
+            "engineOuttrqMap",
+            "engineFuelrateMap",
+            "maxSpd",
+            "fuelDensity",
+            "tmCst"
+          ],
+          "properties": {
+            "engineOuttrqMap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "engineFuelrateMap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "maxSpd": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "fuelDensity": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "tmCst": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "battParamter": {
+          "type": "object",
+          "required": [
+            "BattChargeMax",
+            "Ns",
+            "Np",
+            "BattInitSoc",
+            "battOcvSocTable",
+            "battResisTempSoc"
+          ],
+          "properties": {
+            "BattChargeMax": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "Ns": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "Np": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "BattInitSoc": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "battOcvSocTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "battResisTempSoc": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "driveline": {
+      "type": "object",
+      "required": [
+        "tcu",
+        "tm",
+        "frontFd",
+        "rearFd",
+        "frontMotorRatio",
+        "rearMotorRatio"
+      ],
+      "properties": {
+        "tcu": {
+          "type": "object",
+          "required": [
+            "gearInitNum",
+            "mucUpShiftSpdTable",
+            "mucDownShiftSpdTable",
+            "tCluthDown",
+            "tCluthUp"
+          ],
+          "properties": {
+            "gearInitNum": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "mucUpShiftSpdTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "mucDownShiftSpdTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "tCluthDown": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "tCluthUp": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tm": {
+          "type": "object",
+          "required": [
+            "trGearRatioTable",
+            "trGearNumEfficienTable",
+            "trGearNumDampingCoeffsTable",
+            "trGearNumInertiasTable",
+            "gearShiftTau"
+          ],
+          "properties": {
+            "trGearRatioTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "trGearNumEfficienTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "trGearNumDampingCoeffsTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "trGearNumInertiasTable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "gearShiftTau": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "frontFd": {
+          "type": "object",
+          "required": [
+            "ratioDiffFront"
+          ],
+          "properties": {
+            "ratioDiffFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "rearFd": {
+          "type": "object",
+          "required": [
+            "ratioDiffRear"
+          ],
+          "properties": {
+            "ratioDiffRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "frontMotorRatio": {
+          "type": "object",
+          "required": [
+            "frontMotorGearRatio"
+          ],
+          "properties": {
+            "frontMotorGearRatio": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "rearMotorRatio": {
+          "type": "object",
+          "required": [
+            "rearMotorGearRatio"
+          ],
+          "properties": {
+            "rearMotorGearRatio": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "steerSystem": {
+      "type": "object",
+      "required": [
+        "steerMapped",
+        "dynamicSteer"
+      ],
+      "properties": {
+        "steerMapped": {
+          "type": "object",
+          "required": [
+            "RackDispVsSteerAng",
+            "LeftWhlVsRackDisp",
+            "RightWhlVsRackDisp",
+            "VehicleSpeedCoeff"
+          ],
+          "properties": {
+            "RackDispVsSteerAng": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "LeftWhlVsRackDisp": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "RightWhlVsRackDisp": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "VehicleSpeedCoeff": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "dynamicSteer": {
+          "type": "object",
+          "required": [
+            "steerGeometry",
+            "steerDynamics",
+            "powerAssist"
+          ],
+          "properties": {
+            "steerGeometry": {
+              "type": "object",
+              "required": [
+                "steerTrackWidth",
+                "steeringWheelAngleRange",
+                "pinRadiusTable",
+                "rackCasingLength",
+                "tieRodLength",
+                "steerArmLength",
+                "distRackAndFrontAxleLongitudinal"
+              ],
+              "properties": {
+                "steerTrackWidth": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steeringWheelAngleRange": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "pinRadiusTable": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "u0Axis",
+                    "y0Axis"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "u0Axis": {
+                      "type": "object",
+                      "required": [
+                        "dispName",
+                        "data"
+                      ],
+                      "properties": {
+                        "dispName": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "dataSource": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "y0Axis": {
+                      "type": "object",
+                      "required": [
+                        "dispName",
+                        "data"
+                      ],
+                      "properties": {
+                        "dispName": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "dataSource": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rackCasingLength": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "tieRodLength": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steerArmLength": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "distRackAndFrontAxleLongitudinal": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "steerDynamics": {
+              "type": "object",
+              "required": [
+                "steerWheelInertia",
+                "steerWheelDamping",
+                "hysteresisStiffness",
+                "hysteresisDamping",
+                "steerColumnInertia",
+                "steerColumnDamping",
+                "steerFricTorque"
+              ],
+              "properties": {
+                "steerWheelInertia": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steerWheelDamping": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "hysteresisStiffness": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "hysteresisDamping": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steerColumnInertia": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steerColumnDamping": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "steerFricTorque": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "powerAssist": {
+              "type": "object",
+              "required": [
+                "powerAssistTable",
+                "maxAssistTorque",
+                "maxAssistPower"
+              ],
+              "properties": {
+                "powerAssistTable": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "u0Axis",
+                    "u1Axis",
+                    "y0Axis"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "u0Axis": {
+                      "type": "object",
+                      "required": [
+                        "dispName",
+                        "data"
+                      ],
+                      "properties": {
+                        "dispName": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "dataSource": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "u1Axis": {
+                      "type": "object",
+                      "required": [
+                        "dispName",
+                        "data"
+                      ],
+                      "properties": {
+                        "dispName": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "dataSource": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "y0Axis": {
+                      "type": "object",
+                      "required": [
+                        "dispName",
+                        "data"
+                      ],
+                      "properties": {
+                        "dispName": {
+                          "type": "string"
+                        },
+                        "comment": {
+                          "type": "string"
+                        },
+                        "unit": {
+                          "type": "string"
+                        },
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "dataSource": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "maxAssistTorque": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "maxAssistPower": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "val"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "val": {
+                      "type": "number"
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "body": {
+      "type": "object",
+      "required": [
+        "aerodynamics"
+      ],
+      "properties": {
+        "aerodynamics": {
+          "type": "object",
+          "required": [
+            "VehicleBody6DOFCd",
+            "VehicleBody6DOFCl",
+            "VehicleBody6DOFCpm",
+            "betaWCs1dmap",
+            "betaWCym1dmap",
+            "VehicleBody6DOFPabs",
+            "VehicleBody6DOFTair"
+          ],
+          "properties": {
+            "VehicleBody6DOFCd": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "VehicleBody6DOFCl": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "VehicleBody6DOFCpm": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "betaWCs1dmap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "betaWCym1dmap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "VehicleBody6DOFPabs": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "VehicleBody6DOFTair": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "susp": {
+      "type": "object",
+      "required": [
+        "shock",
+        "bounce",
+        "roll",
+        "longitudinal",
+        "lateral",
+        "align",
+        "static"
+      ],
+      "properties": {
+        "shock": {
+          "type": "object",
+          "required": [
+            "ShockDampingForceFront",
+            "ShockDampingForceRear",
+            "JounceRatioFront",
+            "JounceRatioRear"
+          ],
+          "properties": {
+            "ShockDampingForceFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "ShockDampingForceRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "JounceRatioFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "JounceRatioRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "bounce": {
+          "type": "object",
+          "required": [
+            "BumpToeFront",
+            "BumpToeRear",
+            "BumpCamberFront",
+            "BumpCamberRear",
+            "BumpCaster",
+            "LatWhlCtrDisplacementFront",
+            "LatWhlCtrDisplacementRear",
+            "LngWhlCtrDispFront",
+            "LngWhlCtrDispRear",
+            "NrmlWhlRatesFront",
+            "NrmlWhlRatesRear"
+          ],
+          "properties": {
+            "BumpToeFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "BumpToeRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "BumpCamberFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "BumpCamberRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "BumpCaster": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "LatWhlCtrDisplacementFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "LatWhlCtrDisplacementRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "LngWhlCtrDispFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "LngWhlCtrDispRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "NrmlWhlRatesFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "NrmlWhlRatesRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "roll": {
+          "required": [
+            "RollStiffFront",
+            "RollStiffRear"
+          ],
+          "properties": {
+            "RollStiffFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "RollStiffRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "longitudinal": {
+          "required": [
+            "ToeCompliancePerFxFront",
+            "ToeCompliancePerFxRear",
+            "CamberCompliancePerFxFront",
+            "CamberCompliancePerFxRear",
+            "CasterComplianceFxFront",
+            "CasterComplianceFxRear",
+            "WhlDispCompliancePerFxFront",
+            "WhlDispCompliancePerFxRear"
+          ],
+          "properties": {
+            "ToeCompliancePerFxFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "ToeCompliancePerFxRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CamberCompliancePerFxFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CamberCompliancePerFxRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CasterComplianceFxFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CasterComplianceFxRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "WhlDispCompliancePerFxFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "WhlDispCompliancePerFxRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "lateral": {
+          "required": [
+            "ToeCompliancePerFyFront",
+            "ToeCompliancePerFyRear",
+            "CamberCompliancePerFyFront",
+            "CamberCompliancePerFyRear",
+            "WhlDispCompliancePerFyFront",
+            "WhlDispCompliancePerFyRear"
+          ],
+          "properties": {
+            "ToeCompliancePerFyFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "ToeCompliancePerFyRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CamberCompliancePerFyFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "CamberCompliancePerFyRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "WhlDispCompliancePerFyFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "WhlDispCompliancePerFyRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "align": {
+          "required": [
+            "AlignTrqSteerFront",
+            "AlignTrqSteerRear",
+            "AlignTrqCamberFront",
+            "AlignTrqCamberRear"
+          ],
+          "properties": {
+            "AlignTrqSteerFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "AlignTrqSteerRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "AlignTrqCamberFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "AlignTrqCamberRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "static": {
+          "required": [
+            "StaticToeFront",
+            "StaticToeRear",
+            "StaticCamberFront",
+            "StaticCamberRear"
+          ],
+          "propertics": {
+            "StaticToeFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "StaticToeRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "StaticCamberFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "StaticCamberRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "wheelTire": {
+      "type": "object",
+      "required": [
+        "tire",
+        "brake"
+      ],
+      "properties": {
+        "tire": {
+          "type": "object",
+          "required": [
+            "TNOTirPath",
+            "wheelRadius"
+          ],
+          "properties": {
+            "TNOTirPath": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "strVar"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "strVar": {
+                  "type": "string"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "wheelRadius": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "brake": {
+          "type": "object",
+          "required": [
+            "muStatic",
+            "muKinetic",
+            "maxMainCylinderPressure",
+            "rearBrkPressureRatio",
+            "brakeMap",
+            "constFluidTimeFront",
+            "constFluidTimeRear",
+            "constFluidTransportTimeFront",
+            "constFluidTransportTimeRear"
+          ],
+          "properties": {
+            "muStatic": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "muKinetic": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "maxMainCylinderPressure": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "brakeMap": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "u0Axis",
+                "u1Axis",
+                "y0Axis"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "u0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "u1Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "y0Axis": {
+                  "type": "object",
+                  "required": [
+                    "dispName",
+                    "data"
+                  ],
+                  "properties": {
+                    "dispName": {
+                      "type": "string"
+                    },
+                    "comment": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "dataSource": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "rearBrkPressureRatio": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "constFluidTimeFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "constFluidTimeRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "constFluidTransportTimeFront": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "constFluidTransportTimeRear": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "sprungMass": {
+      "type": "object",
+      "required": [
+        "Mass",
+        "WheelBase",
+        "FrontAxlePositionfromCG",
+        "RearAxlePositionfromCG",
+        "HeightCG",
+        "FrontalArea",
+        "DragCoefficient",
+        "NumberOfWheelsPerAxle",
+        "PitchMomentInertia",
+        "RollMomentInertia",
+        "YawMomentInertia",
+        "SteeringRatio",
+        "SprungMass",
+        "InitialLongPosition",
+        "InitialLatPosition",
+        "InitialVertPosition",
+        "InitialRollAngle",
+        "InitialPitchAngle",
+        "InitialYawAngle",
+        "InitialLongVel",
+        "InitialLatVel",
+        "InitialVertVel",
+        "InitialRollRate",
+        "InitialPitchRate",
+        "InitialYawRate",
+        "UnsprungMassRearAxle",
+        "UnsprungMassFrontAxle",
+        "TrackWidthFront",
+        "TrackWidthRear"
+      ],
+      "properties": {
+        "Mass": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "WheelBase": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "FrontAxlePositionfromCG": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "RearAxlePositionfromCG": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "HeightCG": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "FrontalArea": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "DragCoefficient": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "NumberOfWheelsPerAxle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "PitchMomentInertia": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "RollMomentInertia": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "YawMomentInertia": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "SteeringRatio": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "SprungMass": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialLongPosition": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialLatPosition": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialVertPosition": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialRollAngle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialPitchAngle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialYawAngle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialLongVel": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialLatVel": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialVertVel": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialRollRate": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialPitchRate": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "InitialYawRate": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "UnsprungMassRearAxle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "UnsprungMassFrontAxle": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "TrackWidthFront": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "TrackWidthRear": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ecu": {
+      "type": "object",
+      "required": [
+        "ecuMaxAcc",
+        "ecuMaxDec",
+        "softEms",
+        "softVcu",
+        "softAbs"
+      ],
+      "properties": {
+        "ecuMaxAcc": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "ecuMaxDec": {
+          "type": "object",
+          "required": [
+            "dispName",
+            "val"
+          ],
+          "properties": {
+            "dispName": {
+              "type": "string"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            },
+            "val": {
+              "type": "number"
+            },
+            "dataSource": {
+              "type": "string"
+            }
+          }
+        },
+        "softEms": {
+          "type": "object",
+          "required": [
+            "EngMaxTrq",
+            "engAccP",
+            "engAccI",
+            "engAccD",
+            "engIdlSpeed"
+          ],
+          "properties": {
+            "EngMaxTrq": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "engAccP": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "engAccI": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "engAccD": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "engIdlSpeed": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "softVcu": {
+          "type": "object",
+          "required": [
+            "MotorMaxTrq",
+            "vcuAccP",
+            "vcuAccI",
+            "vcuAccD",
+            "FWDMotorTorqueSplitRatio"
+          ],
+          "properties": {
+            "MotorMaxTrq": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "vcuAccP": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "vcuAccI": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "vcuAccD": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "FWDMotorTorqueSplitRatio": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "softAbs": {
+          "type": "object",
+          "required": [
+            "absEnable",
+            "slipRatioRef",
+            "absBrakePressure",
+            "brakeP",
+            "brakeI",
+            "brakeD"
+          ],
+          "properties": {
+            "absEnable": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "slipRatioRef": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "absBrakePressure": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "brakeP": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "brakeI": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            },
+            "brakeD": {
+              "type": "object",
+              "required": [
+                "dispName",
+                "val"
+              ],
+              "properties": {
+                "dispName": {
+                  "type": "string"
+                },
+                "comment": {
+                  "type": "string"
+                },
+                "unit": {
+                  "type": "string"
+                },
+                "val": {
+                  "type": "number"
+                },
+                "dataSource": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "carType": {
+      "type": "object",
+      "required": [
+        "propulsionType",
+        "drivetrainType",
+        "steerType"
+      ],
+      "properties": {
+        "propulsionType": {
+          "type": "string"
+        },
+        "drivetrainType": {
+          "type": "string"
+        },
+        "steerType": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

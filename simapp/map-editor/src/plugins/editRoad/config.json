@@ -1,0 +1,10 @@
+{
+  "name": "editRoad",
+  "description": "道路编辑",
+  "iconDesc": "curveRoad",
+  "iconComponentName": "CurveRoadSvg",
+  "componentPaths": {
+    "leftArea": ["roadType.vue"],
+    "property": ["roadProperty.vue", "controlPointProperty.vue"]
+  }
+}

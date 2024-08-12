@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package tx_car;
+
+message NightWatcherCfg {
+    uint64 start_s = 1;
+    uint64 duration_s = 2;
+    string crc_check = 3;   // protection, in case start_s or duration_s is modificed manually
+}

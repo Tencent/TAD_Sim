@@ -1,0 +1,40 @@
+.modal-browser-window {
+  .modal-browser-window-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 22px;
+    background-color: #0f0f0f;
+    z-index: 1000;
+    -webkit-app-region: drag;
+
+    .modal-browser-window-title {
+      font-size: 12px;
+      color: #DCDCDC;
+    }
+
+    .modal-browser-window-close {
+      cursor: pointer;
+      -webkit-app-region: no-drag;
+
+      i {
+        color: #9d9d9d;
+
+        &:hover {
+          color: #16d1f3;
+        }
+      }
+    }
+  }
+
+  .modal-browser-window-body {
+    color: #606266;
+    font-size: 14px;
+    word-break: break-all;
+  }
+}

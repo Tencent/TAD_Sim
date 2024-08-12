@@ -1,0 +1,811 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief Boundary line of a LogicalLane
+//
+// Similar to a LaneBoundary, but with a reference line and ST positions.
+//
+// A logical lane boundary describes the boundary between two logical lanes. As
+// such, there will always be exactly one logical lane boundary between two
+// lanes at a given S position. Contrary to that, there can be 0 to N physical
+// lane boundaries (i.e. type LaneBoundary) between two logical lanes at a
+// given S position.
+//
+// If there are multiple physical lane boundaries at one S position between two
+// lanes (think of a solid-broken marking, which would be described by two
+// LaneBoundary objects, one for the solid lane marking, one for the broken lane
+// marking), then the single LogicalLaneBoundary describing the boundary between
+// two logical lanes should be between the physical boundaries.
+//
+// A logical lane boundary consists of a list of \link LogicalBoundaryPoint
+// LogicalBoundaryPoints\endlink. Each point has a XYZ and an ST coordinate.
+// The XYZ coordinates describe the position and height of the boundary in the
+// world.
+//
+// Notes on design decisions:
+// - The LogicalLaneBoundary has ST coordinates, and is thus a separate type
+//   from LaneBoundary.
+//   Advantages of this decision:
+//   - Calculations like getting the lane width at a position are easy, since
+//     one can just get the boundary points of the left and right boundary at
+//     the desired S position (via linear interpolation), and calculate the
+//     width from the two points. Also getting something like the distance to
+//     the lane border is very easy.
+//   - No centerline of the lane is necessary, since this can very easily be
+//     generated from the boundaries.
+//   Disadvantages of this decision:
+//   - %Lane boundaries cannot be shared with physical lanes. This results in
+//     more data needed. This can mostly be mitigated by only transmitting the
+//     lane boundaries during initialization (e.g. via the OSMP GroundTruthInit
+//     message).
+// - The LogicalLaneBoundary contains all data directly which an agent model is
+//   likely to need. It does not include information normally only used by
+//   sensor models (e.g. the exact length of the color markings on the road).
+//   This information can be gotten from the physical lane referenced in the
+//   LogicalLane, if needed.
+//
+message LogicalLaneBoundary {
+  // The ID of the lane boundary.
+  //
+  // \rules
+  // is_globally_unique
+  // \endrules
+  //
+  Identifier id = 1;
+
+  // Points making up the lane boundary.
+  //
+  // The boundary must be defined in the same direction as the reference
+  // line. So S positions should increase along the line. Note that S
+  // positions will not always increase strictly monotonically.
+  // Example:
+  // <pre>
+  //                |---------\
+  //                |          \
+  //  /---boundary--|           \\------------
+  // /
+  // ---------- reference line --------------
+  // </pre>
+  // At the place where the boundary suddenly increases, two points will have
+  // the same S coordinate.
+  //
+  // If the boundary approximates a curve (e.g. a cubic function in
+  // OpenDRIVE), the points must be chosen in a way that the lateral distance
+  // to the ideal line does not exceed 5cm. As shown in the following image:
+  //
+  // \image html line_approximation_error.svg "Approximation error"
+  // Approximation error green line.
+  //
+  // The Z error (difference in Z height between #boundary_line and the
+  // "real" line) must not exceed 2cm. This is a stricter requirement than
+  // for errors in the XY plane, because Z differences between lanes
+  // influence driving very much.
+  //
+  // Note: if two lanes have different Z heights (e.g. a driving lane is
+  // beside a sidewalk, where the sidewalk is 10cm higher than the road),
+  // then these lanes cannot share a boundary, since their boundaries have
+  // different Z heights.
+  //
+  repeated LogicalBoundaryPoint boundary_line = 2;
+
+  // The reference line for this boundary.
+  //
+  // The reference line is used as a coordinate system for this boundary.
+  // All points of this LogicalLaneBoundary must have S coordinates in the
+  // range [\c sStart,\c sEnd].
+  //
+  // The reference line should roughly have the same shape as the boundary (so
+  // roughly parallel to the lane middle), so that S coordinates continually
+  // increase along the boundary.
+  //
+  // \rules
+  // refers_to: ReferenceLine
+  // \endrules
+  //
+  Identifier reference_line_id = 3;
+
+  // Reference to the physical lane boundary or boundaries that make up this
+  // logical boundary.
+  //
+  // Rules and notes:
+  // - This list is empty if there are no physical lane boundaries to delimit
+  //   a lane.
+  // - In the common case, this will contain one physical boundary.
+  // - This list contains several lane boundaries if there are several physical
+  //   lane boundaries at one S position (e.g. both a broken and a solid
+  //   line).
+  // - If there are several lane boundaries, they must be listed in increasing
+  //   T order (i.e. from right to left in reference line direction).
+  //   Rationale: this makes it easier to determine e.g. rules on lane
+  //   changes, which depend on the T order of the lanes.
+  // - Whenever physical lane boundaries begin or end, or switch their T
+  //   position (if there are multiple physical lane boundaries), a new
+  //   LogicalLaneBoundary must be created.
+  // - The referenced LaneBoundary objects may be longer than the
+  //   LogicalLaneBoundary which references them, but must never be shorter.
+  //
+  // Example:
+  // <pre>
+  //       Lane 1
+  //  --------a------------------ - - - -c- - - -           ----&gt;
+  //  \- - - -b- - - -
+  //       Lane -1
+  // </pre>
+  //
+  // This shows the boundary between lane 1 and lane -1, with the reference
+  // line going from left to right. First there is a solid-broken line (a and
+  // b), then there is only a solid line (a), then there is a broken line
+  // (c). There would be three LogicalLaneBoundary objects between Lane1 and
+  // Lane2: the first would reference first b and then a, the second would
+  // reference only a, and the third would reference c.
+  //
+  // \rules
+  // refers_to: LaneBoundary
+  // \endrules
+  //
+  repeated Identifier physical_boundary_id = 4;
+
+  // The passing rules, insomuch as they can be determined just from road
+  // markings.
+  //
+  PassingRule passing_rule = 5;
+
+  // Optional external reference to the lane boundary source.
+  //
+  // \note For OpenDRIVE, there is no direct possibility to reference the
+  //       RoadMark, as there is no unique identifier in this sub-object.
+  //
+  // \note For non-ASAM Standards, it is implementation-specific how
+  //       source_reference is resolved.
+  //
+  // \note The value has to be repeated because one object may be derived
+  //       from more than one origin source, for example, from a scenario file
+  //       and from sensors.
+  //
+  repeated ExternalReference source_reference = 6;
+
+  //
+  // \brief A point on the boundary
+  //
+  message LogicalBoundaryPoint {
+
+    // The position of the \c LaneBoundaryPoint.
+    //
+    Vector3d position = 1;
+
+    // S position of the LaneBoundaryPoint, measured along the parent's
+    // reference_line_id.
+    //
+    double s_position = 2;
+
+    // T position of the LaneBoundaryPoint, measured along the parent's
+    // reference_line_id.
+    //
+    double t_position = 3;
+  }
+
+  //
+  // Passing rule of the LogicalLaneBoundary.
+  //
+  // This describes how vehicles are legally allowed to move across the
+  // LogicalLaneBoundary. The PassingRule is determined solely based
+  // on the semantics of (physical) lane boundaries, not on any signs
+  // (i.e. it may be overridden by signs).
+  //
+  enum PassingRule {
+    // Passing rule is unknown (must not be used in ground truth).
+    //
+    PASSING_RULE_UNKNOWN = 0;
+
+    // Passing rule fits neither of the other categories.
+    //
+    // Example: this type needs to be used if passing depends on the agent
+    // type, e.g. if cars may change lane, but trucks may not.
+    //
+    // This value is also used between LogicalLanes where the traffic
+    // regulations do not say anything about passing rules (e.g. for a
+    // LogicalLaneBoundary between LogicalLanes of TYPE_NORMAL
+    // and TYPE_CURB or between LogicalLanes of TYPE_BORDER and
+    // TYPE_SHOULDER) .
+    //
+    PASSING_RULE_OTHER = 1;
+
+    // No passing is allowed (neither from left to right nor from right to
+    // left).
+    //
+    PASSING_RULE_NONE_ALLOWED = 2;
+
+    // Only passing in increasing T direction allowed. Passing is allowed
+    // from one lane to the other if the points on the target lane have
+    // larger T values than points on the source lane (at the same S
+    // position). In reference line direction (but not necessarily in
+    // driving direction), this means changing from right to left is
+    // allowed.
+    //
+    PASSING_RULE_INCREASING_T = 3;
+
+    // Only passing in decreasing T direction allowed. Passing is allowed
+    // from one lane to the other if the points on the target lane have
+    // smaller T values than points on the source lane (at the same S
+    // position). In reference line direction (but not necessarily in
+    // driving direction), this means changing from left to right is
+    // allowed.
+    //
+    PASSING_RULE_DECREASING_T = 4;
+
+    // Passing is allowed in both directions (left to right and right to
+    // left).
+    //
+    PASSING_RULE_BOTH_ALLOWED = 5;
+  }
+}
+
+//
+// \brief A logical lane in the road network.
+//
+// A logical lane is part of a road. Compared to a physical lane (OSI type
+// \c Lane), its existence doesn't hinge on the existence of road markings. So
+// e.g. a road with two driving directions but no road markings in-between
+// would be presented as two \link LogicalLane LogicalLanes\endlink, but only
+// one Lane. So one Lane can consist of multiple \link LogicalLane
+// LogicalLanes\endlink. E.g. on intersections, each driving path is one
+// LogicalLane, but the whole area is one \c Lane of type \link
+// osi3::Lane::Classification::TYPE_INTERSECTION \c TYPE_INTERSECTION \endlink.
+//
+// Outside of intersections, logical lanes are constructed such that each point on
+// the road belongs to at least one (typically: exactly one) logical lane. So
+// there are no gaps between logical lanes, and no areas that don't belong to a
+// logical lane.
+//
+// If OSI is generated from OpenDRIVE, then \link LogicalLane
+// LogicalLanes\endlink map directly to OpenDRIVE lanes. However, it is allowed
+// to merge multiple consecutive (in S direction) OpenDRIVE lanes with the same
+// type into one OSI LogicalLane: if an OpenDRIVE lane has a single successor,
+// which has the same lane type, and this successor has only one predecessor
+// (so no lane merging or splitting) then the two lanes may be presented as one
+// continuous LogicalLane. This may be done recursively.
+//
+// The \link ReferenceLine reference line\endlink pointed to by
+// #reference_line_id defines an ST coordinate system for the lane. This ST
+// coordinate system is used to describe positions on the lane.
+//
+// ## Example
+//
+// The example below shows two logical lanes on an intersection, with a focus
+// on the left-turn lane (\c l1):
+// \image html OSI_LogicalLane1.png "Two logical lanes on an intersection"
+//
+// Assumptions not shown in the image:
+// - This is right-hand traffic (and thus vehicles on \c l1 drive from the bottom
+//   to the left, vehicles on \c l2 drive from right to left).
+// - The yellow line is a ReferenceLine, defined starting at the bottom, and
+//   going to the left.
+//
+// Some features shown in the image relative to \c l1:
+// - The yellow line is the ReferenceLine of \c l1 . The ReferenceLine can be
+//   shared with other lanes.  Because the ReferenceLine has the same direction
+//   as the driving direction of \c l1 in this example,
+//   <code>#move_direction == #MOVE_DIRECTION_INCREASING_S</code>.
+// - The red line marks the area where \c l2 is left of
+//   \c l1 - this info is recorded in #left_adjacent_lane of \c l1.
+// - The red area is the area where \c l2 overlaps \c l1. This is recorded in
+//   #overlapping_lane of \c l1.
+//
+// The image below shows the same two lanes, but from the perspective of \c l2:
+// \image html OSI_LogicalLane2.png "Two logical lanes on an intersection"
+//
+// Assumptions not shown in the image:
+// - The yellow line is a ReferenceLine, defined starting at the right, going
+//   to the left.
+//
+// Some features shown in the image relative to \c l2:
+// - The yellow line is the ReferenceLine of \c l2 . The ReferenceLine can be
+//   shared with other lanes.  Because the ReferenceLine has the same direction
+//   as the driving direction of \c l2 in this example,
+//   <code>#move_direction == #MOVE_DIRECTION_INCREASING_S</code>.
+// - The green line marks the area where \c l1 is right of
+//   \c l2 - this info is recorded in #right_adjacent_lane of \c l2.
+// - The red area is the area where \c l1 overlaps \c l2. This is recorded in
+//   #overlapping_lane of \c l1.
+//
+// As can be seen in the images, the two highlighted lanes are neighbours for
+// part of their length, but it makes no sense for them to have the same
+// reference line, since they diverge significantly.
+//
+// Note: all the relations shown above are also defined outside of intersections.
+//
+message LogicalLane {
+  // The ID of the logical lane.
+  //
+  // \note Note ID is global unique.
+  //
+  // \rules
+  // is_globally_unique
+  // \endrules
+  //
+  Identifier id = 1;
+
+  // The type of the logical lane.
+  //
+  Type type = 2;
+
+  // Optional external reference to the lane source.
+  //
+  // The external reference points to the source of the lane, if it is derived
+  // from one or more objects or external references.
+  //
+  // For example, to reference a lane defined in an OpenDRIVE map
+  // the items should be set as follows:
+  // * reference = URI to map, can remain empty if identical with definiton
+  //               in \c GroundTruth::map_reference
+  // * type = "net.asam.opendrive"
+  // * identifier[0] = id of t_road
+  // * identifier[1] = s of t_road_lanes_laneSection
+  // * identifier[2] = id of t_road_lanes_laneSection_left_lane,
+  //                         t_road_lanes_laneSection_right_lane
+  //
+  // \note For non-ASAM Standards, it is implementation-specific how
+  //       source_reference is resolved.
+  //
+  // \note The value has to be repeated, because one lane segment may be
+  //       derived from more than one origin segment. Multiple sources
+  //       may be added as reference as well, for example, a map and sensors.
+  //
+  repeated ExternalReference source_reference = 3;
+
+  // Reference to the physical lanes this logical lane belongs to.
+  //
+  // This makes it possible to get detailed information on the physical lane
+  // properties, e.g. the visual colors of the boundaries, the road
+  // condition, etc..
+  //
+  // Note: a logical lane may consist of several physical lanes (in a row).
+  // At any one S position, a logical lane should only reference one physical
+  // lane. Several logical lanes may reference the same physical lane (see
+  // drawing below).
+  //
+  // Logical lanes should not extend beyond intersections. All logical lanes
+  // on intersections should end at the latest at the border of the
+  // intersection.
+  //
+  // Example:
+  // <pre>
+  // ---------------------------------
+  //  l1                       l2
+  // ----------    l3        ---------
+  //  l4                       l5
+  // ---------------------------------
+  // </pre>
+  //
+  // In this case, we have five physical lanes: l1, l2, l4 and l5 where a
+  // lane marking is present. And l3 is one lane covering the whole road
+  // (because no road marking is present).
+  //
+  // This would typically be presented as two logical lanes:
+  // - One encompassing l1, part of l3, and l2
+  // - The other encompassing l4, part of l3 and l5
+  //
+  // In this example, both logical lanes would reference l3. Their shared
+  // LogicalLaneBoundary would cut through the middle of l3.
+  //
+  // physical_lane_reference does not give any information how much of the
+  // area of a physical lane is covered by a logical lane.
+  //
+  // For LogicalLanes without a correspondence to a Lane.Classification.Subtype
+  // (i.e. TYPE_MEDIAN, TYPE_CURB, TYPE_TRAM, TYPE_RAIL) this field has no value.
+  //
+  // \rules
+  // refers_to: Lane
+  // \endrules
+  //
+  repeated PhysicalLaneReference physical_lane_reference = 4;
+
+  // The \link ReferenceLine reference line\endlink for this logical lane
+  //
+  // The reference line is used as a coordinate system on this lane.
+  //
+  // The reference line should roughly have the same shape as the lane, so
+  // that S coordinates continually increase/decrease along the lane. It is
+  // not required that the reference line has the same direction as the
+  // driving direction of the lane.
+  //
+  // Neighbouring lanes (i.e. lanes that are neighbours and whose directions
+  // do not diverge significantly) are strongly encouraged to reference the
+  // same ReferenceLine, so that vehicles that are next to each other on
+  // neighbouring lanes have comparable S positions.
+  //
+  // The S coordinate of the reference line makes it easy to find e.g. which
+  // object is next on a lane, using the LogicalLaneAssignment of the
+  // objects.
+  //
+  // The reference trajectory must be sampled such that there are no two
+  // positions on the lane more than 5cm apart with the same ST coordinate.
+  //
+  // \rules
+  // refers_to: ReferenceLine
+  // \endrules
+  //
+  Identifier reference_line_id = 5;
+
+  // Start S position of the lane.
+  //
+  // Must be in range [\c sStart,\c sEnd] of the reference line.
+  //
+  double start_s = 6;
+
+  // End S position of the lane.
+  //
+  // Must be in range [\c sStart,\c sEnd] of the reference line.
+  //
+  // Requirement: #end_s > #start_s
+  //
+  double end_s = 7;
+
+  // Definition of the intended driving direction.
+  //
+  MoveDirection move_direction = 8;
+
+  // Lanes that are directly right of this lane, without gap or overlap.
+  //
+  // "Right" is in definition direction (not driving direction), so right lanes
+  // have smaller T coordinates.
+  // Entries must be ordered: first by #start_s, then by #end_s.
+  //
+  // The XY positions of the polyline generated by the LogicalLaneBoundaries
+  // of adjacent lanes must match up to a small error (5cm).
+  // Typically adjacent lanes will share a LogicalLaneBoundary, but this will
+  // not always be true. Examples: on intersections, it might be hard to generate
+  // data such that lanes that are adjacent for a short length share a
+  // LogicalLaneBoundary for this length; also different LogicalLaneBoundaries
+  // are needed if the lanes have different heights at their boundaries (e.g.
+  // road adjacent to a sidewalk).
+  //
+  repeated LaneRelation right_adjacent_lane = 9;
+
+  // Lanes that are directly left of this lane, without gap or overlap.
+  //
+  // "Left" is in definition direction (not driving direction), so left lanes
+  // have larger T coordinates.
+  // Entries must be ordered: first by #start_s, then by #end_s.
+  //
+  // The XY positions of the polyline generated by the LogicalLaneBoundaries
+  // of adjacent lanes must match up to a small error (5cm).
+  // Typically adjacent lanes will share a LogicalLaneBoundary, but this will
+  // not always be true. Examples: on intersections, it might be hard to generate
+  // data such that lanes that are adjacent for a short length share a
+  // LogicalLaneBoundary for this length; also different LogicalLaneBoundaries
+  // are needed if the lanes have different heights at their boundaries (e.g.
+  // road adjacent to a sidewalk).
+  //
+  repeated LaneRelation left_adjacent_lane = 10;
+
+  // Lanes that partially or completely overlap this lane.
+  //
+  // Only overlaps laterally larger than 5cm are considered overlaps for the
+  // purpose of this relation.
+  //
+  // This will typically contain a lot of entries on intersections, but might
+  // also be used outside of intersections (e.g. if a #TYPE_BIKING lane
+  // overlaps a #TYPE_NORMAL lane).
+  //
+  // Entries must be ordered: first by #start_s, then by #end_s.
+  //
+  repeated LaneRelation overlapping_lane = 11;
+
+  // Right boundary of this lane.
+  //
+  // References to LogicalLaneBoundary elements.
+  // All LogicalLaneBoundary elements referenced here must refer to the same
+  // ReferenceLine as this lane.
+  // The boundaries together must cover the whole length of the lane (the
+  // range \[#start_s,#end_s\]) without gap or overlap. The boundaries must be
+  // stored in ascending order, starting with the smallest S position.
+  // Consecutive boundaries must share a point: the last point of the
+  // previous boundary must be identical to the first point of the next
+  // boundary.
+  //
+  // Note: the referenced boundaries may have points outside of
+  // \[#start_s,#end_s\] (e.g. a boundary may extend beyond the end of a lane).
+  //
+  // Note: A curb is a type of LogicalLane and of LaneBoundary.
+  // If LogicalLane.Type == TYPE_CURB, by convention this
+  // field references the respective LaneBoundary of TYPE_CURB
+  // identically to the left_boundary_id of this LogicalLane.
+  //
+  // \rules
+  // refers_to: LogicalLaneBoundary
+  // \endrules
+  //
+  repeated Identifier right_boundary_id = 12;
+
+  // Left boundary of this lane.
+  //
+  // References to LogicalLaneBoundary elements.
+  // All LogicalLaneBoundary elements referenced here must refer to the same
+  // ReferenceLine as this lane.
+  // The boundaries together must cover the whole length of the lane (the
+  // range \[#start_s,#end_s\]) without gap or overlap. The boundaries must be
+  // stored in ascending order, starting with the smallest S position.
+  // Consecutive boundaries must share a point: the last point of the
+  // previous boundary must be identical to the first point of the next
+  // boundary.
+  //
+  // Note: the referenced boundaries may have points outside of
+  // \[#start_s,#end_s\] (e.g. a boundary may extend beyond the end of a lane).
+  //
+  // Note: A curb is a type of LogicalLane and of LaneBoundary.
+  // If LogicalLane.Type == TYPE_CURB, by convention this
+  // field references the respective LaneBoundary of TYPE_CURB.
+  // identically to the right_boundary_id of this LogicalLane.
+  //
+  // \rules
+  // refers_to: LogicalLaneBoundary
+  // \endrules
+  //
+  repeated Identifier left_boundary_id = 13;
+
+  // Lanes that directly are connected to this lane at the beginning.
+  //
+  // "Beginning" is relative to the reference line, so connections at #start_s.
+  //
+  // Lane predecessors and successors shall only be used to connect lanes if
+  // a physical connection at the beginning or end of both lanes exist. Both
+  // lanes have a non-zero width at the connection point and they are
+  // semantically connected.
+  //
+  // A lane may have several predecessors e.g. on intersections, or if a wide
+  // lane splits into two, or two merge into one.
+  //
+  repeated LaneConnection predecessor_lane = 14;
+
+  // Lanes that directly are connected to this lane at the end.
+  //
+  // "End" is relative to the reference line, so connections at #end_s.
+  //
+  // Lane predecessors and successors shall only be used to connect lanes if
+  // a physical connection at the beginning or end of both lanes exist. Both
+  // lanes have a non-zero width at the connection point and they are
+  // semantically connected.
+  //
+  // A lane may have several successors e.g. on intersections, or if a wide
+  // lane splits into two, or two merge into one.
+  //
+  repeated LaneConnection successor_lane = 15;
+
+  //
+  // Definition of available lane types.
+  //
+  // This is mostly aligned with OpenDRIVE, except that lane types modelling
+  // access restrictions (e.g. "taxi") are not made available here. These are
+  // already deprecated in OpenDRIVE.  To support this, access restrictions
+  // should be added later, in alignment with OpenDRIVE.
+  //
+  enum Type {
+    // %Lane of unknown type. Do not use in ground truth.
+    //
+    TYPE_UNKNOWN = 0;
+
+    // Any other type of lane.
+    //
+    TYPE_OTHER = 1;
+
+    // A normal driving lane.
+    // Example: Lanes with IDs l1, l2, l3 and l4 in image \ref
+    // HighwayExit.
+    // This matches the OpenDRIVE type "driving".
+    //
+    // Note: a lane with OpenDRIVE type "bidirectional" will have an OSI
+    // type of TYPE_NORMAL, with <code>#move_direction ==
+    // #MOVE_DIRECTION_BOTH_ALLOWED</code>.
+    //
+    TYPE_NORMAL = 2;
+
+    // A lane that is designated for bicylists.
+    // Note that biking lanes that cross the road (e.g. on an intersection)
+    // are also labeled with this type.
+    //
+    TYPE_BIKING = 3;
+
+    // A lane that is designated for pedestrians (sidewalk).
+    // Note that pedestrian lanes that cross the road (e.g. on an
+    // intersection) are also labeled with this type.
+    //
+    TYPE_SIDEWALK = 4;
+
+    // A lane with parking spaces.
+    //
+    TYPE_PARKING = 5;
+
+    // A hard shoulder on motorways for emergency stops.
+    // Example: Lane l5 in image \ref
+    // HighwayExit.
+    //
+    TYPE_STOP = 6;
+
+    // A lane on which cars should not drive.
+    //
+    TYPE_RESTRICTED = 7;
+
+    // A hard border on the edge of a road.
+    //
+    TYPE_BORDER = 8;
+
+    // A soft border on the edge of a road.
+    //
+    TYPE_SHOULDER = 9;
+
+    // A deceleration lane in parallel to the main road.
+    // Example: Lane l6 in image \ref
+    // HighwayExit.
+    //
+    TYPE_EXIT = 10;
+
+    // An acceleration lane in parallel to the main road.
+    //
+    TYPE_ENTRY = 11;
+
+    // A ramp from rural or urban roads joining a motorway.
+    //
+    TYPE_ONRAMP = 12;
+
+    // A ramp leading off a motorway onto rural or urban roads.
+    //
+    TYPE_OFFRAMP = 13;
+
+    // A ramp that connect two motorways.
+    //
+    TYPE_CONNECTINGRAMP = 14;
+
+    // A lane that sits between driving lanes
+    // that lead in opposite directions. It is
+    // typically used to separate traffic in
+    // towns on large roads.
+    //
+    TYPE_MEDIAN = 15;
+
+    // Curb stones. Curb stones have a different
+    // height than the adjacent drivable lanes.
+    //
+    TYPE_CURB = 16;
+
+    // A rail lane. This lane covers the area a train needs to drive along
+    // its rails.
+    // #overlapping_lane then describes where a train crosses other lanes.
+    //
+    TYPE_RAIL = 17;
+
+    // A tram lane. This lane covers the area a tram needs to drive along
+    // its rails.
+    // #overlapping_lane then describes where a tram crosses other lanes.
+    //
+    TYPE_TRAM = 18;
+  }
+
+  //
+  // \brief Reference to a physical lane.
+  //
+  message PhysicalLaneReference {
+    // Id of the physical lane referenced.
+    //
+    // \rules
+    // refers_to: Lane
+    // \endrules
+    //
+    Identifier physical_lane_id = 1;
+
+    // S position on the logical lane where the physical lane starts.
+    //
+    double start_s = 2;
+
+    // S position on the logical lane where the physical lane ends.
+    //
+    // Requirement: #end_s > #start_s
+    //
+    double end_s = 3;
+  }
+
+  //
+  // Describes in which direction moving objects may typically move along a
+  // lane.
+  //
+  // This describes the allowed typical driving direction on a lane, or (in
+  // the case of pedestrian) the allowed walking direction.
+  //
+  // Note: Allowed overtaking (e.g. on country roads) does not automatically
+  // make a lane bidirectional, since vehicles may normally only drive in the
+  // other direction during the overtake maneuver, not for longer periods of
+  // time.
+  //
+  enum MoveDirection {
+    // Move direction is unknown. Do not use in ground truth.
+    //
+    MOVE_DIRECTION_UNKNOWN = 0;
+
+    // Move direction fits neither of the other categories.
+    //
+    // Example: a lane where cars may only drive in one direction, but
+    // bikes may drive in both.
+    //
+    MOVE_DIRECTION_OTHER = 1;
+
+    // Objects may move in increasing S direction.
+    //
+    // This means they move in the same direction as the reference line.
+    //
+    MOVE_DIRECTION_INCREASING_S = 2;
+
+    // Objects may move in decreasing S direction.
+    //
+    // This means they move in the opposite direction as the reference line.
+    //
+    MOVE_DIRECTION_DECREASING_S = 3;
+
+    // Objects may move in both directions.
+    //
+    MOVE_DIRECTION_BOTH_ALLOWED = 4;
+  }
+
+  //
+  // \brief Connection to another lane (predecessor or successor)
+  //
+  message LaneConnection {
+    // Id of the other logical lane that is connected.
+    //
+    // \rules
+    // refers_to: LogicalLane
+    // \endrules
+    //
+    Identifier other_lane_id = 1;
+
+    // If true: LaneConnection is at the beginning of the other lane
+    // If false: LaneConnection is a the end of the other lane
+    //
+    bool at_begin_of_other_lane = 2;
+
+  }
+
+  //
+  // \brief Relation of this lane to another logical lane
+  //
+  message LaneRelation {
+    // Id of the other logical lane.
+    //
+    // \rules
+    // refers_to: LogicalLane
+    // \endrules
+    //
+    Identifier other_lane_id = 1;
+
+    // Start s position of the relation.
+    //
+    double start_s = 2;
+
+    // End s position of the relation.
+    //
+    // Requirement: #end_s > #start_s
+    //
+    double end_s = 3;
+
+    // Start s position of the relation on the other lane.
+    //
+    // This is the same place as #start_s, but measured along the reference
+    // line of the other lane.
+    //
+    double start_s_other = 4;
+
+    // End s position of the relation on the other lane.
+    //
+    // This is the same place as #end_s, but measured along the reference
+    // line of the other lane.
+    //
+    // Note: #end_s_other might be smaller than #start_s_other
+    //
+    double end_s_other = 5;
+  }
+}

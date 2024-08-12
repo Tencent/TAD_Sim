@@ -1,0 +1,16 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Lidar ibeo information.
+// 激光雷达 ibeo 信息.
+//
+// TOPIC: nothing
+
+
+syntax = "proto3";
+
+package sim_msg;
+
+message IbeoData {
+  //
+  double utcTime = 1;
+}

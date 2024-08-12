@@ -1,0 +1,281 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "moduleService.proto";
+
+enum CoreState {
+  UN_SETUP = 0;
+  SETUP = 1;
+  READY = 2;
+  INITIATED = 3;
+  SCENARIO_SET = 4;
+  RUNNING = 5;
+  MODULE_STOPPED = 6;
+  MODULE_ERROR = 7;
+  CORE_ERROR = 8;
+  UNKNOWN = 9;
+}
+
+enum Command {
+  INIT = 0;
+  RESET = 1;
+  STEP = 2;
+  RUN = 3;
+  PAUSE = 4;
+  STOP = 5;
+}
+
+service CoordinatorService {
+  //
+  rpc SetupCore (SetupConfig) returns (stream ModuleStatus);
+
+  //
+  rpc UnsetupCore (UserInfo) returns (CoreStatus);
+
+  //
+  rpc RunCoreCommand (CoreCommand) returns (stream CommandStatus);
+
+  //
+  rpc LaunchCoreCommand (CoreCommand) returns (CoreStatus);
+
+  //
+  rpc PollCoreStatus (PollRequest) returns (PollResponse);
+
+  //
+  rpc OutputTopic (OutputInfo) returns (OutputResponse);
+}
+
+service ModuleManageService {
+  //
+  rpc LaunchModule (ModuleLaunchInfo) returns (stream Text);
+
+  //
+  rpc ExitModule (ModuleId) returns (Text);
+}
+
+message PollRequest {
+}
+
+message PollResponse {
+  //
+  CoreStatus coreStatus = 1;
+
+  //
+  string gradingResult = 2;
+}
+
+message OutputInfo {
+  //
+  string mqAddress = 1;
+
+  //
+  int32 jobId = 2;
+
+  //
+  int32 sceneId = 3;
+
+  //
+  bool stop = 4;
+}
+
+message OutputResponse {
+}
+
+message LogConfig {
+  //
+  // \note 0 for no send-backs to front-end, 1 for all, 2 for w&e, 3 for error only.
+  // 0 表示不向前端发送反馈, 1 表示全部, 2 表示 w&e, 3 表示仅错误.
+  //
+  uint32 logLevel = 1;
+
+  //
+  // \note empty string for no local write.
+  // 空字符串表示没有本地写入.
+  //
+  string logDir = 2;
+}
+
+message SetupConfig {
+  message ModuleConfig {
+    //
+    string name = 1;
+
+    //
+    // Unit: ms, Range: [0..inf], Default: 0.0
+    //
+    double stepTime = 2;
+
+    //
+    // Unit: ms, Range: [0..inf], Default: 0.0
+    //
+    uint32 timeout = 3;
+
+    //
+    oneof address {
+      // remote endpoint of module service.
+      // 模块服务的远程端点.
+      //
+      string serviceEndpoint = 4;
+
+      // local path of shared library file.
+      // 共享库文件的本地路径.
+      //
+      string libPath = 5;
+
+    }
+
+    //
+    uint32 id = 6;
+
+    //
+    repeated uint32 in = 7;
+
+    //
+    repeated uint32 out = 8;
+
+    //
+    bool shadow = 9;
+  }
+
+  //
+  repeated ModuleConfig modules = 1;
+
+
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double coreStepTime = 2;
+
+  //
+  string userName = 3;
+
+  //
+  LogConfig logCfg = 4;
+
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  // \note 0 for no heartbeat
+  //
+  double heartbeatRate = 5;
+
+  // controls the sleep time in core step function.
+  // 控制核心步进函数的休眠时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double coreStepControlTime = 6;
+
+  // max time limit allowed to run for a single scenario.
+  // 单个情景允许运行的最大时限.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0
+  //
+  uint32 max_scenario_timeout = 7;
+}
+
+message CoreStatus {
+  message CoreLog {
+    //
+    // Unit: ms, Range: [0..inf], Default: 0.0
+    //
+    double timeStamp = 1;
+
+    //
+    string moduleName = 2;
+
+    //
+    oneof log {
+      //
+      string info = 3;
+
+      //
+      string error = 4;
+
+      //
+      string warning = 5;
+    }
+  }
+
+  //
+  CoreState state = 1;
+
+  //
+  repeated CoreLog logs = 2;
+}
+
+message UserInfo {
+  //
+  string userName = 1;
+}
+
+message CoreCommand {
+  //
+  Command command = 1;
+
+  //
+  ResetParams resetParams = 2;
+
+  //
+  repeated InitParams moduleInitParams = 3;
+}
+
+message CommandStatus {
+  //
+  // Unit: ms, Range: [0..inf], Default: 0
+  //
+  repeated double moduleStepTimeCosts = 1;
+
+  //
+  // Unit: ms, Range: [0..inf], Default: 0
+  //
+  double stepTimeCost = 2;
+
+  //
+  CoreStatus coreStatus = 3;
+
+  // optional, used for desktop visualizer.
+  // 可选项, 用于前端可视化.
+  //
+  SimMessage simMessages = 4;
+}
+
+message ModuleLaunchInfo {
+  //
+  ModuleId mid = 1;
+
+  //
+  string path = 2;
+
+  //
+  string args = 3;
+
+  //
+  LogConfig logCfg = 4;
+}
+
+message Text {
+  //
+  string str = 1;
+}
+
+message ModuleId {
+  //
+  string name = 1;
+}
+
+message ModuleStatus {
+  //
+  repeated bool isSetup = 1;
+
+  //
+  CoreState state = 2;
+}

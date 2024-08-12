@@ -1,0 +1,212 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Control commands, .
+// 控制指令, 目前已切换为 control_v2.proto.
+//
+// \note Not recommended for use anymore. \n
+// 不在建议使用
+//
+// TOPIC: CONTROL
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+
+message Control {
+  enum CONTROL_MODE {
+    CM_MANUAL = 0;
+    CM_AUTO_DRIVE = 1;
+    CM_ONLY_STEER = 2;
+    CM_ONLY_SPEED = 3;
+  }
+
+  enum GEAR_MODE {
+    NO_CONTROL = 0;
+    PARK = 1;
+    REVERSE = 2;
+    NEUTRAL = 3;
+    DRIVE = 4;
+  }
+
+  enum CONTROL_TYPE {
+    // acc pedal, steering wheel control.
+    //
+    PEDAL_CONTROL = 0;
+
+    // target acc, target front wheel angle control.
+    //
+    ACC_CONTROL = 1;
+
+    // target acc, steering wheel control.
+    //
+    ACC_STEER_CONTROL = 2;
+  }
+
+  enum TurnLight {
+    TURN_LIGHT_OFF = 0;
+    TURN_LEFT = 1;
+    TURN_RIGHT = 2;
+  }
+
+  enum FogLamp {
+    FOG_LAMP_OFF = 0;
+    FRONT_FOG_LAMP = 1;
+    REAR_FOG_LAMP = 2;
+    ALL_FOG_LAMP = 3;
+  }
+
+  message PedalControl {
+    // steering wheel angle, left positive.
+    //
+    // Unit: deg, Range: [-inf..inf], Default: 0.0
+    //
+    double steer = 1;
+
+    // throttle pedel.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double throttle = 2;
+
+    // brake pedel.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double brake = 3;
+  }
+
+  message AccControl {
+    // Control request of longitudinal  acceleration and deceleration.
+    //
+    // Unit: m/s^2, Range: [0..inf], Default: 0.0
+    //
+    double acc = 1;
+
+    // front wheel angle, left positive.
+    //
+    // Unit: rad, Range: [-inf..inf], Default: 0.0
+    //
+    double front_wheel_angle = 2;
+  }
+
+  message AccSteerControl {
+    // Control request of lateral acceleration and deceleration.
+    //
+    // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+    //
+    double acc = 1;
+
+    // steering wheel angle, left positive.
+    //
+    // Unit: degree, Range: [-inf..inf], Default: 0.0
+    //
+    double steer = 2;
+  }
+
+  message BodyCommand {
+    // horn cmd.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool horn = 1;
+
+    // turn_light cmd.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    TurnLight turn_light = 2;
+
+    // position_lamp cmd.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool position_lamp = 3;
+
+    // low beam cmd.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool low_beam = 4;
+
+    // high beam cmd.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool high_beam = 5;
+
+    // warning light.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool warn_light = 6;
+
+    // fog lamp cmd.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    FogLamp fog_lamp = 7;
+  }
+
+  message ChassisCommand {
+    // EPB request.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool epb = 1;
+  }
+
+  message PowerTrainCommand {
+    // engine off request.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    bool switch_off_engine = 1;
+  }
+
+  //
+  Header header = 1;
+
+  // control mode of vehicle.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  CONTROL_MODE control_mode = 2;
+
+  // control type of vehicle.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  CONTROL_TYPE contrl_type = 3;
+
+  // gear control mode of vehicle.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  GEAR_MODE gear_cmd = 4;
+
+  // Pedal control info of steering, throttle, braking.
+  //
+  PedalControl pedal_cmd = 5;
+
+  // acc control cmd.
+  //
+  AccControl acc_cmd = 6;
+
+  // body control cmd.
+  //
+  BodyCommand body_cmd = 7;
+
+  // chassis control cmd.
+  //
+  ChassisCommand chassis_cmd = 8;
+
+  // powertrain control cmd.
+  //
+  PowerTrainCommand powertrain_cmd = 9;
+
+  // Control request of lateral acceleration and deceleration.
+  //
+  AccSteerControl acc_steer_cmd = 10;
+}

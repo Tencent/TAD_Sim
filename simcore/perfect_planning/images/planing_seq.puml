@@ -1,0 +1,44 @@
+@startuml
+actor 驾驶员模型
+activate 驾驶员模型
+participant 车辆动力学
+participant ADAS算法
+participant Traffic
+participant MQ后台服务
+activate MQ后台服务
+驾驶员模型 -> MQ后台服务 : 1. 获取主车起始点信息
+MQ后台服务 -->驾驶员模型 : 2. TOPIC:LOCATION
+驾驶员模型 -> 驾驶员模型 : 3. 根据LOCATION计算方向盘角
+驾驶员模型 -> MQ后台服务 : 4. TOPIC:TRAJECTORY
+驾驶员模型 -> MQ后台服务 : 5. TOPIC:Control_V2
+车辆动力学-> MQ后台服务 : 6. 获取当前轨迹点信息
+
+activate 车辆动力学
+MQ后台服务 -->车辆动力学 : 7. TOPIC:TRAJECTORY
+车辆动力学 -> MQ后台服务 : 8. 获取当前主车信息
+MQ后台服务 -->车辆动力学 : 9. TOPIC:Control_V2
+车辆动力学 ->MQ后台服务 : 10. 发布定位信息：TOPIC:LOCATION
+车辆动力学 ->MQ后台服务 : 11. 发布主车底盘信息：TOPIC:VEHICLE_STATE
+车辆动力学 ->MQ后台服务 : 12. 发布主车底盘信息：TOPIC:VEHICLE_STATE
+deactivate 车辆动力学
+
+
+ADAS算法 -> MQ后台服务 : 14. 获取主车定位信息和底盘信息
+activate ADAS算法
+MQ后台服务  -->ADAS算法 : 14. TOPIC:LOCATION
+MQ后台服务  -->ADAS算法 : 15. TOPIC:VEHICLE_STATE
+ADAS算法 -> MQ后台服务 : 16. 发布TOPIC：CONTROL_ALGORITHM
+deactivate ADAS算法
+
+
+Traffic -> MQ后台服务 : 17. 获取主车定位信息
+activate Traffic
+MQ后台服务 ->Traffic : 18. TOPIC:LOCATION
+Traffic -> MQ后台服务 : 19.  发布交通流信息：TOPIC:TRAFFIC
+deactivate Traffic
+
+驾驶员模型 -> MQ后台服务 : 20. 获取主车信息和Traffic信息
+MQ后台服务--> 驾驶员模型 : 21. TOPIC:LOCATION、TOPIC:TRAFFIC
+驾驶员模型 -> 驾驶员模型 : 22. 计算主车加速度、方向盘
+
+@enduml

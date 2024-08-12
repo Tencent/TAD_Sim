@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package sim_msg;
+
+message DITW_TRAFFIC_EVENT { 
+	message EVENT
+	{
+		int64 id=1;
+		double timestamp = 2;
+		int32 type = 3;
+		string message = 4;
+	}
+	repeated EVENT event_array = 1;
+}

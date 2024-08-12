@@ -1,0 +1,98 @@
+@import "./var";
+
+.el-select {
+  --el-color-primary: @global-primary-color;
+  --el-select-border-color-hover: @global-primary-color;
+
+  width: 90px;
+  height: 24px;
+  line-height: 1;
+  font-size: 12px;
+
+  .el-select__wrapper {
+    --el-border-color: @disable-bd-color;
+    --el-border-color-hover: @global-primary-color;
+    --el-input-text-color: @active-default-color;
+    --el-text-color-placeholder: @global-placeholder-color;
+    --el-select-disabled-border: @disable-bd-color;
+    background-color: transparent;
+    border-radius: 0;
+    font-size: 12px;
+    min-height: 24px;
+    padding: 4px 6px;
+  }
+
+  &:focus,
+  &:hover,
+  &.active,
+  .el-input.is-focus {
+    .el-input__inner {
+      color: @active-default-color;
+      border-color: @global-primary-color;
+    }
+  }
+
+  .el-input__inner:focus,
+  .el-input__inner:active {
+    color: @active-default-color;
+    border-color: @global-primary-color;
+  }
+
+  .el-input__suffix .el-input__icon {
+    line-height: 22px;
+  }
+
+  .el-select__selection {
+    margin-left: 0 !important;
+  }
+
+  .el-select__tags {
+    .el-tag {
+      background-color: #242424;
+      border-color: #404040;
+      color: #c2c2c2;
+
+      .el-tag__close {
+        background-color: @disable-bg-color;
+        color: @active-default-color;
+      }
+    }
+  }
+}
+
+.el-select-dropdown {
+  border-radius: 1px;
+  background-color: @global-bg-color;
+  border-color: @global-bd-color;
+
+  .el-select-dropdown__list {
+    padding: 3px 0;
+
+    .el-select-dropdown__item {
+      --el-fill-color-light: @disable-bg-color;
+
+      &.selected {
+        background-color: @global-bg-color;
+        color: @global-primary-color;
+
+        &.hover {
+          background-color: @active-bg-color;
+        }
+      }
+
+      &.hover {
+        background-color: @active-bg-color;
+      }
+    }
+  }
+}
+
+.el-popper[x-placement^=bottom] {
+  .popper__arrow {
+    border-bottom-color: @global-bd-color;
+
+    &:after {
+      border-bottom-color: @global-bg-color;
+    }
+  }
+}

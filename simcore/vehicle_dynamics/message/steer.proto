@@ -1,0 +1,59 @@
+syntax = "proto3";
+import "car_basic.proto";
+package tx_car;
+
+message SteerMapped{
+    Real1DMap RackDisp_vs_SteerAng = 1; // rack displacement vs Steer angle, mm/rad
+    Real1DMap LeftWhl_vs_RackDisp = 2; // left wheel angle vs rack displacement, rad/mm
+    Real1DMap RightWhl_vs_RackDisp = 3; // right wheel angle vs rack displacement, rad/mm
+    Real1DMap VehicleSpeedCoeff = 4; // vehicle coeff on steer angle, []
+    RealScalar steerNaturalFreuency = 5; // steer natural frequency
+    RealScalar steerDampingRatio = 6;   // steer damping ratio
+}
+
+// rack and pinion dynamic steer, steer compliance not included
+message DynamicSteer{
+    message SteerGeometry{
+        RealScalar steerTrackWidth = 1;         // distance from left steer arm endpoint to right, unit m
+        RealScalar steeringWheelAngleRange = 2; // steering wheel angle range, unit rad, default [-2.5*2*PI,2.5*2*PI]
+        Real1DMap pinRadiusTable = 3;           // pin radius table, pin radius vs steering wheel angle, unit m
+        RealScalar rackCasingLength = 4;        // steer rack casing length, unit m
+        RealScalar tieRodLength = 5;            // tie rod length, unit m
+        RealScalar steerArmLength = 6;          // steer arm length, unit m
+        RealScalar dist_RackAndFrontAxle_Longitudinal = 7;           // longitudinal distance between rack and front axle, unit m
+    }
+
+    message SteerDyanmics {
+        RealScalar steerWheelInertia = 1;      // steering wheel inertia, unit kg*m^2
+        RealScalar steerWheelDamping = 2;      // steering wheel damping, unit N*m/(rad/s)
+
+        RealScalar hysteresisStiffness = 3;    // hysteresis stiffness, N*m/rad, hysteresis between steering wheel and steer column
+        RealScalar hysteresisDamping = 4;      // steering column damping, unit N*m/(rad/s), hysteresis between steering wheel and steer column
+
+        RealScalar steerColumnInertia = 5;      // steering column inertia, unit kg*m^2
+        RealScalar steerColumnDamping = 6;      // steering column damping, unit N*m/(rad/s)
+
+        RealScalar steerFricTorque = 7;         // steer friction troque
+        // RealScalar kingpinOffset = 6;           // kingpin offset, unit m
+        // RealScalar kingpinInclination = 7;      // kingpin inclinaiton, unit rad
+        // RealScalar pinInertia = 6;              // pin inertia, unit kg*m^2
+        // RealScalar torsionBarStiffness = 7;     // torsion bar stiffness, unit N*m/rad
+        // RealScalar torsionBarDamping = 8;       // torsion bar damping, unit N*m/(rad/s)
+    }
+
+    message PowerAssist{
+        Real2DMap powerAssistTable = 1;         // power assit table, assit torque vs steer wheel torque and vehicle speed
+        RealScalar maxAssistTorque = 2;         // max assist torque, unit Nm
+        RealScalar maxAssistPower = 3;          // max assist torque, unit w(Nm*rad/s)
+        RealScalar motorTimeConst = 4;          // motor time const, unit s
+    }
+
+    SteerGeometry steerGeometry = 1;
+    SteerDyanmics steerDynamics = 2;
+    PowerAssist powerAssist = 3;
+}
+
+message SteerSystem {
+    SteerMapped steerMapped = 1;
+    DynamicSteer dynamicSteer = 2;      // rack and pinion dynamic steer
+}

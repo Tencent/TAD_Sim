@@ -1,0 +1,759 @@
+[
+  {
+    "field": "speed",
+    "paths": [
+      "Grading",
+      "speed",
+      "speed"
+    ],
+    "topic": "Grading",
+    "type": "double",
+    "description": "车辆速度值",
+    "preset": true,
+    "chart": {
+      "title": "speed",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "speed"
+    }
+  },
+  {
+    "field": "acceleration",
+    "paths": [
+      "Grading",
+      "acceleration",
+      "acceleration"
+    ],
+    "topic": "Grading",
+    "type": "double",
+    "description": "车辆加速度值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration"
+    }
+  },
+  {
+    "field": "collision",
+    "paths": [
+      "Grading",
+      "collision",
+      "_size"
+    ],
+    "topic": "Grading",
+    "type": "double",
+    "description": "碰撞次数",
+    "preset": true,
+    "chart": {
+      "title": "collision",
+      "unit": "次数",
+      "xAxisName": "time",
+      "yAxisName": "collision"
+    }
+  },
+  {
+    "field": "timeheadway",
+    "paths": [
+      "Grading",
+      "timeHeadway",
+      "ATH"
+    ],
+    "topic": "Grading",
+    "type": "float",
+    "description": "车头时距",
+    "preset": true,
+    "chart": {
+      "title": "timeheadway",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "timeheadway"
+    }
+  },
+  {
+    "field": "throttle",
+    "paths": [
+      "VehicleState",
+      "powertrain_state",
+      "accpedal_position"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "油门",
+    "preset": true,
+    "chart": {
+      "title": "throttle",
+      "unit": "%",
+      "xAxisName": "time",
+      "yAxisName": "throttle"
+    }
+  },
+  {
+    "field": "steering",
+    "paths": [
+      "VehicleState",
+      "chassis_state",
+      "SteeringWheelAngle"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "方向盘转角",
+    "preset": true,
+    "chart": {
+      "title": "steering",
+      "unit": "°",
+      "xAxisName": "time",
+      "yAxisName": "steering"
+    }
+  },
+  {
+    "field": "brake",
+    "paths": [
+      "VehicleState",
+      "chassis_state",
+      "BrakePedalPos"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "刹车",
+    "preset": true,
+    "chart": {
+      "title": "brake",
+      "unit": "%",
+      "xAxisName": "time",
+      "yAxisName": "brake"
+    }
+  },
+  {
+    "field": "actual_drive_torque",
+    "paths": [
+      "VehicleState",
+      "chassis_state",
+      "SteeringWheelAngle"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "实际总驱动转矩",
+    "preset": true,
+    "chart": {
+      "title": "actual_drive_torque",
+      "unit": "Nm",
+      "xAxisName": "time",
+      "yAxisName": "actual_drive_torque"
+    }
+  },
+  {
+    "field": "transmission_out_axle_speed",
+    "paths": [
+      "VehicleState",
+      "powertrain_state",
+      "omegaGearSpeed"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "变速器输出或电机输出转速",
+    "preset": true,
+    "chart": {
+      "title": "transmission_out_axle_speed",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "transmission_out_axle_speed"
+    }
+  },
+  {
+    "field": "wheel_speed",
+    "paths": [
+      "VehicleState",
+      "chassis_state",
+      "wheel_speed",
+      "frontLeft"
+    ],
+    "topic": "VehicleState",
+    "type": "double",
+    "description": "前左轮轮速",
+    "preset": true,
+    "chart": {
+      "title": "wheel_speed",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "wheel_speed"
+    }
+  },
+  {
+    "field": "position(X)",
+    "paths": [
+      "Location",
+      "position",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(X)",
+      "unit": "°",
+      "xAxisName": "time",
+      "yAxisName": "position(X)"
+    }
+  },
+  {
+    "field": "position(Y)",
+    "paths": [
+      "Location",
+      "position",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(Y)",
+      "unit": "°",
+      "xAxisName": "time",
+      "yAxisName": "position(Y)"
+    }
+  },
+  {
+    "field": "position(Z)",
+    "paths": [
+      "Location",
+      "position",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(Z)",
+      "unit": "m",
+      "xAxisName": "time",
+      "yAxisName": "position(Z)"
+    }
+  },
+  {
+    "field": "velocity(X)",
+    "paths": [
+      "Location",
+      "velocity",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(X)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(X)"
+    }
+  },
+  {
+    "field": "velocity(Y)",
+    "paths": [
+      "Location",
+      "velocity",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(Y)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(Y)"
+    }
+  },
+  {
+    "field": "velocity(Z)",
+    "paths": [
+      "Location",
+      "velocity",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(Z)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(Z)"
+    }
+  },
+  {
+    "field": "acceleration(X)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(X)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(X)"
+    }
+  },
+  {
+    "field": "acceleration(Y)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(Y)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(Y)"
+    }
+  },
+  {
+    "field": "acceleration(Z)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(Z)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(Z)"
+    }
+  },
+  {
+    "field": "roll",
+    "paths": [
+      "Location",
+      "rpy",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆滚转角，在车体坐标系下X方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "roll",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "roll"
+    }
+  },
+  {
+    "field": "pitch",
+    "paths": [
+      "Location",
+      "rpy",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆俯仰角，在车体坐标系下Y方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "pitch",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "pitch"
+    }
+  },
+  {
+    "field": "yaw",
+    "paths": [
+      "Location",
+      "rpy",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆偏航角，在车体坐标系下Z方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "yaw",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "yaw"
+    }
+  },
+  {
+    "field": "angular(X)",
+    "paths": [
+      "Location",
+      "angular",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(X)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(X)"
+    }
+  },
+  {
+    "field": "angular(Y)",
+    "paths": [
+      "Location",
+      "angular",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(Y)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(Y)"
+    }
+  },
+  {
+    "field": "angular(Z)",
+    "paths": [
+      "Location",
+      "angular",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(Z)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(Z)"
+    }
+  },
+  {
+    "field": "speed_logsim",
+    "paths": [
+      "Grading",
+      "speed",
+      "speed"
+    ],
+    "topic": "Grading",
+    "type": "double",
+    "description": "车辆速度值",
+    "preset": true,
+    "chart": {
+      "title": "speed",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "speed"
+    }
+  },
+  {
+    "field": "acceleration_logsim",
+    "paths": [
+      "Grading",
+      "acceleration",
+      "acceleration"
+    ],
+    "topic": "Grading",
+    "type": "double",
+    "description": "车辆加速度值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration"
+    }
+  },
+  {
+    "field": "position_logsim(X)",
+    "paths": [
+      "Location",
+      "position",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(X)",
+      "unit": "°",
+      "xAxisName": "time",
+      "yAxisName": "position(X)"
+    }
+  },
+  {
+    "field": "position_logsim(Y)",
+    "paths": [
+      "Location",
+      "position",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(Y)",
+      "unit": "°",
+      "xAxisName": "time",
+      "yAxisName": "position(Y)"
+    }
+  },
+  {
+    "field": "position_logsim(Z)",
+    "paths": [
+      "Location",
+      "position",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆定位坐标经度值(WGS84)",
+    "preset": true,
+    "chart": {
+      "title": "position(Z)",
+      "unit": "m",
+      "xAxisName": "time",
+      "yAxisName": "position(Z)"
+    }
+  },
+  {
+    "field": "velocity_logsim(X)",
+    "paths": [
+      "Location",
+      "velocity",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(X)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(X)"
+    }
+  },
+  {
+    "field": "velocity_logsim(Y)",
+    "paths": [
+      "Location",
+      "velocity",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(Y)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(Y)"
+    }
+  },
+  {
+    "field": "velocity_logsim(Z)",
+    "paths": [
+      "Location",
+      "velocity",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆速度在东北天(ENU）坐标系下Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "velocity(Z)",
+      "unit": "m/s",
+      "xAxisName": "time",
+      "yAxisName": "velocity(Z)"
+    }
+  },
+  {
+    "field": "acceleration_logsim(X)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(X)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(X)"
+    }
+  },
+  {
+    "field": "acceleration_logsim(Y)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(Y)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(Y)"
+    }
+  },
+  {
+    "field": "acceleration_logsim(Z)",
+    "paths": [
+      "Location",
+      "acceleration",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆加速度在车体坐标系下Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "acceleration(Z)",
+      "unit": "m/s2",
+      "xAxisName": "time",
+      "yAxisName": "acceleration(Z)"
+    }
+  },
+  {
+    "field": "roll_logsim",
+    "paths": [
+      "Location",
+      "rpy",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆滚转角，在车体坐标系下X方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "roll",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "roll"
+    }
+  },
+  {
+    "field": "pitch_logsim",
+    "paths": [
+      "Location",
+      "rpy",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆俯仰角，在车体坐标系下Y方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "pitch",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "pitch"
+    }
+  },
+  {
+    "field": "yaw_logsim",
+    "paths": [
+      "Location",
+      "rpy",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆偏航角，在车体坐标系下Z方向上的旋转角度",
+    "preset": true,
+    "chart": {
+      "title": "yaw",
+      "unit": "rad",
+      "xAxisName": "time",
+      "yAxisName": "yaw"
+    }
+  },
+  {
+    "field": "angular_logsim(X)",
+    "paths": [
+      "Location",
+      "angular",
+      "x"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系下X方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(X)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(X)"
+    }
+  },
+  {
+    "field": "angular_logsim(Y)",
+    "paths": [
+      "Location",
+      "angular",
+      "y"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系下Y方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(Y)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(Y)"
+    }
+  },
+  {
+    "field": "angular_logsim(Z)",
+    "paths": [
+      "Location",
+      "angular",
+      "z"
+    ],
+    "topic": "Location",
+    "type": "double",
+    "description": "车辆角速度在东北天(ENU）坐标系Z方向上的分量值",
+    "preset": true,
+    "chart": {
+      "title": "angular(Z)",
+      "unit": "rad/s",
+      "xAxisName": "time",
+      "yAxisName": "angular(Z)"
+    }
+  }
+]

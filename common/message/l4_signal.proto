@@ -1,0 +1,35 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Transmissive information.
+// L4透传信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+message L4Trajectory {
+  //
+  repeated Vec3 points = 1;
+}
+
+message L4AlgorithmSignal {
+  // Transmissive signal information.
+  // 透传信号信息.
+  //
+  // note\ Rules of engagement, key represents the signal name, value represents the signal value.
+  // 约定的规则, key 代表信号名, value 代表信号值.
+  //
+  map<string, string> signal = 1;
+
+  // Transmissive trajectorys information.
+  // 透传轨迹信息.
+  //
+  // note\ Rules of engagement, key represents the signal name, value represents the track points.
+  // 约定的规则, key代表信号名, value 代表轨迹点串值.
+  //
+  map<string, L4Trajectory> trajectorys = 2;
+}

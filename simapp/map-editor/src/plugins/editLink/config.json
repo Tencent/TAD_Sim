@@ -1,0 +1,6 @@
+{
+  "name": "editLink",
+  "description": "连接线编辑",
+  "iconDesc": "link",
+  "iconComponentName": "EditLinkSvg"
+}

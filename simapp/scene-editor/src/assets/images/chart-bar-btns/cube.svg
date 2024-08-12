@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="19px" viewBox="0 0 19 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 15</title>
+    <g id="标注" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="回放-视图元素" transform="translate(-60.000000, -187.000000)">
+            <g id="编组-4" transform="translate(38.000000, 152.000000)">
+                <g id="编组-15" transform="translate(22.000000, 35.000000)">
+                    <polygon id="路径-2" points="0 3.6288 9.072 3.43788997e-13 18.144 3.6288 18.144 14.5152 9.072 18.144 0 14.5152"></polygon>
+                    <g id="编组-14" fill-rule="nonzero">
+                        <polygon id="Path-12" fill="#A3C0D5" points="9.072 1.38321354e-13 0 3.6288 9.072 7.2576 18.144 3.6288"></polygon>
+                        <polygon id="Rectangle-9" fill="#4A5564" points="0 3.6288 9.072 7.2576 9.072 18.144 0 14.5152"></polygon>
+                        <polygon id="Rectangle-9-Copy" fill="#697689" transform="translate(13.608000, 10.886400) scale(-1, 1) translate(-13.608000, -10.886400) " points="9.072 3.6288 18.144 7.2576 18.144 18.144 9.072 14.5152"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

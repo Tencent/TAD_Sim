@@ -1,0 +1,63 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// Define the interface to interact with tadsim cloud platform testcase tasks
+
+syntax = "proto3";
+
+package apis;
+
+option java_outer_classname = "TaskTestcaseProtos";
+
+// 测试用例 or 仿真任务
+enum TaskTestcaseType {
+  TASK_TESTCASE_TYPE_WORLDSIM = 0;        // 场景型仿真
+  TASK_TESTCASE_TYPE_LOGSIM = 1;          // 回放型仿真
+}
+
+enum TaskTestcaseStatus {
+  TASK_TESTCASE_STATUS_FINISHED = 0;      // 成功
+  TASK_TESTCASE_STATUS_FAIL = 1;          // 失败
+}
+
+enum TaskTestcasePriority {
+  TASK_TESTCASE_PRIORITY_S = 0;
+  TASK_TESTCASE_PRIORITY_A = 1;
+  TASK_TESTCASE_PRIORITY_B = 2;
+  TASK_TESTCASE_PRIORITY_C = 3;
+}
+
+message Kpi {
+  string name = 1;
+}
+
+message TaskTestcase {
+  // 配置任务信息
+  TaskTestcaseType type = 1;                              // 仿真类型
+  bool is_perception_in_loop = 2;                         // 感知闭环任务(是否)
+  string name = 3;                                        // 任务名称
+  string description = 4;                                 // 任务描述
+  TaskTestcasePriority priority = 5;                      // 任务优先级
+  // 配置主车
+  string ego_name = 6;                                    // 主车名称
+  // 配置评测
+  repeated Kpi kpis = 7;                                  // 评价指标
+  // 配置场景
+  repeated string logic_names_non_generalized = 8;        // 平台已有的逻辑场景名称列表
+  uint64 logic_number = 9;                                // 逻辑场景总数
+  repeated string logic_names_generalized = 10;           // 语义生成的逻辑场景名称列表
+
+  //
+  repeated string labels = 11;                            // 任务标签 (暂不启用)
+  string project = 12;                                    // 项目分类
+  string ego_controller = 13;                             // 主车控制器名称
+  repeated string sets = 14;                              // 测试用例集合名称
+  repeated uint64 concrete_id = 15;                       // 平台已有的具体场景 id 列表 (暂不启用)
+  repeated string concrete_name = 16;                     // 平台已有的具体场景 name 列表
+}
+
+message TaskTestcaseList {
+  uint64 task_generalized_id = 1;                         // 语义生成(泛化任务)id
+  string link_symbol = 2;
+  repeated TaskTestcase tasks = 3;
+  TaskTestcaseStatus status = 4;                          // 任务状态
+}

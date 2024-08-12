@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0">
+    <mapfile lon="121.1638975600" lat="31.2806051100" alt="0" unrealLevelIndex="-1">../hadmap/d2d_20190726.xodr</mapfile>
+    <traffic>byl0731_traffic.xml</traffic>
+    <planner>
+        <route id="0" type="start_end" start="121.19071134903028,31.267531202093934" end="121.1601460504544,31.282774373141276" info="Ego and NB" />
+        <start_v>10</start_v>
+        <theta>-0.8217010118389303</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <altitude start="13.342010730877519" end="13.185" />
+        <InputPath points="121.19071135,31.26753120,13.342;121.16014605,31.28277437,13.185" />
+    </planner>
+</simulation>

@@ -1,0 +1,111 @@
+@import "./var";
+
+.el-table,.el-table-v2 {
+  --el-table-border-color: @global-bd-color;
+  background-color: @global-bg-color;
+  color: @global-default-color;
+  font-size: 12px;
+  .el-table-v2__main {
+    background-color: @global-bg-color;
+    color: @global-default-color;
+    .el-table-v2__row {
+      &:hover {
+        background-color: @active-bg-color;
+      color: @global-primary-color;
+      }
+      .el-table-v2__row-cell {
+
+      }
+    }
+  }
+  .el-table-v2__header-wrapper,.el-table-v2__header-cell {
+    background-color: @global-bg-color;
+    color: @global-default-color;
+  }
+  
+  &::before {
+    display: none;
+  }
+
+  tr {
+    background-color: @global-bg-color;
+
+    th.el-table__cell {
+      background-color: @global-bg-color;
+
+      & > .cell.highlight {
+        color: @global-primary-color;
+      }
+    }
+  }
+
+  .el-table__header-wrapper {
+
+    th.el-table__cell {
+      padding: 3px 0;
+      border-bottom: solid 1px @global-bd-color;
+    }
+
+    .cell {
+      padding: 0 4px;
+      word-break: break-word;
+    }
+  }
+
+  .el-table__row {
+
+    &.el-table__row--striped {
+      td {
+        background-color: @active-bg-color;
+      }
+    }
+
+    td {
+      padding: 2px 0;
+      border-bottom: solid 1px @global-bd-color;
+    }
+
+    .cell {
+      padding: 0 4px;
+    }
+
+  }
+
+  //.el-checkbox {
+  //  .is-checked {
+  //    .el-checkbox__inner {
+  //      background-color: #cccccc;
+  //      border-color: @global-bd-color;
+  //
+  //      &::after {
+  //        border-color: @global-bd-color;
+  //      }
+  //    }
+  //  }
+  //
+  //  .el-checkbox__inner {
+  //    background-color: transparent;
+  //    border-color: @global-bd-color;
+  //  }
+  //}
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td.el-table__cell {
+  background-color: @active-bg-color;
+  color: @global-primary-color;
+}
+
+.el-table-filter {
+  border-color: @global-bd-color;
+  background-color: @global-bg-color;
+}
+
+.el-table-filter__bottom {
+  border-top-color: @global-bd-color;
+
+  button {
+    &:hover {
+      color: @global-primary-color;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+@import "./var";
+
+.el-date-picker {
+  .el-date-table {
+    td {
+      &.available {
+        color: @active-default-color;
+      }
+
+      &.today span,
+      &.available:hover {
+        color: @global-primary-color;
+      }
+
+      &.next-month,
+      &.prev-month {
+        color: @disable-default-color;
+      }
+    }
+
+    th {
+      border-bottom-color: @global-bd-color;
+    }
+  }
+
+  .el-picker-panel__icon-btn {
+    color: @global-default-color;
+
+    &:hover {
+      color: @global-primary-color;
+    }
+  }
+
+  .el-date-picker__header-label.active,
+  .el-date-picker__header-label:hover {
+    color: @global-primary-color;
+  }
+}

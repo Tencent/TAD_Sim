@@ -1,0 +1,278 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+
+//
+// \brief all expressed in unit m and rad.
+//
+message VehicleGeometory {
+  enum VehicleCoordType {
+    FrontAxle_SnappedToGround = 0;
+    WheelBaseCenter_SnappedToGround = 1;
+    RearAxle_SnappedToGround = 2;
+    TrailerHitch_SnappedToGround = 3;
+  }
+
+  //
+  // \brief the scalar variable of vehicle geometory is relative to reference point.
+  // 车辆几何的标量变量是相对于参考点而言. \n
+  // for passenge vehicle, the reference point is WheelBaseCenter_SnappedToGround if not specified, \n
+  // 对于客车, 如果未指定, 参考点是 WheelBaseCenter_SnappedToGround,\n
+  // for trailer, the reference point is TrailerHitch_SnappedToGround if not specified, \n
+  // 对于拖车, 如果未指定, 参考点是 TrailerHitch_SnappedToGround, \n
+  // all value should be equal or greater than 0, \n
+  // 所有值应大于或等于0.
+  //
+  message VehicleGeometoryScalar {
+    // the vertical distance between the FRONT axle and the reference point.
+    // 前轴与参考点之间的垂直距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles, it is the distance to the very first one, \n
+    // 如果有2个以上的轴, 它是距离第一个轴的距离.
+    // \note if there's no FRONT axle, 0 would be filled, \n
+    // 如果没有前轴, 将填充 0.
+    //
+    double ref_to_front_axle = 1;
+
+    // the vertical distance between the REAR axle and the reference point.
+    // 后轴与参考点之间的垂直距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles, it is the distance to the very first one, \n
+    // 如果有2个以上的轴, 它是距离第一个轴的距离.
+    // \note if there's no FRONT axle, 0 would be filled, \n
+    // 如果没有前轴, 将填充 0.
+    //
+    double ref_to_rear_axle = 2;
+
+    // the distance between the FRONT axle and the FRONT boundary of the bounding box.
+    // 前轴与边界框前边界之间的距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles, it is the distance to the very first one, \n
+    // 如果有2个以上的轴, 它是距离第一个轴的距离.
+    // \note if there's no FRONT axle, 0 would be filled, \n
+    // 如果没有前轴, 将填充 0.
+    //
+    double front_axle_to_front = 3;
+
+    // the distance between the REAR axle and the REAR boundary of the bounding box.
+    // 后轴与边界框后边界之间的距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles, it is the distance to the very first one, \n
+    // 如果有2个以上的轴, 它是距离第一个轴的距离.
+    // \note if there's no REAR axle, 0 would be filled, \n
+    // 如果没有后轴, 将填充 0.
+    //
+    double rear_axle_to_rear = 4;
+
+    // the distance between the front and the rear axle.
+    // 前轴和后轴之间的距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles it's distance between the very first and the very last one, \n
+    // 如果有2个以上的轴, 它是距离第一个和最后一个轴的距离.
+    // \note if there's no FRONT axle, 0 would be filled, \n
+    // 如果没有前轴, 将填充 0.
+    //
+    double wheel_base = 5;
+
+    // the length of the bounding box.
+    // 边界框的长度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double length = 6;
+
+    // the width of the bounding box.
+    // 边界框的宽度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double width = 7;
+
+    // the height of the bounding box.
+    // 边界框的高度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double height = 8;
+
+    // the distance between two wheel on the FRONT axle.
+    // 前轴上两个轮子之间的距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's no FRONT axle, 0 would be filled, \n
+    // 如果没有前轴, 将填充0
+    //
+    double track_width_front = 9;
+
+    // the distance between two wheel on the REAR axle.
+    // 后轴上两个轮子之间的距离.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's no rear axle, 0 would be filled, \n
+    // 如果没有后轴, 将填充0
+    //
+    double track_width_rear = 10;
+  }
+
+  //
+  // \brief the vector variable of vehicle geometory is relative to reference point.
+  // 车辆几何图形的矢量变量是相对于参考点的.
+  // the reference point must be set dynamically VehicleCoord is calculated accordingly.
+  // 参考点必须动态设置.
+  //
+  message PointInVehicleCoord {
+    // the center point of the front axle.
+    // 前轴的中心点.
+    //
+    Vec3 front_axle = 1;
+
+    // the center point of the rear axle.
+    // 后轴的中心点.
+    //
+    Vec3 rear_axle = 2;
+
+    // the center point of the plane which formed with the four center points of wheel
+    // given assumption that the two wheels of same axle is on the same level(same z).
+    // 由四个轮子的中心点形成的平面的中心点假设同一轴上的两个轮子在同一水平面上(相同的z值).
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    // \note if there's more than 2 axles, the very first and the very last one are considered, \n
+    // 如果有2个以上的轴, 将考虑最前面的和最后面的轴.
+    // \note if there's no front axle, it is the center point of the rear axle, \n
+    // 如果没有前轴, 它就是后轴的中心点.
+    //
+    Vec3 wheel_base_center = 3;
+
+    // the center point of the FRONT boundary(snapped to ground) of the bounding box.
+    // 边界框前边界(贴合地面)的中心点.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 front = 4;
+
+    // the center point of the REAR boundary(snapped to ground) of the bounding box.
+    // 边界框后边界(贴合地面)的中心点.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 rear = 5;
+
+    // the left front point(snapped to ground) of the bounding box.
+    // 边界框左前点(贴合地面).
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 front_left = 6;
+
+    // see above, right front.
+    // 见上文, 右前.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 front_right = 7;
+
+    // see above, left rear.
+    // 见上文, 左后.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 rear_left = 8;
+
+    // see above, right rear.
+    // 见上文, 右后.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 rear_right = 9;
+
+    // not used.
+    // 未使用.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0.0
+    //
+    // \note always (0, 0, 0)
+    //
+    Vec3 ref_point = 10;
+
+    // bounding_box_center.
+    // 边界框中心.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 bounding_box_center = 11;
+
+    // combination_offset.
+    // 组合偏移.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    Vec3 combination_offset = 12;
+  }
+
+  message WheelFour {
+    //
+    double front_left = 1;
+
+    //
+    double front_right = 2;
+
+    //
+    double rear_left = 3;
+
+    //
+    double rear_right = 4;
+  }
+
+  //
+  VehicleCoordType coord_type = 1;
+
+  //
+  VehicleGeometoryScalar vehicle_geometory = 2;
+
+  //
+  PointInVehicleCoord vehicle_coord = 3;
+
+  // four wheel max_steering_radius.
+  // 四轮最大转向半径.
+  //
+  // Unit: N/A, Range: [0..pi], Default: 0.0
+  //
+  WheelFour max_steering_radius = 4;
+
+  // four wheel diameter.
+  // 四轮直径.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  WheelFour wheel_diameter = 5;
+}
+
+message VehicleGeometoryList {
+  // Car or front of a articulated bus or front of Semi-trailer truck.
+  // 车辆自身, 铰接客车和半挂式卡车的前部.
+  //
+  VehicleGeometory front = 1;
+
+  // multiple trailers.
+  // 多个拖车.
+  //
+  repeated VehicleGeometory trailer = 2;
+}

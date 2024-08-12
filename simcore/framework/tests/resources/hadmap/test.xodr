@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<OpenDRIVE>
+  <header revMajor="1" revMinor="4" name="" version="1.0" date="2020-11-21" north="3781680.70271" south="3779151.87537" east="12491143.5075" west="12489313.1836" vendor="">
+    <geoReference><![CDATA[+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs]]></geoReference>
+  </header>
+</OpenDRIVE>

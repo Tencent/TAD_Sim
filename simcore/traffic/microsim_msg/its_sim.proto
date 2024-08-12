@@ -1,0 +1,838 @@
+syntax = "proto3";
+
+package its;
+option java_outer_classname = "its_sim";
+
+//1. ####################Common Static Data#########################################
+enum txRoadType {
+    Normal_Road = 0;
+    Ramp_Road = 1;
+    TollBooth_Road = 2;
+}
+// 1.1 Road相关
+message txRoad {
+    uint64 road_id = 1;
+    uint64 from_node_id = 2;
+    uint64 to_node_id = 3;
+    //'车辆长度, 米'/
+    double length = 4;
+    //'限速,公里/小时'/
+    //'道路类型'/
+    txRoadType road_type = 5;
+    //'有效车道数*长度（封路等使用）'/
+    double valid_total_lane_length = 6;
+    //generated data ..
+    repeated uint64 up_roads = 7;
+    repeated uint64 down_roads = 8;
+}
+
+message txNode {
+    uint64 node_id = 1;
+    float lng = 2;
+    float lat = 3;
+    // uint64 controller_id = 4;
+    // repeated uint32 zone_ids = 5;
+}
+
+// 交通小区
+message txZone {
+    uint32 zone_id = 1;
+    string polygon = 2;
+}
+
+// 转向定义
+enum txArrow {
+    Arrow_None = 0;
+    Arrow_Straight = 1;
+    Arrow_Left = 2;
+    Arrow_Right = 3;
+    Arrow_Uturn = 4;
+    Arrow_SkewLeft = 5;
+    Arrow_SkewRight = 6;
+    Arrow_StraightLeft = 7;
+    Arrow_StraightRight = 8;
+    Arrow_StraightUturn = 9;
+    Arrow_LeftRight = 10;
+    Arrow_LeftUturn = 11;
+}
+
+//Lane 连接关系
+message txLaneTopo {
+    uint64 up_lane_id = 1;
+    uint64 down_lane_id = 2;
+    txArrow arrow = 3;
+    string points = 4;
+}
+
+// 道路连接关系
+message txRoadTopo {
+    uint64 up_road_id = 1;
+    uint64 down_road_id = 2;
+    txArrow arrow = 3;
+    uint32 up_lane_num = 4;
+    uint32 down_lane_num = 5;
+    double length = 6;
+    double start_lng = 7;
+    double start_lat = 8;
+    double start_yaw = 9;
+    uint64 from_lane_id = 10;
+    uint64 from_section_id = 11;
+    uint64 to_lane_id = 12;
+    uint64 to_section_id = 13;
+}
+
+// traffic light
+message txLight {
+    uint64 light_id = 1;
+    txLightColor color = 2;      //current state
+    repeated txRoadTopo topo = 3;//the from-to-links this light controls
+    double lng = 4;
+    double lat = 5;
+    double yaw = 6;
+}
+
+// traffic lights group
+message txLightGroup {
+    uint64 group_id = 1;
+    uint64 road_id = 2;
+    float lng = 3;
+    float lat = 4;
+    repeated txLight light = 5;
+}
+
+// traffic light timing
+message txLightTiming {
+    uint64 light_id = 1;
+    uint32 green_time = 2;
+    uint32 green_flash_time = 6;
+    uint32 amber_time = 3;
+    uint32 red_time = 4;
+    uint32 start_t = 5;// initial time difference between lights
+}
+
+// traffic phase timing
+message txPhaseTiming {
+    uint64 phase_id = 1;
+    repeated uint64 light_id = 2;
+    uint32 green_time = 3;
+    uint32 green_flash_time = 7;
+    uint32 amber_time = 4;
+    uint32 red_time = 5;
+    uint32 start_t = 6; // start the green phase in a cycle, which has different definition from start_in in txLightTiming    
+}
+
+message txPlan {
+    uint32 plan_id = 1;
+    string plan_name = 2;
+    string date = 3;
+    string day_time = 4;
+    uint32 cycle = 5;
+    uint32 offset = 6;
+    string phase_layout = 7;
+    repeated txLightTiming light_time = 8;  // txLightTiming has equivalent info with txPhaseTiming (convertible)
+    repeated txPhaseTiming phase_time = 9;
+}
+
+message txController {
+    uint64 controller_id = 1;
+    repeated txLightGroup light_group = 2;//one junction may have 4 groups lights
+    repeated txPlan plan = 3;
+}
+
+message txControllers {
+    repeated txController light_controller = 1;
+}
+
+enum txLightColor {
+    Light_Green = 0;
+    Light_Yellow = 1;
+    Light_Red = 2;
+    Light_Green_Flash = 3;
+}
+
+//#####################################Common dynamic data################################
+// 1.2 车辆相关
+//车辆类型
+enum txVehicleType {
+    Vehicle_Type_Car = 0;
+    Vehicle_Type_Bus = 1;
+    Vehicle_Type_Truck = 2;
+}
+
+// 分配候选路径集合
+message txAssignRoutes {
+    map<string, txRoutes> od2route_map = 1;
+}
+
+// 行驶路线
+message txRoute {
+    uint64 route_id = 1; //route　ID
+    uint64 origin_id = 2; //起点ID
+    uint64 dest_id = 3; //终点ID
+    string origin_desc = 4; //起点描述
+    string dest_desc = 5; //终点描述
+    repeated uint64 road_id = 6; //组成route的道路ID
+    repeated txNode node = 7; //组成route的点
+    double length = 8; //The total length of the route, including all roads and links
+    uint32 vehicle_cnt = 9; //选择这条route的车的数量
+}
+
+// 车辆
+message txVehicle
+{
+    uint64 vehicle_id = 1; //车辆ID
+    txVehicleType vehicle_type = 2; //车辆类型
+    double length = 3; //车身长度
+
+    double lng = 4; //经度
+    double lat = 5; //纬度
+    double height = 17; //高度
+    double yaw = 6; //倾斜角度(rad)
+    double speed = 7; //速度(m/s)
+
+    txRoute route = 8; // 车辆所选择的路线
+    uint64 road_id = 9; // 车辆当前所在道路ID
+    double road_pos = 10; // 当前位置在该道路上多少米处(初始)
+    uint32 road_idx = 11; // 车辆当前所在道路在route中的序号
+    int64 lane_id = 12; // 车辆当前所在车道ID
+
+    uint64 start_time = 13; // 出发时间(unix time stamp)
+    uint64 arrive_time = 14; // 到达时间(unix time stamp)
+    uint64 landing_time = 15; // 登陆下一条Road的时间(unix time stamp)，大于0表示处于Transfer状态中
+    string string_id = 16; //车辆字符串格式ID
+	bytes  serialization_archive = 18; //微观车流序列化归档
+
+    uint64 section_id = 19;
+    bool on_link = 20; // true : on lanelink; false : on road;
+    uint64 to_road_id = 21;
+    uint64 to_section_id = 22;
+    int64 to_lane_id = 23; 
+    
+    float vehicle_width = 24;//'车辆宽度, 米'/    
+    float vehicle_height = 25;//'车辆高度, 米'/
+}
+
+
+//############################## 仿真评测相关数据 ######################
+
+// 检测器数据
+message txRoadSensor {
+    uint32 sensor_id = 1; // 检测器ID
+    uint64 road_id = 2; // 检测器所在道路的ID
+    double road_pos = 3; // 检测器位置距道路起点距离(m)
+    uint64 start_timestamp = 4; // 检测器统计的开始时间
+    uint64 end_timestamp = 5; // 检测器统计的结束时间
+    uint32 flow = 6; // 检测到的车流量
+    double speed = 7;// 检测到的车流速(m/s)
+}
+
+// 检测器批量接口
+message txRoadSensors {
+    uint64 start_timestamp = 1; // 检测器统计的开始时间
+    uint64 end_timestamp = 2; //检测器统计的结束时间
+    repeated txRoadSensor sensor = 3; //所有检测器
+}
+
+message txRoadSensorsRecord {
+    map<uint64, txRoadSensors> sensors = 1;//多时间段检测器统计结果
+}
+
+message txRoadSensorEval {
+    uint32 sensor_id = 1;
+    uint32 flow_sim = 2;
+    uint32 flow_gt = 3;
+    double flow_mape = 4; // 车流量的MAPE
+
+    double speed_sim = 5;
+    double speed_gt = 6;
+    double speed_mape = 7;// 车流速的MAPE
+}
+
+message txRoadSensorsEval {
+    uint64 timestamp = 1;
+    repeated txRoadSensorEval res = 2;
+    double avg_flow_mape = 3;
+    double avg_speed_mape = 4;
+}
+
+message txRoadSensorDiff {
+    txRoadSensor sensor = 1;
+    int32 flow_diff = 2; // 车流量的差值
+    double speed_diff = 3;// 车流速的差值
+}
+
+message txRoadSensorsDiff {
+    uint64 start_timestamp = 1;
+    uint64 end_timestamp = 2;
+    repeated txRoadSensorDiff sensor_diff = 3;
+}
+
+message txRoadFeatureInfo {
+    enum txTopoType //拓扑类型
+    {
+        Up = 0; //路口上游
+        Down = 1;   //路口下游
+    }
+    uint64 light_road_id = 1; // 红绿灯所在道路ID
+    txTopoType type = 2; //道路相对于路口的拓扑关系
+    double actual_total_length = 3; // 实际所统计的多条道路的总长度
+    double avg_speed = 4; // 平均车速
+    uint32 queue_length = 5; // 排队中车辆的数量
+    uint32 vehs_num = 6; // 车的数量
+    map<uint32, txRoadDirStatInfo> dir_stats = 7;//分方向的统计信息
+}
+
+message txRoadFeatureInfos {
+    uint64 current_timestamp = 1;// 时间戳
+    repeated txRoadFeatureInfo feature = 2;
+}
+
+message txRoadDirStatInfo {
+    uint64 start_timestamp = 1; // 检测器统计的开始时间
+    uint64 end_timestamp = 7; // 检测器统计的结束时间
+    txArrow dir = 2; // 车辆运动方向
+    double avg_speed = 3; // 当前帧所有车平均车速
+    double delay_time = 4;//　过去一段时间单车延误时间的最大值/s　
+    uint32 queue_length = 5;// 当前帧队列长度
+    uint32 vehs_num = 6;// 当前帧车数
+}
+
+// road级别的相关指标
+message txRoadStatInfo {
+    uint64 start_timestamp = 1; // 检测器统计的开始时间
+    uint64 end_timestamp = 15; // 检测器统计的结束时间
+    uint64 road_id = 2;
+    double congestion_index = 3;      //拥堵指数
+    double avg_speed = 4;             //平均车速
+    double delay_time_ratio = 5;      // 延误时间比
+    double congestion_percent = 6;    //拥堵里程占比
+    double congestion_chain_ratio = 7;// 拥堵指数环比
+    double delay_time_chain_ratio = 8;//平均延误时长比环比
+    double stop_times = 9;            //停车次数
+    uint32 vehicle_count = 10;
+    double avg_time_cost = 11;
+    uint32 flow = 12;                             //交通流量
+    map<uint32, txRoadDirStatInfo> dir_stats = 13;//txArrow
+    map<int64, txRoadDirStatInfo> lane_stats = 14;//txLane
+    uint32 queue_length = 16;
+    uint32 congestion_level = 17; //拥堵等级，1--->4:拥堵--->畅通
+    double max_congestion_length = 18;// 历史最大拥堵长度
+    uint64 congestion_disappear_timestamp = 19;// 预计当前拥堵消散时刻
+    uint64 congestion_time = 20;// 处于拥堵状态（拥堵等级 <= 2）的时长
+    uint64 travel_time = 21;// 预计车辆通过道路的时长
+    uint32 service_level = 22; // 服务水平, 0=A,1=B,...以此类推
+    double congestion_length = 23;// 处于拥堵状态的长度
+}
+
+//roads批量数据
+message txRoadStatInfos {
+    uint64 start_timestamp = 1;// 时间戳
+    uint64 end_timestamp = 3;
+    repeated txRoadStatInfo stat = 2; // 道路
+    repeated txRoadStatInfo toll_stat = 4; // 收费站
+    repeated txRoadStatInfo ramp_stat = 5; // 匝道
+}
+
+
+//多帧统计数据
+message txMultiFrameStatInfos {
+    uint64 start_timestamp = 1;
+    uint64 end_timestamp = 2;
+    txRoadStatInfos five_mins_semantic_road_stat = 3; //仿真开始后5分钟内的语义道路统计信息
+    txRoadStatInfos five_mins_hd_road_stat = 4; //仿真开始后5分钟内的高精道路统计信息
+    txRoadStatInfos thirty_mins_semantic_road_stat = 5; //仿真开始后30分钟内的语义道路统计信息
+    txRoadStatInfos thirty_mins_hd_road_stat = 6; //仿真开始后30分钟内的高精道路统计信息
+    repeated txZoneStatInfo zone_stat = 7; //仿真开始后30分钟内的每分钟的全局统计信息
+    repeated txRoadStatInfos road_congestion_level = 8; //仿真开始后30分钟内的每分钟的高精道路路况信息
+    repeated txRoadStatInfos road_stat = 9; //仿真开始后30分钟内的每分钟的语义道路统计信息
+}
+
+//高速实时数据
+message txHighwayRealtimeStatInfos {
+    uint64 start_timestamp = 1;
+    uint64 end_timestamp = 2;
+    txRoadStatInfos five_mins_semantic_road_stat = 3; //仿真开始后5分钟内的语义道路统计信息
+    txRoadStatInfos five_mins_hd_road_stat = 4; //仿真开始后5分钟内的高精道路统计信息
+    repeated txZoneStatInfo zone_stat = 5; //仿真开始后5分钟内的每分钟的全局统计信息
+    repeated txRoadStatInfos road_congestion_level = 6; //仿真开始后5分钟内的每分钟的高精道路路况信息
+    repeated txRoadStatInfos road_stat = 7; //仿真开始后5分钟内的每分钟的语义道路统计信息
+}
+
+//高速方案数据
+message txHighwayPlanStatInfos {
+    uint64 start_timestamp = 1;
+    uint64 end_timestamp = 2;
+    repeated txZoneStatInfo zone_stat = 3; //自仿真开始起的每分钟的全局统计信息
+    repeated txRoadStatInfos road_congestion_level = 4; //自仿真开始起的每分钟的高精道路路况信息
+    repeated txRoadStatInfos road_stat = 5; //自仿真开始起的每分钟的语义道路统计信息
+}
+
+//node(路口)级别的相关指标
+message txNodeStatInfo {
+    uint64 start_timestamp = 1;// 检测器统计的开始时间
+    uint64 end_timestamp = 7; // 检测器统计的结束时间
+    uint64 node_id = 2; //路口ID
+    double congestion_index = 3;// 拥堵指数
+    double avg_speed = 4;       // 平均车速
+    double delay_time_ratio = 5;// 延误时间比
+    double stop_times = 6;      // 停车次数
+    uint32 service_level = 8; // 服务水平, 0=A,1=B,...以此类推
+    uint32 flow = 9; // 交通流量
+    double avg_delay_time = 10; // 平均延误时长
+}
+
+//nodes批量数据
+message txNodeStatInfos {
+    uint64 start_timestamp = 1;// 时间戳
+    uint64 end_timestamp = 3;
+    repeated txNodeStatInfo stat = 2;
+}
+
+//zone(区域)级别的相关指标
+message txZoneStatInfo {
+    uint64 start_timestamp = 1; // 检测器统计的开始时间
+    uint64 end_timestamp = 6; // 检测器统计的结束时间
+    uint32 zone_id = 2; // 区域ID
+    double avg_speed = 3;       // 平均车速
+    double congestion_index = 4;// 拥堵指数
+    uint32 flow = 5;            // 交通流量
+    double congestion_length = 7;// 拥堵长度
+    double congestion_length_ratio = 8;// 拥堵长度占总长度的比例
+    uint64 total_delay_time = 9;// 区域内所有道路的总延误时间
+}
+
+//zones批量数据
+message txZoneStatInfos {
+    uint64 start_timestamp = 1;// 时间戳
+    uint64 end_timestamp = 3;
+    repeated txZoneStatInfo stat = 2;
+}
+
+//多帧交通状态数据
+message txStatusRecord {
+    uint64 start_timestamp = 1;
+    uint64 end_timestamp = 2;
+    repeated txSimStatus status = 3;
+}
+
+//##############################Common Simulation Conf and messsage######################
+// 交通分配模式
+enum txAssignMode {
+    Assign_Mode_Historical = 0; // 历史
+    Assign_Mode_PreDefined = 1; // 事先定义
+    Assign_Mode_UserBalance = 2;// 用户均衡
+    Assign_Mode_SysOptimal = 3; // 系统最优
+}
+
+// commands can be executed by simulator
+enum txSimCommandType
+{
+    Cmd_AddVehicle = 0; //add vehicle to scene immediately
+    Cmd_UpdateTL = 1;   //update traffic light color
+    Cmd_AddCandidates = 2; //add candidates
+    Cmd_UpdateEvents = 3; //update events 
+    Cmd_UpdateTLPlan = 4;  //update traffic light plan
+    Cmd_RemoveVehicle = 5; // Remove vehicle from scene
+    Cmd_UpdateStatus = 6; //update traffic status
+}
+
+
+message txComMsg {
+    map<string, string> msg_map = 1;
+}
+//##############################Systen Config######################
+// simulator type
+enum txSimType {
+    Sim_Type_Meso = 0;
+    Sim_Type_Micro = 1;
+    Sim_Type_SimCity = 2;
+}
+// define the running mode
+enum txSimMode {
+    Sim_Mode_Acc = 0;
+    Sim_Mode_Normal = 1;
+};
+// define vehicle move mode
+enum txSimMove {
+    Sim_Move_Free = 0;
+    Sim_Move_Que = 1;
+}
+
+message txSimConfig {
+    txSimType type = 1;
+    txSimMode mode = 2;
+    txSimMove move = 3;
+    uint32 delta_t = 4;
+    uint32 delay = 5;
+    //出车范围的坐标
+    double leftbottom_lon = 6; 
+    double leftbottom_lat = 7;
+    double righttop_lon = 8;
+    double righttop_lat = 9;
+    bool without_detector = 10;
+}
+message txDuaConfig {
+    txSimConfig dua_sim = 1;
+    txAssignMode method = 2;
+    uint32 max_iterate = 3;
+    uint32 assign_segment = 4;
+    uint32 max_additional_segment = 5;
+    string hdmap_file = 6;
+    string meso_map_file = 7;
+    uint32 id_prefix = 8; // 分配产生vehicle id的前缀
+}
+message txSystemConfig {
+    uint32 segment_time = 1;
+    txDuaConfig dua_config = 2;
+    txSimConfig main_sim = 3;
+}
+
+//##############################Common Simulation data###################################
+//the current simulation state snapshot
+message txSimStatus {
+    uint64 time = 1; // 当前时间(unix timestamp)
+    repeated txVehicle vehicle = 2; // 当前仿真中所有车辆
+}
+
+// 车辆批量接口, 可直接用于仿真输入
+message txVehicles {
+    repeated txVehicle vehicle = 1;
+    uint32 iteration = 2;
+    bool is_converge = 3;
+}
+
+// 仿真动态数据
+message txDynamicData {
+    uint64 timestamp = 1;                   // 批次时间，用于描述哪个时间片, 如08:45
+    repeated txVehicles vehicles = 2;       // 生成的OD矩阵序列，包括当前时间片+未来几个时间片
+    repeated txRoadSensors road_sensors = 3;// 生成的检测器数据，包括当前时间片+未来几个时间片
+    txAssignRoutes assign_routes = 4;       // 生成的候选路径集，需与vehicles及sensors时间范围对应
+    repeated txOdMatrix od_matrix = 5;      // 多个时间段的OD矩阵
+}
+
+// OD矩阵中每个O到D的流量信息
+message txO2D {
+    uint32 origin_id = 1; //起点ID
+    uint32 dest_id = 2; //终点ID
+    uint64 flow = 3; //车辆数量
+}
+
+// OD矩阵
+message txOdMatrix {
+    uint64 start_timestamp = 1; // 开始时间
+    uint64 end_timestamp = 2; // 结束时间
+    repeated txO2D o2d = 3; 
+}
+
+message txRoadsStatPeriod {
+    //时间段起始时间
+    uint64 start_t = 1;
+    uint64 period = 2;
+    map<uint64, txRoadStat> stats = 3;
+}
+
+// 仿真统计信息
+message txSimStat {
+    repeated txRoadsStatPeriod roads_stat_period = 1;
+    repeated txVehicle vehicle = 2;
+    uint32 iteration = 3;
+}
+
+message txRoadStat {
+    //当前仿真时间步
+    double capacity = 1;
+    map<uint64, txConnStat> conn_stat_dict = 2;
+    repeated txMesoSeg seg = 3;
+}
+
+message txConnStat {
+    uint32 green_time = 1;
+    double capacity = 2;
+
+    uint32 vehicle_count = 3;
+    uint32 total_time = 4;
+    double avg_time_cost = 5;
+    double avg_speed = 6;
+
+    int32 queue_cnt = 7;
+}
+
+message txScene {
+    string map_file = 1;            //map file
+    string tlc_file = 2;            //traffic light controller file
+    string config_file = 3;         //simulator config file
+    txSimStatus start_state = 4;
+    txVehicles candidates = 5;
+    txEvents events = 6;
+    string sensors_file = 7;
+}
+
+//#################Meso Simulation data#######################
+message txMesoMapData {
+    // init scene
+    // 1) 路网
+    map<uint64, txNode> node_dict = 1;
+    map<uint64, txRoad> road_dict = 2;
+    map<uint32, txZone> zone_dict = 3;
+    //up_road_id+"#"+down_road_id
+    map<string, txRoadTopo> roadtopo_dict = 4;
+    map<uint64, txOdPoint> od_point_dict = 5;
+}
+
+message txMesoModel {
+    map<uint64, txMesoSegArray> road2segs = 1;
+}
+
+
+//meso map data.
+message txMesoSegArray {
+    repeated txMesoSeg seg = 1;
+}
+
+message txMesoSeg {
+    //meter
+    double end_pos = 1;
+    double length = 2;
+    uint32 lane_num = 3;
+    double speed_limit = 4;
+    txMesoSegStat stat = 5;
+    uint32 model_type = 6;// default traffic flow model.
+    txMesoTrafficFlowModel model = 7;
+}
+
+
+// traffic flow model
+message txMesoTrafficFlowModel {
+    uint32 model_id = 1;
+    uint32 model_type = 2;
+    double kjam = 3;
+    double kcut = 4;
+    double vf = 5;
+    double alpha = 6;
+    double beta = 7;
+}
+
+message txMesoSegStat {
+    repeated uint64 vehicle_id = 1;
+    uint32 total_time = 2;
+    double avg_time_cost = 3;
+    uint32 avg_speed = 4;
+}
+
+enum txOdType {
+   Origin = 0;
+   Dest = 1;
+}
+
+message txOdPoint {
+    uint64 od_id = 1;
+    string cn_name = 2;  
+    uint64 hd_road_id = 3;
+    txOdType type = 4;
+    double lon = 5;
+    double lat = 6;
+}
+
+//###################################Other Data#######################################
+// 交通小区
+message txOrigin {
+    uint32 origin_id = 1;
+    //发车比例
+    double load_weight = 2;
+}
+
+// 行驶路线批量接口
+message txRoutes {
+    repeated txRoute route = 1;
+    uint32 vehicle_cnt = 2;
+}
+
+// 交通需求, 对应OD矩阵中的行
+message txO2DArray {
+    repeated float o2d = 1;
+}
+
+// 交通需求, 对应OD矩阵
+message txDemand {
+    uint32 group_id = 1;// 城市组ID
+    uint32 city_id = 2; // 城市ID
+    uint32 area_id = 3; // 仿真区域ID
+    uint32 timestamp = 4;
+    repeated txO2DArray o2dArray = 5;
+}
+
+// 交通需求批量接口
+message txDemands {
+    repeated txDemand demand = 1;
+}
+
+message txZoneIdArray {
+    repeated uint32 id_array = 1;
+}
+
+message txNodeIdArray {
+    repeated uint64 id_array = 1;
+}
+
+//Incident结构格式
+message txEvent{
+    message txLonLat{
+	double lon = 1;
+	double lat = 2;
+	double alt = 3;
+    }
+
+    //受影响道路
+    message txAffectedRoad{
+        //道路ID
+        uint64 road_id = 1;
+
+        //最大速度
+        double affected_speed = 2;
+
+        //可有多个从事故开始点开始向道路下游延伸的长度为影响的区域0则为一个点
+        double affected_length = 3;
+
+        //影响起始实位置
+        double road_pos = 4;
+        
+        //前端显示使用
+        string road_name = 5;
+
+    }
+
+    //受影响车道
+    message txAffectedLane {
+        //道路ID
+        uint64 road_id = 1;
+
+        //路段ID
+        uint64 seg_id = 2;
+
+        //车道ID
+        int64 lane_id = 3;
+
+        //可有多个车道最大速度0则为车辆无法通过
+        double affected_speed = 4;
+
+        //可有多个从事故开始点开始向道路下游延伸的长度为影响的区域0则为一个点
+        double affected_length = 5;
+
+        //影响起始实位置
+        double road_pos = 6;
+    }
+
+    //受影响区域
+    message txAffectedArea {
+        repeated txLonLat affected_region = 1;
+    }
+
+    message txAffectedObjs {
+        //AffectedLane可有多个: 车道ID
+        repeated txAffectedLane affected_lane = 1;
+        repeated txAffectedArea affected_area = 2;
+        repeated txAffectedRoad affected_road = 3;
+    }
+
+    //事件ID
+    uint64 event_id = 1;
+
+    //事件类型
+    enum txEventType
+    {
+    option allow_alias = true;
+	TrafficAccident = 0; //交通事故（lane级别限速）
+	TrafficControl = 1;   //交通管制（lane级别封路）
+	Snow = 2; //大雪
+	Ice = 3; //路面结冰
+	Water = 4;// 路面积水
+    RoadClose = 5;   //封路（road级别）
+	SpeedLimit = 6;   //限速（road级别）
+    Construction = 1; //施工（lane级别封路）
+    }
+    txEventType type = 2;
+
+    //影响程度
+    uint32 affected_level = 3;
+
+    //事件状态
+    uint32 event_status = 4;
+
+    //开始时间
+    uint64 starting_time = 5;
+
+    //持续时长
+    uint64 duration = 6;
+
+    //纬度事故开始点的坐标 
+    repeated txLonLat event_location = 7;
+
+    //受影响的车道或者道路
+    txAffectedObjs affected_objs = 8;
+
+    //是否需要车辆改道
+    bool reroute_enabled = 9;
+
+    //前端显示道路名称
+    string road_name = 10;
+    //前端显示事件影响长度
+    string display_length = 11;
+    //前端显示事件最大速度
+    string display_max_speed = 12;
+}
+
+message txEvents{
+    repeated txEvent event = 1;
+    repeated txController light_controller = 2;
+}
+
+message txOdTraceReply {
+    int32 status = 1;
+    string msg = 2;
+    txOdTraceRoutesInfo routes_info = 3;
+}
+
+message txOdTraceRouteInfo {
+    message txPolygon {
+        repeated txNode node = 1;
+    }
+    txRoute route = 1;
+    double average_velocity = 2;
+    double congestion_index = 3;
+    txPolygon o_zone_outline = 4;
+    txPolygon d_zone_outline = 5;
+    uint32 vehicle_cnt = 6;
+}
+
+message txOdTraceRoutesInfo
+{
+    repeated txOdTraceRouteInfo route_info = 1;
+    uint32 vehicle_cnt = 2;
+}
+
+//###################### traffic config ###########################
+message txTrafficConfig {
+    enum txSignalType //拓扑类型
+    {
+        Periodic = 0;
+        MARL = 1;  
+        MaxPressure = 2;
+        Remote =3;
+    }
+    int32 amber_secs = 1;
+    int32 step_secs = 2;
+    int32 pressure_step_secs = 3;
+    int32 max_phase_secs = 4;
+    int32 min_phase_secs = 5;
+    double norm_queue = 6;
+    double norm_wait = 7;
+    double norm_speed = 8;
+    double clip_queue = 9;
+    double clip_wait = 10;
+    double clip_speed = 11;  
+    int32 date_size = 12;
+    int32 time_size = 13;
+    txSignalType control_type = 14;
+    
+
+}

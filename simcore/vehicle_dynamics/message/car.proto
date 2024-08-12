@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "car_type.proto";
+import "propulsion.proto";
+import "driveline.proto";
+import "steer.proto";
+import "suspension.proto";
+import "vehbody.proto";
+import "wheeltire.proto";
+import "accessory.proto";
+import "sprungmass.proto";
+import "ecu.proto";
+
+package tx_car;
+
+message car {
+    Propulsion propulsion = 1;
+    DriveLine driveline = 2;
+    SteerSystem steer_system = 3;
+    VehBodyDD body = 4;
+    SuspensionDD susp = 5;
+    WheelTireDD wheel_tire = 6;
+    Accessory accessory = 7;
+    SprungMassDD sprung_mass = 8;
+    Pow_ECU ecu = 9;
+
+    CarType car_type = 72;
+}

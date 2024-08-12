@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<traffic version="1.1">
+    <data randomseed="55" aggress="0.500" />
+    <routes>
+        <route id="0" type="start_end" start="0.00035787041243255457,-0.000015044581144640728" end="0.0009434311212275659,-0.00007803988995560456" />
+        <route id="1" type="start_end" start="0.005184295203110408,0.00002115261428417511" info="0.0004078180902409876,0.000023341194840520165,5.587935447692871e-8" />
+    </routes>
+    <accs>
+        <acc id="1" profile="0.000,0.000" endCondition="None,0.000" />
+        <acc id="2" profile="0.000,0.000" endCondition="None,0.000" />
+        <acc id="3" profile="0.000,0.000" endCondition="None,0.000" />
+    </accs>
+    <accs_event>
+        <acc id="1" profile="ttc laneprojection 0.000,0.000 [1]" endCondition="None,0.000" />
+        <acc id="2" profile="ttc laneprojection 0.000,0.000 [1]" endCondition="None,0.000" />
+        <acc id="3" profile="ttc laneprojection 0.000,0.000 [1]" endCondition="None,0.000" />
+    </accs_event>
+    <merges>
+        <merge id="1" profile="0.000,0,4.500" />
+        <merge id="2" profile="0.000,0,4.500" />
+        <merge id="3" profile="0.000,0,4.500" />
+    </merges>
+    <merges_event>
+        <merge id="1" profile="ttc laneprojection 0.000,0,4.500,v [1]" />
+        <merge id="2" profile="ttc laneprojection 0.000,0,4.500,v [1]" />
+        <merge id="3" profile="ttc laneprojection 0.000,0,4.500,v [1]" />
+    </merges_event>
+    <velocities />
+    <velocities_event />
+    <pedestrians_event />
+    <vehicles>
+        <vehicle id="1" routeID="1" laneID="-1" start_s="531.715" start_t="0.000" start_v="5.000" max_v="12.000" l_offset="-0.242" length="4.479" width="2.144" height="1.932" accID="3" mergeID="3" vehicleType="MPV_001" behavior="UserDefine" eventId="0" angle="0" />
+    </vehicles>
+    <obstacles />
+    <pedestrians />
+    <signlights />
+    <scene_event version="1.1.0.0">
+        <event id="0" name="new_trigger_1" type="time_trigger" condition="trigger_time:1" endCondition="type:none,value:0.0" action="[{type:velocity,value:10,subtype:none,offset:0.0,multi:{}}]" info="" />
+    </scene_event>
+    <trafficFlow>
+        <vehicleType>
+            <vehType id="101" type="Sedan" length="4.5" width="1.8" height="1.5" behavior="TrafficVehicle" />
+            <vehType id="103" type="Truck" length="4.5" width="1.8" height="1.5" behavior="TrafficVehicle" />
+        </vehicleType>
+        <behaviors>
+            <behavior id="2" type="Arterial" AX="2" BX_Add="2" BX_Mult="3" />
+        </behaviors>
+    </trafficFlow>
+    <locations />
+</traffic>

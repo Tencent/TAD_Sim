@@ -1,0 +1,217 @@
+// 属性面板中通用的属性项默认样式
+.property-title {
+  text-align: center;
+  line-height: 28px;
+  background-color: var(--input-disabled-background);
+}
+.property-container {
+  &:after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+  .property-cell {
+    padding: 6px 22px;
+    margin-bottom: 0;
+    color: var(--text-color);
+    display: flex;
+
+    // 多选下拉框样式
+    &.multiple-select {
+      :deep(.el-select) {
+        &.multiple {
+          .el-input__wrapper {
+            height: auto;
+          }
+
+          .el-tag {
+            background-color: var(--object-tab-divider-color);
+            border-radius: 0;
+            color: var(--text-color);
+          }
+        }
+      }
+    }
+
+    // 需要场景拾取 icon 交互的单元
+    &.scene-pick-cell {
+      .content {
+        display: flex;
+        align-items: center;
+
+        .choice {
+          cursor: pointer;
+          background-color: var(--enable-select-background);
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
+          width: 20px;
+          height: 20px;
+          margin-left: 4px;
+          position: relative;
+
+          .mask {
+            width: 100%;
+            height: 100%;
+            display: inline-block;
+            background-color: #000000;
+            position: absolute;
+            z-index: 1;
+            opacity: 0;
+          }
+
+          &.enabled {
+            .mask {
+              opacity: 0.5;
+            }
+          }
+        }
+      }
+    }
+
+    &.config {
+      .content {
+        display: flex;
+        align-items: center;
+
+        .config-icon {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+          margin-left: 5px;
+          color: var(--text-color);
+          cursor: pointer;
+        }
+      }
+    }
+
+    &.vertical {
+      display: flex;
+      flex-direction: column;
+      .matrix {
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+          width: 32%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          .input-number {
+            width: 90%;
+          }
+        }
+      }
+    }
+    .label {
+      font-size: 12px;
+      line-height: 24px;
+      width: 90px;
+      vertical-align: middle;
+      text-align: left;
+      box-sizing: border-box;
+    }
+    .content {
+      text-align: left;
+      line-height: 24px;
+      font-size: 12px;
+      flex: 1;
+    }
+  }
+  :deep(.el-button) {
+    border-radius: 0;
+    color: var(--property-title-color);
+    background-color: var(--component-area-color);
+    border-color: var(--property-border-color);
+    padding: 6px 12px;
+    font-size: var(--font-size);
+    line-height: var(--font-size);
+    height: auto;
+
+    &:hover {
+      color: var(--active-color);
+      border-color: var(--active-color);
+      background-color: var(--property-button-active-bg);
+    }
+  }
+
+  :deep(.el-select) {
+    .el-input__wrapper {
+      border-radius: 0;
+      background-color: var(--input-background);
+      border: var(--input-border);
+      font-size: var(--font-size);
+      height: 24px;
+      line-height: 24px;
+      .el-input__inner {
+        color: var(--text-color);
+      }
+    }
+  }
+  :deep(.el-radio) {
+    margin-right: 20px;
+    .el-radio__inner {
+      color: transparent;
+      background-color: transparent;
+      border-color: var(--property-border-color);
+      border-width: 2px;
+    }
+    .el-radio__input.is-checked + .el-radio__label {
+      color: var(--active-color);
+    }
+    .el-radio__label {
+      color: var(--text-color);
+    }
+    .el-radio__inner::after {
+      background-color: var(--active-color);
+      width: 6px;
+      height: 6px;
+    }
+  }
+  :deep(.el-radio-group) {
+    flex-wrap: nowrap;
+    .el-radio {
+      margin-right: 14px;
+    }
+  }
+}
+
+.property-form {
+  :deep(.el-collapse) {
+    border-top: none;
+    border-bottom: none;
+    .el-collapse-item__header {
+      background-color: var(--input-disabled-background);
+      padding: 0 4px 0 22px;
+      color: var(--property-title-color);
+      border: none;
+      height: 28px;
+      line-height: 28px;
+    }
+
+    .el-collapse-item__wrap {
+      background-color: transparent;
+      border-bottom: none;
+    }
+    .el-collapse-item__content {
+      padding: 0 22px;
+      background-color: transparent;
+      // 在折叠组件中的样式调整
+      .property-cell {
+        padding: 6px 0;
+      }
+    }
+  }
+  .param-cell {
+    padding: 6px 0;
+    margin-bottom: 0;
+    :deep(.el-form-item__label) {
+      font-size: 12px;
+      text-align: left;
+      width: 90px;
+      padding: 0 2px;
+      color: var(--text-color);
+      justify-content: flex-start;
+    }
+  }
+}

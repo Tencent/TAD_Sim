@@ -1,0 +1,30 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Information about the trigger moment for log2world mode.
+// 触发时刻的信息用于 log2world 模式.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum Log2worldTriggerType {
+  LOG2WORLD_TRIGGER_NONE = 0;
+  LOG2WORLD_TRIGGER_EGO = 1;
+  LOG2WORLD_TRIGGER_TRAFFIC = 2;
+  LOG2WORLD_TRIGGER_BOTH = 4;
+  LOG2WORLD_TRIGGER_MANUAL_VEHICLE = 5;
+}
+
+message Log2worldTrigger {
+  //
+  Log2worldTriggerType type = 1;
+
+  // the real recording timestamp, since epoch.
+  // 真实的记录时间戳, 自纪元起.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  int64 trigger_time = 2;
+}

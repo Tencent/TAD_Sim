@@ -1,0 +1,51 @@
+@startuml
+
+object txCurve
+object txPoint
+object txLineCurve
+object txObject
+object txLink
+object txBoundary
+object txLane
+object txRoad
+object txSection
+object txHeader
+object txMapInterface
+object txMapProxy
+object txMap
+
+object txLinkObj
+object txExData
+object txRealData
+
+object txRTree
+object txSpatialIndex
+object txGrid
+
+txCurve <|-- "public" txLineCurve
+txPoint <|--  txLineCurve
+
+txLineCurve <|-- txObject
+txLineCurve <|-- txLink
+txLineCurve <|-- txBoundary
+txLineCurve <|-- txLane
+txLane  <|-- txSection
+txSection <|-- txRoad
+txLineCurve <|-- txRoad
+txLineCurve <|-- txHeader
+txLinkObj <|-- txRoad
+txLinkObj <|-- txLane
+txLinkObj <|-- txBoundary
+txExData  <|-- txLinkObj
+txExData  <|-- txRealData
+txRoad <|-- txMap
+txLink <|-- txMap
+txObject <|-- txMap
+txMapInterface <|-- txMap
+txMap <|-- txMapProxy
+txMapInterface <|-- txMapProxy
+txSpatialIndex <|-- txMap
+txRTree <|-- txSpatialIndex
+txGrid <|-- txSpatialIndex
+
+@enduml

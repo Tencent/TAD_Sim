@@ -1,0 +1,757 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+<xsd:annotation>
+    <xsd:documentation>
+    XML Schema Definition for OpenDRIVE XML files - Rev. 1.3D, excluding SET records, (c)2011 by VIRES Simulationstechnologie GmbH, Germany
+    </xsd:documentation>
+</xsd:annotation>
+
+
+<xsd:element name="OpenDRIVE">
+    <xsd:complexType>
+        <xsd:sequence>
+        <xsd:element name="header">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="revMajor" type="xsd:unsignedShort"/>
+                <xsd:attribute name="revMinor" type="xsd:unsignedShort"/>
+                <xsd:attribute name="name"     type="xsd:string"/>
+                <xsd:attribute name="version"  type="xsd:double"/>
+                <xsd:attribute name="date"     type="xsd:string"/>
+                <xsd:attribute name="north"    type="xsd:double"/>
+                <xsd:attribute name="south"    type="xsd:double"/>
+                <xsd:attribute name="east"     type="xsd:double"/>
+                <xsd:attribute name="west"     type="xsd:double"/>
+                <xsd:attribute name="vendor"   type="xsd:string"/>
+            </xsd:complexType>
+        </xsd:element>
+
+        <xsd:element name="road" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                <xsd:element name="link" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="predecessor" minOccurs="0" maxOccurs="1">
+                                <xsd:complexType>
+                                    <xsd:attribute name="elementType"  type="xsd:string"/>
+                                    <xsd:attribute name="elementId"    type="xsd:string"/>
+                                    <xsd:attribute name="contactPoint" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="successor" minOccurs="0" maxOccurs="1">
+                                <xsd:complexType>
+                                    <xsd:attribute name="elementType"  type="xsd:string"/>
+                                    <xsd:attribute name="elementId"    type="xsd:string"/>
+                                    <xsd:attribute name="contactPoint" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="neighbor" minOccurs="0" maxOccurs="2">
+                                <xsd:complexType>
+                                    <xsd:attribute name="side"      type="xsd:string"/>
+                                    <xsd:attribute name="elementId" type="xsd:string"/>
+                                    <xsd:attribute name="direction" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="type" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include" type="include"   minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                        <xsd:attribute name="s"    type="xsd:double"/>
+                        <xsd:attribute name="type" type="xsd:string"/>
+                    </xsd:complexType>
+                </xsd:element>
+                
+                <xsd:element name="planView" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="geometry" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:choice>
+                                        <xsd:element name="line">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="spiral">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="curvStart" type="xsd:double"/>
+                                                <xsd:attribute name="curvEnd"   type="xsd:double"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="arc">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="curvature" type="xsd:double"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="poly3">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="a" type="xsd:double"/>
+                                                <xsd:attribute name="b" type="xsd:double"/>
+                                                <xsd:attribute name="c" type="xsd:double"/>
+                                                <xsd:attribute name="d" type="xsd:double"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:choice>
+                                    <xsd:attribute name="s"      type="xsd:double"/>
+                                    <xsd:attribute name="x"      type="xsd:double"/>
+                                    <xsd:attribute name="y"      type="xsd:double"/>
+                                    <xsd:attribute name="hdg"    type="xsd:double"/>
+                                    <xsd:attribute name="length" type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element> <!-- end planView -->
+                
+                <xsd:element name="elevationProfile" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                             <xsd:element name="elevation" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s" type="xsd:double"/>
+                                    <xsd:attribute name="a" type="xsd:double"/>
+                                    <xsd:attribute name="b" type="xsd:double"/>
+                                    <xsd:attribute name="c" type="xsd:double"/>
+                                    <xsd:attribute name="d" type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="lateralProfile" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="superelevation" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s" type="xsd:double"/>
+                                    <xsd:attribute name="a" type="xsd:double"/>
+                                    <xsd:attribute name="b" type="xsd:double"/>
+                                    <xsd:attribute name="c" type="xsd:double"/>
+                                    <xsd:attribute name="d" type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="crossfall" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="side" type="xsd:string"/>
+                                    <xsd:attribute name="s"    type="xsd:double"/>
+                                    <xsd:attribute name="a"    type="xsd:double"/>
+                                    <xsd:attribute name="b"    type="xsd:double"/>
+                                    <xsd:attribute name="c"    type="xsd:double"/>
+                                    <xsd:attribute name="d"    type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                
+                <xsd:element name="lanes" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="laneOffset" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"    type="xsd:double"/>
+                                    <xsd:attribute name="a"    type="xsd:double"/>
+                                    <xsd:attribute name="b"    type="xsd:double"/>
+                                    <xsd:attribute name="c"    type="xsd:double"/>
+                                    <xsd:attribute name="d"    type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element> <!-- end laneOffset -->
+                            <xsd:element name="laneSection" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="left" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="lane"     type="lane"     maxOccurs="unbounded"/>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="center" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="lane"     type="centerLane" minOccurs="0" maxOccurs="1"/>
+                                                    <xsd:element name="userData" type="userData"   minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"    minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="right" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="lane"     type="lane"     maxOccurs="unbounded"/>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s" type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element> <!-- end laneSection -->
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element> <!-- end lanes -->
+                
+                <xsd:element name="objects" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="object"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="repeat" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="s"        type="xsd:double"/>
+                                                <xsd:attribute name="length"   type="xsd:double"/>
+                                                <xsd:attribute name="distance" type="xsd:double"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="outline"  minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="cornerRoad" minOccurs="0" maxOccurs="unbounded">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                            </xsd:sequence>
+                                                            <xsd:attribute name="s"      type="xsd:double"/>
+                                                            <xsd:attribute name="t"      type="xsd:double"/>
+                                                            <xsd:attribute name="dz"     type="xsd:double"/>
+                                                            <xsd:attribute name="height" type="xsd:double"/>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                    <xsd:element name="cornerLocal" minOccurs="0" maxOccurs="unbounded">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                            </xsd:sequence>
+                                                            <xsd:attribute name="u"      type="xsd:double"/>
+                                                            <xsd:attribute name="v"      type="xsd:double"/>
+                                                            <xsd:attribute name="z"      type="xsd:double"/>
+                                                            <xsd:attribute name="height" type="xsd:double"/>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="material" minOccurs="0" maxOccurs="1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="surface"   type="xsd:string"/>
+                                                <xsd:attribute name="friction"  type="xsd:double"/>
+                                                <xsd:attribute name="roughness" type="xsd:double"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="userData" type="userData"     minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"      minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="type"        type="xsd:string"/>
+                                    <xsd:attribute name="name"        type="xsd:string"/>
+                                    <xsd:attribute name="id"          type="xsd:string"/>
+                                    <xsd:attribute name="s"           type="xsd:double"/>
+                                    <xsd:attribute name="t"           type="xsd:double"/>
+                                    <xsd:attribute name="zOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="validLength" type="xsd:double"/>
+                                    <xsd:attribute name="orientation" type="xsd:string"/>
+                                    <xsd:attribute name="length"      type="xsd:double"/>
+                                    <xsd:attribute name="width"       type="xsd:double"/>
+                                    <xsd:attribute name="radius"      type="xsd:double"/>
+                                    <xsd:attribute name="height"      type="xsd:double"/>
+                                    <xsd:attribute name="hdg"         type="xsd:double"/>
+                                    <xsd:attribute name="pitch"       type="xsd:double"/>
+                                    <xsd:attribute name="roll"        type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="objectReference"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="userData" type="userData"     minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"      minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"           type="xsd:double"/>
+                                    <xsd:attribute name="t"           type="xsd:double"/>
+                                    <xsd:attribute name="id"          type="xsd:string"/>
+                                    <xsd:attribute name="zOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="validLength" type="xsd:double"/>
+                                    <xsd:attribute name="orientation" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="tunnel"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="userData" type="userData"     minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"      minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"        type="xsd:double"/>
+                                    <xsd:attribute name="length"   type="xsd:double"/>
+                                    <xsd:attribute name="name"     type="xsd:string"/>
+                                    <xsd:attribute name="id"       type="xsd:string"/>
+                                    <xsd:attribute name="type"     type="xsd:string"/>
+                                    <xsd:attribute name="lighting" type="xsd:double"/>
+                                    <xsd:attribute name="daylight" type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="bridge"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="userData" type="userData"     minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"      minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"        type="xsd:double"/>
+                                    <xsd:attribute name="length"   type="xsd:double"/>
+                                    <xsd:attribute name="name"     type="xsd:string"/>
+                                    <xsd:attribute name="id"       type="xsd:string"/>
+                                    <xsd:attribute name="type"     type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element> <!-- end objects -->
+
+                <xsd:element name="signals" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="signal"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="dependency" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                                </xsd:sequence>
+                                                <xsd:attribute name="id"   type="xsd:string"/>
+                                                <xsd:attribute name="type" type="xsd:string"/>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"           type="xsd:double"/>
+                                    <xsd:attribute name="t"           type="xsd:double"/>
+                                    <xsd:attribute name="id"          type="xsd:string"/>
+                                    <xsd:attribute name="name"        type="xsd:string"/>
+                                    <xsd:attribute name="dynamic"     type="xsd:string"/>
+                                    <xsd:attribute name="orientation" type="xsd:string"/>
+                                    <xsd:attribute name="zOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="country"     type="xsd:string"/>
+                                    <xsd:attribute name="type"        type="xsd:int"/>
+                                    <xsd:attribute name="subtype"     type="xsd:int"/>
+                                    <xsd:attribute name="value"       type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element> <!-- end signal -->
+                            <xsd:element name="signalReference"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="validity" type="laneValidity" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="s"           type="xsd:double"/>
+                                    <xsd:attribute name="t"           type="xsd:double"/>
+                                    <xsd:attribute name="id"          type="xsd:string"/>
+                                    <xsd:attribute name="orientation" type="xsd:string"/>
+                                </xsd:complexType>
+                            </xsd:element> <!-- end signal reference -->
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element> <!-- end signals -->
+                
+                <xsd:element name="surface" minOccurs="0" maxOccurs="1">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="CRG"  minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                    </xsd:sequence>
+                                    <xsd:attribute name="file"        type="xsd:string"/>
+                                    <xsd:attribute name="sStart"      type="xsd:double"/>
+                                    <xsd:attribute name="sEnd"        type="xsd:double"/>
+                                    <xsd:attribute name="orientation" type="xsd:string"/>
+                                    <xsd:attribute name="mode"        type="xsd:string"/>
+                                    <xsd:attribute name="sOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="tOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="zOffset"     type="xsd:double"/>
+                                    <xsd:attribute name="zScale"      type="xsd:double"/>
+                                    <xsd:attribute name="hOffset"     type="xsd:double"/>
+                                </xsd:complexType>
+                            </xsd:element> <!-- end CRG -->
+                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element> <!-- end surface -->
+                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="name"     type="xsd:string"/>
+                <xsd:attribute name="length"   type="xsd:double"/>
+                <xsd:attribute name="id"       type="xsd:string"/>
+                <xsd:attribute name="junction" type="xsd:string"/>
+            </xsd:complexType> <!-- end road -->
+        </xsd:element>
+
+        <xsd:element name="controller"  minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="control"  maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="signalId" type="xsd:string"/>
+                            <xsd:attribute name="type"     type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="id"       type="xsd:string"/>
+                <xsd:attribute name="name"     type="xsd:string"/>
+                <xsd:attribute name="sequence" type="xsd:int"/>
+            </xsd:complexType>
+        </xsd:element> <!-- end controller -->
+
+        <xsd:element name="junction"  minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="connection"  maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="laneLink"  minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                            <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                                        </xsd:sequence>
+                                        <xsd:attribute name="from" type="xsd:int"/>
+                                        <xsd:attribute name="to"   type="xsd:int"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="id"             type="xsd:string"/>
+                            <xsd:attribute name="incomingRoad"   type="xsd:string"/>
+                            <xsd:attribute name="connectingRoad" type="xsd:string"/>
+                            <xsd:attribute name="contactPoint"   type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="priority"  minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="high" type="xsd:string"/>
+                            <xsd:attribute name="low"  type="xsd:string"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="controller"  minOccurs="0" maxOccurs="unbounded">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                                <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                            </xsd:sequence>
+                            <xsd:attribute name="id"       type="xsd:string"/>
+                            <xsd:attribute name="type"     type="xsd:string"/>
+                            <xsd:attribute name="sequence" type="xsd:int"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="name" type="xsd:string"/>
+                <xsd:attribute name="id"   type="xsd:string"/>
+            </xsd:complexType>
+        </xsd:element> <!-- end junction -->
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:element>
+
+
+<xsd:complexType name="userData" mixed="true">
+    <xsd:sequence>
+        <xsd:any minOccurs="0" maxOccurs="unbounded" processContents="skip"/>
+    </xsd:sequence>
+    <xsd:attribute name="code"  type="xsd:string"/>
+    <xsd:attribute name="value" type="xsd:string"/>
+</xsd:complexType>
+
+<xsd:complexType name="include" >
+    <xsd:attribute name="file" type="xsd:string"/>
+</xsd:complexType>
+
+<xsd:complexType name="laneValidity">
+    <xsd:sequence>
+        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="fromLane" type="xsd:int"/>
+    <xsd:attribute name="toLane"   type="xsd:int"/>
+</xsd:complexType>
+
+<xsd:complexType name="lane" >
+    <xsd:sequence>
+        <xsd:element name="link" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="predecessor" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:attribute name="id" type="xsd:int"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="successor" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:attribute name="id" type="xsd:int"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="width" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset" type="xsd:double"/>
+                <xsd:attribute name="a"       type="xsd:double"/>
+                <xsd:attribute name="b"       type="xsd:double"/>
+                <xsd:attribute name="c"       type="xsd:double"/>
+                <xsd:attribute name="d"       type="xsd:double"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="roadMark" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="type" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="line" minOccurs="1" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="length"  type="xsd:double"/>
+                                        <xsd:attribute name="space"   type="xsd:double"/>
+                                        <xsd:attribute name="tOffset" type="xsd:double"/>
+                                        <xsd:attribute name="sOffset" type="xsd:double"/>
+                                        <xsd:attribute name="rule"    type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                            <xsd:attribute name="name"  type="xsd:string"/>
+                            <xsd:attribute name="width" type="xsd:double"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset"    type="xsd:double"/>
+                <xsd:attribute name="type"       type="xsd:string"/>
+                <xsd:attribute name="weight"     type="xsd:string"/>
+                <xsd:attribute name="color"      type="xsd:string"/>
+                <xsd:attribute name="width"      type="xsd:double"/>
+                <xsd:attribute name="laneChange" type="xsd:string"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="material" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset"   type="xsd:double"/>
+                <xsd:attribute name="surface"   type="xsd:string"/>
+                <xsd:attribute name="friction"  type="xsd:double"/>
+                <xsd:attribute name="roughness" type="xsd:double"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="visibility" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset" type="xsd:double"/>
+                <xsd:attribute name="forward" type="xsd:double"/>
+                <xsd:attribute name="back"    type="xsd:double"/>
+                <xsd:attribute name="left"    type="xsd:double"/>
+                <xsd:attribute name="right"   type="xsd:double"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="speed" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset" type="xsd:double"/>
+                <xsd:attribute name="max"     type="xsd:double"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="access" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include" type="include" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset"     type="xsd:double"/>
+                <xsd:attribute name="restriction" type="xsd:string"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="height" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include" type="include" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset" type="xsd:double"/>
+                <xsd:attribute name="inner"   type="xsd:double"/>
+                <xsd:attribute name="outer"   type="xsd:double"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id"    type="xsd:int"/>
+    <xsd:attribute name="type"  type="xsd:string"/>
+    <xsd:attribute name="level" type="xsd:string"/>
+</xsd:complexType>
+
+<xsd:complexType name="centerLane" >
+    <xsd:sequence>
+        <xsd:element name="link" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="predecessor" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:attribute name="id" type="xsd:int"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="successor" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:attribute name="id" type="xsd:int"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:complexType>
+         </xsd:element>
+        <xsd:element name="roadMark" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="type" minOccurs="0" maxOccurs="1">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="line" minOccurs="1" maxOccurs="unbounded">
+                                    <xsd:complexType>
+                                        <xsd:attribute name="length"  type="xsd:double"/>
+                                        <xsd:attribute name="space"   type="xsd:double"/>
+                                        <xsd:attribute name="tOffset" type="xsd:double"/>
+                                        <xsd:attribute name="sOffset" type="xsd:double"/>
+                                        <xsd:attribute name="rule"    type="xsd:string"/>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                            <xsd:attribute name="name"  type="xsd:string"/>
+                            <xsd:attribute name="width" type="xsd:double"/>
+                        </xsd:complexType>
+                    </xsd:element>
+                    <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="sOffset"    type="xsd:double"/>
+                <xsd:attribute name="type"       type="xsd:string"/>
+                <xsd:attribute name="weight"     type="xsd:string"/>
+                <xsd:attribute name="color"      type="xsd:string"/>
+                <xsd:attribute name="width"      type="xsd:double"/>
+                <xsd:attribute name="laneChange" type="xsd:string"/>
+            </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="userData" type="userData" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="include"  type="include"  minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute name="id"    type="xsd:int"/>
+    <xsd:attribute name="type"  type="xsd:string"/>
+    <xsd:attribute name="level" type="xsd:string"/>
+</xsd:complexType>
+
+
+</xsd:schema>

@@ -1,0 +1,106 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Traffic flow trainer information.
+// 交通流训练器信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "traffic.proto";
+
+message DataDrivenInfo {
+  //
+  int32 stepIndex = 1;
+
+  //
+  double averSpeed = 2;
+}
+
+message Visualizer2TrafficCommand {
+  //
+  int32 cmdNo = 1;
+
+  //
+  int32 taskId = 2;
+
+  //
+  double timestep = 3;
+
+  //
+  double TT_V = 4;
+
+  //
+  double max_displacement = 5;
+
+  //
+  int32 max_step = 6;
+
+  //
+  string scenario_file_path = 7;
+
+  // cc0
+  //
+  double driving_param_0 = 8;
+
+  // cc1
+  //
+  double driving_param_1 = 9;
+
+  // cc2
+  //
+  double driving_param_2 = 10;
+
+  //
+  int32  TT_ObsCount = 11;
+
+  // 500 m
+  //
+  double front_distance = 12;
+
+  // std::vector< std::pair< int, double > >
+  //
+  repeated DataDrivenInfo front_aver_speed = 13;
+
+  //
+  Traffic injectTraffic = 14;
+}
+
+message Traffic2VisualizerCommand {
+  //
+  int32 cmdNo = 1;
+
+  //
+  int32 taskId = 2;
+
+  //
+  double scene_timestamp = 3;
+
+  //
+  Traffic trafficInfo = 4;
+
+  //
+  // \note Off maintenance, 不在维护 deprecated batuyang
+  //
+  double param0 = 5 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护 deprecated batuyang
+  //
+  double param1 = 6 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护 deprecated batuyang
+  //
+  double param2 = 7 [deprecated=true];
+
+  //
+  double TT_Output = 8;
+
+  //
+  // \note size : TT_ObsCount
+  //
+  repeated double V_Output = 9;
+}

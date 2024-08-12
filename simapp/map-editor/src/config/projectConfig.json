@@ -1,0 +1,70 @@
+{
+  "default": {
+    "file": {
+      "open": true,
+      "create": true,
+      "save": true,
+      "saveAs": true,
+      "import": true,
+      "export": true,
+      "delete": true,
+      "saveXodr": true,
+      "saveSqlite": true
+    },
+    "plugin": {
+      "editRoad": true,
+      "editJunction": true,
+      "editLaneAttr": true,
+      "editLaneWidth": true,
+      "editLaneNumber": true,
+      "editBoundary": true,
+      "editLink": true,
+      "editObject": true,
+      "editSection": false,
+      "editElevation": true,
+      "editSignalControl": true,
+      "editCircleRoad": true,
+      "editCrg": false
+    },
+    "function": {
+      "showParkingSpaceMark": true,
+      "showCompass": false,
+      "showXYCoordinate": false,
+      "supportCustomModel": true
+    }
+  },
+  "cloud": {
+    "file": {
+      "open": true,
+      "create": true,
+      "save": true,
+      "saveAs": true,
+      "import": false,
+      "export": false,
+      "delete": true,
+      "saveXodr": true,
+      "saveSqlite": true
+    },
+    "plugin": {
+      "editRoad": true,
+      "editJunction": true,
+      "editLaneAttr": true,
+      "editLaneWidth": true,
+      "editLaneNumber": true,
+      "editBoundary": true,
+      "editLink": true,
+      "editObject": true,
+      "editSection": false,
+      "editElevation": true,
+      "editSignalControl": true,
+      "editCircleRoad": true,
+      "editCrg": false
+    },
+    "function": {
+      "showParkingSpaceMark": true,
+      "showCompass": false,
+      "showXYCoordinate": false,
+      "supportCustomModel": false
+    }
+  }
+}

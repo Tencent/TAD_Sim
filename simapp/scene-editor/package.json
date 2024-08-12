@@ -1,0 +1,46 @@
+{
+    "name": "sim-web",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "dependencies": {
+        "@element-plus/icons-vue": "^2.3.1",
+        "axios": "^1.5.1",
+        "big.js": "^5.2.2",
+        "crypto-js": "^4.2.0",
+        "dayjs": "^1.11.0",
+        "echarts": "^4.5.0",
+        "echarts-gl": "^1.1.2",
+        "element-plus": "^2.6.1",
+        "json-schema-library": "^7.4.4",
+        "lodash": "^4.17.21",
+        "lodash-es": "^4.17.21",
+        "mousetrap": "^1.6.5",
+        "path-browserify": "^1.0.1",
+        "pinia": "^2.1.7",
+        "protobufjs": "^7.2.3",
+        "signals": "^1.0.0",
+        "three": "^0.166.1",
+        "vue": "^3.3.4",
+        "vue-i18n": "^9.7.1",
+        "vue-json-pretty": "^2.4.0",
+        "vue-router": "^4.2.5",
+        "vuex": "^4.1.0"
+    },
+    "devDependencies": {
+        "@types/crypto-js": "^4.2.1",
+        "@types/node": "^20.8.10",
+        "@types/path-browserify": "^1.0.1",
+        "@types/three": "0.125.0",
+        "@vitejs/plugin-vue": "^4.2.3",
+        "@vitejs/plugin-vue-jsx": "^3.1.0",
+        "less": "^4.2.0",
+        "rollup-plugin-copy": "^3.5.0",
+        "typescript": "^5.0.2",
+        "vite": "^4.5.0",
+        "vite-svg-loader": "^5.1.0"
+    }
+}

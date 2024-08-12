@@ -1,0 +1,50 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# 通用设置
+[*]
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+column_limit = 120
+
+# C++ 代码
+[*.cpp]
+indent_style = space
+indent_size = 2
+
+# Python 代码
+[*.py]
+indent_style = space
+indent_size = 4
+
+# Go 代码
+[*.go]
+indent_style = tab
+
+# JavaScript 代码
+[*.js]
+indent_style = space
+indent_size = 2
+
+# CMakeLists.txt 代码
+[CMakeLists.txt]
+indent_style = space
+indent_size = 2
+
+# C# 代码
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# Protocol Buffer 代码
+[*.proto]
+indent_style = space
+indent_size = 2
+
+# markdown
+[*.md]
+indent_style = space
+indent_size = 2

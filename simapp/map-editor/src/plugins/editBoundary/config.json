@@ -1,0 +1,9 @@
+{
+  "name": "editBoundary",
+  "description": "车道线编辑",
+  "iconDesc": "laneLine",
+  "iconComponentName": "LaneBoundarySvg",
+  "componentPaths": {
+    "property": ["boundaryProperty.vue"]
+  }
+}

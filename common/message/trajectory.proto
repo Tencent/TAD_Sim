@@ -1,0 +1,121 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Desired trajectory lines emitted by the planning algorithm in the form of discrete points.
+// 规划算法以离散点形式输出的期望轨迹线.
+//
+// TOPIC: TRAJECTORY
+
+syntax = "proto3";
+package sim_msg;
+
+message TrajectoryPoint {
+  // Longitude, WGS84 coordinate system.
+  // 经度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  double x = 1;
+
+  // Latitude, WGS84 coordinate system.
+  // 纬度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  double y = 2;
+
+  // Expected time for ego to travel to this point.
+  // 主车行驶至该点的预期时间.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  double t = 3;
+
+  // Expected speed of ego up to this point.
+  // 主车行驶至该点的预期速度值.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double v = 4;
+
+  // Expected heading angle of ego traveling to the point.
+  // 主车行驶至该点的预期航向角.
+  //
+  // Unit: rad, Range: (-pi..pi], Default: 0.0
+  //
+  double theta = 5;
+
+  // The curvature on the curve where the current trajectory point is located.
+  // 当前轨迹点所在曲线上的曲率.
+  //
+  // Unit: 1/m, Range: [-inf..inf], Default: 0.0
+  //
+  double kappa = 6;
+
+  // The distance of the current track point along the track from the starting point.
+  // 当前轨迹点沿轨迹上距离起点的距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double s = 7;
+
+  // Expected longitudinal acceleration of ego when traveling to this point.
+  // 主车行驶至该点时的预期纵向加速度值.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double a = 8;
+
+  // Altitude is the Earth gravity-related vertical distance from the target position.
+  // 主车行驶至该点时的高程.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double z = 9;
+}
+
+message Trajectory {
+  // Discrete points of the desired trajectory line emanating from the current position of ego.
+  // 主车当前位置发出的期望轨迹线的离散点.
+  //
+  repeated TrajectoryPoint point = 1;
+
+  // The current desired longitudinal acceleration of ego.
+  // 主车当前期望纵向加速度数值.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  float a = 2;
+
+  //
+  // \note 暂不支持
+  //
+  int32 type = 3;
+
+  //
+  // \note 暂不支持
+  //
+  int32 flag = 4;
+}
+
+message Prediction {
+  //
+  // \note 暂不支持
+  //
+  int64 id = 1;
+
+  // Predicting trajectories.
+  // 预测轨迹.
+  //
+  // \note 暂不支持
+  //
+  repeated TrajectoryPoint point = 2;
+}
+
+message Predictions {
+  // Predicted trajectories for all obstacles in the current frame.
+  // 当前帧所有障碍物的预测轨迹.
+  //
+  // \note 暂不支持
+  //
+  repeated Prediction obs = 1;
+}

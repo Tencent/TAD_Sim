@@ -1,0 +1,12 @@
+syntax = "proto2";
+package hadmap;
+
+option go_package = ".;hadmap_server";
+// this is a comment
+message CloudUploadHadmapCallback {
+  
+  
+  repeated string mapNames = 2;
+
+
+}

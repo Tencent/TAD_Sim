@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<traffic version="1.1">
+    <data randomseed="55" aggress="0.500" />
+    <routes>
+        <route id="0" type="start_end" start="121.9850153353384,30.690538091977256" end="121.98897123151554,30.685637780337146" />
+        <route id="1" type="start_end" start="121.90781327261517,30.859201325887444" info="121.98821557856682,30.686625154355767,31.240290209650993" />
+    </routes>
+    <accs>
+        <acc id="1" profile="0.000,0.000" endCondition="None,0.000" />
+    </accs>
+    <accs_event>
+        <acc id="1" profile="ttc laneprojection 0.000,0.000 [1]" endCondition="None,0.000" />
+    </accs_event>
+    <merges>
+        <merge id="1" profile="0.000,0,4.500" />
+    </merges>
+    <merges_event>
+        <merge id="1" profile="ttc laneprojection 0.000,0,4.500,v [1]" />
+    </merges_event>
+    <velocities />
+    <velocities_event />
+    <pedestrians_event />
+    <vehicles>
+        <vehicle id="1" routeID="1" laneID="-2" start_s="21042.416" start_t="0.000" start_v="0.000" max_v="12.000" l_offset="-1.506" length="15.545" width="3.177" height="4.119" accID="1" mergeID="1" vehicleType="Semi_Trailer_Truck_001" behavior="UserDefine" eventId="0,1" angle="0" />
+    </vehicles>
+    <obstacles />
+    <pedestrians />
+    <signlights />
+    <scene_event version="1.0.0.0">
+        <event id="0" name="new_trigger_1" type="time_trigger" condition="trigger_time:0" endCondition="type:none,value:0.0;type:none,value:0.0;type:none,value:0.0" action="type:velocity,value:0,subtype:none,laneoffset:0,checked:true;type:merge,value:0,subtype:left,laneoffset:0,checked:false;type:acc,value:0,subtype:none,laneoffset:0,checked:false" info="" />
+        <event id="1" name="new_trigger_2" type="distance_trigger" condition="distance_threshold:200,equation_op:lte,target_element:ego,distance_type:euclideandistance,condition_boundary:none,trigger_count:1" endCondition="type:none,value:0.0;type:none,value:0.0;type:none,value:0.0" action="type:velocity,value:11.109999999999999,subtype:none,laneoffset:0,checked:true;type:merge,value:0,subtype:left,laneoffset:0,checked:false;type:acc,value:0,subtype:none,laneoffset:0,checked:false" info="" />
+    </scene_event>
+</traffic>

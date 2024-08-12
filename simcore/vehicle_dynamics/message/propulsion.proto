@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+import "car_basic.proto";
+
+package tx_car;
+
+message Engine{
+    Real2DMap engine_outtrq_map = 1;      //engine output trq map
+    Real2DMap engine_fuelrate_map = 2;    //enging fuel rate map kg/s
+    RealScalar maxSpd = 3; //engine maximum speed rpm
+    RealScalar fuelDensity = 4; // fuel density kg/L
+    RealScalar tmCst = 5;    // engine response time const
+}
+
+message Motor  //电机参数PB定义
+{
+    RealScalar mot_tc_s = 1;  //电机扭矩响应时间-s
+
+    Real1DMap mot_max_tor_map = 2;  //Motor maximum torque vs motor spd
+
+    Real2DMap mot_loss_map_spd_tor = 3;
+}
+
+message Battery
+{
+    RealScalar BattChargeMax = 1; //battery Rated capacity at nominal temperature, Ah
+
+    Int32Scalar Ns = 2; //Number of cells in series
+
+    Int32Scalar Np = 3;   //Number of cells in parallel
+
+    RealScalar BattInitSoc = 4; //Battery init SOC [0-100]%
+
+    Real1DMap batt_ocv_soc_table = 5;
+    //Open circuit voltage table data, [V] - Open circuit voltage breakpoints 1, CapLUTBp[0-1]
+
+    Real2DMap batt_resis_temp_soc = 6;
+    //Internal resistance table data, [Ohms] vs Battery temperature breakpoints, [K] and Battery capacity breakpoints 2,[0-1]
+}
+
+message HybridPower
+{
+    Motor motor_generator = 1;              // generator motor
+    RealScalar generator_gear_ratio = 2;    // generator gear ratio
+    RealScalar t_clutch = 3;                // const time of clutch
+}
+
+message Propulsion{
+
+    Motor front_motor_parameter = 1;
+
+    Motor rear_motor_parameter = 2;
+
+    Engine engine_parameter = 3;
+
+    Battery batt_paramter = 4;
+
+    HybridPower hybrid_parameter = 5;   //hybrid power parameter
+}

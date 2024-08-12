@@ -1,0 +1,27 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief pblog message logging, used to log messages during simulation.
+// pblog 消息记录, 用于记录仿真过程中的信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message PBRecord {
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  uint64 sim_t_ms = 1;
+
+  // topic of message.
+  //
+  string sim_topic = 2;
+
+  // payload of message.
+  //
+  bytes  sim_payload = 3;
+}

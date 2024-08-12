@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <!-- 配置高精地图与虚幻Level的映射关系，如不配置均是默认Level（0）。云平台该配置文件通过ConfigMap挂载 -->
+  <!-- <hadmap unrealLevelIndex="6">dummay.sqlite</hadmap> -->
+  <hadmap lon="113.47672972" lat="23.03203757" alt="0.00004251" unrealLevelIndex="0" preset="0">apollo_vectormap_G3_12141742_sp_re.xml</hadmap>
+  <hadmap lon="106.48565684" lat="-0.02428333" alt="-0.00000005" unrealLevelIndex="0" preset="0">re_project_mannul_0414.xodr</hadmap>
+  <hadmap lon="118.51373538" lat="-0.01223031" alt="12.27514531" unrealLevelIndex="31" preset="">umc_map_20220929.xodr</hadmap>
+</config>

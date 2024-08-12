@@ -1,0 +1,150 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief Message encapsulates all data for detected objects that is specific to
+// radar sensors.
+//
+message RadarSpecificObjectData {
+  // The radar cross section (RCS) of the detected object.
+  //
+  // Unit: dB m^2
+  //
+  double rcs = 1;
+}
+
+//
+// \brief Message encapsulates all data for detected objects that is specific to
+// lidar sensors.
+//
+message LidarSpecificObjectData {
+  // currently no fields.
+  //
+}
+
+//
+// \brief Message encapsulates all data for detected objects that is specific to
+// camera sensors.
+//
+message CameraSpecificObjectData {
+  // currently no fields.
+  //
+}
+
+//
+// \brief Message encapsulates all data for detected objects that is specific to
+// ultrasonic sensors.
+//
+message UltrasonicSpecificObjectData {
+  // Maximum measured distance from one sensor which leads to the calculation
+  // of this object.
+  //
+  // Unit: m
+  //
+  // \rules
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double maximum_measurement_distance_sensor = 1;
+
+  // This value indicates the propability height for the classification in the
+  // calculated object.
+  //
+  // Unit: %
+  //
+  // \rules
+  // is_less_than_or_equal_to: 1
+  // is_greater_than_or_equal_to: 0
+  // \endrules
+  //
+  double probability = 2;
+
+  // This indicates if the detection was calculated based on one or multiple
+  // sensors.
+  //
+  TrilaterationStatus trilateration_status = 3;
+
+  // Describes the general moving direction of the detection.
+  //
+  Trend trend = 4;
+
+  // Ultrasonic signalway. Sender to receiver.
+  //
+  // \note This information can also be derived from the corresponding \c
+  // UltrasonicDetection. \c UltrasonicDetection refer to DetectedXXX by \c
+  // UltrasonicDetection::object_id.
+  //
+  repeated Signalway signalway = 5;
+
+  //
+  // This indicates if the object was calculated based on one or multiple
+  // sensors.
+  //
+  enum TrilaterationStatus {
+    // Unknown (must not be used in ground truth).
+    //
+    TRILATERATION_STATUS_UNKNOWN = 0;
+
+    // Other (unspecified but known).
+    //
+    TRILATERATION_STATUS_OTHER = 1;
+
+    // No trilateration used.
+    //
+    TRILATERATION_STATUS_NOT_TRILATERATED = 2;
+
+    // Trilateration used.
+    //
+    TRILATERATION_STATUS_TRILATERATED = 3;
+  }
+
+  //
+  // Describes the general moving direction of the detection.
+  //
+  enum Trend {
+    // Unknown (must not be used in ground truth).
+    //
+    TREND_UNKNOWN = 0;
+
+    // Other (unspecified but known).
+    //
+    TREND_OTHER = 1;
+
+    // Distance (object, sensor) is constant. The object has approached in
+    // the past before it was constant.
+    //
+    TREND_CONSTANT_APPROACHING = 2;
+
+    // Distance (object, sensor) is constant. The object has departed in the
+    // past before it was constant or there is no history.
+    //
+    TREND_CONSTANT = 3;
+
+    // Distance (object, sensor) is decreasing.
+    //
+    TREND_APPROACHING = 4;
+
+    // Distance (object, sensor) is increasing.
+    //
+    TREND_DEPARTING = 5;
+  }
+
+  //
+  // \brief Message encapsulates all data for detected objects that is
+  // specific to ultrasonic sensors.
+  //
+  message Signalway {
+    // The ID of the ultrasonic sensor's sender.
+    //
+    Identifier sender_id = 1;
+
+    // The ID of the ultrasonic sensor's receiver.
+    //
+    Identifier receiver_id = 2;
+  }
+}

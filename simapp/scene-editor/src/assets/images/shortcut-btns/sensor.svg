@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>icon/Tool/24px/传感器/常态</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon/Tool/24px/传感器/常态" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M3,12 C3,16.9705627 7.02943725,21 12,21 L12,23 C5.92486775,23 1,18.0751322 1,12 L3,12 Z M7,12 C7,14.7614237 9.23857625,17 12,17 L12,19 C8.13400675,19 5,15.8659932 5,12 L7,12 Z M12,9 C13.6568542,9 15,10.3431458 15,12 C15,13.6568542 13.6568542,15 12,15 C10.3431458,15 9,13.6568542 9,12 C9,10.3431458 10.3431458,9 12,9 Z M12,5 C15.8659932,5 19,8.13400675 19,12 L17,12 C17,9.23857625 14.7614237,7 12,7 L12,5 Z M12,1 C18.0751322,1 23,5.92486775 23,12 L21,12 C21,7.02943725 16.9705627,3 12,3 L12,1 Z" id="形状结合" fill="currentColor" transform="translate(12.000000, 12.000000) rotate(-315.000000) translate(-12.000000, -12.000000) "></path>
+    </g>
+</svg>

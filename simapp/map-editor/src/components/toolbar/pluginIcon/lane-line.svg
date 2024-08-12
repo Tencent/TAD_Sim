@@ -1,0 +1,18 @@
+<svg id="车道线" xmlns="http://www.w3.org/2000/svg" width="24" height="21" viewBox="0 -1 24 21">
+  <g id="编组_5">
+    <g id="矩形" fill="currentColor" stroke="currentColor" stroke-miterlimit="10" stroke-width="1">
+      <rect width="2" height="20" stroke="none"/>
+      <rect x="0.5" y="0.5" width="1" height="19" fill="none"/>
+    </g>
+    <g id="矩形-2" transform="translate(3)" fill="currentColor" stroke="currentColor" stroke-miterlimit="10" stroke-width="1">
+      <rect width="2" height="20" stroke="none"/>
+      <rect x="0.5" y="0.5" width="1" height="19" fill="none"/>
+    </g>
+    <g id="矩形备份" transform="translate(19)" fill="currentColor" stroke="currentColor" stroke-miterlimit="10" stroke-width="1">
+      <rect width="2" height="20" stroke="none"/>
+      <rect x="0.5" y="0.5" width="1" height="19" fill="none"/>
+    </g>
+  </g>
+  <path id="直线" d="M.5,0V19" transform="translate(11.5 1)" fill="none" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2" stroke-dasharray="3 4"/>
+  <path id="直线备份" d="M.5,0V19" transform="translate(22.5 1)" fill="currentColor" stroke="currentColor" stroke-linecap="square" stroke-miterlimit="10" stroke-width="2" stroke-dasharray="3 4"/>
+</svg>

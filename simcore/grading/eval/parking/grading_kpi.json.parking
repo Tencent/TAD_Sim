@@ -1,0 +1,780 @@
+{
+  "kpi": [
+    {
+      "name": "ParkingSearchSpeed",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "车位搜索时主车速度阈值上限",
+            "thresholdUnit": "m/s",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车搜索速度",
+        "definition": "车位搜索时主车速度是否超过速度阈值",
+        "calculationMethod": "车位搜索时主车速度与速度阈值上限比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      }   
+    },
+    {
+      "name": "ParkingSearchDistance",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "车位搜索时主车与车位线距离阈值上限",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车寻位距离",
+        "definition": "寻位距离是否低于距离阈值上限",
+        "calculationMethod": "车位搜索时主车靠近车位的车身边缘线中点与靠近车身的车位线距离同阈值上限比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSearchAngle",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "60",
+            "thresholdName": "车位搜索时主车与车位线夹角阈值上限",
+            "thresholdUnit": "deg",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车搜索角",
+        "definition": "搜索角是否超出夹角阈值上限",
+        "calculationMethod": "车位搜索时主车前进方向与车位边界线夹角阈值上限比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSearchDuration",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "20",
+            "thresholdName": "车位搜索时长阈值上限",
+            "thresholdUnit": "s",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车位搜索时长",
+        "definition": "车位搜索时长是否超时",
+        "calculationMethod": "车位搜索时长与时长阈值上限比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingIdentifiedAccuracy",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.8",
+            "thresholdName": "车位识别准确率阈值",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车位识别准确率",
+        "definition": "车位识别准确率是否低于准确率阈值",
+        "calculationMethod": "车位识别准确率与阈值比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingTypeIdentifiedAccuracy",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.8",
+            "thresholdName": "车位类型识别准确率阈值",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车位类型识别准确率",
+        "definition": "车位类型识别准确率是否低于准确率阈值",
+        "calculationMethod": "车位类型识别准确率与阈值比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingMissRate",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.2",
+            "thresholdName": "车位漏识率阈值",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车位漏识率",
+        "definition": "是否超过车位漏识率阈值",
+        "calculationMethod": "车位漏识率与阈值比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingIdentifiedDistance",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "可识别停车位横向距离阈值下限",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          },
+          {
+            "threshold": "超声波",
+            "thresholdName": "类型",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_STRING",
+            "thresholdID": "SensorType"
+          }
+        ],
+        "indicatorName": "泊车可识别停车位横向距离区间",
+        "definition": "可识别停车位横向距离是否低于距离阈值下限",
+        "calculationMethod": "车位搜索时主车传感器与靠近车身的车位线距离阈值下限比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingMemoryNum",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "平行车位",
+            "thresholdName": "车位类型",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_STRING",
+            "thresholdID": "ParkingType"
+          }
+          ],
+        "indicatorName": "泊车车位记忆个数",
+        "definition": "车位搜索时记忆到车位个数",
+        "calculationMethod": "车位搜索时记忆到的车位个数",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingAccessTimes",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "泊车揉库次数阈值上限",
+            "thresholdUnit": "次",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          },
+          {
+            "threshold": "平行车位",
+            "thresholdName": "车位类型",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_STRING",
+            "thresholdID": "ParkingType"
+          }
+        ],
+        "indicatorName": "泊车揉库次数",
+        "definition": "是否超过泊车揉库次数阈值上限",
+        "calculationMethod": "泊车揉库次数与揉库次数阈值上限比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSpeed",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "泊车车速阈值上限",
+            "thresholdUnit": "m/s",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车速",
+        "definition": "泊车车速是否超过阈值上限",
+        "calculationMethod": "泊车车速与泊车车速阈值上限比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingDuration",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "泊车时长阈值上限",
+            "thresholdUnit": "s",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车用时",
+        "definition": "泊车用时是否超过阈值上限",
+        "calculationMethod": "泊车时长与泊车用时阈值上限比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingComfort",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "6",
+            "thresholdName": "泊车加速度阈值上限",
+            "thresholdUnit": "m/s²",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "AccThreshold"
+          },       
+          {
+            "threshold": "6",
+            "thresholdName": "泊车横向加速度阈值上限",
+            "thresholdUnit": "m/s²",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "LateralAccThreshold"
+          },
+          {
+            "threshold": "6",
+            "thresholdName": "泊车纵向加速度阈值上限",
+            "thresholdUnit": "m/s²",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "VerticalAccThreshold"
+          }
+        ],
+        "indicatorName": "泊车过程舒适度",
+        "definition": "泊车过程中主车总加速度、横纵加速度是否分别超过各自加速度阈值上限",
+        "calculationMethod": "泊车时总加速度、横纵向加速度分别与各自加速度阈值上限比较",
+        "labels": [
+          "COMFORTABILITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSuccessRate",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.8",
+            "thresholdName": "泊车成功率阈值",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车成功率",
+        "definition": "泊车成功率是否低于阈值",
+        "calculationMethod": "泊车成功率与泊车成功率阈值比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSlope",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.8",
+            "thresholdName": "泊车允许最大坡道阈值",
+            "thresholdUnit": "rad",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车坡道",
+        "definition": "是否超过泊车允许最大坡道阈值",
+        "calculationMethod": "泊车坡道与泊车允许最大坡道比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSpeedBumpHeight",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.5",
+            "thresholdName": "泊车允许最大减速带高度阈值",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车减速带高度",
+        "definition": "是否大于泊车允许最大减速带高度阈值",
+        "calculationMethod": "泊车减速带高度与允许最大减速带高度比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingCurvature",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.2",
+            "thresholdName": "泊车允许最小弯道半径阈值",
+            "thresholdUnit": "rad",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车弯道半径",
+        "definition": "是否小于泊车允许最小弯道半径阈值",
+        "calculationMethod": "泊车道路弯道半径与泊车允许最小弯道半径阈值比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSafeDistance",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.2",
+            "thresholdName": "泊车安全距离阈值",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车安全距离",
+        "definition": "是否大于泊车安全距离阈值",
+        "calculationMethod": "主车与障碍物的距离与泊车安全距离阈值比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingRoadWidth",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "0.8",
+            "thresholdName": "泊车允许最小通道宽度阈值",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          },
+          {
+            "threshold": "平行车位",
+            "thresholdName": "车位类型",
+            "thresholdUnit": "N/A",
+            "thresholdType": "ThresholdType_STRING",
+            "thresholdID": "ParkingType"
+          }
+        ],
+        "indicatorName": "泊车通道宽度",
+        "definition": "是否小于泊车允许最小通道宽度阈值",
+        "calculationMethod": "泊车的道路宽度与泊车允许最小通道宽度阈值比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingSpaceLength",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "1",
+            "thresholdName": "泊车停车位ID",
+            "thresholdUnit": "",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "ParkingSpaceId"
+          },
+          {
+            "threshold": "2",
+            "thresholdName": "泊车允许车位最小长度阈值",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车车位长度",
+        "definition": "是否小于泊车允许车位最小长度阈值",
+        "calculationMethod": "泊车的目标车位长度与泊车允许车位最小长度阈值比较",
+        "labels": [
+          "SECURITY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingPrecision",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "1",
+            "thresholdName": "泊车停车位ID",
+            "thresholdUnit": "",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "ParkingSpaceId"
+          },
+          {
+            "threshold": "1.2",
+            "thresholdName": "车身摆角阈值上限",
+            "thresholdUnit": "rad",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "BodyAngleThreshold"
+          },
+          {
+            "threshold": "3",
+            "thresholdName": "泊车横向精度阈值上限",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "LateralThreshold"
+          },
+          {
+            "threshold": "3",
+            "thresholdName": "泊车纵向精度阈值上限",
+            "thresholdUnit": "m",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "VerticalThreshold"
+          }
+        ],
+        "indicatorName": "泊车完成姿态",
+        "definition": "泊车完成后是否超过泊车允许精度",
+        "calculationMethod": "泊车完成后:1.车身与车位中心线偏角是否大于阈值;2.前后轮分别同相应车位线距离与横向精度阈值比较;车头中点与车位线距离、车尾中点与车位线距离分别与纵向精度阈值比较",
+        "labels": [
+          "COMPLIANCE"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingWheelAngle",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "1.8",
+            "thresholdName": "泊车完成方向盘偏移角阈值上限",
+            "thresholdUnit": "rad",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊车完成方向盘偏移角",
+        "definition": "泊车完成后是否超过方向盘偏移角阈值上限",
+        "calculationMethod": "泊车完成方向盘偏移角与允许最大偏移角比较",
+        "labels": [
+          "COMPLIANCE"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    },
+    {
+      "name": "ParkingOutAccessTimes",
+      "category": "FAPA",
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "10",
+            "thresholdName": "泊出揉库次数阈值上限",
+            "thresholdUnit": "次",
+            "thresholdType": "ThresholdType_DOUBLE",
+            "thresholdID": "Default_Thresh_ID"
+          }
+        ],
+        "indicatorName": "泊出揉库次数",
+        "definition": "是否超过泊出揉库次数阈值上限",
+        "calculationMethod": "泊出揉库次数与泊出揉库次数阈值上限比较",
+        "labels": [
+          "EFFICIENCY"
+        ]
+      },
+      "passCondition": {
+       "relation": "<",
+       "value": 1,
+       "desc": "总次数小于通过条件中指定的阈值"
+      },
+      "finishCondition": {
+       "relation": ">=",
+       "value": 0,
+       "desc": "总次数大于等于结束条件中指定的阈值"
+      } 
+    }
+  ]
+}

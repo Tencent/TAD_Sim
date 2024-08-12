@@ -1,0 +1,23 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message MsgPair {
+  string groupname = 1;
+  bytes content = 2;
+}
+
+message Union {
+  repeated MsgPair messages=1;
+}
+
+message HighlightGroup {
+  string groupname = 1;
+}

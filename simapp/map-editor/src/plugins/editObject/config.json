@@ -1,0 +1,10 @@
+{
+  "name": "editObject",
+  "description": "物体编辑",
+  "iconDesc": "addObject",
+  "iconComponentName": "ObjectSvg",
+  "componentPaths": {
+    "leftArea": ["objectList.vue"],
+    "property": []
+  }
+}

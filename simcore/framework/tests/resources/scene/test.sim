@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0">
+    <mapfile lon="112.20162200927734" lat="32.130203000000002" alt="102.426018" unrealLevelIndex="0">../hadmap/test.xodr</mapfile>
+    <traffic>xosc_test_traffic.xml</traffic>
+    <planner>
+        <ego type="suv" />
+        <route id="0" type="start_end" start="112.20462418200448,32.13308403411286" end="112.20640629,32.13791606" />
+        <start_v>4.17</start_v>
+        <theta>1.2786411271227018</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <InputPath points="112.20462413,32.13308399,9.812;112.20506442,32.13425354,72.609;112.20640629,32.13791606,72.554" />
+    </planner>
+</simulation>

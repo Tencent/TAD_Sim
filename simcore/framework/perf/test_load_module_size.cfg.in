@@ -1,0 +1,153 @@
+{
+  "configs": [{
+    "name": "m1",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "t1",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m2",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m3",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m4",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m5",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m6",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m7",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  },{
+    "name": "m8",
+    "execPeriod": 1,
+    "responseTime": 1,
+    "endpoint": "",
+    "initArgs": {
+      "sub_topics": "t1",
+      "pub_topics": "",
+      "msg_size": "4096"
+    },
+    "cmdTimeout": 1000,
+    "stepTimeout": 100,
+    "autoLaunch": true,
+    "depPaths": [],
+    "soPath": "@{buildDir}/lib/libperf-test-module.so",
+    "binPath": "",
+    "binArgs": []
+  }],
+  "scheme": {
+    "active": 0,
+    "schemes": [{
+      "id": 0,
+      "name": "Perf_Test",
+      "modules": [ @{moduleNames} ]
+    }]
+  },
+  "moduleLauncherPath": "@{buildDir}/bin/txsim-module-launcher",
+  "moduleLogDirectory": "@{buildDir}/perf_runs/@{test_name}/logs",
+  "playControlRate": 0,
+  "scenarioTimeLimit": 3,
+  "coordinationMode": 2,
+  "gradingKpiDirectory": ""
+}

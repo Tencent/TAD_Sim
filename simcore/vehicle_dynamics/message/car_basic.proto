@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package tx_car;
+
+enum DataSource{
+    UserInput = 0;
+    CarSim_PAR = 1;
+}
+
+// one real axis of 1d or 2d map
+message RealAxis {
+    string disp_name = 1;
+    string comment = 2;
+    string unit = 3;
+    repeated double data = 15;
+    DataSource data_source = 16;
+}
+
+// real scalar 
+message RealScalar {
+    string disp_name = 1;
+    string comment = 2;
+    string unit = 3;
+    double val = 15;
+    DataSource data_source = 16;
+}
+
+// int scalar 
+message Int32Scalar {
+    string disp_name = 1;
+    string comment = 2;
+    string unit = 3;
+    int32 val = 15;
+    DataSource data_source = 16;
+}
+
+// real array 
+message RealArray {
+    string disp_name = 1;
+    string comment = 2;
+    string unit = 3;
+    repeated double data = 15;
+    DataSource data_source = 16;
+}
+
+// int array
+message Int32Array {
+    string disp_name = 12;
+    string comment = 2;
+    string unit = 3;
+    repeated int32 data = 15;
+    DataSource data_source = 16;
+}
+
+// real 1d map
+message Real1DMap {
+    string disp_name = 1;
+    string comment = 2;
+    RealAxis u0_axis = 3;
+    RealAxis y0_axis = 4;
+    DataSource data_source = 16;
+}
+
+// real 2d map
+message Real2DMap {
+    string disp_name = 1;
+    string comment = 2;
+    RealAxis u0_axis = 3;
+    RealAxis u1_axis = 4;
+    RealAxis y0_axis = 5;
+    DataSource data_source = 16;
+}
+
+// string variable 
+message StringVariable {
+    string disp_name = 1;
+    string comment = 2;
+    string str_var = 15;
+    DataSource data_source = 16;
+}

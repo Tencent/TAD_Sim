@@ -1,0 +1,43 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message Vec2 {
+  //
+  double x = 1;
+
+  //
+  double y = 2;
+}
+
+message Vec3 {
+  //
+  double x = 1;
+
+  //
+  double y = 2;
+
+  //
+  double z = 3;
+}
+
+message Vec4 {
+  //
+  double x = 1;
+
+  //
+  double y = 2;
+
+  //
+  double z = 3;
+
+  //
+  double w = 4;
+}

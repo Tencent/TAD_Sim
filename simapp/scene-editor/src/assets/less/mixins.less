@@ -1,0 +1,67 @@
+@dark-bg: #191919;
+@darker-bg: #111;
+@hover-bg: #242424;
+@global-font-color: #DCDCDC;
+@active-font-color: #16D1F3;
+@border-color: #1e1e1e;
+@title-font-color: #DCDCDC;
+@disabled-color: #878787;
+@darker-font-color: #595959;
+@list-bd: #262626;
+@title-bd: #303030;
+@logo-color: #01AAC8;
+@global-success-color: #04AA67;
+@global-warning-color: #EC8215;
+@global-danger-color: #D03939;
+@global-info-color: #595959;
+
+@list-item-hover-bg: rgba(62, 61, 61, 0.7);
+
+.menu-active-style() {
+  background-color: @list-item-hover-bg;
+  color: @active-font-color;
+}
+
+.menu-disabled-style() {
+  background-color: @darker-bg;
+  color: @disabled-color;
+  cursor: default;
+}
+
+.text-overflow() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+//noinspection ALL
+:export {
+  dark-bg: @dark-bg;
+  darker-bg: @darker-bg;
+  hover-bg: @hover-bg;
+  global-font-color: @global-font-color;
+  active-font-color: @active-font-color;
+  border-color: @border-color;
+  title-font-color: @title-font-color;
+  list-bd: @list-bd;
+  disabled-color: @disabled-color;
+  title-bd: @title-bd;
+}
+
+.reset-button() {
+  background-color: @dark-bg;
+  color: @title-font-color;
+  border: none;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+    color: @disabled-color;
+  }
+}
+
+.no-page-break {
+  page-break-inside: avoid;
+}

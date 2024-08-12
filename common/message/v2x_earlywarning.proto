@@ -1,0 +1,93 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief For front-end visualization of V2X early warning messages.
+// 用于 V2X 预警信息在前端的可视化.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+message V2xEarlyWarning {
+  enum Level {
+      // Low level warning.
+      // 低级警告.
+      //
+      LEVEL_LOW = 0;
+
+      // Medium level warning.
+      // 中级警告.
+      //
+      LEVEL_MIDDLE = 1;
+
+      // High level warning.
+      // 高级警告.
+      //
+      LEVEL_HIGH = 2;
+  }
+
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp = 1;
+
+  // Type of warning.
+  // 警告类型.
+  //
+  string type = 2;
+
+  // V2X early warning level.
+  // V2X早期警告级别.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  Level level = 3;
+
+  // Title of warning.
+  // 警告标题.
+  //
+  string title = 4;
+
+  // Content of warning.
+  // 警告内容.
+  //
+  string content = 5;
+
+  // Age of warning.
+  // 警告的有效期.
+  //
+  // Unit: s, Range: [0..inf], Default: 3
+  //
+  double age = 6;
+
+  // Countdown time.
+  // 倒计时.
+  //
+  // Unit: s, Range: [0..inf], Default: 0
+  //
+  double endtime = 7;
+
+  // Lights state.
+  // 灯光状态.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 lightstate = 8;
+
+  // Turn, 0 indicates not set, set after +1.
+  // 转向, 0表示未设置, +1后再设置.
+  //
+  // Unit: N/A, Range: [0..8], Default: 0
+  //
+  int32 turn = 9;
+
+  // Distance to hazardous targets.
+  // 到危险目标的距离.
+  //
+  // Unit: m, Range: [0..11], Default: 0.0
+  //
+  double danger_distance = 10;
+}

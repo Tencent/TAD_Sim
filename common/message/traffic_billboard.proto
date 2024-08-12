@@ -1,0 +1,556 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Statistics and navigation information in the scene.
+// 场景中统计和导航信息.
+//
+// TOPIC: TRAFFIC_BILLBOARD
+
+syntax = "proto3";
+
+package sim_msg;
+
+message BillboardSectionUId {
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 roadId = 1;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note id >= 0
+  //
+  uint32 sectionId = 2;
+}
+
+message BillboardLinkSetId {
+  // Road link upstream road id.
+  // 道路链接上游道路 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 from_roadId = 1;
+
+  // Road link downstream road id.
+  // 道路链接下游道路 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 to_roadId = 2;
+}
+
+message BillboardLaneUId {
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 roadId = 1;
+
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 sectionId = 2;
+
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 laneId = 3;
+}
+
+enum BillboardLaneType {
+  // default
+  Lane = 0;
+  Link = 1;
+}
+
+message BillboardLaneIdentity {
+  // Road element types: Lane, Link.
+  // 道路元素类型: Lane, Link.
+  //
+  BillboardLaneType type = 1;
+
+  // When type = Lane, the lane id (road id, road segment id, lane id in segment).
+  // When type = Link, the lane id upstream of the road link.
+  // 当 type = Lane, 表示所在车道 id (道路 id, 道路分段 id, 分段中车道 id)
+  // 当 type = Link, 表示所在道路链接上游车道 id.
+  //
+  BillboardLaneUId fromLaneUid = 2;
+
+  // When type = Link, indicates the lane id downstream of the road link.
+  // 当 type = Link, 表示所在道路链接下游车道 id.
+  //
+  BillboardLaneUId toLaneUid = 3;
+}
+
+message BillboardLaneStatisticsInfo {
+  // The number of vehicles within the statistical range.
+  // 统计范围内的车辆数量.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 vehicle_cnt = 1;
+
+  // The average speed of vehicles within the statistical range.
+  // 统计范围内车辆的平均速度.
+  //
+  // Unit: km/h, Range: [0..inf], Default: 0.0
+  //
+  float aver_speed_kmh = 2;
+
+  // The sum of vehicle speeds within the statistical range.
+  // 统计范围内车辆速度总和.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  float sum_speed_ms = 3;
+}
+
+message BillboardLaneInfo {
+  // Lane id.
+  // 车道id.
+  //
+  BillboardLaneIdentity id = 1;
+
+  // Lane statistics information.
+  // 车道统计信息.
+  //
+  BillboardLaneStatisticsInfo info = 2;
+}
+
+message BillboardSegmentId {
+  // Road element type: Lane, Link.
+  // 道路元素类型: Lane(车道), Link(连接).
+  //
+  BillboardLaneType type = 1;
+
+  // Valid when type=Lane, represents the section id of the road (including multiple lanes).
+  // 当type=Lane时有效, 表示道路的分段id(包含多个车道).
+  //
+  BillboardSectionUId section_id = 2;
+
+  // Valid when type=Link, represents the link id between two roads (including multiple link ids).
+  // 当type=Link时有效, 表示两条道路之间的链接id(包含多个链接id).
+  //
+  BillboardLinkSetId linkSet_id = 3;
+}
+
+message BillboardRoadId {
+  //
+  BillboardLaneType type = 1;
+
+  //
+  uint64 from_road_id = 2;
+
+  //
+  uint64 to_road_id = 3;
+}
+
+message BillboardSectionInfo {
+  //
+  BillboardSegmentId segment_id = 1;
+
+  //
+  BillboardLaneStatisticsInfo info = 2;
+}
+
+enum BillboardRoadInfoType {
+  // default
+  Unknown = 0;
+  Slope = 1;
+  Altitude_m = 2;
+  SpeedLimit_kmh = 3;
+  Curvature = 4;
+}
+
+message BillboardRoadSegmentInfo {
+  //
+  float start_s = 1;
+
+  //
+  float length = 2;
+
+  //
+  BillboardRoadInfoType value_type = 3;
+
+  //
+  float value = 4;
+}
+
+message BillboardSTSegmentInfo {
+  // Section id on the planned trajectory line (mapping to the section id of the map road section).
+  // 规划轨迹线上的路段id(映射到地图路段的路段id).
+  //
+  BillboardSegmentId segId = 1;
+
+  // The relative distance from the starting point of the route.
+  // 距离route起点的相对距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float start_s = 2;
+
+  // The length of the current section (along the planned trajectory line).
+  // 当前路段长度(沿规划轨迹线).
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float length = 3;
+
+  // The slope of the section id.
+  // 路段id的坡度.
+  //
+  // \note No longer maintained, see ahead_slope_array
+  //
+  float slope = 4 [deprecated=true];
+
+  // The average altitude of the section id.
+  // 路段id的平均高程.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float altitude_m = 5;
+
+  // The speed limit of the section id.
+  // 路段id的限速.
+  //
+  // Unit: km/h, Range: [0..inf], Default: 0.0
+  //
+  float speed_limit_kmh = 6;
+
+  // The average speed of the section id.
+  // 路段id的平均速度.
+  //
+  // \note No longer maintained, see ahead_aver_speed_kmh_array
+  //
+  float average_vehicle_speed_kmh = 7 [deprecated=true];
+
+  // The curvature of the section id.
+  // 路段id的曲率.
+  //
+  // Unit: rad/m, Range: [0..inf], Default: 0.0
+  //
+  float curvature = 8;
+}
+
+message BillboardRoadInfo {
+  //
+  BillboardRoadId road_link_id = 1;
+
+  //
+  repeated BillboardRoadSegmentInfo info = 2;
+}
+
+//
+// \brief Phase, Time left in current phase, Distance from ego, Next phase, Time left in next phase.
+// 相位, 当前相位剩余时间, 距自车距离, 下一个相位, 下一个相位剩余时间.
+//
+message TrafficLigthInfo {
+  // Global id.
+  // 全局 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note 与 traffic.trafficlight.id 相同
+  //
+  int32 id = 1;
+
+  // Longitude of the current position, WGS84 coordinate system. \n
+  // 当前位置经度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  double lon = 2;
+
+  // Latitude of the current position, WGS84 coordinate system. \n
+  // 当前位置纬度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  double lat = 3;
+
+  // Altitude of the current position, WGS84 coordinate system. \n
+  // 当前位置高度, WGS84 坐标系.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float alt = 4;
+
+  // Distance from starting point of path to traffic light along planned path (static information).
+  // 从路径起点沿规划路径到信号灯的距离(静态信息).
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float s_on_path = 5;
+
+  // The distance from the ego to the traffic light along the planned path (dynamic information).
+  // 主车沿着规划路径到信号灯的距离(动态信息).
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float dist_to_ego = 6;
+
+  // Traffic light color.
+  // 交通灯颜色.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  // \note eGreen = 0, eYellow = 1, eRed = 2, eGrey = 3, eBlack = 4
+  //
+  int32 color = 7;
+
+  // Light change countdown.
+  // 变灯倒计时.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  int32 age = 8;
+
+  // The color of the next light.
+  // 下一个灯的颜色.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  // \note eGreen = 0, eYellow = 1, eRed = 2, eGrey = 3, eBlack = 4
+  //
+  int32 next_color = 9;
+
+  // The duration of the next light.
+  // 下一个灯的持续时间.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  int32 next_age = 10;
+}
+
+message AlongEgoPathAverageSpeed {
+  // The length of the planned path at the end point of the logical road section.
+  // 逻辑路段结束点所在规划路径长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float s_on_path = 1;
+
+  // Average speed of the logical road section.
+  // 逻辑路段的平均速度.
+  //
+  // Unit: km/h, Range: [0..inf], Default: 0.0
+  //
+  float average_vehicle_speed_kmh = 2;
+}
+
+message AlongEgoPathSlope {
+  // The length of the planned path at the end point of the logical road section.
+  // 逻辑路段结束点所在规划路径长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float s_on_path = 1;
+
+  // The elevation of the logical road section.
+  // 逻辑路段的高程.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float slope = 2;
+}
+
+message EgoNavigationInfo {
+  // Algorithm vehicle id.
+  // 算法车id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 ego_id = 1;
+
+  // Name of the algorithm vehicle, default is ego.
+  // 算法车名字,  默认为ego.
+  //
+  string ego_name = 2;
+
+  // Lane id where the algorithm vehicle is located.
+  // 算法车所在车道id.
+  //
+  BillboardLaneIdentity ego_location_info = 3;
+
+  // Lane id of the algorithm vehicle's destination.
+  // 算法车目的地所在车道id.
+  //
+  BillboardLaneIdentity ego_destination = 4;
+
+  // Number of road sections included to the destination lane.
+  // 到目的地车道, 包含的路段数.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 segment_count_to_destination = 5;
+
+  // Distance to the destination.
+  // 到目的地的距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float distance_to_destination_m = 6;
+
+  // Distance to the nearest charging pile.
+  // 到最近充电桩的距离.
+  //
+  // Unit: m, Range: [-1..inf], Default: 0.0
+  //
+  // \note If the distance to the charging pile exceeds 10 kilometers, return -1, \n
+  // 如果充电桩距离超过10公里, 返回-1
+  //
+  float distance_to_chargingPile_m = 7;
+
+  // Distance to the nearest highway entrance.
+  // 到最近高速路入口的距离.
+  //
+  // Unit: m, Range: [-1..inf], Default: 0.0
+  //
+  // \note If the entrance distance exceeds 1 kilometer, return -1, \n
+  // \如果入口距离超过1公里, 返回-1
+  //
+  float distance_to_hwy_entrance_m = 8;
+
+  // Whether to change the destination.
+  // 是否改变目的地.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  // \note 当前统一返回 false, \n
+  // The current unity returns false
+  //
+  bool is_reRoute = 9;
+
+  // Gradient of the road ahead.
+  // 前方路段的坡度.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  float slope = 10 [deprecated=true];
+
+  // Gradient info of the road ahead.
+  // 前方路段的坡度信息.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  repeated BillboardRoadInfo ahead_slope = 11 [deprecated=true];
+
+  // The average elevation of the current road section.
+  // 当前所处路段的平均高程.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float altitude_m = 12;
+
+  // Average elevation of the road sections ahead.
+  // 前方路段的平均高程.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  repeated BillboardRoadInfo ahead_altitude_m = 13 [deprecated=true];
+
+  // Speed limit of the current road section.
+  // 当前所处路段的限速.
+  //
+  // Unit: km/h, Range: [0..inf], Default: 0.0
+  //
+  float speed_limit_kmh = 14;
+
+
+  // Speed limit of the road sections ahead.
+  // 前方路段的限速.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  repeated BillboardRoadInfo ahead_speed_limit_kmh = 15 [deprecated=true];
+
+  // Average speed of the current road section.
+  // 当前所处路段的平均速度.
+  //
+  // Unit: km/h, Range: [0..inf], Default: 0.0
+  //
+  float average_vehicle_speed_kmh = 16;
+
+  // Average speed of the road sections ahead.
+  // 前方路段的平均速度.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  repeated BillboardSectionInfo ahead_aver_speed_kmh = 17 [deprecated=true];
+
+  // Curvature of the current road section.
+  // 当前所处路段的曲率.
+  //
+  // Unit: rad/m, Range: [0..inf], Default: 0.0
+  //
+  float curvature = 18;
+
+  // Curvature of the road sections ahead.
+  // 前方路段的曲率.
+  //
+  // \note Off maintenance, 不在维护, 参见 ahead_info
+  //
+  repeated BillboardRoadInfo ahead_curvature = 19 [deprecated=true];
+
+  // Whether the destination is a charging station.
+  // 目的地是否是充电站.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool destination_is_charging_pile = 20;
+
+  // Road condition statistics (elevation/speed limit/curvature) of sections to destination lane.
+  // 到目的地车道的路段的路况统计信息(高程/限速/曲率).
+  //
+  repeated BillboardSTSegmentInfo ahead_info = 21;
+
+  // Traffic light information ahead of the algorithm vehicle.
+  // 算法车前方的交通灯信息.
+  //
+  // \note 如果前方没有交通灯, 长度为0
+  //
+  repeated TrafficLigthInfo ahead_traffic_lights = 22;
+
+  // The length of the road section where the algorithm vehicle is located.
+  // 算法车所在路段的长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  float ego_location_segment_length = 23;
+
+  // Divide the average speed of multiple logical sections along the navigation path,
+  // and locate through the path S coordinate.
+  // 沿着导航路径, 划分多个逻辑分段平均速度, 通过路径S坐标定位.
+  //
+  // \note 示例: 路段信息为[(30,300), (50,700), (70,900), (50,1200)],
+  // 表示从原点到终点有4个路段, 分别是对应 0-300m, 300-700m, 700-900m, 900-1000m,
+  // 平均车速分别为30, 50, 70, 50 km/h.
+  //
+  repeated AlongEgoPathAverageSpeed ahead_aver_speed_kmh_array = 24;
+
+  // Elevation along the navigation path, locating elevation changes by path S coordinates.
+  // 沿着导航路径的高程, 通过路径S坐标定位高程变化.
+  //
+  // \note 示例: [(0.5, 30), (0.8, 100), (-0.2, 130), ……, (0.4, 2000)]
+  // 表示前 30m 坡度是 0.5, 30-100m 是 0.8, 100-130 是 -0.2, 依次类推
+  //
+  repeated AlongEgoPathSlope ahead_slope_array = 25;
+}
+
+message Billboard {
+  // Simulation time.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp_ms = 1;
+
+  // Road statistics for the current scenario.
+  // 当前场景中, 路况统计信息.
+  //
+  repeated BillboardLaneInfo laneInfo = 2;
+
+  // Algorithmic car navigation information.
+  // 算法车导航信息.
+  //
+  EgoNavigationInfo ego_navigation_info = 3;
+}

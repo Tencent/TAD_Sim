@@ -1,0 +1,1061 @@
+# ==============================================================================
+[sys]
+    naming = "numerical"                 # can be [numerical, parameter]
+    link_symbol = "_"
+    split_symbol = ";|,|-"
+    output_xosc = "data/scenario/scene/semantic_scene"
+    output_xodr = "data/scenario/hadmap"
+    pathdir_hadmap_infile = "../hadmap/"
+    decimal_places = 3
+    thread_num = 8
+    author = "tadsim v2.0"
+    explain_string = "必填项"
+    default = "None"
+    filename_log = "file"
+[sys.version]
+    oscmajor = 1
+    oscminor = 0
+    odrmajor = 1
+    odrminor = 5
+[sys.feishu]
+    host = "open.feishu.cn"
+    url_apps = "https://open.feishu.cn/open-apis/bitable/v1/apps"
+    url_tenant_access_token = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+[sys.tadsim]
+    host = "http://127.0.0.1:9000"
+    url_semantic_statu = "http://127.0.0.1:9000/semantic/statu"
+    url_scenarios_insert = "http://127.0.0.1:9000/scenarios/insert"
+    url_maps_insert = "http://127.0.0.1:9000/maps/insert"
+[sys.sheet]
+    define = "场景"
+    param = "【地图库地图参数】"
+    settings_user = "【配置参数】"
+    classify_user = "【下拉列表内容】"
+[sys.change]
+    enable = 0
+    ego = "MiningDumpTruck_001"
+    veh = "MiningDumpTruck_001"
+[sys.suffix]
+    unit = ".Unit"
+    one2one = ".One2one"
+[sys.sign]
+    enum = "/"
+    range = "*"
+    one2one = "&"
+[sys.unitcharacter.transfer]
+    # acceleration
+    "Meter_Per_Sec_Sqr|M/S2|M_S2|M_Ss|Mpsps|Mps_S|M/S^2" = "Mpss"
+    "Kilometer_Per_Hour_Per_Sec|Km/S2|Km_S2|Km_Ss|Kmpsps|Kmps_S" = "Kmphps"
+    "Mile_Per_Hour_Per_Sec" = "Miphps"
+    # speed
+    "Meter_Per_Second|M/S|M_S" = "Mps"
+    "Kilometer_Per_Hour|Kmph|Km/H|Km_H" = "Kph"
+    "Mile_Per_Hour|Miph|M/H|M_H" = "Mph"
+    # angle
+    "Radians|Radian" = "Rad"
+    "Degrees|Degree" = "Deg"
+    # length
+    "Nanometer" = "Nm"
+    "Millimeter" = "Mm"
+    "Centimeter" = "Cm"
+    "Meter" = "M"
+    "Kilometer" = "Km"
+    # time
+    "Millisecond" = "Ms"
+    "Second|Sec" = "S"
+    "Minute" = "Min"
+    "Hour" = "H"
+    # illumination
+    "Lux" = "Lx"
+    # temperature
+    "Kelvin" = "K"
+    "Celsius" = "C"
+    "Fahrenheit" = "F"
+[sys.unitunified.transfer]
+    # acceleration
+    "Mpss" = 1
+    "Kmphps" = 0.277777778
+    "Miphps" = 0.447038889
+    # speed
+    "Mps" = 1
+    "Kph" = 0.277777778
+    "Mph" = 0.447038889
+    # angle
+    "Rad" = 1
+    "Deg" = 0.0174532925
+    # time
+    "Ms" = 0.001
+    "S" = 1
+    "Min" = 60
+    "H" = 3600
+    # length
+    "Mm" = 0.001
+    "Cm" = 0.01
+    "M" = 1
+    "Km" = 1000
+    # illumination
+    "Lx" = 1
+    # temperature
+    "C" = 1
+    "K" = 274.15
+    "F" = 33.8  # fahrenheit
+
+# ======================================= 物理规则 =======================================
+[sys.rule]
+[sys.rule.speed]
+    min = -100 # kph
+    max = 360  # kph
+[sys.rule.acceleration]
+    min = -20 # m/s2
+    max = 20  # m/s2
+
+# ======================================= 模型规则 =======================================
+[sys.model]
+    enable = 0
+    eps = 0.05
+    min_samples = 3
+    percentage = 0.15
+# ======================================= 高精地图 =======================================
+[sys.map]
+    support = ["xodr", "xml", "sqlit"]
+[sys.map.virtual]
+    base_len = 2000
+    start_road_id = 1
+    start_junction_id = 100
+    start_object_id = 1
+    start_signal_id = 199
+    start_s = 200
+    end_s_offset = -200
+    junction_offset_s = -20
+    junction_radius = 20                  # m
+    merge_len_change = 100                # 120kph
+    split_len_change = 200                # 120kph
+    ratio_of_len_to_total_straight = 0.8
+    ratio_of_len_to_perimeter_curve = 0.8
+    suffix = ".xodr"
+    country = "CHN"                       # https://www.iso.org/obp/ui/#iso:code:3166:CN
+    country_revision = "2020"             # https://www.iso.org/obp/ui/#iso:std:iso:3166:-1:ed-4:v1:en
+    geo_reference = "<![CDATA[+proj=utm +zone=25 +ellps=WGS84 +datum=WGS84 +units=m +no_defs]]>"
+[sys.map.real]
+[sys.map.real.param]
+    name = "Name"
+    mapfile = "MapFile"
+    routes = "Routes"
+[sys.map.real.param.transfer]
+    "初始位置点\\(轨迹点\\)|初始位置点\\(路径点\\)|路径点|规划点" = "Routes"
+    "地图文件名称|地图文件|地图名称" = "MapFile"
+    "名称|地图库地图参数" = "Name"
+
+# ======================================= 语义生成 =======================================
+[sys.generalized]
+    mask_value = "finished"
+
+[sys.generalized.cols]
+    funcid = "FuncId"
+    logicid = "LogicId"
+    label = "Label"
+    description = "Description"
+    mask = "Mask"
+    naming = "Naming"
+    mapfile = "MapFile"
+    l1 = "L1_Road"
+    l2 = "L2_RoadFurnitureAndRules"
+    l4 = "L4_MovingObjects"
+    l5 = "L5_EnvironmentalConditions"
+    # l3 = "L3_TemporalModificationsAndEvents"
+
+[sys.generalized.colset]
+    units = [
+        "Num2Dist",
+        "Width",
+        "Curve",
+        "Speedlimit",
+        "Ini.Speed",
+        "Ini.Latoffset",
+        "Ini.Heading",
+        "Rel.Heading",
+        "Rel.Long",
+        "Rel.Latoffset",
+        "Value",
+        "Endvalue",
+        "Illumination",
+        "Cycle",
+    ]
+    hadmapids = [
+        "Road.Type",
+        "Road.Curve",
+        "Road.Direction",
+        "Road.Speedlimit",
+        "Junction.Type",
+        "Junction.Num",
+        "Lane.Type",
+        "Lane.Num",
+        "Lane.Num2",
+        "Lane.Num2Dist",
+        "Lane.Width",
+        "Lane.Edge",
+        "Marking.Type",
+        "Marking.Status",
+    ]
+    reqs = [
+        "FuncId",
+        "LogicId",
+        "Mask",
+        "L1_Road",
+        "L2_RoadFurnitureAndRules",
+        "L4_MovingObjects",
+        "L5_EnvironmentalConditions",
+    ]
+
+# ======================================= 测试用例 =======================================
+[sys.testcase]
+    simtype_values = ["Worldsim", "Logsim"]
+[sys.testcase.cols]
+    name = "任务名称"
+    priority = "任务优先级"
+    task_description = "任务描述"
+    task_label = "任务标签"
+    simtype = "仿真类型"
+    project = "项目分类"
+    ego_name = "主车名称"
+    ego_controller = "主车控制器名称"
+    sets = "测试用例集合名称"
+    kpis = "评价指标"
+    concreteid = "ConcreteId"
+    funcid = "FuncId"
+    logicid = "LogicId"
+
+# ======================================= 分级分类 =======================================
+[sys.classify]
+    prefix = "Sim"
+    root = "公共"
+    col_suffix = "_Eng"
+    default_value = "None"
+    default_value_chn = "无"
+    req_mask = "*"
+
+[sys.classify.conditions]
+    "自然驾驶" = [1, 2, 3, 4, 5, 6, 7, 8]
+    "标准法规" = [1, 3, 2]
+    "危险事故" = [1, 4, 6, 7, 8]
+    "预期功能安全" = [1, 2, 10, 4, 7, 8]
+    "经验场景" = [1, 2, 3, 4, 5, 6, 7, 8]
+
+# ======================================= Config =======================================
+[sys.l0]
+[sys.l0.cols]
+    parameter = "Parameter"
+    concreteid = "ConcreteId"
+    mapfile = "MapFile"
+    reason = "Reason"
+    assessment = "AssessmentDimensions"
+    classify = "Classify"
+    allnum_concrete4func = "AllnumConcrete4Func"
+    allnum_concrete4logic = "AllnumConcrete4Logic"
+    allnum_logic = "AllnumLogic"
+    allnum_ego = "AllnumEgo"
+    allnum_npc = "AllnumNpc"
+    allnum_dyn = "AllnumDyn"
+    allnum_action = "AllnumAction"
+    is_generalized = "IsGeneralized"
+    route_param = "RouteParm"
+    total_length = "TotalLength"
+    sides = "Sides"
+
+[sys.l0.settings_user]
+    col1 = "Col1"
+    col2 = "Col2"
+    value = "Value"
+    description = "Description"
+[sys.l0.settings_user.transfer]
+    "一级" = "Col1"
+    "二级" = "Col2"
+    "参数值" = "Value"
+    "说明|描述" = "Description"
+
+# ======================================= L1_Road =======================================
+[sys.l1]
+[sys.l1.sub1.header.transfer]
+    "道路" = "Road"
+    "路口" = "Junction"
+    "车道" = "Lane"
+    "道线" = "Marking"
+[sys.l1.sub2.header.transfer]
+    "类型" = "Type"
+    "曲率" = "Curve"
+    "方向" = "Direction"
+    "限速" = "Speedlimit"
+    "数量" = "Num"
+    "宽度" = "Width"
+    "边缘" = "Edge"
+    "状态" = "Status"
+[sys.l1.roaddirection.transfer]
+    "单向" = "same"
+    "双向|oppo" = "opposite"
+[sys.l1.roadspeedlimit.transfer]
+    "无|没有|None|No|-" = "0"
+    # "无|没有|None|No|-" = "none"
+[sys.l1.laneedge.transfer]
+    "无" = "0"
+    "有" = "1"
+[sys.l1.roadmarkcolor.transfer]
+    # "白" = "standard"
+    "白色|白" = "white"
+    "黄色|黄" = "yellow"
+    "蓝色|蓝" = "blue"
+    "绿色|绿" = "green"
+    "红色|红" = "red"
+    "橙色|橙" = "orange"
+[sys.l1.roadmarktype.transfer]
+    "无|没有|None|No|-" = "none"
+    "双实" = "solid_solid"
+    "实虚" = "solid_broken"
+    "虚实" = "broken_solid"
+    "双虚" = "broken_broken"
+    "实" = "solid"
+    "虚" = "broken"
+    # "" = "botts_dots"
+    # "" = "grass"
+    # "" = "curb"
+    # "" = "custom"
+    # "" = "edge"
+[sys.l1.roadmarkstatus.transfer]
+    "模糊|不正常|异常" = "abnormal"
+    "清晰|正常" = "normal"
+    "遮挡" = "occlusion"
+    "损坏" = "damage"
+    "缺失" = "missing"
+#
+[sys.l1.RoadType]
+[sys.l1.RoadType.transfer]
+    "直道" = "straight"
+    "弯道入口" = "curveIn"
+    "弯道出口" = "curveOut"
+    "弯道S|S弯道|S弯" = "curveS"
+    "弯道中|弯道" = "curvIng"
+[sys.l1.RoadType.enum]
+    "straight" = "straight"
+    "curveIn" = "curveIn"
+    "curveOut" = "curveOut"
+    "curveS" = "curveS"
+    "curvIng" = "curvIng"
+
+#
+[sys.l1.JunctionType]
+[sys.l1.JunctionType.transfer]
+    "无|没有|None|No|-" = "none"
+    #
+    "十字路口|交叉路口" = "crossroad"
+    "T字路口|T型路口|T形路口|T路口|丁字路口" = "tRd"
+    "Y字路口|Y型路口|Y形路口|Y路口" = "yJunc"
+    #
+    "对应式合流双车道|对应合流双车道" = "analogousConvergingTwolane"
+    "对应式合流单车道|对应式合流|对应合流" = "analogousConverging"
+    "直接式合流双车道|直接合流双车道" = "directConvergingTwolane"
+    "直接式合流单车道|直接式合流|直接合流" = "directConverging"
+    "平行式合流双车道|平行合流双车道|道路入口双车道|入口双车道|合流双车道" = "parallelConvergingTwolane"
+    "平行式合流单车道|平行式合流|平行合流|道路入口|入口|合流" = "parallelConverging"
+    #
+    "对应式分流双车道|对应分流双车道" = "analogousDivergingTwolane"
+    "对应式分流单车道|对应式分流|对应分流" = "analogousDiverging"
+    "直接式分流双车道|直接分流双车道" = "directDivergingTwolane"
+    "直接式分流单车道|直接式分流|直接分流" = "directDiverging"
+    "平行式分流双车道|平行分流双车道|道路出口双车道|出口双车道|分流双车道" = "parallelDivergingTwolane"
+    "平行式分流单车道|平行式分流|平行分流|道路出口|出口|分流" = "parallelDiverging"
+    #
+    "断头路" = "endOfRoad"
+    "环岛" = "roundabout"
+
+[sys.l1.JunctionType.enum]
+    "none" = "none"
+    #
+    "crossroad" = "crossroad"
+    "tRd" = "tRd"
+    "yJunc" = "yJunc"
+    #
+    "analogousConvergingTwolane" = "analogousConvergingTwolane"
+    "analogousConverging" = "analogousConverging"
+    "directConvergingTwolane" = "directConvergingTwolane"
+    "directConverging" = "directConverging"
+    "parallelConvergingTwolane" = "parallelConvergingTwolane"
+    "parallelConverging" = "parallelConverging"
+    #
+    "analogousDivergingTwolane" = "analogousDivergingTwolane"
+    "analogousDiverging" = "analogousDiverging"
+    "directDivergingTwolane" = "directDivergingTwolane"
+    "directDiverging" = "directDiverging"
+    "parallelDivergingTwolane" = "parallelDivergingTwolane"
+    "parallelDiverging" = "parallelDiverging"
+    #
+    "endOfRoad" = "endOfRoad"
+    "roundabout" = "roundabout"
+[sys.l1.JunctionType.leg]
+    # leg: 路口的进口道路数量, T型路口3, 十字路口4
+    "crossroad" = 4
+    "tRd" = 3
+    "yJunc" = 3
+#
+[sys.l1.LaneType]
+[sys.l1.LaneType.transfer]
+    "无|没有|None|No|-" = "none"
+    "驾驶|行驶" = "driving"
+    "停止车道|停止行驶|停止|禁止车道|禁止行驶|禁止" = "stop"
+    "路肩" = "shoulder"
+    "自行车" = "biking"
+    "人行道" = "sidewalk"
+    "停车区域|停车|泊车区域|泊车" = "parking"
+    "道路施工|施工道路|施工车道|车道施工|施工" = "roadWorks"
+    "有轨电车轨道" = "tram"
+    "铁路轨道|铁路" = "rail"
+    "车道入口" = "entry"
+    "车道出口" = "exit"
+    "驶出匝道" = "offRamp"
+    "驶入匝道" = "onRamp"
+    "连接道" = "connectingRamp"
+    "公交车道|公交道|公交车|公交" = "bus"
+    "出租车道|出租车" = "taxi"
+    "专用车道" = "hov"
+    # "" = "curb"
+    # "" = "border"
+    # "" = "restricted"
+    # "" = "bidirectional"
+    # "" = "median"
+    # "" = "special1"
+    # "" = "special2"
+    # "" = "special3"
+[sys.l1.LaneType.enum]
+    "none" = "none"
+    "driving" = "driving"
+    "stop" = "stop"
+    "shoulder" = "shoulder"
+    "biking" = "biking"
+    "sidewalk" = "sidewalk"
+    "parking" = "parking"
+    "roadWorks" = "roadWorks"
+    "tram" = "tram"
+    "rail" = "rail"
+    "entry" = "entry"
+    "exit" = "exit"
+    "offRamp" = "offRamp"
+    "onRamp" = "onRamp"
+    "connectingRamp" = "connectingRamp"
+    "bus" = "bus"
+    "taxi" = "taxi"
+    "hov" = "hov"
+    # "curb" = "curb"
+    # "border" = "border"
+    # "restricted" = "restricted"
+    # "bidirectional" = "bidirectional"
+    # "median" = "median"
+    # "special1" = "special1"
+    # "special2" = "special2"
+    # "special3" = "special3"
+    #
+[sys.l1.LaneMode]
+[sys.l1.LaneMode.enum]
+    "normal" = "normal"
+    "split" = "split"
+    "merge" = "merge"
+
+# =============================== L2_RoadFurnitureAndRules ==============================
+[sys.l2]
+[sys.l2.sub1.header.transfer]
+    "红绿灯" = "Trafficlight"
+[sys.l2.sub2.header.transfer]
+    "状态" = "Status"
+    "周期" = "Cycle"
+[sys.l2.pos.transfer]
+    "无" = "0"
+    "有" = "1"
+[sys.l2.status.transfer]
+    "无|没有|None|No|-" = "0"
+[sys.l2.trafficlight]
+    all_red = 2    # 多个Phase同时全是红灯的时间
+    sys_cycle = 81 # 系统预设周期, 单位 s
+
+# =================================== L4_MovingObjects ==================================
+[sys.l4]
+[sys.l4.sub1.header.transfer]
+    "物理" = "Phy"
+    "初始" = "Ini"
+    "关系" = "Rel"
+    "动态" = "Dyn"
+[sys.l4.sub2.header.transfer]
+    "类别" = "Category"
+    "型号" = "Model"
+    "速度" = "Speed"
+    "横向" = "Latoffset"
+    "航向" = "Heading"
+    "路径" = "Route"
+    "参考" = "Ref"
+    "侧面" = "Side"
+    "纵向" = "Long"
+    "触发" = "Trigger"
+    "动作" = "Action"
+
+[sys.l4.rulemode.transfer]
+    ">=" = "greaterOrEqual" # 1.1
+    "<=" = "lessOrEqual"    # 1.1
+    "!=" = "notEqualTo"     # 1.1
+    ">" = "greaterThan"
+    "<" = "lessThan"
+    "=" = "equalTo"
+
+[sys.l4.side.transfer]
+    "左侧3|左3|Left3|L3" = "-3"
+    "右侧3|右3|Right3|R3" = "3"
+    "左侧2|左2|Left2|L2" = "-2"
+    "右侧2|右2|Right2|R2" = "2"
+    "左侧1|左侧|左1|左|Left1|Left|L1|L" = "-1"
+    "右侧1|右侧|右1|右|Right1|Right|R1|R" = "1"
+    "无|没有|None|No|-|Same" = "0"
+
+[sys.l4.route.transfer]
+    "无|没有|None|No|-" = "0"
+    "W2W|W2w" = "1"
+    "W2E|W2e" = "2"
+    "W2N|W2n" = "3"
+    "W2S|W2s" = "4"
+    "E2W|E2w" = "5"
+    "E2E|E2e" = "6"
+    "E2N|E2n" = "7"
+    "E2S|E2s" = "8"
+    "N2W|N2w" = "9"
+    "N2E|N2e" = "10"
+    "N2N|N2n" = "11"
+    "N2S|N2s" = "12"
+    "S2W|S2w" = "13"
+    "S2E|S2e" = "14"
+    "S2N|S2n" = "15"
+    "S2S|S2s" = "16"
+    "反向|对向" = "17"
+    "进主路" = "18"
+    "出主路" = "19"
+    "主路中" = "20"
+    "辅路中" = "21"
+    "进环岛" = "22"
+    "出环岛" = "23"
+    "环岛中" = "24"
+
+#
+[sys.l4.action]
+[sys.l4.action.transfer]
+    # CommandMode
+    "任意方向变道|变道" = "-70000"
+    "超车" = "-70001"
+    "靠边停车" = "-70002"
+    "紧急停车" = "-70003"
+    "左侧横向速度" = "-70004"
+    "右侧横向速度" = "-70005"
+    "左侧横向加速度" = "-70006"
+    "右侧横向加速度" = "-70007"
+    # 以下3个为新加
+    "期望速度|目标速度" = "-70008"
+    "碰撞时间|跟车时距|ttc时间|Ttc时间|TTC|Ttc|ttc" = "-70009"
+    "喇叭" = "-70010"
+    # AutoMode
+    "横纵向" = "-90000"
+    "横向" = "-90001"
+    "纵向" = "-90002"
+    "关闭" = "-90003"
+    # StatusMode
+    "紧急制动" = "-60000"
+    "车辆失控" = "-60001"
+    "双手握持方向盘" = "-60002"
+    "视线在道路" = "-60003"
+    "激光雷达状态|激光雷达|Lidar" = "-60004"
+    "毫米波雷达状态|毫米波雷达|Radar" = "-60006"
+    "超声波雷达状态|超声波雷达|Ultrasonic" = "-60006"
+    "摄像头状态|摄像头|Camera" = "-60007"
+    "Gnss状态|Gnss" = "-60008"
+    "Imu状态|Imu" = "-60009"
+    "定位状态|定位" = "-60010"
+    "行车灯状态|行车灯|前车灯" = "-60011"
+    "制动灯状态|制动灯|后刹车灯状态|后刹车灯|刹车灯状态|刹车灯" = "-60012"
+    "双闪灯状态|双闪灯|危险报警灯状态|危险报警灯" = "-60013"
+    "左转灯状态|左转向灯|左转灯" = "-60014"
+    "右转灯状态|右转向灯|右转灯" = "-60015"
+    "主驾安全带" = "-60016"
+    "副驾安全带" = "-60017"
+    "主驾车门" = "-60018"
+    "副驾车门" = "-60019"
+    "前机箱盖|前机箱|前仓盖" = "-60020"
+    "后备箱盖|后备箱|后仓盖" = "-60021"
+    "雨刮器|雨刮" = "-60022"
+    "车辆点火状态|车辆点火|Ign" = "-60023"
+    # 共有属性, set to same value
+    "档位" = "-99998"
+    "自定义" = "-99997"
+    "驻车制动|驻车" = "-99999"
+    # OverrideMode
+    "离合" = "-80000"
+    "制动" = "-80001"
+    "油门" = "-80002"
+    "转向" = "-80003"
+
+[sys.l4.action.automode]
+    "autopilot" = -90000
+    "lateral" = -90001
+    "longitudinal" = -90002
+    "off" = -90003
+[sys.l4.action.overridemode]
+    "clutch" = -80000
+    "brake" = -80001
+    "throttle" = -80002
+    "steeringWheel" = -80003
+    "parkingBrake" = -99999
+    "gear" = -99998
+[sys.l4.action.statusmode]
+    # 大小写有区分
+    "EmergencyBrake" = -60000
+    "VehicleLostControl" = -60001
+    "HandsOnSteeringwheel" = -60002
+    "EyesOnRoad" = -60003
+    "Lidar" = -60004
+    "Radar" = -60005
+    "Ultrasonic" = -60006
+    "Camera" = -60007
+    "Gnss" = -60008
+    "Imu" = -60009
+    "Localization" = -60010
+    "Beam" = -60011
+    "BrakeLight" = -60012
+    "HazardLight" = -60013
+    "LeftTurnLight" = -60014
+    "RightTurnLight" = -60015
+    "DriverSeatbelt" = -60016
+    "PassengerSeatbelt" = -60017
+    "DriverDoor" = -60018
+    "PassengerDoor" = -60019
+    "Hood" = -60020
+    "Trunk" = -60021
+    "Wiper" = -60022
+    "Key" = -60023
+    "Gear" = -99998
+    "ParkingBrake" = -99999
+    "UserDefine" = -99997
+[sys.l4.action.commandmode]
+    # 大小写有区分
+    "LaneChange" = -70000
+    "Overtaking" = -70001
+    "PullOver" = -70002
+    "EmergencyStop" = -70003
+    "LateralSpeedToLeft" = -70004
+    "LateralSpeedToRight" = -70005
+    "LateralAccelToLeft" = -70006
+    "LateralAccelToRight" = -70007
+    "TargetSpeed" = -70008
+    "TimeToCollision" = -70009
+    "Horn" = -70010
+    "UserDefine" = -99997
+
+#
+[sys.l4.ValueTriggerType]
+[sys.l4.ValueTriggerType.transfer]
+    "仿真时间|时间" = "simulationTime"
+    "用户定义" = "userDefinedValue"
+    "参数" = "parameter"
+    "时间" = "timeOfDay"
+    "场景剧本要素状态" = "storyboardElementState"
+    "交通信号灯" = "trafficSignal"
+    "交通信号灯控制器" = "trafficSignalController"
+[sys.l4.ValueTriggerType.enum]
+    "simulationTime" = "simulationTime"
+    "userDefinedValue" = "userDefinedValue"
+    "parameter" = "parameter"
+    "timeOfDay" = "timeOfDay"
+    "storyboardElementState" = "storyboardElementState"
+    "trafficSignal" = "trafficSignal"
+    "trafficSignalController" = "trafficSignalController"
+
+#
+[sys.l4.EntityTriggerType]
+[sys.l4.EntityTriggerType.transfer]
+    "车头时距" = "timeHeadway"
+    "碰撞时间|跟车时距|ttc时间|Ttc时间|TTC|Ttc|ttc" = "timeToCollision"
+    "相对距离" = "relativeDistance"
+    "距离" = "absoluteDistance"
+    "相对速度" = "relativeSpeed"
+    "速度" = "absoluteSpeed"
+    "道路末端" = "endOfRoad"
+    "碰撞" = "collision"
+    "路外" = "offroad"
+    "加速" = "acceleration"
+    "静止" = "standStill"
+    "运动距离" = "traveledDistance"
+    "到达位置" = "reachPosition"
+[sys.l4.EntityTriggerType.enum]
+    "timeHeadway" = "timeHeadway"
+    "timeToCollision" = "timeToCollision"
+    "relativeDistance" = "relativeDistance"
+    "absoluteDistance" = "absoluteDistance"
+    "relativeSpeed" = "relativeSpeed"
+    "absoluteSpeed" = "absoluteSpeed"
+    "endOfRoad" = "endOfRoad"
+    "collision" = "collision"
+    "offroad" = "offroad"
+    "acceleration" = "acceleration"
+    "standStill" = "standStill"
+    "traveledDistance" = "traveledDistance"
+    "reachPosition" = "reachPosition"
+
+#
+[sys.l4.PrivateActionType]
+[sys.l4.PrivateActionType.transfer]
+    # [ref]: https://releases.asam.net/OpenSCENARIO/1.0.0/Model-Documentation/content/PrivateAction.html
+    # 私有定义
+    "加速度|加速" = "acceleration"
+    "减速度|减速" = "deceleration"
+    # longitudinal Action
+    "相对速度" = "relativeSpeed"
+    "速度" = "absoluteSpeed"
+    "纵向距离保持" = "longitudinalDistance"
+    "时间间隔" = "longitudinalTimegap"
+    # lateral Action
+    # "33" = "absoluteLaneChange"
+    "跨车道变道时间|跨车道变道" = "relativeLaneChange"
+    "跨车道向左时间|跨车道向左" = "relativeLaneChange2Left"
+    "跨车道向右时间|跨车道向右" = "relativeLaneChange2Right"
+    "相对车道偏移" = "relativeLaneOffset"
+    "车道内向左时间|车道内向左" = "relativeLaneOffset2Left"
+    "车道内向右时间|车道内向右" = "relativeLaneOffset2Right"
+    "车道偏移" = "absoluteLaneOffset"
+    "横向距离保持" = "lateralDistance"
+    "可视性" = "visibility"
+    "同步" = "synchronize"
+    # Controller Action
+    "控制器启动|激活" = "activateController"
+    "覆盖控制器值|接管" = "overrideControllerValue"
+    "分配控制器|分配" = "assignController"
+    # Teleport Action
+    "位移" = "teleport"
+    # Routing Action
+    "路径" = "assignRoute"
+    "获取位置" = "acquirePosition"
+    "运动轨迹跟踪|轨迹|方向" = "followTrajectory"
+[sys.l4.PrivateActionType.enum]
+    # 私有定义
+    "acceleration" = "acceleration"
+    "deceleration" = "deceleration"
+    #
+    "relativeSpeed" = "relativeSpeed"
+    "absoluteSpeed" = "absoluteSpeed"
+    "longitudinalDistance" = "longitudinalDistance"
+    "longitudinalTimegap" = "longitudinalTimegap"
+    "absoluteLaneChange" = "absoluteLaneChange"
+    "relativeLaneChange" = "relativeLaneChange"
+    "relativeLaneChange2Left" = "relativeLaneChange2Left"
+    "relativeLaneChange2Right" = "relativeLaneChange2Right"
+    "relativeLaneOffset" = "relativeLaneOffset"
+    "relativeLaneOffset2Left" = "relativeLaneOffset2Left"
+    "relativeLaneOffset2Right" = "relativeLaneOffset2Right"
+    "absoluteLaneOffset" = "absoluteLaneOffset"
+    "lateralDistance" = "lateralDistance"
+    "visibility" = "visibility"
+    "synchronize" = "synchronize"
+    "activateController" = "activateController"
+    "overrideControllerValue" = "overrideControllerValue"
+    "assignController" = "assignController"
+    "teleport" = "teleport"
+    "assignRoute" = "assignRoute"
+    "acquirePosition" = "acquirePosition"
+    "followTrajectory" = "followTrajectory"
+
+#
+[sys.l4.GlobalActionType]
+[sys.l4.GlobalActionType.transfer]
+    "环境" = "environment"
+    # "1" = "addEntity"
+    # "2" = "deleteEntity"
+    # "3" = "parameterAdd"
+    # "4" = "parameterMultiply"
+    # "5" = "parameterSet"
+    # "6" = "trafficSource"
+    # "7" = "trafficSink"
+    # "8" = "trafficSwarm"
+[sys.l4.GlobalActionType.enum]
+    "environment" = "environment"
+    # "addEntity" = "addEntity"
+    # "deleteEntity" = "deleteEntity"
+    # "parameterAdd" = "parameterAdd"
+    # "parameterMultiply" = "parameterMultiply"
+    # "parameterSet" = "parameterSet"
+    # "trafficSource" = "trafficSource"
+    # "trafficSink" = "trafficSink"
+    # "trafficSwarm" = "trafficSwarm"
+    #
+[sys.l4.UserDefinedActionType]
+[sys.l4.UserDefinedActionType.transfer]
+    "用户指令|指令" = "command"
+    "发送状态|状态" = "status"
+    "交通灯切换" = "trifficLight"
+[sys.l4.UserDefinedActionType.enum]
+    "command" = "command"
+    "status" = "status"
+    "trifficLight" = "trifficLight"
+#
+[sys.l4.DistMode]
+[sys.l4.DistMode.transfer]
+    "坐标" = "longitudinal"
+    "欧式" = "cartesianDistance" # osc 1.0
+    # "欧式" = "euclidianDistance"  # osc 1.1
+[sys.l4.DistMode.enum]
+    longitudinal = "longitudinal"
+    cartesianDistance = "cartesianDistance"
+#
+[sys.l4.EndtypeMode]
+    without_end_value = 99999
+[sys.l4.EndtypeMode.transfer]
+    "无|没有|None|No" = "none"
+    "终止时间" = "time"
+    "终止速度" = "speed"
+    "终止偏移|偏移距离" = "latoffset"
+    "终止数值|数值" = "value"
+    "期望速度" = "setSpeed"
+    "跟车时距" = "setTimegap"
+    "重启" = "resumeSw"
+    "取消" = "cancelSw"
+    "速度增加" = "speedIncSw"
+    "速度减少" = "speedDecSw"
+[sys.l4.EndtypeMode.enum]
+    "none" = "none"
+    "time" = "time"
+    "speed" = "speed"
+    "latoffset" = "latoffset"
+    "value" = "value"
+    "setSpeed" = "setSpeed"
+    "setTimegap" = "setTimegap"
+    "resumeSw" = "resumeSw"
+    "cancelSw" = "cancelSw"
+    "speedIncSw" = "speedIncSw"
+    "speedDecSw" = "speedDecSw"
+
+#
+[sys.l4.PositionType]
+[sys.l4.PositionType.enum]
+    "world" = "world"
+    "relativeWorld" = "relativeWorld"
+    "relativeObject" = "relativeObject"
+    "road" = "road"
+    "relativeRoad" = "relativeRoad"
+    "lane" = "lane"
+    "relativeLane" = "relativeLane"
+    "route" = "route"
+
+# ============================= L5_EnvironmentalConditions =============================
+[sys.l5]
+    "city" = "Beijing"
+[sys.l5.sub1.header.transfer]
+    "环境" = "Env"
+[sys.l5.sub2.header.transfer]
+    "时间" = "Time"
+    "天气" = "Weather"
+    "光照" = "Illumination"
+#
+[sys.l5.Time]
+[sys.l5.Time.transfer]
+    # 08~18 从日出到日落的时间段
+    "白天" = "12"
+    # 18~24 从日落到日出的时间段
+    "夜晚|黑夜" = "21"
+    # 08~09 日出后到早上八九点钟左右
+    "清晨" = "8"
+    # 09~12 早上九点钟到中午十二点钟左右
+    "上午" = "10"
+    # 12~14 中午十二点钟到下午一两点钟左右
+    "中午" = "13"
+    # 14~18 下午一两点钟到傍晚五六点钟左右
+    "下午" = "16"
+    # 18~20 日落前后的时间段
+    "傍晚|黄昏" = "19"
+    # 20~24 傍晚后到十一二点钟左右
+    "晚上" = "22"
+    # 24~02 晚上十一二点钟到凌晨一两点钟左右
+    "半夜" = "1"
+    # 02~06 半夜后到天亮前的时间段
+    "凌晨" = "4"
+    # 06~08 天快亮的时候,太阳还没有升起
+    "黎明" = "6"
+#
+[sys.l5.Wether]
+[sys.l5.Wether.transfer]
+    "晴朗|晴天|晴" = "sunny"
+    "雾霾|霾" = "haze"
+    "多云|阴天" = "overcast"
+    "沙尘" = "sandDust"
+    "冰雹" = "hail"
+    "大风" = "gale"
+    "无|没有|None|No|-" = "none"
+    #
+    "特大暴雨" = "severeRainStorm"
+    "大暴雨" = "heavyRainStorm"
+    "暴雨" = "rainStorm"
+    "大雨" = "heavyRain"
+    "中雨" = "moderateRain"
+    "小雨|雨天|雨" = "lightRain"
+    #
+    "暴雪" = "blizzard"
+    "大雪" = "heavySnow"
+    "中雪" = "moderateSnow"
+    "小雪|雪天|雪" = "lightSnow"
+    #
+    "强浓雾" = "severeDenseFog"
+    "浓雾" = "heavyFog"
+    "大雾" = "moderateFog"
+    "小雾" = "lightFog"
+    "轻雾|雾天|雾" = "mist"
+#
+[sys.l5.Wether.config]
+[sys.l5.Wether.config.severeRainStorm]
+    fog_visual_range = 5
+    friction_scale_factor = 0.06
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 250
+
+[sys.l5.Wether.config.heavyRainStorm]
+    fog_visual_range = 10
+    friction_scale_factor = 0.07
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 200
+
+[sys.l5.Wether.config.rainStorm]
+    fog_visual_range = 15
+    friction_scale_factor = 0.08
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 70
+
+[sys.l5.Wether.config.heavyRain]
+    fog_visual_range = 30
+    friction_scale_factor = 0.15
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 30
+
+[sys.l5.Wether.config.moderateRain]
+    fog_visual_range = 100
+    friction_scale_factor = 0.3
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 5
+
+[sys.l5.Wether.config.lightRain]
+    fog_visual_range = 500
+    friction_scale_factor = 0.5
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 2
+
+[sys.l5.Wether.config.blizzard]
+    fog_visual_range = 30
+    friction_scale_factor = 0.06
+    cloud_state = "overcast"
+    precipitation_type = "snow"
+    precipitation_intensity = 10
+
+[sys.l5.Wether.config.heavySnow]
+    fog_visual_range = 100
+    friction_scale_factor = 0.15
+    cloud_state = "overcast"
+    precipitation_type = "snow"
+    precipitation_intensity = 6
+
+[sys.l5.Wether.config.moderateSnow]
+    fog_visual_range = 500
+    friction_scale_factor = 0.3
+    cloud_state = "overcast"
+    precipitation_type = "snow"
+    precipitation_intensity = 3
+
+[sys.l5.Wether.config.lightSnow]
+    fog_visual_range = 2000
+    friction_scale_factor = 0.5
+    cloud_state = "overcast"
+    precipitation_type = "snow"
+    precipitation_intensity = 0.5
+
+[sys.l5.Wether.config.severeDenseFog]
+    fog_visual_range = 15
+    friction_scale_factor = 0.2
+    cloud_state = "rainy"
+    precipitation_type = "rain"
+    precipitation_intensity = 5
+
+[sys.l5.Wether.config.heavyFog]
+    fog_visual_range = 30
+    friction_scale_factor = 0.3
+    cloud_state = "overcast"
+    precipitation_type = "rain"
+    precipitation_intensity = 2
+
+[sys.l5.Wether.config.moderateFog]
+    fog_visual_range = 100
+    friction_scale_factor = 0.5
+    cloud_state = "overcast"
+    precipitation_type = "rain"
+    precipitation_intensity = 2
+
+[sys.l5.Wether.config.lightFog]
+    fog_visual_range = 500
+    friction_scale_factor = 0.6
+    cloud_state = "cloudy"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.mist]
+    fog_visual_range = 2000
+    friction_scale_factor = 0.8
+    cloud_state = "cloudy"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.haze]
+    fog_visual_range = 100
+    friction_scale_factor = 0.7
+    cloud_state = "overcast"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.sunny]
+    fog_visual_range = 2000
+    friction_scale_factor = 0.8
+    cloud_state = "free"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.overcast]
+    fog_visual_range = 1000
+    friction_scale_factor = 0.7
+    cloud_state = "overcast"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.sandDust]
+    fog_visual_range = 100
+    friction_scale_factor = 0.6
+    cloud_state = "overcast"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.hail]
+    fog_visual_range = 100
+    friction_scale_factor = 0.15
+    cloud_state = "overcast"
+    precipitation_type = "rain"
+    precipitation_intensity = 30
+
+[sys.l5.Wether.config.gale]
+    fog_visual_range = 2000
+    friction_scale_factor = 0.7
+    cloud_state = "cloudy"
+    precipitation_type = "dry"
+    precipitation_intensity = 0
+
+[sys.l5.Wether.config.none]
+    fog_visual_range = 2000
+    friction_scale_factor = 0.8
+    cloud_state = "free"
+    precipitation_type = "dry"
+    precipitation_intensity = 0

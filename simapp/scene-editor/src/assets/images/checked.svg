@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="12px" viewBox="0 0 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Radio/ON</title>
+    <g id="Radio/ON" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M6,9.5 C7.93299662,9.5 9.5,7.93299662 9.5,6 C9.5,4.06700338 7.93299662,2.5 6,2.5 C4.06700338,2.5 2.5,4.06700338 2.5,6 C2.5,7.93299662 4.06700338,9.5 6,9.5 Z M6,12 C2.6862915,12 0,9.3137085 0,6 C0,2.6862915 2.6862915,0 6,0 C9.3137085,0 12,2.6862915 12,6 C12,9.3137085 9.3137085,12 6,12 Z" id="Oval-2" fill="#505050" fill-rule="nonzero"></path>
+        <circle id="Oval-3" fill="#0491AA" cx="6" cy="6" r="3"></circle>
+    </g>
+</svg>

@@ -1,0 +1,50 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "location.proto";
+
+enum MapPosition {
+  MAP_POSITION_TOP = 0;
+  MAP_POSITION_TOP_LEFT = 1;
+  MAP_POSITION_LEFT = 2;
+  MAP_POSITION_BOTTOM_LEFT = 3;
+  MAP_POSITION_BOTTOM = 4;
+  MAP_POSITION_BOTTOM_RIGHT = 5;
+  MAP_POSITION_RIGHT = 6;
+  MAP_POSITION_TOP_RIGHT = 7;
+  MAP_POSITION_NONE = 8;
+}
+
+message EgoCarInfo {
+  //
+  int32 id = 1;
+
+  //
+  string ip = 2;
+
+  //
+  int32 port = 3;
+
+  //
+  Vec3 start_pos = 4;
+
+  //
+  Location location = 5;
+}
+
+message ErrorEgoCarInfo {
+  //
+  int32 car_id = 1;
+
+  //
+  Vec3 location = 2;
+}

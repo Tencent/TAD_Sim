@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+import "car_basic.proto";
+
+package tx_car;
+
+// parsed carsim par data
+message CarSimParData {
+    enum DataType {
+        UNKNOWN_DataType = 0;
+        KV_Type = 1;
+        MAP_1D = 2;
+        MAP_2D = 3;
+    }
+
+    enum Axle {
+        No_Axle = 0;
+        AXLE_1 = 1;
+        AXLE_2 = 2;
+    }
+
+    enum Side {
+        No_Side = 0;
+        SIDE_1 = 1;
+        SIDE_2 = 2;
+    }
+
+    message ParProperty {
+        Axle axle = 1;
+        Side side = 2;
+    }
+
+    message ParKeyword {
+        string mID = 1;
+        ParProperty parProperty = 2;
+    }
+
+    message KVPair {
+        string key = 1;
+        string value = 2;
+    }
+
+    message ParData {
+        ParKeyword keyword = 1;
+        DataType dataType = 2;
+        KVPair kvPair = 3;
+        Real1DMap map1d = 4;
+        Real2DMap map2d = 5;
+    }
+
+    string version = 1;             // version of carsim par file
+    repeated ParData parData = 2;   // parsed data
+}

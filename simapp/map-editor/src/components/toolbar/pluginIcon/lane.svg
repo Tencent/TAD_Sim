@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="-2 -2 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>画板</title>
+    <g id="LaneTool" fill="currentColor">
+        <g id="编组-5" transform="translate(8.000000, 0.000000)">
+            <rect id="矩形" x="0" y="0" width="2" height="20"></rect>
+            <rect id="矩形" x="3" y="0" width="2" height="20"></rect>
+        </g>
+        <g id="编组-4" transform="translate(15.000000, 4.000000)">
+            <rect id="矩形" x="2" y="4" width="2" height="8"></rect>
+            <polygon id="三角形" points="3 0 6 6 0 6"></polygon>
+        </g>
+        <g id="编组-4" transform="translate(3.000000, 10.000000) scale(1, -1) translate(-3.000000, -10.000000) translate(0.000000, 4.000000)">
+            <rect id="矩形" x="2" y="4" width="2" height="8"></rect>
+            <polygon id="三角形" points="3 0 6 6 0 6"></polygon>
+        </g>
+    </g>
+</svg>

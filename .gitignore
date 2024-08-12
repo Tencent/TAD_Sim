@@ -1,32 +1,111 @@
-# Prerequisites
-*.d
+# mac、vim、webstorm、vscode extension
+*.DS_Store
+*.swp
+.idea
+.vscode
+.codecc
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# all builds
+**/build/
+**/Debug/
+*/compile_commands.json
+simcore/traffic/bin/
+simcore/map_server/map_parser/*.so
+simcore/map_server/service/*.json
+!simcore/map_server/service/.devcontainer.json
+simcore/map_server/service/*.sqlite
+simcore/map_server/service/service
+**/.clangd
+simcore/framework/docs/_build
+simcore/framework/docs/api
+simcore/framework/docs/sphinx
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+# compressed files
+*.7z
+*.tar.gz
+*.tar
+*.zip
+*.pyc
 *.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
+*.gz
+*.dll
+*.exp
+*.ilk
 *.lib
+*.pdb
+*.vs
+simcore/vehicle_dynamics/lib
+!simcore/vehicle_dynamics/lib.tar.gz
+!simcore/vehicle_dynamics/controller.tar.gz
 
-# Executables
-*.exe
-*.out
-*.app
+# deps
+deps/
+
+# output
+txSim
+
+**/go.sum
+
+# nodejs modules
+**/node_modules
+
+# all generated pb source files
+**/*.pb.h
+**/*.pb.cc
+*_pb2.py
+
+#
+simcore/traffic/ditw/version/version.h
+simcore/traffic/app/version/version.h
+simcore/traffic/cloud/version/version.h
+simcore/traffic/ditw/traffic_monitor/version/version.h
+simcore/traffic/planning/version/version.h
+simcore/traffic/dummy_car/version/version.h
+simcore/traffic/cloud/stand_alone/version/version.h
+simcore/traffic/preview/version/version.h
+simcore/perfect_planning/dummy_driver/version/version.h
+
+# common/map_sdk
+common/map_sdk/hadmap
+common/map_sdk/hadmap-debug
+common/map_sdk/CMakeSettings.json
+common/map_sdk/out/
+common/map_sdk/devel
+common/map_sdk/dll
+common/map_sdk/lib
+common/map_sdk/include
+
+# simcore/script
+simcore/script/sim_msg
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+**/myvenv/
+**/venv/
+**.egg-info/
+
+#
+!simcore/excel2asam/map_sdk_py/lib_win_py3118/*
+
+#
+simapp/package-lock.json
+simapp/desktop/package-lock.json
+simcore/framework/cli/cli
+simcore/framework/cli/cli.exe
+simcore/map_server/service/service.exe
+
+# display
+simcore/sensors/display/**/Binaries
+simcore/sensors/display/**/Build
+simcore/sensors/display/**/Intermediate
+simcore/sensors/display/**/Saved
+simcore/sensors/display/**/fbm
+simcore/sensors/display/Display.sln
+
+# datas
+!datas/scenarios/*

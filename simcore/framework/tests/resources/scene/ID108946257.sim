@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<simulation version="1.0" date_version="1678328730500" sim_id="1103">
+    <mapfile lon="0.0020401999999999998" lat="4.3100000000000002e-06" alt="-1e-08" unrealLevelIndex="0">../hadmap/TAS_01.xodr</mapfile>
+    <traffic>ID108946257_traffic.xml</traffic>
+    <planner>
+        <ego type="car" name="suv" />
+        <route id="0" type="start_end" start="0.00035787041243255457,-0.000015044581144640728" end="0.0009434311212275659,-0.00007803988995560456" />
+        <start_v>0</start_v>
+        <theta>0.000029005090169510263</theta>
+        <Velocity_Max>20</Velocity_Max>
+        <control_longitudinal>false</control_longitudinal>
+        <control_lateral>false</control_lateral>
+        <acceleration_max>0</acceleration_max>
+        <deceleration_max>0</deceleration_max>
+        <trajectory_enabled>false</trajectory_enabled>
+        <scene_event version="1.1.0.0">
+            <event id="0" name="new_trigger_1" type="time_trigger" condition="trigger_time:1" endCondition="type:none,value:0.0" action="[{type:activate,value:0.0,subtype:lateral,offset:0.0,multi:{}}]" info="" />
+        </scene_event>
+        <altitude start="8.475035429000854e-8" end="-0.000" />
+        <InputPath points="0.000357900000,-0.000015000000,0.000;0.000593540000,-0.000055580000,-0.000;0.000943430000,-0.000078040000,-0.000" />
+    </planner>
+</simulation>

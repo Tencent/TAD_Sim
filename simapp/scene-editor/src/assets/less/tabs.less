@@ -1,0 +1,72 @@
+@import "./var";
+
+.el-tabs__header {
+  margin-bottom: 1px;
+  user-select: none;
+  cursor: default;
+}
+
+.el-tabs__nav-wrap {
+  margin-bottom: 0;
+
+  &::after {
+    display: none;
+  }
+}
+
+.el-tabs__active-bar {
+  display: none;
+}
+
+.el-tabs__item {
+  height: 28px;
+  line-height: 28px;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 20px;
+  background-color: @global-bg-color;
+  color: @global-default-color;
+  transition: background-color, color .16s linear;
+
+  &:hover {
+    color: @global-primary-color;
+  }
+
+  &.is-active {
+    background-color: @global-body-color;
+    color: @global-primary-color;
+  }
+}
+
+.el-tabs__content {
+  background-color: @global-body-color;
+}
+
+.el-tabs--bottom .el-tabs__item.is-bottom:nth-child(2), .el-tabs--bottom .el-tabs__item.is-top:nth-child(2), .el-tabs--top .el-tabs__item.is-bottom:nth-child(2), .el-tabs--top .el-tabs__item.is-top:nth-child(2) {
+  padding-left: 20px;
+}
+
+.el-tabs--bottom .el-tabs__item.is-bottom:last-child, .el-tabs--bottom .el-tabs__item.is-top:last-child, .el-tabs--top .el-tabs__item.is-bottom:last-child, .el-tabs--top .el-tabs__item.is-top:last-child {
+  padding-right: 20px;
+}
+
+.el-tabs--border-card {
+  background: @global-bg-color;
+  border-top: none;
+
+  > .el-tabs__header {
+    background: @global-bg-color;
+    border-bottom-color: @global-bd-color;
+
+    .el-tabs__item:not(.is-disabled):hover {
+      color: @global-primary-color;
+    }
+
+    .el-tabs__item.is-active {
+      color: @global-primary-color;
+      background-color: @active-bg-color;
+      border-right-color: @active-bg-color;
+      border-left-color: @active-bg-color;
+    }
+  }
+}

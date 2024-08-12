@@ -1,0 +1,16 @@
+--scene=data/scene/data.sim
+--data=data/IbeoData
+--stage=1
+--start_idx=0
+--end_idx=19
+--islonlat=true
+
+#GA args
+--DNA=12
+--CROSS_RATE=0.8
+--MUTATION_RATE=0.003
+--N_GENERATIONS=20
+--e=0.003
+--OBS_DISTANCE=1
+--MAX_STEP=20
+--TIME_STEP=100.0

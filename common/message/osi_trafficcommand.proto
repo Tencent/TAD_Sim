@@ -1,0 +1,662 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_version.proto";
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+//
+// \brief The scenario engine provides control commands in the traffic command
+// message to traffic participant models. The control commands are based on
+// the scenario.
+//
+// \note This interface is currently just a placeholder and will be
+// changed in experimental ways to support basic scenario execution.
+// In the future this interface shall be aligned with the level of
+// atomic actions as described in OpenSCENARIO 1.0 or later.
+//
+message TrafficCommand {
+  // The interface version used by the sender (scenario engine).
+  //
+  InterfaceVersion version = 1;
+
+  // The data timestamp of the simulation environment. Zero time is arbitrary
+  // but must be identical for all messages. Zero time does not need to
+  // coincide with the UNIX epoch. It is recommended to use zero timestamp as
+  // the starting time point of the simulation.
+  //
+  // \note For traffic command data the timestamp coincides both with
+  // the notional simulation time the data applies to and the time it was sent
+  // There is no inherent latency for traffic command data, as opposed
+  // to sensor data.
+  //
+  Timestamp timestamp = 2;
+
+  // The ID of this traffic participant.
+  //
+  Identifier traffic_participant_id = 3;
+
+  // Commanded traffic action(s) if any.
+  //
+  // \note If more than one action is supplied in one command message
+  // all actions are executed in parallel.
+  //
+  repeated TrafficAction action = 4;
+}
+
+//
+// \brief Atomic traffic actions to be performed.
+//
+// The transmitted commands are the atomic traffic actions described by
+// this message.
+//
+// \note This message is notionally a multiple choice selection, that is, only
+// certain combinations of atomic traffic actions shall be transmitted within
+// certain time intervals, for example, for plausibity reasons. The restrictions
+// regarding that are not part of this message, yet are seen as a task of the
+// scenario description, for example, OpenSCENARIO.
+//
+// \note All traffic actions are sent only once just before they are about
+// to start. This is also true, if their execution is expected to
+// take simulation time. To inform the traffic participant
+// model that certain actions must or shall be terminated, there are
+// explicit actions nested inside this message (AbortActionsAction,
+// EndActionsAction), which hold a reference to the respective actions.
+// Futhermore, there exists a \c TrafficCommandUpdate message for the
+// traffic participant to report back on potentially dismissed actions.
+//
+message TrafficAction {
+  // A FollowTrajectoryAction.
+  //
+  FollowTrajectoryAction follow_trajectory_action = 1;
+
+  // A FollowPathAction.
+  //
+  FollowPathAction follow_path_action = 2;
+
+  // An AcquireGlobalPositionAction.
+  //
+  AcquireGlobalPositionAction acquire_global_position_action = 3;
+
+  // A LaneChangeAction.
+  //
+  LaneChangeAction lane_change_action = 4;
+
+  // A SpeedAction.
+  //
+  SpeedAction speed_action = 5;
+
+  // An AbortActionsAction.
+  //
+  AbortActionsAction abort_actions_action = 6;
+
+  // An EndActionsAction.
+  //
+  EndActionsAction end_actions_action = 7;
+
+  // A CustomAction.
+  //
+  CustomAction custom_action = 8;
+
+  // A LongitudinalDistanceAction.
+  //
+  LongitudinalDistanceAction longitudinal_distance_action = 9;
+
+  // A LaneOffsetAction.
+  //
+  LaneOffsetAction lane_offset_action = 10;
+
+  // A LateralDistanceAction.
+  //
+  LateralDistanceAction lateral_distance_action = 11;
+
+  // A TeleportAction.
+  //
+  TeleportAction teleport_action = 12;
+
+  //
+  // \brief The action header
+  //
+  message ActionHeader {
+    // The unique id of the action.
+    //
+    // \note This field is mandatory.
+    //
+    // \note This id must be unique within all traffic command
+    // messages exchanged with one traffic participant.
+    //
+    Identifier action_id = 1;
+  }
+
+  // Definition of following mode.
+  //
+  enum FollowingMode {
+    // Following mode position forces the traffic participant to
+    // follow a path/trajectory explicitly, disregarding any internal
+    // constraints, for example, steering dynamics.
+    //
+    FOLLOWING_MODE_POSITION = 0;
+
+    // Following mode follow allows the traffic participant to
+    // treat a path/trajectory as a target, to be achieved as closely
+    // as possible while retaining any internal constraints,
+    // for example, steering dynamics.
+    //
+    FOLLOWING_MODE_FOLLOW = 1;
+  }
+
+  // Definition of dynamic shapes.
+  //
+  enum DynamicsShape {
+    // Shape is unspecified.
+    //
+    DYNAMICS_SHAPE_UNSPECIFIED = 0;
+
+    // Shape is linear.
+    //
+    DYNAMICS_SHAPE_LINEAR = 1;
+
+    // Shape is cubic.
+    //
+    DYNAMICS_SHAPE_CUBIC = 2;
+
+    // Shape is sinusoidal.
+    //
+    DYNAMICS_SHAPE_SINUSOIDAL = 3;
+
+    // Shape is a step function.
+    //
+    DYNAMICS_SHAPE_STEP = 4;
+  }
+
+  // \brief DynamicConstraints
+  //
+  // This message is used in Longitudinal and Lateral Distance Actions as
+  // constraints on the TrafficParticipant not allowing them to exceed/drop below
+  // certain speeds/acceleration levels.
+  //
+  message DynamicConstraints {
+    // Maximum acceleration the distance contoller is allowed to use for keeping distance.
+    //
+    // Unit: m/s^2
+    //
+    double max_acceleration = 1;
+
+    // Maximum deceleration the distance contoller is allowed to use for keeping distance.
+    //
+    // Unit: m/s^2
+    //
+    double max_deceleration = 2;
+
+    // Maximum speed the distance contoller is allowed to use for keeping distance.
+    //
+    // Unit: m/s
+    //
+    double max_speed = 3;
+  }
+
+  //
+  // \brief Follow trajectory action.
+  //
+  // Controls a traffic participant to follow a trajectory using vertices
+  // with timings. It specifies the motion in space as a function of time.
+  //
+  // \note The StatePoint messages in trajectory_point requires a
+  // specified timestamp.
+  //
+  // \note This action is aligned with the FollowTrajectoryAction of
+  // OpenSCENARIO 1.0 using a 4/7D trajectory with shape Polyline.
+  //
+  message FollowTrajectoryAction {
+    // The action header.
+    //
+    ActionHeader action_header = 1;
+
+    // A list of trajectory StatePoints.
+    //
+    // Set the timestamp fields and position fields for all
+    // trajectory points. The orientation fields can be set
+    // depending on the constrain_orientation field being true.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated StatePoint trajectory_point = 2;
+
+    // Constrain the orientation of the traffic participant as specified
+    // by the trajectory points.
+    //
+    // This boolean flag defines whether orientation values supplied in
+    // the trajectory points (if any) shall be used to constrain the
+    // orientation of the traffic participant or not.
+    //
+    bool constrain_orientation = 3;
+
+    // Specify the following mode that should be employed in executing
+    // the trajectory.
+    //
+    FollowingMode following_mode = 4;
+  }
+
+  //
+  // \brief Follow path action.
+  //
+  // Controls a traffic participant to follow a path using vertices. It
+  // specifies the motion in space independent of time.
+  //
+  // \note The StatePoint messages in path_point only requires a specified
+  // position field. The orientation can be set optionally. Any
+  // timestamp StatePoint values are ignored.
+  //
+  // \note This action is aligned with the FollowTrajectoryAction of
+  // OpenSCENARIO 1.0 using a 3/6D trajectory with shape Polyline.
+  //
+  message FollowPathAction {
+    // The action header
+    //
+    ActionHeader action_header = 1;
+
+    // A list of path StatePoints
+    //
+    // Set the position fields for all path points.
+    // The timestamp field are not required and ignored.
+    // The orientation fields can be set depending on the constrain_orientation
+    // field being true.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated StatePoint path_point = 2;
+
+    // Constrain the orientation of the traffic participant as specified
+    // by the path points.
+    //
+    // This boolean flag defines whether orientation values supplied in
+    // the path points shall be used to constrain the orientation
+    // of the traffic participant or not.
+    //
+    bool constrain_orientation = 3;
+
+    // Specify the following mode that should be employed in executing
+    // the path.
+    //
+    FollowingMode following_mode = 4;
+  }
+
+  //
+  // \brief Acquire global position action.
+  //
+  // This action assigns a route to a traffic participant. The route
+  // assigned will be the shortest route (along roads or satisfying any
+  // other constraints a traffic participant is operating under) between
+  // the traffic participant's current position and the position specified.
+  //
+  // As with all routing actions, the exact way this route is achieved is
+  // under the control of the traffic participant model.
+  //
+  // \note This action is aligned with the AcquirePositionAction of
+  // OpenSCENARIO 1.0 using a WorldPosition position argument.
+  //
+  message AcquireGlobalPositionAction {
+    // The action header.
+    //
+    ActionHeader action_header = 1;
+
+    // Position in the global coordinate system.
+    //
+    // The position refers to the center (x,y,z) of the bounding box.
+    //
+    // \note Remark: The definition of the reference point follows the
+    // specification of the \c BaseMoving message.
+    //
+    Vector3d position = 2;
+
+    // Orientation in the global coordinate system.
+    //
+    // This is optional. If no orientation is given, the end orientation
+    // is under control of the traffic participant.
+    //
+    Orientation3d orientation = 3;
+  }
+
+  //
+  // \brief Lane change action.
+  //
+  // This action assigns a lane change to a traffic participant. The fields
+  // of this message enable different levels of constraint for the traffic
+  // participant depending on the use case. In case the constraints are
+  // supposed to be small, the dynamics shape or even the duration and
+  // the distance for the lane change can be omitted.
+  //
+  // \note This action is aligned with LaneChangeAction of OpenSCENARIO 1.0
+  // defining the targeted lane and optionally the parametrization of the
+  // lane change.
+  //
+  message LaneChangeAction {
+    // The action header.
+    //
+    ActionHeader action_header = 1;
+
+    // Targeted lane relative to the current lane.
+    //
+    // Convention: +1 means to the right, -1 means to the left.
+    //
+    int32 relative_target_lane = 2;
+
+    // Specified shape of the lane change action.
+    // If the shape is unspecified (enum value 0), the shape of the
+    // lane change is open to the traffic participant model.
+    //
+    DynamicsShape dynamics_shape = 3;
+
+    // Duration of the lane change.
+    //
+    // A value of 0.0 (the default value) imposes no constraint
+    // on the duration, unless the dynamics shape is a step function,
+    // where an immediate step is effected.
+    //
+    // Unit: s
+    //
+    double duration = 4;
+
+    // Distance of the lane change.
+    //
+    // A value of 0.0 (the default value) imposes no constraint
+    // on the distance, unless the dynamics shape is a step function,
+    // where an immediate step is effected.
+    //
+    // Unit: m
+    //
+    double distance = 5;
+  }
+
+  //
+  // \brief Speed action.
+  //
+  // This action assigns a targeted speed to a traffic participant.
+  // The action can be constrained by specifying the dynamics
+  // shape or even the duration and the distance of the acceleration /
+  // deceleration process.
+  //
+  // \note This action is aligned with SpeedAction of OpenSCENARIO 1.0
+  // defining the targeted speed and optionally the parametrization of the
+  // speed transition.
+  //
+  message SpeedAction {
+    // The action header
+    //
+    ActionHeader action_header = 1;
+
+    // Targeted absolute speed.
+    //
+    double absolute_target_speed = 2;
+
+    // Specified transition shape of the speed change action.
+    // If the shape is unspecified (enum value 0), the shape of the
+    // speed change is open to the traffic participant model.
+    //
+    DynamicsShape dynamics_shape = 3;
+
+    // Duration of the speed change.
+    //
+    // A value of 0.0 (the default value) imposes no constraint
+    // on the duration, unless the dynamics shape is a step function,
+    // where an immediate step is effected.
+    //
+    // Unit: s
+    //
+    double duration = 4;
+
+    // Distance of the speed change.
+    //
+    // A value of 0.0 (the default value) imposes no constraint
+    // on the distance, unless the dynamics shape is a step function,
+    // where an immediate step is effected.
+    //
+    // Unit: m
+    //
+    double distance = 5;
+  }
+
+  // \brief AbortActionsAction.
+  //
+  // This action tells a traffic participant that it should immediately
+  // abort the execution of other actions referenced within this action.
+  // In contrast to the EndActionsAction this action forces a hard
+  // termination of the referenced actions.
+  //
+  message AbortActionsAction {
+    // The action header
+    //
+    ActionHeader action_header = 1;
+
+    // Actions which must be aborted immediately.
+    //
+    // These fields hold the action ids of the actions that must be
+    // aborted immediately.
+    //
+    repeated Identifier target_action_id = 2;
+  }
+
+  // \brief End actions action.
+  //
+  // This action tells a traffic participant that the exection of the
+  // referenced actions is regarded as successfully performed. The
+  // termination of the referenced actions is allowed to be performed
+  // gracefully.
+  //
+  message EndActionsAction {
+    // The action header
+    //
+    ActionHeader action_header = 1;
+
+    // Actions which are regarded as successfully executed.
+    //
+    // These fields hold the action ids of the actions that are regarded
+    // as successfully executed and shall be terminated gracefully.
+    //
+    repeated Identifier target_action_id = 2;
+  }
+
+  //
+  // \brief Custom Action.
+  //
+  // This action assigns a custom command to a traffic participant.
+  // The syntax and semantics of this action is implementation defined.
+  // It is entirely up to each individual traffic participant which
+  // custom commands it supports, if any, and how they must be phrased.
+  //
+  // \note This action is aligned with CustomCommandAction of OpenSCENARIO 1.0
+  // providing a customizable user defined action.
+  //
+  message CustomAction {
+    // The Action Header.
+    //
+    ActionHeader action_header = 1;
+
+    // The custom command given to the traffic participant. Used to convey a specific instruction
+    // (for example, "exit_highway"), or event (for example, "left_indicator_activated").
+    //
+    // \note This corresponds to the content of the OpenSCENARIO 1.0 CustomCommandAction field.
+    //
+    string command = 2;
+
+    // The type of the custom command given to the traffic participant. Can be used to simplify
+    // how commands are grouped. For example, the command_type could be "sensor_failure" and the
+    // command value could be "front_right_camera".  This avoids long commands, like
+    // "sensor_failure: front_right_camera".
+    //
+    // \note This corresponds to the "type" attribute of the OpenSCENARIO 1.0 CustomCommandAction.
+    //
+    string command_type = 3;
+  }
+
+  // \brief Longitudinal Distance Action
+  //
+  // The action tells the (host) traffic participant to reach a certain longitudinal distance
+  // relative to a target traffic participant. The longitudinal distance is defined as the distance
+  // along the centerline of the lane, on which the (host) traffic participant is currently located.
+  // The interpolation strategy between centerline points for calculating
+  // that distance along the centerline is open to the traffic participant modeller.
+  //
+  // \note This action is aligned with LongitudinalDistanceAction of OpenSCENARIO 1.0
+  // defining the reference traffic participant and the distance.
+  //
+  // \note Limitation: This concept currently only works for lanes with a centerline, i.e. for lanes
+  // of TYPE_DRIVING, not for lanes of TYPE_NONDRIVING or TYPE_INTERSECTION.
+  //
+  message LongitudinalDistanceAction {
+    // Action Header of the message
+    //
+    ActionHeader action_header = 1;
+
+    // Unique Id of the reference traffic participant to which the distance is defined.
+    //
+    Identifier target_traffic_participant_id = 2;
+
+    // The distance to reach along the lane
+    //
+    // Unit: m
+    //
+    double distance = 3;
+
+    // Determine the measurement of longitudinal distance between the traffic
+    // participant receiving this action and the reference traffic
+    // participant.
+    // True: Longitudinal distance is measured using the distance
+    // between closest bounding box points.
+    // False: Longitudinal distance is mesasured using the distance
+    // between the center of each object's bounding box.
+    //
+    bool freespace = 4;
+
+    // Define wheather the traffic participant should only reach the distance once
+    // or if it should also keep the distance after having reached it.
+    // True: the traffic participant shall approach the reference participant
+    // and follow with the distance specified until the action is
+    // aborted (communicate with AbortActionsAction).
+    // False: the action ends as soon as the traffic participant has reached
+    // the specified distance (communicate with EndActionsAction).
+    //
+    bool follow = 5;
+
+    // Parameter that assings either unlimited dynamics (if omitted)
+    // or limited maxAcceleration/maxDeceleration/maxSpeed to the action.
+    //
+    DynamicConstraints dynamic_constraints = 6;
+  }
+
+  // \brief Lateral Distance Action
+  //
+  // The action tells the (host) traffic participant to reach a certain lateral distance relative to
+  // a target traffic participant. The lateral distance is
+  // defined along an imaginative perpendicular line
+  // with respect to the centerline of the current (host) traffic participant's lane.
+  // The interpolation strategy between centerline points for
+  // calculating that distance along the imaginative
+  // perpendicular line is open to the traffic participant modeller.
+  //
+  // \note This action is aligned with LateralDistanceAction of OpenSCENARIO 1.0
+  // defining the reference traffic participant and the distance.
+  //
+  // \note Limitation: This concept currently only works for lanes with a centerline, i.e. for lanes
+  // of TYPE_DRIVING, not for lanes of TYPE_NONDRIVING or TYPE_INTERSECTION.
+  //
+  message LateralDistanceAction {
+    // Action Header of the message
+    //
+    ActionHeader action_header = 1;
+
+    // Id of the reference entity the lateral distance shall be kept to.
+    //
+    Identifier target_traffic_participant_id = 2;
+
+    // Lateral distance value.
+    //
+    // Unit: m
+    //
+    double distance = 3;
+
+    // Determine the measurement of lateral distance between the traffic
+    // participant receiving this action and the reference traffic
+    // participant.
+    // True: Lateral distance is measured using the distance between closest bounding box points.
+    // False: Lateral distance is mesasured using the distance
+    // between the center of each object's bounding box.
+    //
+    bool freespace = 4;
+
+    // Define wheather the traffic participant should only reach the distance once
+    // or if it should also keep the distance after having reached it.
+    // True: the traffic participant shall approach the reference participant
+    // and follow with the distance specified until the action is
+    // aborted (communicate with AbortActionsAction).
+    // False: the action ends as soon as the traffic participant has reached
+    // the specified distance (communicate with EndActionsAction).
+    //
+    bool follow = 5;
+
+    // Parameter that assings either unlimited dynamics (if omitted)
+    // or limited maxAcceleration/maxDeceleration/maxSpeed to the action.
+    //
+    DynamicConstraints dynamic_constraints = 6;
+  }
+
+  // \brief Lane Offset Action
+  //
+  // This action assigns a targeted lane offset to a traffic participant.
+  // The action can be constrained by specifying the dynamics shape of the
+  // lateral transition profile.
+  //
+  // \note This action is aligned with LaneOffsetAction of OpenSCENARIO 1.0.
+  //
+  message LaneOffsetAction {
+    // The Action Header
+    //
+    ActionHeader action_header = 1;
+
+    // Targeted lane offset in meters relative to the centerline of the
+    // current traffic participant's lane. Positive values mean left of the centerline,
+    // negative values mean right of the centerline.
+    //
+    // Unit: m
+    //
+    double target_lane_offset = 2;
+
+    // Specified transition shape of reaching the lane offset.
+    // If the shape is unspecified (enum value 0), the shape of the
+    // transition is open to the traffic participant model.
+    //
+    DynamicsShape dynamics_shape = 3;
+  }
+
+  // \brief Teleport Action
+  //
+  // This Action allows to immediately place a traffic participant to
+  // another position.
+  //
+  // \note This action is aligned with the TeleportAction of
+  // OpenSCENARIO 1.0 using a WorldPosition position argument.
+  //
+  message TeleportAction {
+    // The Action Header
+    //
+    ActionHeader action_header = 1;
+
+    // Position in the global coordinate system.
+    //
+    // The position refers to the center (x,y,z) of the bounding box.
+    //
+    // \note Remark: The definition of the reference point follows the
+    // specification of the \c BaseMoving message.
+    //
+    Vector3d position = 2;
+
+    // Orientation in the global coordinate system.
+    //
+    // This is optional, if no orientation is given, the end orientation
+    // is under control of the traffic participant.
+    //
+    Orientation3d orientation = 3;
+  }
+}

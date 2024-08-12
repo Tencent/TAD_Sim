@@ -1,0 +1,184 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "traffic.proto";
+import "regionBasic.proto";
+import "moduleService.proto";
+
+message MapRange {
+  //
+  Vec2 bottom_left = 1;
+
+  //
+  Vec2 top_right = 2;
+}
+
+message EgoCars {
+  //
+  repeated EgoCarInfo ego_cars = 1;
+}
+
+message Cars {
+  //
+  repeated Car cars = 1;
+}
+
+message TransferParams {
+  //
+  int64 frame_id = 1;
+
+  //
+  MapRange curr_map_range = 2;
+
+  //
+  int64 curr_tm_id = 3;
+
+  //
+  oneof transferObjs {
+    //
+    EgoCars ego_cars = 4;
+
+    //
+    Cars cars = 5;
+  }
+}
+
+message TransferStatus {
+  //
+  ErrorCode errorCode = 1;
+
+  //
+  string errorMessage = 2;
+}
+
+message RequestVCParams {
+  // key is the ident, val is the range
+  // map<string,MapRange> cell_infos = 1;
+
+  //
+  int64 frame_id = 1;
+
+  //
+  int64 uuid = 2;
+
+  //
+  MapRange req_mr = 3;
+
+  //
+  int32 direction = 4;
+}
+
+message RequestVCStatus {
+  //
+  int64 uuid = 1;
+
+  //
+  Traffic traffic = 2;
+
+  //
+  ErrorCode errorCode = 3;
+
+  //
+  string errorMessage = 4;
+}
+
+message VisibleCParams {
+  //
+  int64 frame_id = 1;
+
+  //
+  MapRange curr_map_range = 2;
+
+  //
+  int64 curr_tm_id = 3;
+
+  //
+  int32 direction = 4;
+
+  //
+  oneof vo {
+    //
+    Car car = 5;
+
+    //
+    StaticObstacle so = 6;
+
+    //
+    EgoCarInfo ego_car = 7;
+
+    //
+    DynamicObstacle dob = 8;
+  }
+}
+
+message VisibleCStatus {
+  //
+  ErrorCode errorCode = 1;
+
+  //
+  string errorMessage = 2;
+}
+
+message MergeTrafficInfo {
+  //
+  Traffic traffic = 1;
+
+  //
+  repeated EgoCarInfo add_egos = 2;
+
+  //
+  repeated int32 add_car_ids = 3;
+
+  //
+  repeated int32 add_dynamic_obstacle_ids = 4;
+}
+
+message MergeInfoParams {
+  //
+  int64 frame_id = 1;
+
+  //
+  int32 rm_id = 2;
+
+  //
+  int32 map_id = 3;
+
+  //
+  MergeTrafficInfo info = 4;
+}
+
+message MergeInfoRet {
+  enum RetCode {
+    MergeSUCCESS = 0;
+    MergeERROR = 1;
+  }
+
+  //
+  RetCode result = 1;
+
+  //
+  string msg = 2;
+}
+
+service RmInternalService {
+  //
+  rpc TransferCar (TransferParams) returns (TransferStatus);
+
+  //
+  rpc RequestVisibleCars (RequestVCParams) returns (RequestVCStatus);
+
+  //
+  rpc CarVisibleTo(VisibleCParams) returns (VisibleCStatus);
+
+  //
+  rpc MergeSurroundingMapInfo(MergeInfoParams) returns (MergeInfoRet);
+}

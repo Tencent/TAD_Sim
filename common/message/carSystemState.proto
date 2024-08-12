@@ -1,0 +1,38 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Car System state machine information.
+// 车辆系统状态机信息.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+
+message SystemState {
+  //
+  Header header = 1;
+
+  //
+  bool inside_map = 2;
+
+  //
+  bool has_leader_car = 3;
+
+  //
+  bool lane_marks_valid = 4;
+
+  //
+  uint32 leader_car_speed = 5;
+
+  //
+  int64 leader_car_id = 6;
+
+  //
+  uint32 state = 7;
+}

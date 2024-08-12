@@ -1,0 +1,1465 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief For each step of the traffic (vehicles, pedestrians, obstacles, traffic lights).
+// 交通流仿真器每一个时间步的仿真结果, 包含车辆, 行人, 障碍物, 交通灯.
+//
+// TOPIC: TRAFFIC
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "trajectory.proto";
+import "location.proto";
+
+message TwinInfo {
+}
+
+message ManualVehicleControlInfo {
+  //
+  int32 id = 1;
+
+  //
+  Location veh_control_info = 2;
+}
+
+message ManualVehicleControlInfoArray {
+  //
+  repeated ManualVehicleControlInfo vehicles_control_info = 1;
+}
+
+enum ControlState {
+  // default
+  Autonomous = 0;
+  Manual = 1;
+}
+
+enum NearestObjectDirection {
+  FRONT = 0;
+  // RearVeh_CurrentLane
+  BACK_DIRECTION = 1;
+  LEFT = 2;
+  LEFT_FRONT = 3;
+  LEFT_BACK = 4;
+  RIGHT = 5;
+  RIGHT_FRONT = 6;
+  RIGHT_BACK = 7;
+}
+
+message NearestObject {
+  // Neighboring object ID.
+  // 相邻物体ID.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note -1 is invalid
+  //
+  int32 id = 1;
+
+  // Neighboring object relative distance.
+  // 相邻物体相对距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double euclid_dist = 2;
+
+  // Neighboring object relative direction.
+  // 相邻物体相对方向.
+  //
+  // Unit: N/A, Range: [0..7], Default: 0
+  //
+  NearestObjectDirection dir = 3;
+}
+
+enum VehicleRelativePositionalRelationship {
+  // No collision relationship with ego, 1-outside the valid range, 2-on the opposite lane.
+  // 与主车无碰撞关系, 1-在有效范围之外, 2-在对向车道上.
+  //
+  No_Relationship = 0;
+
+  // Ego is in front of the current vehicle, there is a possibility of vehicle colliding with ego.
+  // 主车在当前车辆前方, 存在车辆撞主车的可能.
+  //
+  Ego_In_Front = 1;
+
+  // Ego is behind current vehicle, there is a possibility of ego colliding with current vehicle.
+  // 主车在当前车辆后方, 存在主车撞当前车辆的可能.
+  //
+  Ego_In_Back = 2;
+
+  // Ego overlaps with the current vehicle.
+  // 主车与当前车辆重叠.
+  //
+  Ego_Vehicle_Overlap = 3;
+}
+
+message ForwardCollisionWarning {
+  // Type of relationship between the current vehicle and the ego.
+  // 当前车辆与主车的关系类型.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  VehicleRelativePositionalRelationship state = 1;
+
+  // Distance between vehicle surround box and ego surround box.
+  // 车辆包围盒与主车包围盒的距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double euclidean_distance = 2;
+
+  // Distance of vehicle (front/rear) projected in the local coordinate system of ego \n
+  //  (in the direction of the lane it is in).
+  // 车辆(车头/车尾) 在主车局部坐标系(所处车道方向)投影距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double lane_proj_distance = 3;
+
+  // Value of 2-dimensional vector velocities of the ego.
+  // 主车 2 维矢量速度的值.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double ego_v = 4;
+
+  // Vehicle speed in the direction of the extended lane line.
+  // 车辆沿车道线方向的速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double vehicle_v = 5;
+
+  // ttc_euclidean_distance.
+  //
+  // Unit: s, Range: [-1..inf], Default: 0.0
+  //
+  // \note state=No_Relationship 时,  值为-1
+  // \note state=Ego_In_Front时, 如果 (vehicleVelocity > egoVelocity) 值
+  // 为 euclidean_distance/(vehicleVelocity - egoVelocity), 否则 -1
+  // \note state=Ego_In_Back时, 如果 (egoVelocity > vehicleVelocity) 值
+  // 为 euclidean_distance/(egoVelocity - vehicleVelocity), 否则 -1
+  //
+  double ttc_euclidean_distance = 6;
+
+  // ttc_lane_proj_distance.
+  //
+  // Unit: s, Range: [-1..inf], Default: 0.0
+  //
+  // \note state=No_Relationship 时, 值为-1
+  // \note state=Ego_In_Front时, 如果 (vehicleVelocity > egoVelocity) 值
+  // 为 lane_proj_distance/(vehicleVelocity - egoVelocity), 否则 -1
+  // \note state=Ego_In_Back时, 如果 (egoVelocity > vehicleVelocity) 值
+  // 为 lane_proj_distance/(egoVelocity - vehicleVelocity), 否则 -1
+  //
+  double ttc_lane_proj_distance = 7;
+
+  // thw_euclidean_distance.
+  //
+  // Unit: s, Range: [-1..inf], Default: 0.0
+  //
+  // \note state=No_Relationship 时, 值为-1
+  // \note state=Ego_In_Front时, 值为 euclidean_distance/(vehicleVelocity), 否则 -1
+  // \note state=Ego_In_Back时, 值为 euclidean_distance/(egoVelocity), 否则 -1
+  //
+  double thw_euclidean_distance = 8;
+
+  // thw_lane_proj_distance.
+  //
+  // Unit: s, Range: [-1..inf], Default: 0.0
+  //
+  // \note state=No_Relationship 时,  值为-1
+  // \note state=Ego_In_Front时, 值为 lane_proj_distance/(vehicleVelocity), 否则 -1
+  // \note state=Ego_In_Back时, 值为 lane_proj_distance/(egoVelocity), 否则 -1
+  //
+  double thw_lane_proj_distance = 9;
+}
+
+message Extra_Info {
+  // Establish the projected coordinates in the local coordinate system in terms of \n
+  // the position of ego and the direction of the front of the vehicle,
+  // and the three-dimensional points in Cartesian coordinates.
+  // 以主车位置和车头方向建立局部坐标系中的投影坐标, 笛卡尔坐标三维点.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  Vec3 local_cartesian_point = 1;
+
+  // Whether it is the vehicle in front of the ego.
+  // 是否是主车的前方车辆.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool front_veh = 2;
+
+  // Whether the vehicle is behind the ego.
+  // 是否是主车的后方车辆.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  bool rear_veh = 3;
+
+  // Vehicle speed at extended lane lines.
+  // 车辆延车道线速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  float speed_ms = 4;
+
+  // Distance to the lane line of the ego.
+  // 距离主车的车道线距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  // \note front_veh 和 rear_veh 均为 false 时, 无效
+  //
+  float dist_to_ego_m = 5;
+}
+
+message Car {
+  // Car id, unique within the car, can be duplicated with pedestrians/obstructions.
+  // 车辆 id, 车辆内部唯一, 可以与行人/障碍物重复.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  // Simulation time for the current frame.
+  // 当前帧对应的仿真时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Longitude of car's center as configured by catalog, same coordinate system as in the map file geoReference.
+  // 车辆由catalog配置的中心处的经度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 3;
+
+  // Latitude of car's center as configured by catalog, same coordinate system as in the map file geoReference.
+  // 车辆由catalog配置的中心处的纬度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 4;
+
+  // Direction of travel, ENU coordinate system.
+  // 车辆行驶方向, ENU 坐标系.
+  //
+  // Unit: rad, Range: [0..2pi], Default: 0.0
+  //
+  double heading = 5;
+
+  // Linear velocity of car along the S-axis of centerline, ST coordinate system.
+  // 车辆沿着所在车道中心线 S 轴的线速度, ST 坐标系.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double v = 6;
+
+  // Linear velocity of car along the T-axis of centerline, ST coordinate system.
+  // 车辆沿着所在车道中心线 T 轴的线速度, ST 坐标系.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double vl = 7;
+
+  // Direction of the front end, ENU coordinate system.
+  // 车头方向, ENU 坐标系.
+  //
+  // Unit: rad, Range: [0..2pi], Default: 0.0
+  //
+  double theta = 8;
+
+  // Outer body box length.
+  // 车身外包围盒长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double length = 9;
+
+  // Outer body box width.
+  // 车身外包围盒宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double width = 10;
+
+  // Outer body box height.
+  // 车身外包围盒高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double height = 11;
+
+  // Vehicle type id.
+  // 车辆类型 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 type = 12;
+
+  // The lane id of the lane.
+  // 所在的车道的 lane id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 laneId = 13;
+
+  // Linear acceleration of car along the S-axis of centerline, ST coordinate system.
+  // 车辆沿着所在车道中心线 S 轴的加速度, ST 坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double acc = 14;
+
+  //
+  // \note 不再维护
+  //
+  int32 age = 15 [deprecated=true];
+
+  // Elevation at which the vehicle center is configured by catalog.
+  // 车辆由catalog配置的中心所处的海拔.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double z = 16;
+
+  // The road id of the lane where the vehicle is located. When tx_lanelink_id is valid,
+  // it represents the road id of the upstream lane of the lanelink where it is located.
+  // 车辆所处车道的道路id, 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的道路id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 tx_road_id = 17;
+
+  // The section id of the lane where the vehicle is located. When tx_lanelink_id is valid,
+  // it represents the section id of the upstream lane of the lanelink where it is located.
+  // 车辆所处车道的路段id, 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的路段id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 tx_section_id = 18;
+
+  // The lane id of the lane where the vehicle is located. When tx_lanelink_id is valid,
+  // it represents the lane id of the upstream lane of the lanelink where it is located.
+  // 车辆所处车道的车道id, 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的车道id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int64 tx_lane_id = 19;
+
+  // The road id of the intersection where the vehicle is located.
+  // 车辆所处路口的道路id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 tx_lanelink_id = 20;
+
+  // The planned trajectory of the vehicle.
+  // 车辆规划的轨迹线.
+  //
+  Trajectory planning_line = 21;
+
+  // Linear velocity of car along the S-axis of centerline, ST coordinate system.
+  // 车辆沿所在车道中心线S轴的线速度, ST坐标系.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_abs_velocity = 22;
+
+  // The acceleration of car along the S-axis of centerline, ST coordinate system.
+  // 车辆沿所在车道中心线S轴的加速度, ST坐标系.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_abs_acc = 23;
+
+  // The linear speed of vehicle relative to ego along the S axis of the centerline
+  // of the lane where it is located, ST coordinate system.
+  // 车辆沿所在车道中心线S轴的线速度相对主车, ST坐标系.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_velocity = 24;
+
+  // The acceleration of vehicle relative to ego along the S axis of the centerline
+  // of the lane where it is located, ST coordinate system.
+  // 车辆沿所在车道中心线S轴的加速度相对主车, ST坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_acc = 25;
+
+  // Relative speed of vehicle to the ego on the T-axis of the ego's lane, ST coordinate system.
+  // 车辆相对于 ego 车所属车道 T 轴上与 ego 车的相对速度, ST 坐标系.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_velocity_horizontal = 26;
+
+  // Acceleration of vehicle along the T-axis of the centerline of the lane in which it is located
+  // relative to ego, ST coordinate system.
+  // 车辆沿着所在车道中心线 T 轴的加速度相对主车, ST 坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_acc_horizontal = 27;
+
+  // Relative distance of vehicle to ego on S-axis of lane ego belongs to, ST coordinate system.
+  // 车辆相对于 ego车所属车道 S 轴上与 ego 车的相对距离, ST 坐标系.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_dist_vertical = 28;
+
+  // Relative distance of vehicle to ego on T-axis of lane ego belongs to, ST coordinate system.
+  // 车辆相对于 ego车所属车道 T 轴上与 ego 车的相对距离, ST 坐标系.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_dist_horizontal = 29;
+
+  // Control state type.
+  // 控制状态类型.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  ControlState control_state = 30;
+
+  //
+  // \note fixed size 8, std::vector< NearestObject > show_NearestObjectInfo.
+  //
+  repeated NearestObject show_NearestObjectInfo = 31;
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  double angle_along_centerline_degree = 32 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  string strid = 33 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  TwinInfo twin_data = 34 [deprecated=true];
+
+  // forward collision warning.
+  // 前部碰撞警示.
+  //
+  ForwardCollisionWarning fcw = 35;
+
+  // Lateral offset from the centerline of the lane, left+ right-.
+  // 与车道中心线横向偏移, 左+右-.
+  //
+  // Unit: m, Range: [-inf..inf], Default: 0.0
+  //
+  double lOffset = 36;
+
+  // When tx_lanelink_id is valid, it represents road id of downstream of located lanelink.
+  // 当 tx_lanelink_id 有效时, 表示所处 lanelink 的下游车道的道路 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 to_tx_road_id = 37;
+
+  // When tx_lanelink_id is valid, it represents section id of downstream of located lanelink.
+  // 当 tx_lanelink_id 有效时, 表示所处 lanelink 的下游车道的路段 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint64 to_tx_section_id = 38;
+
+  // When tx_lanelink_id is valid, it represents lane id of downstream lane of located lanelink.
+  // 当 tx_lanelink_id 有效时, 表示所处 lanelink 的下游车道的车道 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int64 to_tx_lane_id = 39;
+
+  // Serialized archive.
+  // 序列化存档.
+  //
+  bytes serialization_archive = 40;
+
+  // Auxiliary information for ego.
+  // 针对主车的辅助信息.
+  //
+  Extra_Info extra_info = 41;
+
+  // The acceleration of vehicle along T axis of centerline of located lane, ST coordinate system.
+  // 车辆沿所在车道中心线T轴的加速度, ST坐标系.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  float acc_l = 42;
+}
+
+message StaticObstacle {
+  // StaticObstacle id, unique within the StaticObstacle, can be duplicated with pedestrians/car.
+  // 障碍物id, 障碍物内部唯一, 可以与行人/车辆重复.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Simulation time for the current frame.
+  // 当前帧对应的仿真时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Longitude of Obstacle's center as configured by catalog,, same coordinate system as in map file geoReference.
+  // 障碍物由catalog配置的中心处的经度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 3;
+
+  // Latitude of Obstacle's center as configured by catalog,, same coordinate system as in map file geoReference.
+  // 障碍物由catalog配置的中心处的纬度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 4;
+
+  // Direction of travel, ENU coordinate system.
+  // 障碍物方向, ENU 坐标系.
+  //
+  // Unit: rad, Range: [0..2pi], Default: 0.0
+  //
+  double heading = 5;
+
+  // Outer body box length.
+  // 障碍物外包围盒长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double length = 6;
+
+  // Outer body box width.
+  // 障碍物外包围盒宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double width = 7;
+
+  // Outer body box height.
+  // 障碍物外包围盒高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double height = 8;
+
+  // StaticObstacle type id.
+  // 障碍物类型 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 type = 9;
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  int32 age = 10;
+
+  // Elevation at which the StaticObstacle center is configured by catalog.
+  // 障碍物由catalog配置的中心所处的海拔.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double z = 11;
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  string strid = 12 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  TwinInfo twin_data = 13 [deprecated=true];
+}
+
+message DynamicObstacle {
+  // DynamicObstacle type id.
+  // 动态障碍物 id.
+  //
+  // Unit: N/A, Range: [-inf..0], Default: 0
+  //
+  // \note 由于历史原因, id在场景文件中设置为正数, 例如: 5, 在pb消息中呈现负数, 如 -5
+  //
+  int32 id = 1;
+
+  // Simulation time for the current frame.
+  // 当前帧对应的仿真时间.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Longitude of Obstacle's geometric center, same coordinate system as in map file geoReference.
+  // 动态障碍物由 catalog 配置的中心所处的经度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 3;
+
+  // Latitude of Obstacle's geometric center, same coordinate system as in map file geoReference.
+  // 动态障碍物由 catalog 配置的中心所处的纬度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 4;
+
+  // Direction of travel, ENU coordinate system.
+  // 动态障碍物方向, ENU 坐标系.
+  //
+  // Unit: rad, Range: [0..2pi], Default: 0.0
+  //
+  double heading = 5;
+
+  // Outer body box width.
+  // 动态障碍物外包围盒长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double length = 6;
+
+  // Outer body box width.
+  // 动态障碍物外包围盒宽度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double width = 7;
+
+  // Outer body box height.
+  // 动态障碍物外包围盒高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double height = 8;
+
+  // Dynamic obstacle type id.
+  // 动态障碍物类型 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 type = 9;
+
+  // Longitudinal linear velocity of the dynamic obstacle along the trajectory.
+  // 动态障碍物沿着轨迹的纵向线速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double v = 10;
+
+  // Transverse linear velocity of the dynamic obstacle along the trajectory.
+  // 动态障碍物沿着轨迹的横向线速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double vl = 11;
+
+  // Acceleration of the dynamic obstacle along the trajectory.
+  // 动态障碍物沿着轨迹的加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double acc = 12;
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  int32 age = 13 [deprecated=true];
+
+  // Elevation at which the DynamicObstacle center is configured by catalog.
+  // 动态障碍物由 catalog 配置的中心所处路面的海拔.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double z = 14;
+
+  // Longitudinal linear velocity of dynamic obstacles.
+  // 动态障碍物的纵向线速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_abs_velocity = 15;
+
+  // Longitudinal acceleration of dynamic obstacles.
+  // 动态障碍物的纵向加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_abs_acc = 16;
+
+  // Longitudinal linear velocity of the dynamic obstacle in relation to the ego.
+  // 动态障碍物相对于主车的纵向线速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_velocity = 17;
+
+  // Longitudinal acceleration of the dynamic obstacle with respect to ego.
+  // 动态障碍物相对于主车的纵向加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double show_relative_acc = 18;
+
+  // Transverse linear velocity of the dynamic obstacle in relation to ego.
+  // 动态障碍物相对于主车的横向线速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_velocity_horizontal = 19;
+
+  // Lateral acceleration of the dynamic obstacle with respect to ego.
+  // 动态障碍物相对于主车的横向加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double show_relative_acc_horizontal = 20;
+
+  // Longitudinal distance of the dynamic obstacle from ego.
+  // 动态障碍物相对于主车的纵向距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_dist_vertical = 21;
+
+  // Lateral distance of the dynamic obstacle in relation to ego.
+  // 动态障碍物相对于主车的横向距离.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  // \note generally used for front-end display, \n
+  // 一般用于前端展示.
+  //
+  double show_relative_dist_horizontal = 22;
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  string strid = 23 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护
+  //
+  TwinInfo twin_data = 24 [deprecated=true];
+
+  // poly id in NavMesh.
+  // NavMesh 中的 poly id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note For ai pedestrian sim, \n
+  //
+  int64 poly_id = 25;
+}
+
+message LaneUid {
+  // The road id of the lane where the vehicle is located.
+  // 所处车道的道路 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note When tx_lanelink_id is valid, it represents road id of upstream of located lanelink, \n
+  // 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的道路id
+  //
+  uint64 tx_road_id = 1;
+
+  // The section id of the lane where the vehicle is located.
+  // 所处车道的路段 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note When tx_lanelink_id is valid, it represents section id of upstream of located lanelink,\n
+  // 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的路段id.
+  //
+  uint64 tx_section_id = 2;
+
+  // The lane id of the lane where the vehicle is located.
+  // 所处车道的车道 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  // \note When tx_lanelink_id is valid, it represents lane id of upstream of located lanelink, \n
+  // 当tx_lanelink_id有效时, 表示所处lanelink的上游车道的车道id
+  //
+  int64 tx_lane_id = 3;
+}
+
+enum Phase {
+  U = 0;
+  L = 1;
+  T = 2;
+  R = 3;
+  L0 = 4;
+  R0 = 5;
+}
+
+message TrafficLight {
+  // Traffic light id, unique internally, can overlap with obstacles/vehicles/pedestrians.
+  // 交通灯id, 内部唯一, 可以与障碍物/车辆/行人重复.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Longitude of the stop line position at the end of the lane controlled by the traffic light,
+  // the coordinate system is the same as geoReference in the map file.
+  // 交通灯所控制车道的末端停止线位置, 经度, 坐标系同地图文件中的 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 2;
+
+  // Latitude of the stop line position at the end of the lane controlled by the traffic light,
+  // the coordinate system is the same as geoReference in the map file.
+  // 交通灯所控制车道的末端停止线位置, 纬度, 坐标系同地图文件中的 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 3;
+
+  // The direction of the traffic light, ENU coordinate system.
+  // 交通灯的朝向, ENU 坐标系.
+  //
+  // Unit: degree, Range: [0..360], Default: 0.0
+  //
+  double heading = 4;
+
+  // The color of the traffic light.
+  // 交通灯的颜色.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  // \note eGreen = 0, eYellow = 1, eRed = 2, eGrey = 3, eBlack = 4
+  //
+  int32 color = 5;
+
+  // Traffic light change countdown.
+  // 交通灯变灯倒计时.
+  //
+  // Unit: s, Range: [0..inf], Default: 0.0
+  //
+  int32 age = 6;
+
+  // The altitude of the stop line position at the end of the lane controlled by the traffic light.
+  // 交通灯所控制车道的末端停止线位置, 海拔.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double z = 7;
+
+  //
+  // \note Off maintenance, 不在维护 deprecated 2020-08-24
+  //
+  uint64 tx_road_id = 8 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护 deprecated 2020-08-24
+  //
+  uint64 tx_section_id = 9 [deprecated=true];
+
+  //
+  // \note Off maintenance, 不在维护 deprecated 2020-08-24
+  //
+  int64 tx_lane_id = 10 [deprecated=true];
+
+  // List of lane IDs controlled by the traffic light.
+  // 交通灯控制的车道 ID 列表.
+  //
+  // \note road id/section id/lane id
+  //
+  repeated LaneUid control_lanes = 11;
+
+  // Direction of lanes controlled by the traffic light.
+  // 交通灯控制的车道方向.
+  //
+  // Unit: N/A, Range: [0..5], Default: 0
+  //
+  repeated Phase control_phases = 12;
+
+  // The color of the next light.
+  // 下一个灯的颜色.
+  //
+  // Unit: N/A, Range: [0..4], Default: 0
+  //
+  // \note eGreen = 0, eYellow = 1, eRed = 2, eGrey = 3, eBlack = 4
+  //
+  int32 next_color = 13;
+
+  // The duration of the next light.
+  // 下一个灯的持续时间.
+  //
+  // Unit: s, Range: [0..inf], Default: 0
+  //
+  int32 next_age = 14;
+
+  // The current signal control plan in use.
+  // 当前使用的信号控制方案.
+  //
+  string plan = 15;
+
+  // The id of the junction where the current traffic light is located.
+  // 当前信号灯所属的交叉口的 id.
+  //
+  string junction = 16;
+
+  // Phase id.
+  // 相位 id.
+  //
+  string phaseNumber = 17;
+
+  // The id of the light head of the physical light.
+  // 物理灯的灯头 id.
+  //
+  string signalHead = 18;
+}
+
+message EgoInfo {
+  // The current ego id.
+  // 当前主车 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  // \note 暂时无意义, 未来支持多个主车接入
+  //
+  int32 id = 1;
+
+  // The angle of the centerline of the lane in which the current primary vehicle is located.
+  // 当前主车所处车道中心线的夹角.
+  //
+  // Unit: degree, Range: [0..360], Default: 0.0
+  //
+  float angle_along_centerline_degree = 2;
+
+  // The gradient of the roadway on which the ego is currently traveling.
+  // 当前主车所处路段的坡度.
+  //
+  // Unit: %, Range: [0..100], Default: 0.0
+  //
+  float slope = 3;
+}
+
+//
+// \brief The drone counterpart of the time capsule.
+// 无人机对应的时空胶囊.
+//
+message Capsule {
+  // Unique identifier of the drone capsule.
+  // 无人机胶囊的唯一标识.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  // Drone id.
+  // 无人机 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 drone_id = 2;
+
+  // Timestamp corresponding to the current frame of the drone capsule.
+  // 无人机胶囊当前帧对应的时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 3;
+
+  // Longitude of the center point of the middle rectangular part of the drone capsule, \n
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊中间矩形部分中心点的经度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 4;
+
+  // Latitude of the center point of the middle rectangular part of the drone capsule, \n
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊中间矩形部分中心点的纬度, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 5;
+
+  // Elevation of the center point of the middle rectangular part of the drone capsule, \n
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊中间矩形部分中心点的高程, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double z = 6;
+
+  // Direction of the drone capsule,
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊行驶方向, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double heading = 7;
+
+  // Current pitch value of the drone capsule,
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊当前 pitch 值, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double pitch = 8;
+
+   // Current roll value of the drone capsule,
+  // coordinate system same as geoReference in the map file.
+  // 无人机胶囊当前 roll 值, 坐标系同地图文件中 geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double roll = 9;
+
+  // Semi-major axis of the half ellipse at the head of the drone capsule.
+  // 无人机胶囊头部半椭圆的半长轴.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double head_a = 10;
+
+  // Semi-minor axis of the half ellipse at the head of the drone capsule.
+  // 无人机胶囊头部半椭圆的半短轴.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double head_b = 11;
+
+  // Length of the middle rectangle of the drone capsule.
+  // 无人机胶囊中部矩形的长度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double body_l = 12;
+
+  // Half-length axis of the half-ellipse at the end of the drone capsule.
+  // 无人机胶囊尾部半椭圆的半长轴.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double tail_a = 13;
+
+  // Semi-short axis of a semi-ellipse at the end of a drone capsule.
+  // 无人机胶囊尾部半椭圆的半短轴.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double tail_b = 14;
+
+  // Drone capsule outer envelope height.
+  // 无人机胶囊外包围盒高度.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double height = 15;
+
+  // Speed of drone capsule planning.
+  // 无人机胶囊规划的速度.
+  //
+  // Unit: m/s, Range: [-inf..inf], Default: 0.0
+  //
+  double v = 16;
+
+  // Acceleration of drone capsule planning.
+  // 无人机胶囊规划的加速度.
+  //
+  // Unit: m/s^2, Range: [-inf..inf], Default: 0.0
+  //
+  double acc = 17;
+
+  // Drone capsule type.
+  // 无人机胶囊类型.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 type = 18;
+
+  // Route ID where the drone capsule is located.
+  // 无人机胶囊所在的航路ID.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 tx_airway_id = 19;
+
+  // Drone Capsule Flight Program.
+  // 无人机胶囊飞行计划.
+  //
+  string plan_id = 20;
+
+  // Prioritization of drone capsules.
+  // 无人机胶囊的优先级.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 priorty = 21;
+}
+
+//
+// \brief Drone.
+// 无人机.
+//
+message Drone {
+  // Drone id.
+  // 无人机id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  // Timestamp corresponding to the current frame of the drone.
+  // 无人机当前帧对应的时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Drone name.
+  // 无人机名称.
+  //
+  string name = 3;
+
+  // The company to which the drone belongs.
+  // 无人机所属公司.
+  //
+  string owner = 4;
+
+  // Longitude of the center point of the middle rectangle part of the drone,
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机中间矩形部分中心点的经度, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double x = 5;
+
+  // Latitude of the center point of the middle rectangle part of the drone,
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机中间矩形部分中心点的纬度, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double y = 6;
+
+  // Altitude of the center point of the middle rectangle part of the drone,
+
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机中间矩形部分中心点的高程, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0.0
+  //
+  double z = 7;
+
+  // The driving direction of the drone,
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机行驶方向, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double heading = 8;
+
+  // The current pitch value of the drone,
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机当前pitch值, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double pitch = 9;
+
+  // The current roll value of the drone,
+  // the coordinate system is the same as geoReference in the map file.
+  // 无人机当前roll值, 坐标系同地图文件中的geoReference.
+  //
+  // Unit: rad, Range: [-pi..pi], Default: 0.0
+  //
+  double roll = 10;
+
+  // The actual speed of the drone.
+  // 无人机实际的速度.
+  //
+  // Unit: m/s, Range: [0..inf], Default: 0.0
+  //
+  double v = 11;
+
+  // The actual acceleration of the drone.
+  // 无人机实际的加速度.
+  //
+  // Unit: m/s^2, Range: [0..inf], Default: 0.0
+  //
+  double acc = 12;
+
+  // Type of the drone.
+  // 无人机类型.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 type = 13;
+
+  // The airway ID where the drone is located.
+  // 无人机所在的航路ID.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 tx_airway_id = 14;
+
+  // Flight plan of the drone.
+  // 无人机飞行计划.
+  //
+  string plan_id = 15;
+
+  // The priority of the drone.
+  // 无人机的优先级.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 priorty = 16;
+
+  // The status of the drone.
+  // 无人机的状态.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 status = 17;
+}
+
+message Detection {
+  enum DetectionType{
+    OFFTRACK_CAPSULE = 0;
+    OFFTRACK_AIRWAY = 1;
+  }
+
+  enum DetectionStatus{
+    OFFTRACK_START = 0;
+    OFFTRACK_END = 1;
+  }
+
+  enum ExceptionStatus{
+    EXCEPTION_START = 0;
+    EXCEPTION_UNSTART = 1;
+  }
+
+  // detection id.
+  // 检测 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 id = 1;
+
+  // Current simulation timestamp.
+  // 当前仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double t = 2;
+
+  // Drone id.
+  // 无人机 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 drone_id = 3;
+
+  // Capsule id.
+  // 无人机胶囊的 id.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int64 capsule_id = 4;
+
+  // offtrack type: capsule or airway.
+  // 脱轨类型: capsule or airway.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  DetectionType detection_type = 5;
+
+  // Detect the route ID.
+  // 检测所在的航路ID.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 tx_airway_id = 6;   //
+
+  // offtrack status: start, end.
+  // 脱轨状态: 开始, 结束.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  DetectionStatus detection_status = 7;
+
+  // exception program status: start, unstart.
+  // 异常程序状态: 启动、未启动.
+  //
+  // Unit: N/A, Range: [0..1], Default: 0
+  //
+  ExceptionStatus exception_status = 8;
+}
+
+message Traffic {
+  // List of vehicles in the current frame.
+  // 当前帧中含有的车辆列表.
+  //
+  repeated Car cars = 1;
+
+  // List of static obstacles in the current frame.
+  // 当前帧中含有的静态障碍物列表.
+  //
+  repeated StaticObstacle staticObstacles = 2;
+
+  // List of dynamicObstacles in the current frame.
+  // 当前帧中含有的动态障碍物列表.
+  //
+  repeated DynamicObstacle dynamicObstacles = 3;
+
+  // List of traffic lights in the current frame.
+  // 当前帧中含有的交通灯列表.
+  //
+  repeated TrafficLight trafficLights = 4;
+
+  //
+  // \note Only for ps 20210128
+  //
+  double road_network_aver_velocity = 5;
+
+  //
+  // \note Only for ps 20210128
+  //
+  int32 road_network_total_vehicle_count = 6;
+
+  // Current simulation timestamp.
+  // 当前仿真时间戳.
+  //
+  // Unit: s, Range: [0..inf], Default: 0
+  //
+  uint64 time = 7;
+
+  // multi ego.
+  // 多辆主车.
+  //
+  // \note 当前主车 (当前个数为1, 未来支持多个主车接入) 的辅助信息列表
+  //
+  repeated EgoInfo egos = 8;
+
+  // List of drone.
+  // 无人机列表
+  //
+  // \note for uav sim
+  //
+  repeated Drone drones = 9;
+
+  // List of capsule.
+  // 无人机胶囊列表.
+  //
+  // \note for uav sim
+  //
+  repeated Capsule capsules = 10;
+
+  // List of detection.
+  // 检测无人机列表.
+  //
+  // \note for uav sim
+  //
+  repeated Detection detections = 11;
+}
+
+message TrafficRecords {
+  //
+  repeated Traffic traffic_record = 1;
+}
+
+enum DisengageEventType {
+  Disengage_Manual = 0;
+  Disengage_Planning = 1;
+  Disengage_Route = 2;
+  Disengage_Perception = 3;
+  Disengage_OS = 4;
+  Disengage_Sim = 5;
+}
+
+message TrajectoryInfo {
+  //
+  double time_stamp = 1;
+
+  //
+  Trajectory trajectory_line = 2;
+}
+
+message TrafficRecords4Logsim {
+  message DisengageEventInfo {
+    //
+    int64 timestamp_ms = 1;
+
+    //
+    DisengageEventType type = 2;
+  }
+
+  //
+  repeated Location ego_location = 1;
+
+  //
+  repeated Traffic traffic_record = 2;
+
+  //
+  repeated DisengageEventInfo disengage_events = 3;
+
+  //
+  uint64 duration_ms = 4;
+
+  //
+  repeated TrajectoryInfo ego_trajectory = 5;
+}

@@ -1,0 +1,9 @@
+{
+  "name": "editCircleRoad",
+  "description": "环形道路编辑",
+  "iconDesc": "circleRoad",
+  "iconComponentName": "CircleRoadSvg",
+  "componentPaths": {
+    "property": ["circleRoadProperty.vue"]
+  }
+}

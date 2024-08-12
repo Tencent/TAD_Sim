@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 -3 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>画板备份</title>
+    <g id="编组" fill="currentColor">
+        <g id="编组-5">
+            <rect id="矩形" x="0" y="0" width="2" height="20"></rect>
+            <rect id="矩形" x="3" y="0" width="2" height="20"></rect>
+        </g>
+        <path d="M17,6 L21,10 L17,14 L16,13 L18,11 L9,11 L11,13 L10,14 L6,10 L10,6 L11,7 L8.998,9 L18,9 L16,7 L17,6 Z" id="形状结合"></path>
+        <rect id="矩形备份-10" stroke="currentColor" x="22.5" y="0.5" width="1" height="4"></rect>
+        <rect id="矩形备份-11" stroke="currentColor" x="22.5" y="7.5" width="1" height="5"></rect>
+        <rect id="矩形备份-12" stroke="currentColor" x="22.5" y="15.5" width="1" height="4"></rect>
+        <rect id="矩形备份-10" x="6" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-22" x="6" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-13" x="8" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-23" x="8" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-14" x="10" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-24" x="10" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-15" x="12" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-25" x="12" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-16" x="14" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-26" x="14" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-17" x="16" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-27" x="16" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-18" x="18" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-28" x="18" y="17" width="1" height="1"></rect>
+        <rect id="矩形备份-19" x="20" y="2" width="1" height="1"></rect>
+        <rect id="矩形备份-29" x="20" y="17" width="1" height="1"></rect>
+    </g>
+</svg>

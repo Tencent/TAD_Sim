@@ -1,0 +1,31 @@
+@import "./var";
+
+.el-checkbox {
+  --el-checkbox-text-color: @global-fore-color;
+  --el-checkbox-input-height: 12px;
+  --el-checkbox-input-width: 12px;
+  --el-checkbox-checked-text-color: @global-default-color;
+  --el-checkbox-disabled-checked-input-border-color: @active-bd-color;
+  --el-checkbox-disabled-checked-input-fill: @active-bd-color;
+  --el-checkbox-font-size: 12px;
+  --el-checkbox-bg-color: @global-bg-color;
+  --el-checkbox-input-border: 2px solid @global-bd-color;
+  --el-checkbox-checked-bg-color: @global-info-icon-color;
+  --el-checkbox-checked-input-border-color: @global-info-icon-color;
+  --el-checkbox-input-border-color-hover: @active-default-color;
+  --el-checkbox-disabled-checked-icon-color: @global-body-color;
+  --el-checkbox-checked-icon-color: @global-fore-color;
+  --el-checkbox-disabled-input-fill: @disable-bg-color;
+  --el-checkbox-disabled-border-color: @disable-bd-color;
+
+  .el-checkbox__input {
+    .el-checkbox__inner {
+      &::after {
+        width: 3px;
+        height: 6px;
+        left: 2px;
+        top: -0.5px;
+      }
+    }
+  }
+}

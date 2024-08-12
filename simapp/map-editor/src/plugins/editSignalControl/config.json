@@ -1,0 +1,10 @@
+{
+  "name": "editSignalControl",
+  "description": "信控编辑",
+  "iconDesc": "signalControl",
+  "iconComponentName": "TrafficLightSvg",
+  "componentPaths": {
+    "leftArea": [],
+    "property": ["signalControlProperty.vue"]
+  }
+}

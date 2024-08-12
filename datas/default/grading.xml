@@ -1,0 +1,80 @@
+<Grading version="1.0">
+	<!-- attribute definition, Name: name of KPI，Threshold: mutable value，EvalValue: used in pass/fail check, StopValue: used in stop scenario check-->
+    <General>
+	<!-- 场景运行的总时长，单位秒s -->
+	<KPI Name="TotalTime" Threshold="300.0" EvalValue="1" StopValue="1"/>
+	<!-- 限速，单位米每秒m/s -->
+	<KPI Name="MaxSpeed_V" Threshold="22" EvalValue="1" StopValue="1"/>
+	<!-- 最大加速度，单位米每平方秒m/s^2 -->
+	<KPI Name="MaxAcceleration_V" Threshold="3.6" EvalValue="1" StopValue="1"/>
+	<!-- 最大减速度，单位米每平方秒m/s^2 -->
+	<KPI Name="MaxDeceleration_V" Threshold="-3.6" EvalValue="1" StopValue="1"/>
+	<!-- 最大转向加速度，单位米每平方秒m/s^2 -->
+	<KPI Name="MaxTurningAccelerate" Threshold="2.0" EvalValue="1" StopValue="1"/>
+	<!-- 最小平均时距，单位秒s -->
+	<KPI Name="MinAveragerTimeHeadway" Threshold="2.7" EvalValue="1" StopValue="1"/>
+	<!-- 最小车距，单位米m -->
+	<KPI Name="MinDistanceFromCar" Threshold="5" EvalValue="1" StopValue="1"/>
+    </General>
+    <Planning>
+	<!-- 终点坐标，单位米m，NeedParking为是否需要停在终点，Radius为终点的检测半径 -->
+	<KPI Name="EndPoint" Threshold="10,20,0" NeedParking="0" Radius="5.0" EvalValue="1" StopValue="1"/>
+    </Planning>
+    <Control>
+	<!-- 主车相对规划路径的平均横向偏移，单位米m -->
+	<KPI Name="MaxAveragePosError_H" Threshold="1" EvalValue="1" StopValue="1"/>
+	<!-- 主车相对规划路径的最大横向偏移，单位米m -->
+	<KPI Name="MaxPosError_H" Threshold="1" EvalValue="1" StopValue="1"/>
+	<!-- 主车相对规划路径的最大左横向偏移，单位米m -->
+	<KPI Name="MaxPosError_H_L" Threshold="1" EvalValue="1" StopValue="1"/>
+	<!-- 主车相对规划路径的最大右横向偏移，单位米m -->
+	<KPI Name="MaxPosError_H_R" Threshold="1" EvalValue="1" StopValue="1"/>
+    </Control>
+    <Custom>
+	<!-- 主车相对规划路径的偏移，单位cm -->
+	<KPI Name="Custom_MaxPosError" Threshold="100.0" EvalValue="1" StopValue="1"/>
+	<!-- 终点坐标，单位米m，Radius为终点的检测半径 -->
+	<KPI Name="Custom_ReachEndRadius" Threshold="10,20,0" Radius="2.5" EvalValue="1" StopValue="1"/>
+    </Custom>
+	<!-- Unit中内容都不需要修改 -->
+    <Unit>
+        <KPI Type="1">
+            <Condition>
+                <Time StartTime="0" EndTime="90"/>
+            </Condition>
+            <State>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="3" Level="5"/>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="3" Level="5"/>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="3" Level="5"/>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="3" Level="5"/>
+            </State>
+        </KPI>
+        <KPI Type="2">
+            <Condition>
+                <Time StartTime="0" EndTime="90"/>
+                <KeepSpeed Min=""/>
+                <KeepSpeedTime Min="0"/>
+            </Condition>
+            <State>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="1" Level="5"/>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="1" Level="5"/>
+                <Value MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="1" Level="5"/>
+            </State>
+        </KPI>
+        <KPI Type="1">
+            <Condition>
+                <Time StartTime="0" EndTime="90"/>
+            </Condition>
+            <State>
+                <Value MessageType="BASE_STATE" FieldName="TimeHeadway" ExpectedValue="2.5" Level="5"/>
+                <Value MessageType="BASE_STATE" FieldName="OverSolidLine" ExpectedValue="false" Level="5"/>
+                <Value MessageType="BASE_STATE" FieldName="OverSpeed" ExpectedValue="18" Level="5"/>
+                <Value MessageType="BASE_STATE" FieldName="OverAcceleration" ExpectedValue="5" Level="5"/>
+                <Value MessageType="BASE_STATE" FieldName="OverDeceleration" ExpectedValue="-3" Level="5"/>
+            </State>
+        </KPI>
+        <!-- <KPI ConditionType="0" StartTime="0" EndTime="75" MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="3" Level="5"/>
+        <KPI ConditionType="0" StartTime="50" EndTime="90" MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="1" Level="5"/>
+        <KPI ConditionType="0" StartTime="30"  EndTime="90" MessageType="L3_SYSTEM_STATE" FieldName="state" ExpectedValue="1" Level="5"/> -->
+    </Unit>
+</Grading>

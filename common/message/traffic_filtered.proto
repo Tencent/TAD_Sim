@@ -1,0 +1,17 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Filter traffic information according to radius around ego.
+// 根据主车周围半径范围筛选交通车信息.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "traffic.proto";
+
+message TrafficFiltered {
+  //
+  map<int32, Traffic> traffic = 1;
+}

@@ -1,0 +1,337 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Definition of sensor outputs for Dispaly module, including Camera Lidar Ultrasonic data.
+// 负责三维渲染的传感器输出定义, 包括 Camera Lidar Ultrasonic 的数据.
+//
+// \note In practice, the sensors will be distributed across different programs,
+// so there will be multiple topics. \n
+// 在实际使用时, 传感器会分布在不同的程序上, 所以会有多个 topic.
+//
+// TOPIC: DISPLAYSENSOR_{id}, id 是算法 id, 等于 -topicId 或 -device
+
+syntax = "proto3";
+
+package sim_msg;
+
+message SensorPose {
+  // Longitude of the current position, WGS84 coordinate system.
+  // 当前位置经度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  double longitude = 1;
+
+  // Latitude of the current position, WGS84 coordinate system.
+  // 当前位置纬度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  double latitude = 2;
+
+  // Altitude of the current position, WGS84 coordinate system.
+  // 当前位置高度, WGS84 坐标系.
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  double altitude = 3;
+
+  // Current roll value.
+  // 当前 roll 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  float roll = 4;
+
+  // Current pitch value.
+  // 当前 pitch 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  float pitch = 5;
+
+  // Current yaw value.
+  // 当前 yaw 值.
+  //
+  // Unit: rad, Range: [-inf..inf], Default: 0.0
+  //
+  float yaw = 6;
+}
+
+message CameraRaw {
+  // sensor id.
+  // 传感器 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp = 2;
+
+  // Image encoding types.
+  // 图像编码类型.
+  //
+  // \note JPEG/PNG/EXR/BGRA
+  //
+  string type = 3;
+
+  // Image bytes data.
+  // 图像字节数据.
+  //
+  bytes image_data = 4;
+
+  // Image width.
+  // 图像宽度.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 width = 5;
+
+  // Image height.
+  // 图像高度.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  int32 height = 6;
+
+  // pose of sensor info.
+  // 传感器信息的位置.
+  //
+  SensorPose pose = 7;
+}
+
+message LidarRaw {
+  enum CoordType{
+    COORD_SENSOR = 0;
+    COORD_VEHICLE = 1;
+    COORD_ENU = 2;
+  }
+
+  message Point {
+    // Single-frame local coordinate x.
+    // 单帧局部坐标 x.
+    //
+    // Unit: m, Range: [-inf..inf], Default: 0.0
+    //
+    float x = 1;
+
+    // Single-frame local coordinate y.
+    // 单帧局部坐标 y.
+    //
+    // Unit: m, Range: [-inf..inf], Default: 0.0
+    //
+    float y = 2;
+
+    // Single-frame local coordinate z.
+    // 单帧局部坐标 z.
+    //
+    // Unit: m, Range: [-inf..inf], Default: 0.0
+    //
+    float z = 3;
+
+    // reflectivity intensity.
+    // 反射强度.
+    //
+    // Unit: N/A, Range: [0..255], Default: 0.0
+    //
+    float i = 4;
+
+    // type, point cloud tagged values.
+    // 类型, 点云标记值.
+    //
+    // Unit: N/A, Range: [0..inf], Default: 0.0
+    //
+    uint32 t = 5;
+  }
+
+  // sensor id.
+  // 传感器 id.
+  //
+  // Unit: N/A, Range: [-inf..inf], Default: 0
+  //
+  int32 id = 1;
+
+  // begin timestamp of this frame.
+  // 本帧的开始时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp_begin = 2;
+
+  // end timestamp of this frame.
+  // 本帧的结束时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp_end = 3;
+
+  // low speed: serialization & deserialization of Point.
+  // 速度慢: 点的序列化和反序列化.
+  //
+  // \note not recommended
+  //
+  repeated Point points = 4;
+
+  // Fast speed: stored in binary array, the bytes size = count * sizeof(Point).
+  // 速度快: 存储在二进制数组中, 字节大小 = count * sizeof(Point)
+  //
+  // \note recommended
+  //
+  bytes point_lists = 5;
+
+  // point count, add 1 at a time.
+  // 点数, 每次加 1.
+  //
+  // Unit: N/A, Range: [0..inf], Default: 0
+  //
+  uint32 count = 6;
+
+  // the pose of first.
+  // 第一次的位置.
+  //
+  SensorPose pose_first = 7;
+
+  // the pose of last.
+  // 最后的位置.
+  //
+  SensorPose pose_last = 8;
+
+  // coordinate system type.
+  // 坐标系类型.
+  //
+  // Unit: N/A, Range: [0..2], Default: 0
+  //
+  CoordType coord_type = 9;
+}
+
+message SensorRaw {
+  enum Type {
+    TYPE_CAMERA = 0;
+    TYPE_LIDAR = 1;
+    TYPE_RADAR = 2;
+    TYPE_ULTRASONIC = 3;
+    TYPE_DEPTH = 4;
+    TYPE_SEMANTIC = 5;
+    TYPE_FISHEYE = 6;
+  }
+
+  message Sensor {
+    // sensor id.
+    // 传感器 id.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0
+    //
+    int32 id = 1;
+
+    // sensor type.
+    // 传感器类型.
+    //
+    // Unit: N/A, Range: [0..6], Default: 0.0
+    //
+    Type type = 2;
+
+    // The sensor serializes the binary, which is generally a serialization of another pb structure.
+    // 传感器序列化二进制, 它一般是另一个pb结构的序列化.
+    //
+    bytes raw = 3;
+  }
+
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp = 1;
+
+  // Muilt sensors raw data.
+  // 传感器原始数据列表.
+  //
+  repeated Sensor sensor = 2;
+}
+
+//
+// \brief traffic out.
+//
+message DisplayPose {
+  message Object {
+    // Object id.
+    // 对象id.
+    //
+    // Unit: N/A, Range: [-inf..inf], Default: 0
+    //
+    int64 id = 1;
+
+    // Simulation timestamp.
+  // 仿真时间戳.
+    //
+    // Unit: ms, Range: [0..inf], Default: 0.0
+    //
+    double timestamp = 2;
+
+    // Center of object.
+    // 对象中心.
+    //
+    SensorPose pose = 3;
+
+    // Length of object.
+    // 对象长度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double length = 4;
+
+    // Width of object.
+    // 对象宽度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double width = 5;
+
+    // Height of object.
+    // 对象高度.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    double height = 6;
+
+    // Object type.
+    // 对象类型.
+    //
+    string type = 7;
+
+    // Object type.
+    // 对象类型.
+    //
+    int32 raw_type = 8;
+  }
+
+  // Simulation timestamp.
+  // 仿真时间戳.
+  //
+  // Unit: ms, Range: [0..inf], Default: 0.0
+  //
+  double timestamp = 1;
+
+  // Multi egos info.
+  // 多个自主车辆信息.
+  //
+  repeated Object egos = 2;
+
+  // Multi cars info.
+  // 多个汽车信息.
+  //
+  repeated Object cars = 3;
+
+  // Multi staticObstacles info.
+  // 多个静态障碍物信息.
+  //
+  repeated Object staticObstacles = 4;
+
+  // Multi dynamicObstacles info.
+  // 多个动态障碍物信息.
+  //
+  repeated Object dynamicObstacles = 5;
+}

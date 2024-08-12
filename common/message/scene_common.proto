@@ -1,0 +1,63 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component, used for definition of generic information structures in scenario files.
+// 基础组件, 用于场景文件中通用信息结构定义.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum OnOff {
+  ONOFF_OFF = 0;
+  ONOFF_ON = 1;
+}
+
+enum Dir {
+  DIR_LEFT = 0;
+  DIR_RIGHT = 1;
+  DIR_ANY = 2;
+}
+
+enum GearSts {
+  GEAR_STS_D = 0;
+  GEAR_STS_P = 1;
+  GEAR_STS_R = 2;
+  GEAR_STS_N = 3;
+  GEAR_STS_M1 = 4;
+  GEAR_STS_M2 = 5;
+  GEAR_STS_M3 = 6;
+  GEAR_STS_M4 = 7;
+  GEAR_STS_M5 = 8;
+  GEAR_STS_M6 = 9;
+  GEAR_STS_M7 = 10;
+}
+
+enum WiperSts {
+  WIPER_STS_OFF = 0;
+  WIPER_STS_LOW = 1;
+  WIPER_STS_MED = 2;
+  WIPER_STS_HIGH = 3;
+}
+
+enum ParkingBrakeSts {
+  PARKING_BRAKE_STS_RELEASED = 0;
+  PARKING_BRAKE_STS_APPLIED = 1;
+  PARKING_BRAKE_STS_APPLYING = 2;
+  PARKING_BRAKE_STS_RELEASING = 3;
+}
+
+enum KeySts {
+  KEY_STS_OFF = 0;
+  KEY_STS_IGN = 1;
+  KEY_STS_ACC = 2;
+  KEY_STS_ON = 3;
+}
+
+enum BeamSts {
+  BEAM_STS_OFF = 0;
+  BEAM_STS_AUTO = 1;
+  BEAM_STS_LOW = 2;
+  BEAM_STS_HIGH = 3;
+}

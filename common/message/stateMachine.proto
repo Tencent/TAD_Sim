@@ -1,0 +1,175 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief L3 System state machine information.
+// L3 系统状态机信息.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "header.proto";
+
+message ChassisState {
+  //
+  Header header = 1;
+
+  //
+  bool speed_signal_valid = 2;
+
+  //
+  bool brake_pressure_signal_valid = 3;
+
+  //
+  bool gear_selection_signal_valid = 4;
+
+  //
+  bool steering_wheel_angle_signal_valid = 5;
+
+  //
+  bool ESP_system_status = 6;
+
+  //
+  bool steering_wheel_angle_sensor_status = 7;
+
+  //
+  bool AEB_activated = 8;
+
+  //
+  uint32 EPB_status = 9;
+
+  //
+  bool brake_pressed = 10;
+
+  //
+  bool VDC_TSC_AVH_activated = 11;
+
+  //
+  bool accelerator_override = 12;
+
+  //
+  bool left_turn_signal_switch_toggled = 13;
+
+  //
+  bool right_turn_signal_switch_toggled = 14;
+
+  //
+  bool steer_wheel_takeover_state = 15;
+}
+
+message SrrState {
+  //
+  Header header = 1;
+
+  //
+  uint32 srr_connection_valid = 2;
+}
+
+message ScalaState {
+  //
+  Header header = 1;
+
+  //
+  uint32 scala_connection_valid = 2;
+}
+
+message HppuState {
+  //
+  Header header = 1;
+
+  //
+  uint32 power_state = 2;
+
+  //
+  uint32 key_state = 3;
+}
+
+message CarState {
+  //
+  Header header = 1;
+
+  //
+  bool brake_ped_sts = 2;
+
+  //
+  double acc_pedal_pos = 3;
+
+  //
+  double steering_wheel_angle = 4;
+}
+
+message HMIState {
+  //
+  Header header = 1;
+
+  //
+  bool HMI_button_pressed = 2;
+}
+
+message PlanningState {
+  //
+  Header header = 1;
+
+  //
+  uint32 leading_car_id = 2;
+}
+
+message WirelessState {
+  //
+  Header header = 1;
+
+  //
+  bool wireless_router_connection_valid = 2;
+}
+
+message GatewayState {
+  //
+  Header header = 1;
+
+  //
+  bool gateway_connection_valid = 2;
+}
+
+message RadarState {
+  //
+  Header header = 1;
+
+  //
+  int32 front_radar_status = 2;
+}
+
+message StateMachine {
+  //
+  ChassisState chassis_state = 1;
+
+  //
+  SrrState srr_state = 2;
+
+  //
+  ScalaState scala_state = 3;
+
+  //
+  HppuState hppu_state = 4;
+
+  //
+  CarState car_state = 5;
+
+  //
+  HMIState hmi_state = 6;
+
+  //
+  PlanningState planning_state = 7;
+
+  //
+  WirelessState wireless_state = 8;
+
+  //
+  GatewayState gateway_state = 9;
+
+  //
+  RadarState radar_state = 10;
+}

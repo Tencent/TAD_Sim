@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenDRIVE>
+    <header revMajor="1" revMinor="4" name="" version="1.0" date="2023-10-19T15:21:28" north="4964211.64" south="4785205.552" west="12859230.166" east="13053393.431" vendor="tadsim v2.0">
+        <geoReference><![CDATA[+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs]]></geoReference>
+    </header>
+    <road name="" id="1" junction="-1" length="782.00119781859746">
+        <link/>
+        <type type="motorway" s="0"/>
+        <planView>
+            <geometry x="-465.33331298828131" y="-84.334428184024503" length="782.00119781859746" hdg="0.001705101637373474" s="0">
+                <line/>
+            </geometry>
+        </planView>
+        <elevationProfile>
+            <elevation a="0.00011258106678724289" b="-4.0801898024697486e-08" c="0" d="0" s="0"/>
+        </elevationProfile>
+        <lanes>
+            <laneSection s="0">
+                <center>
+                    <lane id="0" level="false" type="none">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.15" laneChange="none" type="solid solid" color="yellow"/>
+                    </lane>
+                </center>
+                <right>
+                    <lane id="-1" level="false" type="driving">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.2" laneChange="none" type="broken" color="none"/>
+                        <width a="3.499999999732931" b="0" c="0" d="0" sOffset="0"/>
+                        <speed sOffset="0" max="8.3333333333333339"/>
+                    </lane>
+                    <lane id="-2" level="false" type="driving">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.2" laneChange="none" type="solid" color="none"/>
+                        <width a="3.5000000001643814" b="0" c="0" d="0" sOffset="0"/>
+                        <speed sOffset="0" max="8.3333333333333339"/>
+                    </lane>
+                </right>
+            </laneSection>
+        </lanes>
+    </road>
+    <road name="" id="2" junction="-1" length="782.00119781859769">
+        <link/>
+        <type type="motorway" s="0"/>
+        <planView>
+            <geometry x="316.666748046875" y="-83.001037493515696" length="782.00119781859769" hdg="-3.1398875519524196" s="0">
+                <line/>
+            </geometry>
+        </planView>
+        <elevationProfile>
+            <elevation a="0.00011258106678724289" b="-4.083762126442652e-08" c="0" d="0" s="0"/>
+        </elevationProfile>
+        <lanes>
+            <laneSection s="0">
+                <center>
+                    <lane id="0" level="false" type="none">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.15" laneChange="none" type="none" color="white"/>
+                    </lane>
+                </center>
+                <right>
+                    <lane id="-1" level="false" type="driving">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.2" laneChange="none" type="broken" color="none"/>
+                        <width a="3.5000000000592904" b="0" c="0" d="0" sOffset="0"/>
+                        <speed sOffset="0" max="8.3333333333333339"/>
+                    </lane>
+                    <lane id="-2" level="false" type="driving">
+                        <roadMark sOffset="0" weight="standard" height="0" material="standard" width="0.2" laneChange="none" type="solid" color="none"/>
+                        <width a="3.4999999999779567" b="0" c="0" d="0" sOffset="0"/>
+                        <speed sOffset="0" max="8.3333333333333339"/>
+                    </lane>
+                </right>
+            </laneSection>
+        </lanes>
+    </road>
+</OpenDRIVE>

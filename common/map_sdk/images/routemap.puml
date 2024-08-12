@@ -1,0 +1,69 @@
+@startuml
+    actor Application
+    participant RoutingMap
+    participant LoadingThread
+    participant AsyncQueue
+    participant DrivingTrk
+    participant MapAccess
+    participant DataCache
+
+    activate Application 
+    activate RoutingMap
+    Application  -> RoutingMap : 1.Load Config 用户加载配置信息
+    RoutingMap -> MapAccess : 2.Set DB Path，设置地图路径
+    activate MapAccess
+    MapAccess --> RoutingMap : True
+    deactivate MapAccess
+    RoutingMap --> Application: True
+    deactivate RoutingMap
+
+    activate LoadingThread
+    LoadingThread -> AsyncQueue : 3.Get Operation Info，获取操作句柄
+    activate AsyncQueue
+    AsyncQueue --> LoadingThread : 4.Block Thread，线程阻塞，等待队列
+    deactivate LoadingThread
+    deactivate AsyncQueue
+
+    ->Application : Odometry
+    Application -> RoutingMap : 5.Update Location ，用户更新定位
+    activate RoutingMap
+    RoutingMap -> DrivingTrk : 6.Update Location， 更新定位
+    activate DrivingTrk
+    DrivingTrk --> RoutingMap :7.Need Load Data，判断需要加载区域信息
+    deactivate DrivingTrk
+    RoutingMap -> AsyncQueue : 8.Set Loading info，设置加载信息
+    activate AsyncQueue
+    RoutingMap -> Application : True
+    deactivate RoutingMap
+    AsyncQueue -> LoadingThread : 9.Activate，加载线程激活
+    deactivate AsyncQueue
+    activate LoadingThread
+    LoadingThread -> AsyncQueue :  10.Get Loading Info，获取加载信息
+    activate AsyncQueue
+    AsyncQueue --> LoadingThread :  11.Info，返回信息
+    deactivate AsyncQueue
+    LoadingThread -> MapAccess :  12.Load Map Data，加载地图数据
+    activate MapAccess
+    MapAccess --> LoadingThread : 13.Local Map ，将地图缓存到本地
+    deactivate MapAccess
+    LoadingThread -> LoadingThread : 14.Diff，进行diff操作
+    LoadingThread -> DataCache :  15.Update Local Map，更新本地缓存信息
+    activate DataCache
+    DataCache --> LoadingThread : True
+    deactivate LoadingThread
+    deactivate DataCache
+    ->Application : Odometry
+    Application -> RoutingMap : 16.Update Location ，用户更新定位
+    activate RoutingMap
+    RoutingMap -> DrivingTrk :17. Update Location，更新定位
+    activate DrivingTrk
+    DrivingTrk --> RoutingMap :18. Need Load Data，判断需要加载区域信息
+    deactivate DrivingTrk
+    RoutingMap -> DataCache : 19.Get Local Map，将地图缓存到本地
+    activate DataCache
+    DataCache --> RoutingMap : 20.Add&Remove Info，将本地信息增删
+    deactivate DataCache
+    RoutingMap -->Application : 21.Add&Remove Info，将本地信息增删
+    deactivate RoutingMap
+      <- Application :Map Topic
+@enduml

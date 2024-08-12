@@ -1,0 +1,56 @@
+{
+  "kpi": [
+    {
+      "name": "ExKpiExample",
+      "category": {
+        "labels": [
+          "SECURITY"
+        ],
+        "features": [
+          "General"
+        ]
+      },
+      "parameters": {
+        "thresholds": [
+          {
+            "threshold": "1.0",
+            "thresholdName": "碰撞检测距离阈值上限",
+            "thresholdUnit": "m",
+            "thresholdID": "Default_Thresh_ID",
+            "scoreMap1d": {
+              "u": [],
+              "y": [],
+              "uInfo": {},
+              "yInfo": {}
+            },
+            "thresholdType": "ThresholdType_DOUBLE"
+          }
+        ],
+        "indicatorName": "自定义示例指标",
+        "definition": "是否发生碰撞",
+        "calculationMethod": "根据一定规则计算主车是否发生碰撞",
+        "indicatorNameEng": "ExKpiExample",
+        "scoreMap1d": {
+          "u": [],
+          "y": [],
+          "uInfo": {},
+          "yInfo": {}
+        },
+        "additional": {
+          "abbreviation": "ExKpiExample"
+        }
+      },
+      "passCondition": {
+        "relation": "<",
+        "value": 1,
+        "desc": "主车发生碰撞"
+      },
+      "finishCondition": {
+        "relation": ">=",
+        "value": 0,
+        "desc": "主车发生碰撞"
+      }
+    }
+  ],
+  "defaultGroup": []
+}

@@ -1,0 +1,75 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "moduleService.proto";
+import "traffic.proto";
+import "location.proto";
+
+service SimDriverService {
+  //
+  rpc SimInit(InitRequest) returns (InitResponse);
+
+  //
+  rpc SimStep (StepInput) returns (StepOutput);
+}
+
+message InitRequest {
+}
+
+message InitResponse {
+  //
+  ErrorStatus status = 1;
+}
+
+message EntryPointStatus {
+  //
+  Vec3 location = 1;
+
+  //
+  bool generateTraffics = 2;
+
+  //
+  bool isSafeToAddEgoCar = 3;
+}
+
+message StepInput {
+  // Around 9 cell cars and obstacles(excluding self ego car).
+  // 约 9 辆 cars 和 obstacles(不包括主车).
+  //
+  Traffic traffic = 1;
+
+  //
+  uint64 frameId = 2;
+
+  //
+  repeated EntryPointStatus epStatus = 3;
+}
+
+message StepOutput {
+  //
+  int64 uuid = 1;
+
+  //
+  oneof output {
+    //
+    Traffic traffic = 2;
+
+    //
+    Location egoLocation = 3;
+  }
+
+  //
+  repeated EntryPointStatus epStatus = 4;
+
+  //
+  ErrorStatus status = 5;
+}

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSCENARIO xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="OpenScenario.xsd">
+    <FileHeader description="城市道路&amp;&amp; 十字路口-车道数量2&amp;&amp; 主车直行&amp;&amp; 主车周围动态目标数量为1,类型为车&amp;&amp; 动态目标一位于:行驶路径的交叉车道直行-匀速&amp;&amp; 动态目标一意图:干扰主车纵向运动" author="tadsim v2.0" revMajor="1" revMinor="0" date="2024-06-27T16:40:32.102053"/>
+    <CatalogLocations/>
+    <RoadNetwork>
+        <LogicFile filepath="../hadmap/sim_map_downtown_001.xodr"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="Ego">
+            <Vehicle name="suv" vehicleCategory="car">
+                <BoundingBox>
+                    <Center x="1.433" y="0.0" z="1.169"/>
+                    <Dimensions width="2.182" length="4.772" height="2.339"/>
+                </BoundingBox>
+                <Performance maxSpeed="55.56" maxDeceleration="10.0" maxAcceleration="12.0"/>
+                <Axles>
+                    <FrontAxle maxSteering="0.6981317" wheelDiameter="0.732" trackWidth="1.455" positionX="2.909" positionZ="0.366"/>
+                    <RearAxle maxSteering="0.034906585" wheelDiameter="0.732" trackWidth="1.455" positionX="0.0" positionZ="0.366"/>
+                </Axles>
+                <Properties>
+                    <Property name="controller" value="L4_Planning"/>
+                    <Property name="SensorGroup" value="1"/>
+                    <Property name="Weight" value="1.5"/>
+                    <Property name="Alias" value="SUV"/>
+                    <Property name="Preset" value="true"/>
+                    <Property name="Dynamic" value="1"/>
+                    <Property name="model3d" value="mainsuv/sm_mainsuv1.fbx"/>
+                    <Property name="model_id" value="-1"/>
+                </Properties>
+            </Vehicle>
+        </ScenarioObject>
+        <ScenarioObject name="Npc1">
+            <Vehicle name="Sedan" vehicleCategory="car">
+                <BoundingBox>
+                    <Center x="1.277" y="0.0" z="0.72131"/>
+                    <Dimensions width="2.05123" length="4.75579" height="1.44262"/>
+                </BoundingBox>
+                <Performance maxSpeed="55.56" maxDeceleration="10.0" maxAcceleration="12.0"/>
+                <Axles>
+                    <FrontAxle maxSteering="0.52" wheelDiameter="0.63" trackWidth="1.434" positionX="2.825" positionZ="0.315"/>
+                    <RearAxle maxSteering="0.52" wheelDiameter="0.63" trackWidth="1.434" positionX="0.0" positionZ="0.315"/>
+                </Axles>
+                <Properties>
+                    <Property name="model_id" value="1"/>
+                    <Property name="model3d" value="sedan/sm_borsche01.fbx"/>
+                </Properties>
+            </Vehicle>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <GlobalAction>
+                    <EnvironmentAction>
+                        <Environment name="Environment">
+                            <TimeOfDay animation="true" dateTime="2024-06-27T13:40:31"/>
+                            <Weather cloudState="free">
+                                <Sun azimuth="0.103" intensity="0" elevation="-0.464"/>
+                                <Fog visualRange="2000">
+                                    <BoundingBox>
+                                        <Center x="0.0" y="0.0" z="0.0"/>
+                                        <Dimensions width="2000.0" length="2000.0" height="2000.0"/>
+                                    </BoundingBox>
+                                </Fog>
+                                <Precipitation precipitationType="dry" intensity="0.0"/>
+                            </Weather>
+                            <RoadCondition frictionScaleFactor="0.8"/>
+                            <ParameterDeclarations>
+                                <ParameterDeclaration name="TimeStamp" parameterType="integer" value="0"/>
+                                <ParameterDeclaration name="wind_speed" parameterType="double" value="2.0"/>
+                                <ParameterDeclaration name="tmperature" parameterType="double" value="298.15"/>
+                                <ParameterDeclaration name="UsingSunByUser" parameterType="boolean" value="false"/>
+                            </ParameterDeclarations>
+                        </Environment>
+                    </EnvironmentAction>
+                </GlobalAction>
+                <Private entityRef="Ego">
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="15.277999877929688"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition roadId="6288" laneId="-1" s="34.99975332099294" offset="0.00023336079823801204">
+                                    <Orientation h="0.16699653351048888"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <RoutingAction>
+                            <AssignRouteAction>
+                                <Route name="Route" closed="false">
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <LanePosition roadId="6288" laneId="-1" s="34.99975332099294" offset="0.00023336079823801204">
+                                                <Orientation h="0.16699653351048888"/>
+                                            </LanePosition>
+                                        </Position>
+                                    </Waypoint>
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <LanePosition roadId="6289" laneId="-1" s="45.364418604786486" offset="0.00029873413258417946">
+                                                <Orientation h="0.16605183603368168"/>
+                                            </LanePosition>
+                                        </Position>
+                                    </Waypoint>
+                                </Route>
+                            </AssignRouteAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="Npc1">
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0.0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition roadId="6317" laneId="-1" s="140.99919510680309" offset="0.00013718777529414126">
+                                    <Orientation h="-1.4031839173300844"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <RoutingAction>
+                            <AssignRouteAction>
+                                <Route name="Route" closed="false">
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <LanePosition roadId="6317" laneId="-1" s="140.99919510680309" offset="0.00013718777529414126">
+                                                <Orientation h="-1.4031839173300844"/>
+                                            </LanePosition>
+                                        </Position>
+                                    </Waypoint>
+                                    <Waypoint routeStrategy="shortest">
+                                        <Position>
+                                            <LanePosition roadId="6290" laneId="-1" s="121.79259724299735" offset="8.048611452349067e-05">
+                                                <Orientation h="-1.26894217241268"/>
+                                            </LanePosition>
+                                        </Position>
+                                    </Waypoint>
+                                </Route>
+                            </AssignRouteAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="Story">
+            <Act name="Act">
+                <ManeuverGroup name="Ego" maximumExecutionCount="1">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="Maneuver">
+                        <Event name="Event1" priority="overwrite" maximumExecutionCount="1">
+                            <Action name="Action1">
+                                <PrivateAction>
+                                    <ActivateControllerAction lateral="false" longitudinal="true"/>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="Condition" delay="0.0" conditionEdge="risingOrFalling">
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition value="0.0" rule="equalTo"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup name="Npc1" maximumExecutionCount="1">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Npc1"/>
+                    </Actors>
+                    <Maneuver name="Maneuver">
+                        <Event name="Event1" priority="overwrite" maximumExecutionCount="1">
+                            <Action name="Action1">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="11.111000061035156"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="Condition" delay="0.0" conditionEdge="falling">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="Ego"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <TimeToCollisionCondition value="2.5999999046325684" alongRoute="true" freespace="true" rule="lessThan">
+                                                    <TimeToCollisionConditionTarget>
+                                                        <EntityRef entityRef="Ego"/>
+                                                    </TimeToCollisionConditionTarget>
+                                                </TimeToCollisionCondition>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition name="start" delay="0.0" conditionEdge="rising">
+                            <ByValueCondition>
+                                <SimulationTimeCondition value="0.0" rule="greaterThan"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+                <StopTrigger/>
+            </Act>
+        </Story>
+        <StopTrigger/>
+    </Storyboard>
+</OpenSCENARIO>

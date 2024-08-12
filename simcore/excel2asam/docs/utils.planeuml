@@ -1,0 +1,9 @@
+@startuml utils
+class DtypeConverter {
+  -df : pd.DataFrame
+  +_get_best_int_dtypes(int_cols) : dict
+  +_get_best_float_dytapes(float_cols) : dict
+  +_get_mapping() : dict
+  +process() : pd.DataFrame
+}
+@enduml

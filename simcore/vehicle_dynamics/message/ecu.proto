@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+import "car_basic.proto";
+
+package tx_car;
+
+message Pow_ECU {
+  message SoftEMS {
+    RealScalar EngMaxTrq = 1;
+    RealScalar eng_acc_P = 6;     // ems acc P of PID
+    RealScalar eng_acc_I = 7;     // ems acc I of PID
+    RealScalar eng_acc_D = 8;     // ems acc D of PID
+    RealScalar eng_idl_speed = 9; // ems idle speed
+  }
+  message SoftVCU {
+    RealScalar MotorMaxTrq = 1;
+    RealScalar vcu_acc_P = 9;                     // vcu P of PID
+    RealScalar vcu_acc_I = 10;                    // vcu I of PID
+    RealScalar vcu_acc_D = 11;                    // vcu D of PID
+    RealScalar vcu_power_regeneration_ratio = 12; // E-Car power recycle ratio
+    RealScalar FWDMotorTorqueSplitRatio =
+        4; // when the car is 4WD, the torque ration between front and total
+           // torque = Tfront/(Tfront+Trear)
+  }
+  message SoftABS {
+    RealScalar abs_enable = 13;             // if enable abs
+    RealScalar slip_ratio_disable_ref = 14; // abs disable slip ratio
+    RealScalar slip_ratio_ref = 15;         // abs enable slip ratio
+    RealScalar abs_brake_pressure = 16;     // abs enable brake pressure
+    // RealScalar max_main_cylinder_pressure = 17; // max main cylinder pressure
+    // RealScalar brake_time_const = 19;   // brake fliud time const
+    // Real1DMap  brake_table = 20;        // brake table, target acc vs
+    // brake_prs_0_1 RealScalar rear_brake_ratio = 18;   // rear brake ratio
+    RealScalar brake_P = 9;  //  P of PID
+    RealScalar brake_I = 10; // I of PID
+    RealScalar brake_D = 11; // D of PID
+  }
+  message SoftHCU {
+    RealScalar pwr_dmnd_ev = 1; // ev only power
+    // RealScalar pwr_dmnd_engine = 2;         // engine only power
+    RealScalar pwr_dmnd_hybrid = 3;    // hybrid only power
+    RealScalar pwr_default_charge = 4; // default charge power
+    RealScalar pwr_max_charge = 5;     // max charge power
+    RealScalar pwr_max_ReGen = 6;      // max regenerate power
+    RealScalar pwr_max_system = 7;     // max system power
+    // RealScalar engine_stepin_speed = 8;     // engine step in speed, unit kph
+    RealScalar hev_4wd_front_pwr_ratio = 9; // HEV front power ratio in 4WD mode
+    Real1DMap optimal_engine_pwr = 10;      // optimal engine power
+    RealScalar soc_start_charging = 11;     // soc to start charging
+    RealScalar soc_end_charging = 12;       // soc to end charging
+    RealScalar soc_min_required = 13;       // soc minium required
+
+    // vehicle speed when engine should step in, unit[kph]
+    RealScalar engine_stepin_speed_kph = 14;
+
+    // pid for hcu
+    RealScalar hcu_acc_P = 15; // hcu P of PID
+    RealScalar hcu_acc_I = 16; // hcu I of PID
+    RealScalar hcu_acc_D = 17; // hcu D of PID
+  }
+
+  RealScalar ecu_max_acc = 1; // ecu max acc
+  RealScalar ecu_max_dec = 2; // ecu max dec
+  SoftEMS soft_ems = 3;       // soft ems
+  SoftVCU soft_vcu = 4;       // soft vcu
+  SoftABS soft_abs = 5;       // soft abs
+  SoftHCU soft_hcu = 6;       // soft hcu
+}

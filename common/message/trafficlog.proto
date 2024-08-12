@@ -1,0 +1,66 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \note Not in maintenance.
+// 不在维护.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_world_log;
+
+import "location.proto";
+import "traffic.proto";
+
+message WorldViewPoint {
+  //
+  uint64 id = 1;
+
+  //
+  // \note 经度*1000000 取整, 便于全景压缩, 误差 0.1m 左右
+  //
+  int32	lng = 2;
+
+  //
+  // \note 纬度*1000000 取整
+  //
+  int32 lat = 3;
+}
+
+message Ego {
+  //
+  int64 id = 1;
+
+  //
+  sim_msg.Location location = 2;
+}
+
+message TrafficFrame {
+  //
+  uint64 time = 1;
+
+  //
+  repeated sim_msg.Car cars = 2;
+
+  //
+  repeated Ego egos = 3;
+
+  //
+  uint32 frame_id = 4;
+}
+
+message WorldViewFrame {
+  //
+  uint64 time = 1;
+
+  //
+  repeated WorldViewPoint points = 2;
+}
+
+message TrafficLog {
+  //
+  repeated TrafficFrame traffic_frame = 1;
+
+  //
+  repeated WorldViewFrame  worldview_frame = 2;
+}

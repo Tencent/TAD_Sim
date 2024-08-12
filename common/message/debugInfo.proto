@@ -1,0 +1,41 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief basic component.
+// 基础组件.
+//
+// TOPIC: nothing
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "color.proto";
+
+message Mark {
+  //
+  int32 id = 1;
+
+  //
+  int32 type = 2;
+
+  //
+  string text = 3;
+
+  //
+  repeated Vec3 points = 4;
+
+  //
+  Color color = 5;
+
+  //
+  Vec3 pos = 6;
+
+  //
+  int32 refObjId = 7;
+}
+
+message MarkArray {
+  //
+  repeated Mark marks = 1;
+}

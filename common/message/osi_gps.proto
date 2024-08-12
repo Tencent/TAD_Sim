@@ -1,0 +1,71 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+
+syntax = "proto3";
+
+package osi3;
+
+import "osi_version.proto";
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+message GPS{
+  // The interface version used by the sender (i.e. the simulation
+  // environment).
+  //
+  InterfaceVersion version = 1;
+
+  // The data timestamp of the simulation environment. The zero time point is
+  // arbitrary but must be identical for all messages.
+  // Recommendation: Zero time point for start point of the simulation.
+  //
+  // \note Zero time point does not need to coincide with the UNIX epoch.
+  //
+  // \note For ground truth data this timestamp coincides both with the
+  // notional simulation time the data applies to and the time it was sent
+  // (there is no inherent latency for ground truth data, as opposed to
+  // sensor data).
+  //
+  Timestamp timestamp = 2;
+
+  // gps mounting position, orientation is 0
+  // Unit: m
+  MountingPosition mount_pos = 3;
+
+  // Unit: deg
+  double longitude = 4;
+
+  // Unit: deg
+  double latitude = 5;
+
+  // Unit: m
+  double height = 6;
+
+  // Unit: km/h
+  double vel_hrz = 7;
+
+  // heading, north is 0, clockwise is positive
+  // Unit: deg
+  double track = 8;
+
+  // Unit: km/h
+  double vel_vrt = 9;
+
+  // Unit: m
+  double latSdtDev = 10;
+
+  // Unit: m
+  double lonSdtDev = 11;
+
+  // Unit: m
+  double hgtSdtDev = 12;
+
+  // gps solver state, 0: normal
+  uint32  SolSt = 13;
+
+  // gps location status, valid value is 48,49,50
+  uint32 PosType = 14;
+
+  // error between grould level and wgs84
+  double Undulation = 15;
+}

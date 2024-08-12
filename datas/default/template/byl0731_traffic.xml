@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<traffic version="1.0">
+    <routes>
+        <route id="0" type="start_end" start="121.19071134903028,31.267531202093934" end="121.1601460504544,31.282774373141276" info="Ego and NB" />
+        <route id="1011" type="start_end" start="121.16086874,31.27512915,13.159" info="101E" />
+        <route id="1012" type="start_end" start="121.16039375,31.27474269,13.203" info="101S" />
+        <route id="1013" type="start_end" start="121.16005294,31.27503901,13.123" info="101W" />
+        <route id="1014" type="start_end" start="121.16032809,31.27550918,13.312" info="101N" />
+        <route id="1016" type="start_end" start="121.16035629,31.27474459,13.203" info="101SL" />
+        <route id="1018" type="start_end" start="121.16036188,31.27550751,13.312" info="101NL" />
+        <route id="1021" type="start_end" start="121.16063672,31.28228352,13.159" info="102E" />
+        <route id="1022" type="start_end" start="121.16040272,31.28175943,13.262" info="102S" />
+        <route id="1023" type="start_end" start="121.15980771,31.28212923,12.961" info="102W" />
+        <route id="1024" type="start_end" start="121.16005738,31.28252792,13.231" info="102N" />
+        <route id="1025" type="start_end" start="121.16064016,31.28225307,13.159" info="102EL" />
+        <route id="1026" type="start_end" start="121.16033560,31.28174633,13.262" info="102SL" />
+        <route id="1027" type="start_end" start="121.15980771,31.28212923,12.961" info="102WL" />
+        <route id="1028" type="start_end" start="121.16009024,31.28253429,13.231" info="102NL" />
+        <route id="1031" type="start_end" start="121.16382560,31.28251833,13.046" info="103E" />
+        <route id="1032" type="start_end" start="121.16370382,31.28222713,13.540" info="103S" />
+        <route id="1033" type="start_end" start="121.16346933,31.28241364,13.141" info="103W" />
+        <route id="1034" type="start_end" start="121.16357609,31.28268303,13.054" info="103N" />
+        <route id="1041" type="start_end" start="121.17132591,31.28433879,13.091" info="104E" />
+        <route id="1043" type="start_end" start="121.17062993,31.28416321,13.111" info="104W" />
+        <route id="1044" type="start_end" start="121.17087532,31.28456552,13.090" info="104N" />
+        <route id="1051" type="start_end" start="121.17578000,31.28201964,14.016" info="105E" />
+        <route id="1052" type="start_end" start="121.17561806,31.28153896,13.455" info="105S" />
+        <route id="1053" type="start_end" start="121.17522165,31.28164049,13.612" info="105W" />
+        <route id="1054" type="start_end" start="121.17523560,31.28214286,14.421" info="105N" />
+        <route id="1061" type="start_end" start="121.18500635,31.27651889,13.271" info="106E" />
+        <route id="1063" type="start_end" start="121.18461241,31.27643266,13.312" info="106W" />
+        <route id="1064" type="start_end" start="121.18479902,31.27672934,13.153" info="106N" />
+        <route id="1071" type="start_end" start="121.18839946,31.27574850,13.098" info="107E" />
+        <route id="1072" type="start_end" start="121.18848311,31.27524255,13.219" info="107S" />
+        <route id="1073" type="start_end" start="121.18804161,31.27518654,13.377" info="107W" />
+        <route id="1074" type="start_end" start="121.18780191,31.27561065,13.262" info="107N" />
+        <route id="1082" type="start_end" start="121.19177599,31.26692418,13.382" info="108S" />
+        <route id="1083" type="start_end" start="121.19151337,31.26679052,13.331" info="108W" />
+        <route id="1084" type="start_end" start="121.19135044,31.26703341,13.299" info="108N" />
+        <route id="1091" type="start_end" start="121.17243258,31.26652070,13.501" info="109E" />
+        <route id="1092" type="start_end" start="121.17230026,31.26617586,13.256" info="109S" />
+        <route id="1093" type="start_end" start="121.17191793,31.26627118,13.372" info="109W" />
+        <route id="1094" type="start_end" start="121.17205995,31.26659373,13.599" info="109N" />
+        <route id="1095" type="start_end" start="121.17244296,31.26649478,13.501" info="109EL" />
+        <route id="1096" type="start_end" start="121.17226529,31.26616572,13.256" info="109SL" />
+        <route id="1097" type="start_end" start="121.17190741,31.26629612,13.372" info="109WL" />
+        <route id="1098" type="start_end" start="121.17209617,31.26660424,13.599" info="109NL" />
+        <route id="1101" type="start_end" start="121.17401674,31.27216975,13.304" info="110E" />
+        <route id="1102" type="start_end" start="121.17365287,31.27210745,13.564" info="110S" />
+        <route id="1103" type="start_end" start="121.17355046,31.27240101,13.336" info="110W" />
+        <route id="1104" type="start_end" start="121.17376583,31.27245950,13.319" info="110N" />
+        <route id="1111" type="start_end" start="121.16784229,31.27529916,13.399" info="111E" />
+        <route id="1112" type="start_end" start="121.16755055,31.27509275,13.505" info="111S" />
+        <route id="1113" type="start_end" start="121.16728421,31.27531036,13.401" info="111W" />
+        <route id="1114" type="start_end" start="121.16758941,31.27543692,13.377" info="111N" />
+        <route id="1121" type="start_end" start="121.16393960,31.27374509,13.295" info="112E" />
+        <route id="1122" type="start_end" start="121.16391882,31.27333684,13.528" info="112S" />
+        <route id="1123" type="start_end" start="121.16349037,31.27320239,13.278" info="112W" />
+        <route id="1124" type="start_end" start="121.16342287,31.27362955,13.085" info="112N" />
+        <route id="1125" type="start_end" start="121.16396761,31.27372745,13.295" info="112EL" />
+        <route id="1126" type="start_end" start="121.16391882,31.27333684,13.528" info="112SL" />
+        <route id="1127" type="start_end" start="121.16346341,31.27322288,13.278" info="112WL" />
+        <route id="1128" type="start_end" start="121.16344639,31.27365284,13.085" info="112NL" />
+        <route id="1131" type="start_end" start="121.18963185,31.27687053,12.993" info="113E" />
+        <route id="1133" type="start_end" start="121.18949317,31.27659942,13.101" info="113W" />
+        <route id="1134" type="start_end" start="121.18947463,31.27687824,13.173" info="113N" />
+        <route id="1141" type="start_end" start="121.19115250,31.27828222,13.408" info="114E" />
+        <route id="1142" type="start_end" start="121.19115206,31.27807900,13.302" info="114S" />
+        <route id="1143" type="start_end" start="121.19098207,31.27798251,13.388" info="114W" />
+        <route id="1144" type="start_end" start="121.19082839,31.27828116,13.331" info="114N" />
+    </routes>
+    <accs>
+        <acc id="0" profile="0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000;0.000000,0.000000" />
+    </accs>
+    <accs_event>
+        <acc id="0" profile="ttc 0,0" />
+    </accs_event>
+    <merges>
+        <merge id="0" profile="0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0" />
+        <merge id="1" profile="0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0;0.000000,0" />
+    </merges>
+    <merges_event>
+        <merge id="0" profile="ttc 0,0" />
+        <merge id="1" profile="ttc 0,0" />
+    </merges_event>
+    <velocities />
+    <velocities_event />
+    <pedestrians_event />
+    <vehicles>
+        <vehicle id="101" routeID="1" laneID="-2" start_s="8" start_t="0" start_v="8.1" max_v="13.5" l_offset="0" length="4.5" width="1.8" height="1.5" accID="0" mergeID="0" vehicleType="Sedan_001" aggress="0.7" behavior="TrafficVehicle" />
+    </vehicles>
+    <obstacles />
+    <pedestrians />
+    <controllers>
+        <controller id="101">
+            <subsignlight id="1011" />
+            <subsignlight id="1012" />
+            <subsignlight id="1013" />
+            <subsignlight id="1014" />
+            <subsignlight id="1016" />
+            <subsignlight id="1018" />
+        </controller>
+        <controller id="102">
+            <subsignlight id="1021" />
+            <subsignlight id="1022" />
+            <subsignlight id="1023" />
+            <subsignlight id="1024" />
+            <subsignlight id="1025" />
+            <subsignlight id="1026" />
+            <subsignlight id="1027" />
+            <subsignlight id="1028" />
+        </controller>
+        <controller id="109">
+            <subsignlight id="1091" />
+            <subsignlight id="1092" />
+            <subsignlight id="1093" />
+            <subsignlight id="1094" />
+            <subsignlight id="1095" />
+            <subsignlight id="1096" />
+            <subsignlight id="1097" />
+            <subsignlight id="1098" />
+        </controller>
+        <controller id="112">
+            <subsignlight id="1121" />
+            <subsignlight id="1122" />
+            <subsignlight id="1123" />
+            <subsignlight id="1124" />
+            <subsignlight id="1125" />
+            <subsignlight id="1126" />
+            <subsignlight id="1127" />
+            <subsignlight id="1128" />
+        </controller>
+        <controller id="103">
+            <subsignlight id="1031" />
+            <subsignlight id="1032" />
+            <subsignlight id="1033" />
+            <subsignlight id="1034" />
+        </controller>
+        <controller id="104">
+            <subsignlight id="1041" />
+            <subsignlight id="1042" />
+            <subsignlight id="1043" />
+            <subsignlight id="1044" />
+        </controller>
+        <controller id="105">
+            <subsignlight id="1051" />
+            <subsignlight id="1052" />
+            <subsignlight id="1053" />
+            <subsignlight id="1054" />
+        </controller>
+        <controller id="106">
+            <subsignlight id="1061" />
+            <subsignlight id="1062" />
+            <subsignlight id="1063" />
+            <subsignlight id="1064" />
+        </controller>
+        <controller id="107">
+            <subsignlight id="1071" />
+            <subsignlight id="1072" />
+            <subsignlight id="1073" />
+            <subsignlight id="1074" />
+        </controller>
+        <controller id="108">
+            <subsignlight id="1081" />
+            <subsignlight id="1082" />
+            <subsignlight id="1083" />
+            <subsignlight id="1084" />
+        </controller>
+        <controller id="110">
+            <subsignlight id="1101" />
+            <subsignlight id="1102" />
+            <subsignlight id="1103" />
+            <subsignlight id="1104" />
+        </controller>
+        <controller id="111">
+            <subsignlight id="1111" />
+            <subsignlight id="1112" />
+            <subsignlight id="1113" />
+            <subsignlight id="1114" />
+        </controller>
+        <controller id="113">
+            <subsignlight id="1131" />
+            <subsignlight id="1132" />
+            <subsignlight id="1133" />
+            <subsignlight id="1134" />
+        </controller>
+        <controller id="114">
+            <subsignlight id="1141" />
+            <subsignlight id="1142" />
+            <subsignlight id="1143" />
+            <subsignlight id="1144" />
+        </controller>
+    </controllers>
+    <signlights>
+        <signlight id="1011" routeID="1011" start_s="0" start_t="13" l_offset="1.2697113969888318" time_green="7" time_yellow="3" time_red="20" direction="180" lane="-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="1" signalHead="300145,300146,300147,300148" />
+        <signlight id="1012" routeID="1012" start_s="0" start_t="1" l_offset="-0.46723033959031768" time_green="5" time_yellow="3" time_red="22" direction="0" lane="-4;-3;-2" phase="R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="2" signalHead="300143,300144" />
+        <signlight id="1013" routeID="1013" start_s="0" start_t="13" l_offset="0.64282026698795636" time_green="7" time_yellow="3" time_red="20" direction="180" lane="-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="3" signalHead="300149,300150" />
+        <signlight id="1014" routeID="1014" start_s="0" start_t="1" l_offset="-0.52428954058297683" time_green="5" time_yellow="3" time_red="22" direction="0" lane="-4;-3" phase="R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="4" signalHead="300153,300154" />
+        <signlight id="1016" routeID="1016" start_s="0" start_t="22" l_offset="-0.30440396596311081" time_green="4" time_yellow="3" time_red="23" direction="0" lane="-1" phase="L;L0" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="5" signalHead="300141,300142" />
+        <signlight id="1018" routeID="1018" start_s="0" start_t="22" l_offset="0.042030202406839301" time_green="4" time_yellow="3" time_red="23" direction="0" lane="-2;-1" phase="L;L0" status="Activated" compliance="1.0" eventId="" plan="0" junction="696" phaseNumber="6" signalHead="300137,300152" />
+        <signlight id="1021" routeID="1021" start_s="0" start_t="1" l_offset="1.3626161828393175" time_green="5" time_yellow="3" time_red="28" direction="0" lane="-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="1" signalHead="300155,300157" />
+        <signlight id="1022" routeID="1022" start_s="0" start_t="19" l_offset="0.0063479709851065299" time_green="5" time_yellow="3" time_red="28" direction="0" lane="-4;-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="2" signalHead="300134,300151" />
+        <signlight id="1023" routeID="1023" start_s="0" start_t="1" l_offset="-1.2985169212462027" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="3" signalHead="300135,300136" />
+        <signlight id="1024" routeID="1024" start_s="0" start_t="19" l_offset="-0.85899398018955753" time_green="5" time_yellow="3" time_red="28" direction="0" lane="-4;-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="4" signalHead="300139,300140" />
+        <signlight id="1025" routeID="1025" start_s="0" start_t="28" l_offset="0.011778222026960236" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="5" signalHead="300156,300158" />
+        <signlight id="1026" routeID="1026" start_s="0" start_t="10" l_offset="-1.1188409540166278" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-4;-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="6" signalHead="300159" />
+        <signlight id="1027" routeID="1027" start_s="0" start_t="28" l_offset="-0.23286380618676292" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="7" signalHead="" />
+        <signlight id="1028" routeID="1028" start_s="0" start_t="10" l_offset="0.33111398274225373" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-4;-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="657" phaseNumber="8" signalHead="300138" />
+        <signlight id="1031" routeID="1031" start_s="0" start_t="12" l_offset="-0.46775418785872486" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="654" phaseNumber="1" signalHead="300067,300068,300127" lane="-2;-1" phase="L;L0;R;T" />
+        <signlight id="1032" routeID="1032" start_s="0" start_t="27" l_offset="-0.85484105677811839" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="654" phaseNumber="2" signalHead="300131" lane="-2;-1" phase="L;L0;R;T" />
+        <signlight id="1033" routeID="1033" start_s="0" start_t="12" l_offset="-1.0940433325300127" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="654" phaseNumber="3" signalHead="300065,300066" lane="-2;-1" phase="L;R;R0;T" />
+        <signlight id="1034" routeID="1034" start_s="0" start_t="27" l_offset="-0.97873129264048464" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="654" phaseNumber="4" signalHead="300023,300024" lane="-2;-1" phase="L;R;R0;T" />
+        <signlight id="1041" routeID="1041" start_s="0" start_t="12" l_offset="0.70590229714994501" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="655" phaseNumber="1" signalHead="300004,300031,300032" lane="-3;-2;-1" phase="R;T" />
+        <signlight id="1043" routeID="1043" start_s="0" start_t="12" l_offset="-0.13880021871004247" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="655" phaseNumber="2" signalHead="300005,300029,300033" lane="-3;-2;-1" phase="L;R0;T" />
+        <signlight id="1044" routeID="1044" start_s="0" start_t="27" l_offset="0.70322094941743152" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="655" phaseNumber="3" signalHead="300128,300129" lane="-3;-2;-1" phase="L;R;R0" />
+        <signlight id="1051" routeID="1051" start_s="0" start_t="12" l_offset="0.16084585219787023" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="713" phaseNumber="1" signalHead="300034,300035,300054,300055,300125" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1052" routeID="1052" start_s="0" start_t="27" l_offset="0.12304720000102617" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="713" phaseNumber="2" signalHead="300058,300059,300060,300074" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1053" routeID="1053" start_s="0" start_t="12" l_offset="0.27091434796540564" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" signalHead="300051,300061,300062,300073" lane="" phase="" />
+        <signlight id="1054" routeID="1054" start_s="0" start_t="27" l_offset="0.37773355471624126" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="713" phaseNumber="3" signalHead="300036,300037,300038,300072" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1061" routeID="1061" start_s="0" start_t="12" l_offset="-0.017132479096214303" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="663" phaseNumber="1" signalHead="300075,300076" lane="-3;-2;-1" phase="R;T" />
+        <signlight id="1063" routeID="1063" start_s="0" start_t="12" l_offset="0.34595730646421646" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="663" phaseNumber="2" signalHead="300022,300041,300053,300124" lane="-3;-2;-1" phase="L;L0;T" />
+        <signlight id="1064" routeID="1064" start_s="0" start_t="27" l_offset="-0.48638078475964419" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="663" phaseNumber="3" signalHead="300039,300040,300052,300123" lane="-2;-1" phase="L;R;R0" />
+        <signlight id="1071" routeID="1071" start_s="0" start_t="12" l_offset="0.22861020900681114" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="664" phaseNumber="1" signalHead="300071,300122" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1072" routeID="1072" start_s="0" start_t="27" l_offset="-0.78195728905043127" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="664" phaseNumber="2" signalHead="300042,300043,300109,300110,300119" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1073" routeID="1073" start_s="0" start_t="12" l_offset="0.61833076043792545" time_green="10" time_yellow="3" time_red="17" direction="0" eventId="" plan="0" junction="664" phaseNumber="3" signalHead="300044,300045,300108" lane="-1" phase="L;R;T" />
+        <signlight id="1074" routeID="1074" start_s="0" start_t="27" l_offset="0.33213035176240224" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="664" phaseNumber="4" signalHead="300106,300107,300120,300121" lane="-3;-2;-1" phase="L;R;R0;T" />
+        <signlight id="1082" routeID="1082" start_s="0" start_t="27" l_offset="-0.225210173642925" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="717" phaseNumber="1" signalHead="300103,300104,300105" lane="-3;-2;-1" phase="L;L0;T" />
+        <signlight id="1083" routeID="1083" start_s="0" start_t="12" l_offset="1.3995538765834328" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="717" phaseNumber="2" signalHead="300101,300102" lane="-2;-1" phase="L;L0" />
+        <signlight id="1084" routeID="1084" start_s="0" start_t="27" l_offset="1.4042803766821801" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="717" phaseNumber="3" signalHead="300099,300100" lane="-2;-1" phase="T" />
+        <signlight id="1091" routeID="1091" start_s="0" start_t="1" l_offset="-0.14488154159802449" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="1" signalHead="300014,300091" />
+        <signlight id="1092" routeID="1092" start_s="0" start_t="19" l_offset="-0.59829743322221007" time_green="5" time_yellow="3" time_red="28" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="2" signalHead="300012,300077,300083,300089" />
+        <signlight id="1093" routeID="1093" start_s="0" start_t="1" l_offset="0.16643033262337911" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="3" signalHead="300080,300081" />
+        <signlight id="1094" routeID="1094" start_s="0" start_t="19" l_offset="-0.083686725675177973" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="4" signalHead="300013,300090" />
+        <signlight id="1095" routeID="1095" start_s="0" start_t="28" l_offset="0.37529999311448231" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;R;R0;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="5" signalHead="300007,300082" />
+        <signlight id="1096" routeID="1096" start_s="0" start_t="10" l_offset="0.089199048511378387" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="6" signalHead="" />
+        <signlight id="1097" routeID="1097" start_s="0" start_t="28" l_offset="-0.57544761587961535" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="7" signalHead="300078,300079" />
+        <signlight id="1098" routeID="1098" start_s="0" start_t="10" l_offset="-0.06542667831686888" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="687" phaseNumber="8" signalHead="300008,300088" />
+        <signlight id="1101" routeID="1101" start_s="0" start_t="12" l_offset="-0.11004835850506527" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="691" phaseNumber="1" signalHead="300015,300026,300028,300085" lane="-3;-2;-1" phase="L;L0;R;T" />
+        <signlight id="1102" routeID="1102" start_s="0" start_t="27" l_offset="0.2099522473462378" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="691" phaseNumber="2" signalHead="300132" lane="-1" phase="L;R;R0;T" />
+        <signlight id="1103" routeID="1103" start_s="0" start_t="12" l_offset="-0.13757527113964724" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="691" phaseNumber="3" signalHead="300009,300025,300084,300130" lane="-3;-2;-1" phase="L;L0;R;T" />
+        <signlight id="1104" routeID="1104" start_s="0" start_t="27" l_offset="0.43377410580458181" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="691" phaseNumber="4" signalHead="300098" lane="-1" phase="L;L0;R;T" />
+        <signlight id="1111" routeID="1111" start_s="0" start_t="12" l_offset="-0.11415608281792235" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="690" phaseNumber="1" signalHead="300047,300048,300049,300050" lane="-3;-2;-1" phase="L;L0;R;T" />
+        <signlight id="1112" routeID="1112" start_s="0" start_t="27" l_offset="-0.20006825792963476" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="690" phaseNumber="2" signalHead="300016,300017" lane="-1" phase="L;L0;R;T" />
+        <signlight id="1113" routeID="1113" start_s="0" start_t="12" l_offset="0.30448801266193576" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="690" phaseNumber="3" signalHead="300010,300011,300086,300087" lane="-3;-2;-1" phase="L;L0;R;T" />
+        <signlight id="1114" routeID="1114" start_s="0" start_t="27" l_offset="0.22576041815554684" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="690" phaseNumber="4" signalHead="300006,300126" lane="-1" phase="L;R;R0;T" />
+        <signlight id="1121" routeID="1121" start_s="0" start_t="1" l_offset="0.013594016780682778" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="1" signalHead="300002,300021" />
+        <signlight id="1122" routeID="1122" start_s="0" start_t="19" l_offset="-0.27104664121247757" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="2" signalHead="300095,300096" />
+        <signlight id="1123" routeID="1123" start_s="0" start_t="1" l_offset="-0.70550923161591816" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="3" signalHead="300018,300019" />
+        <signlight id="1124" routeID="1124" start_s="0" start_t="19" l_offset="-0.36756248466496433" time_green="5" time_yellow="3" time_red="28" direction="180" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="4" signalHead="300092,300093" />
+        <signlight id="1125" routeID="1125" start_s="0" start_t="28" l_offset="0.36232233095295435" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="5" signalHead="300020" />
+        <signlight id="1126" routeID="1126" start_s="0" start_t="10" l_offset="0.047822793625477061" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="6" signalHead="300097" />
+        <signlight id="1127" routeID="1127" start_s="0" start_t="28" l_offset="-0.15198639240873937" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="7" signalHead="300003" />
+        <signlight id="1128" routeID="1128" start_s="0" start_t="10" l_offset="-0.19903860893376307" time_green="4" time_yellow="3" time_red="29" direction="0" lane="-3;-2;-1" phase="L;L0;R;T" status="Activated" compliance="1.0" eventId="" plan="0" junction="693" phaseNumber="8" signalHead="300094" />
+        <signlight id="1131" routeID="1131" start_s="0" start_t="12" l_offset="-1.2803536573298684" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="662" phaseNumber="1" signalHead="300118" lane="-2;-1" phase="L0;R;T" />
+        <signlight id="1133" routeID="1133" start_s="0" start_t="12" l_offset="1.2308482891185242" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="662" phaseNumber="2" signalHead="300115,300116" lane="-2;-1" phase="L;L0;T" />
+        <signlight id="1134" routeID="1134" start_s="0" start_t="27" l_offset="0.22420159428641809" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="662" phaseNumber="3" signalHead="300046,300069,300070,300117" lane="-1" phase="R" />
+        <signlight id="1141" routeID="1141" start_s="0" start_t="12" l_offset="-1.0879424068453518" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="701" phaseNumber="1" signalHead="300113,300114" lane="-2;-1" phase="R;R0;T" />
+        <signlight id="1142" routeID="1142" start_s="0" start_t="27" l_offset="-1.3070183130511062" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="701" phaseNumber="2" signalHead="300112" lane="-2;-1" phase="L;L0;R;T" />
+        <signlight id="1143" routeID="1143" start_s="0" start_t="12" l_offset="1.1351425462547247" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="701" phaseNumber="3" signalHead="300111" lane="-2;-1" phase="L;R0;T" />
+        <signlight id="1144" routeID="1144" start_s="0" start_t="27" l_offset="1.4191676057011395" time_green="10" time_yellow="3" time_red="17" direction="180" eventId="" plan="0" junction="701" phaseNumber="4" signalHead="300027,300133" lane="-2;-1" phase="L;L0;R;T" />
+    </signlights>
+</traffic>

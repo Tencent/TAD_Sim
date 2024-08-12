@@ -1,0 +1,561 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Vehicle interactions defined in the scenario file.
+// 场景文件中定义的车辆交互的内容.
+//
+// \note The DummyDriver module needs to be configured, and will be sent out at each step
+// after the relevant content is defined in the scenario file. \n
+// 需配置 DummyDriver 模块, 且场景文件中定义相关内容后, 会按照设定每个 step 发出.
+//
+// TOPIC: VEHICLE_INTERACTION
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "scene_common.proto";
+
+message Activate {
+  enum Automode {
+    AUTOMODE_OFF = 0;
+    AUTOMODE_LATERAL = 1;
+    AUTOMODE_LONGITUDINAL = 2;
+    AUTOMODE_AUTOPILOT = 3;
+  }
+
+  // Controller activation mode.
+  // 控制器激活模式.
+  //
+  // Unit: N/A, Range: [0..3], Default: 0
+  //
+  Automode automode = 1;
+}
+
+message Assign {
+  message Cruise {
+    // Whether to turn on resume sw.
+    // 是否打开恢复开关.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff resume_sw = 1;
+
+    // Whether to turn on cancel sw.
+    // 是否打开取消开关.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff cancel_sw = 2;
+
+    // Whether to turn on speed increase sw.
+    // 是否打开速度增加开关.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff speed_inc_sw = 3;
+
+    // Whether to turn on speed decline sw.
+    // 是否打开速度减少开关.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff speed_dec_sw = 4;
+
+    // driver setting timegap by ttc of acc feature.
+    // 驾驶员根据 ACC 功能的 TTC 设置时间间隔.
+    //
+    // Unit: s, Range: [0..inf], Default: 0.0
+    //
+    double set_timegap = 5;
+
+    // driver setting the desired speed.
+    // 驾驶员设置期望速度.
+    //
+    // Unit: m/s, Range: [0..inf], Default: 0.0
+    //
+    double set_speed = 6;
+  }
+
+  // setting controller name.
+  // 设置控制器名称.
+  //
+  string controller_name = 1;
+
+  //
+  oneof properties {
+    // without cruise control.
+    // 无巡航控制.
+    //
+    string none = 2;
+
+    // with cruise control.
+    // 有巡航控制.
+    //
+    Cruise cruise = 3;
+  }
+}
+
+message Override {
+  message Throttle {
+    // Whether to override by throttle.
+    // 是否由油门进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // value of throttle.
+    // 油门值.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double value = 2;
+  }
+
+  message Brake {
+    // Whether to override by brake.
+    // 是否由刹车进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // value of brake.
+    // 刹车值.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double value = 2;
+  }
+
+  message SteeringWheel {
+    // Whether to override by steering wheel.
+    // 是否由方向盘进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // value of steering wheel.
+    // 方向盘值.
+    //
+    // Unit: rad, Range: [-900.00..900.00], Default: 0.0
+    //
+    double value = 2;
+  }
+
+  message ParkingBrake {
+    // Whether to override by parking brake.
+    // 是否由驻车刹车进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // state of parking brake.
+    // 驻车刹车状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    ParkingBrakeSts value = 2;
+  }
+
+  message Clutch {
+    // Whether to override by clutch.
+    // 是否由离合器进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // value of clutch.
+    // 离合器值.
+    //
+    // Unit: %, Range: [0..100], Default: 0.0
+    //
+    double value = 2;
+  }
+
+  message Gear {
+    // Whether to override by gear.
+    // 是否由齿轮进行覆盖.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // state of gear.
+    // 齿轮状态.
+    //
+    // Unit: N/A, Range: [0..10], Default: 0
+    //
+    GearSts value = 2;
+  }
+
+  // throttle info.
+  // 油门信息.
+  //
+  Throttle throttle = 1;
+
+  // brake info.
+  // 刹车信息.
+  //
+  Brake brake = 2;
+
+  // steering wheel info.
+  // 方向盘信息.
+  //
+  SteeringWheel steering_wheel = 3;
+
+  // parking brake info.
+  // 驻车刹车信息.
+  //
+  ParkingBrake parking_brake = 4;
+
+  // clutch info.
+  // 离合器信息.
+  //
+  Clutch clutch = 5;
+
+  // gear info.
+  // 齿轮信息.
+  //
+  Gear gear = 6;
+}
+
+//
+// \brief send command to controller.
+// \brief 向控制器发送命令.
+//
+message Command {
+  message LaneChange {
+    // Whether to send command of lane change.
+    // 是否发送车道变道命令.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // state of lane change dir.
+    // 车道变道方向状态.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Dir value = 2;
+  }
+
+  message Overtaking {
+    // Whether to send command of overtaking.
+    // 是否发送超车命令.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff action = 1;
+
+    // state of overtaking dir.
+    // 超车方向状态.
+    //
+    // Unit: N/A, Range: [0..2], Default: 0
+    //
+    Dir value = 2;
+  }
+
+  oneof type {
+    // customer set user define use any string.
+    // 客户设置用户自定义使用任意字符串.
+    //
+    bytes user_define = 1;
+
+    // lane_change info.
+    // 车道变道信息.
+    //
+    LaneChange lane_change = 2;
+
+    // overtaking info.
+    // 超车信息.
+    //
+    Overtaking overtaking = 3;
+
+    // Whether to send command of pull over.
+    // 是否发送靠边停车命令.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff pull_over = 4;
+
+    // Whether to send command of emergency stop.
+    // 是否发送紧急停车命令.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff emergency_stop = 5;
+
+    // value of lateral speed to left.
+    // 向左的横向速度值.
+    //
+    // Unit: m/s, Range: [0..100], Default: 0.0
+    //
+    double lateral_speed_to_left = 6;
+
+    // value of lateral speed to right.
+    // 向右的横向速度值.
+    //
+    // Unit: m/s, Range: [0..100], Default: 0.0
+    //
+    double lateral_speed_to_right = 7;
+
+    // value of lateral accel to left.
+    // 向左的横向加速度值.
+    //
+    // Unit: m/s, Range: [0..100], Default: 0.0
+    //
+    double lateral_accel_to_left = 8;
+
+    // value of lateral accel to right.
+    // 向右的横向加速度值.
+    //
+    // Unit: m/s, Range: [0..100], Default: 0.0
+    //
+    double lateral_accel_to_right = 9;
+  }
+}
+
+//
+// \brief receive status from controller.
+// 从控制器接收状态.
+//
+message Status {
+  oneof type {
+    // customer set user define use any string.
+    // 客户设置用户自定义使用任意字符串.
+    //
+    bytes user_define = 1;
+
+    // Whether to receive status of emergency brake state.
+    // 是否接收紧急刹车状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff emergency_brake = 2;
+
+    // Whether to receive status of vehicle lost control state.
+    // 是否接收车辆失控状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff vehicle_lost_control = 3;
+
+    // Whether to receive status of hands on steeringwheel state.
+    // 是否接收方向盘握手状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff hands_on_steeringwheel = 4;
+
+    // Whether to receive status of eyes on road state.
+    // 是否接收驾驶员注视道路状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff eyes_on_road = 5;
+
+    // Whether to receive status of lidar state.
+    // 是否接收激光雷达状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff lidar = 6;
+
+    // Whether to receive status of radar state.
+    // 是否接收雷达状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff radar = 7;
+
+    // Whether to receive status of ultrasonic state.
+    // 是否接收超声波状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff ultrasonic = 8;
+
+    // Whether to receive status of camera state.
+    // 是否接收摄像头状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff camera = 9;
+
+    // Whether to receive status of gnss state.
+    // 是否接收 GNSS 状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff gnss = 10;
+
+    // Whether to receive status of imu state.
+    // 是否接收 IMU 状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff imu = 11;
+
+    // Whether to receive status of localization state.
+    // 是否接收本地化状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff localization = 12;
+
+    // receive status of beam state.
+    // 接收光束状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    BeamSts beam = 13;
+
+    // Whether to receive status of brake light state.
+    // 是否接收刹车灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff brake_light = 14;
+
+    // Whether to receive status of hazard light state.
+    // 是否接收危险警告灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff hazard_light = 15;
+
+    // Whether to receive status of left turn light state.
+    // 是否接收左转向灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff left_turn_light = 16;
+
+    // Whether to receive status of right turn light state.
+    // 是否接收右转向灯状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff right_turn_light = 17;
+
+    // Whether to receive status of driver side seatbelt state.
+    // 是否接收驾驶员侧安全带状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff driver_seatbelt = 18;
+
+    // Whether to receive status of passenger side seatbelt state.
+    // 是否接收乘客侧安全带状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff passenger_seatbelt = 19;
+
+    // Whether to receive status of driver side door state.
+    // 是否接收驾驶员侧车门状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff driver_door = 20;
+
+    // Whether to receive status of passenger side door state.
+    // 是否接收乘客侧车门状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff passenger_door = 21;
+
+    // Whether to receive status of hood state.
+    // 是否接收发动机盖状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff hood = 22;
+
+    // Whether to receive status of trunk state.
+    // 是否接收后备箱状态.
+    //
+    // Unit: N/A, Range: [0..1], Default: 0
+    //
+    OnOff trunk = 23;
+
+    // Whether to receive status of parking brake state.
+    // 是否接收驻车制动状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    ParkingBrakeSts parkingbrake = 24;
+
+    // Whether to receive status of wiper state.
+    // 是否接收雨刷状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    WiperSts wiper = 25;
+
+    // Whether to receive status of gear state.
+    // 是否接收档位状态.
+    //
+    // Unit: N/A, Range: [0..10], Default: 0
+    //
+    GearSts gear = 26;
+
+    // Whether to receive status of key state.
+    // 是否接收钥匙门状态.
+    //
+    // Unit: N/A, Range: [0..3], Default: 0
+    //
+    KeySts key = 27;
+  }
+}
+
+message VehicleInteraction {
+  // controller activation.
+  // 激活控制器.
+  //
+  Activate activate = 1;
+
+  // controller assignment.
+  // 控制器分配.
+  //
+  Assign assign = 2;
+
+  // controller takeover.
+  // 控制器接管.
+  //
+  Override override = 3;
+
+  // send command to controller.
+  // 向控制器发送命令.
+  //
+  // \note 标记旧字段即将弃用, 截止时间 20231130
+  //
+  Command command = 4 [deprecated=true];
+
+  // receive status from controller.
+  // 接收控制器状态.
+  //
+  // \note 标记旧字段即将弃用, 截止时间 20231130
+  //
+  Status status = 5 [deprecated=true];
+
+  // send muilt commands to controller.
+  // 向控制器发送多条命令.
+  //
+  repeated Command commands = 6;
+
+  // receive muilt statuses from controller.
+  // 从控制器接收多条状态.
+  //
+  repeated Status statuses = 7;
+
+  // groupname
+  //
+  string groupname = 8;
+}

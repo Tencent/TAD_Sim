@@ -1,0 +1,87 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Define the relevant state information output by decision algorithms.
+// 定义决策算法输出的相关状态信息.
+//
+// TOPIC: PLAN_STATUS
+
+syntax = "proto3";
+
+package sim_msg;
+
+enum IndicatorState {
+  //
+  INDICATOR_STATE_UNKNOWN = 0;
+
+  //
+  INDICATOR_STATE_OFF = 1;
+
+  //
+  INDICATOR_STATE_LEFT = 2;
+
+  //
+  INDICATOR_STATE_RIGHT = 3;
+
+  //
+  // \note Hazard/warning light, i.e. both indicators, are on.
+  //
+  INDICATOR_STATE_WARNING = 4;
+}
+
+enum PlanMode {
+  PLAN_MODE_FOLLOW_LANE = 0;
+  PLAN_MODE_CHANGE_LANE = 1;
+  PLAN_MODE_MANUAL = 2;
+}
+
+enum PlanClassification {
+  PLAN_GO_STRAIGHT = 0;
+  PLAN_TURN_LEFT = 1;
+  PLAN_TURN_RIGHT = 2;
+  PLAN_CHANGE_LANE_LEFT = 3;
+  PLAN_CHANGE_LANE_RIGHT = 4;
+  PLAN_PULL_OVER = 5;
+  PLAN_TURN_AROUND = 6;
+  PLAN_BREAK_THROUGH = 7;
+  PLAN_CHANGE_LANE_LEFT_PREPARE = 8;
+  PLAN_CHANGE_LANE_RIGHT_PREPARE = 9;
+  PLAN_CHANGE_LANE_LEFT_HOLD = 10;
+  PLAN_CHANGE_LANE_RIGHT_HOLD = 11;
+  PLAN_CHANGE_LANE_LEFT_CANCEL = 12;
+  PLAN_CHANGE_LANE_RIGHT_CANCEL = 13;
+}
+
+message SteeringExpectation {
+  //
+  double angle = 1;
+}
+
+message AccelerationExpectation {
+  //
+  double acc = 1;
+}
+
+message SpeedExpectation {
+  //
+  double speed = 1;
+}
+
+message PlanStatus {
+  //
+  IndicatorState indicator_state = 1;
+
+  //
+  PlanMode mode = 2;
+
+  //
+  PlanClassification class = 3;
+
+  //
+  SteeringExpectation expect_steering = 4;
+
+  //
+  AccelerationExpectation expect_acc = 5;
+
+  //
+  SpeedExpectation expect_speed = 6;
+}

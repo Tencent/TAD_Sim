@@ -1,0 +1,153 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+//
+// \brief Define map element information (lane lines, lane centerlines, etc.) around the ego.
+// 定义主车周围地图元素(车道线、车道中心线等)信息.
+//
+
+syntax = "proto3";
+
+package sim_msg;
+
+import "basic.proto";
+import "header.proto";
+
+message EgoMapData {
+  message Lane {
+    //
+    string id = 1;
+
+    // 0 for no adjacent one or unknown.
+    // 0 表示没有相邻或未知.
+    //
+    uint64 left_lane_boundary_id = 2;
+
+    // 0 for no adjacent one or unknown.
+    // 0 表示没有相邻或未知.
+    //
+    uint64 right_lane_boundary_id = 3;
+
+    // \sub position.x, Longitude of the current position, WGS84 coordinate system. \n
+    // 当前位置经度, WGS84 坐标系.
+    //
+    // Unit: degree, Range: [-180..180], Default: 0.0
+    //
+    // \sub position.y, Latitude of the current position, WGS84 coordinate system. \n
+    // 当前位置纬度, WGS84 坐标系.
+    //
+    // Unit: degree, Range: [-90..90], Default: 0.0
+    //
+    // \sub position.z, Altitude of the current position, WGS84 coordinate system. \n
+    // 当前位置高度, WGS84 坐标系.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    repeated Vec3 centerline = 4;
+
+    // 0 for no limit or unknown.
+    // 0 表示无限制或未知.
+    //
+    uint32 speed_max_limit = 5;
+
+    // 0 for no limit or unknown.
+    // 0 表示无限制或未知.
+    //
+    uint32 speed_mim_limit = 6;
+
+    //
+    repeated string next_lane_ids = 7;
+
+    //
+    repeated string prev_lane_ids = 8;
+
+    // 0 for no adjacent one or unknown.
+    // 0 表示没有相邻或未知.
+    //
+    string left_lane_id = 9;
+
+    // 0 for no adjacent one or unknown.
+    // 0 表示没有相邻或未知.
+    //
+    string right_lane_id = 10;
+
+    //
+    uint64 road_id = 11;
+  }
+
+  message LaneBoundary {
+    enum Type {
+      TYPE_UNKNOWN = 0;
+      TYPE_SOLID_LINE = 1;
+      TYPE_DASHED_LINE = 2;
+    }
+
+    // globally unique id.
+    // 全局唯一 ID.
+    //
+    uint64 id = 1;
+
+    // \sub position.x, Longitude of the current position, WGS84 coordinate system. \n
+    // 当前位置经度, WGS84 坐标系.
+    //
+    // Unit: degree, Range: [-180..180], Default: 0.0
+    //
+    // \sub position.y, Latitude of the current position, WGS84 coordinate system. \n
+    // 当前位置纬度, WGS84 坐标系.
+    //
+    // Unit: degree, Range: [-90..90], Default: 0.0
+    //
+    // \sub position.z, Altitude of the current position, WGS84 coordinate system. \n
+    // 当前位置高度, WGS84 坐标系.
+    //
+    // Unit: m, Range: [0..inf], Default: 0.0
+    //
+    repeated Vec3 boundary_line = 2;
+
+    //
+    Type type = 3;
+  }
+
+  message Section {
+    //
+    repeated Lane lanes = 1;
+  }
+
+  //
+  Header header = 1;
+
+  // the id of the current lane on which the ego car is.
+  // 当前车道的 id.
+  //
+  string current_lane_id = 2;
+
+  // forward order from the ego car.
+  // 从 ego 发出前进指令.
+  //
+  repeated Section sections = 3;
+
+  // key represents the lane boundary id.
+  // 键表示车道边界 ID.
+  //
+  map<uint64, LaneBoundary> boundaries = 4;
+
+  // \sub position.x, Longitude of the current position, WGS84 coordinate system. \n
+  // 当前位置经度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-180..180], Default: 0.0
+  //
+  // \sub position.y, Latitude of the current position, WGS84 coordinate system. \n
+  // 当前位置纬度, WGS84 坐标系.
+  //
+  // Unit: degree, Range: [-90..90], Default: 0.0
+  //
+  // \sub position.z, Altitude of the current position, WGS84 coordinate system. \n
+  // 当前位置高度, WGS84 坐标系.
+  //
+  // Unit: m, Range: [0..inf], Default: 0.0
+  //
+  Vec3 suggested_destination = 7;
+
+  // A list consist of the id of roads from the start point to the destination.
+  // 由从起点到终点的道路 ID 组成的列表.
+  //
+  repeated uint64 route = 8;
+}

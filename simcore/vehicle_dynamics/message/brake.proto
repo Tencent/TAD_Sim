@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "car_basic.proto";
+package tx_car;
+
+message BrakeDD{
+    RealScalar mu_static = 1; //Static friction coefficient
+    RealScalar mu_kinetic = 2; //Kinetic friction coefficient
+
+    /*
+        RealScalar dis_abore = 3; //Disc brake actuator bore, [m]
+        RealScalar Rm = 4; //Brake pad mean radius, [m]
+        RealScalar num_pads = 5; //Number of brake pads
+        RealScalar max_main_cylinder_pressure = 6;  //max main cylinder pressure
+        RealScalar const_fluid_time = 7;   //fluid dynamics time constant
+        RealScalar rear_brk_pressure_ratio = 8; //rear brake pressure ratio
+    */
+    RealScalar max_main_cylinder_pressure = 6;  //max main cylinder pressure
+    // RealScalar const_fluid_time = 7;         //fluid dynamics time constant
+    RealScalar rear_brk_pressure_ratio = 8;     //rear brake pressure ratio
+    Real2DMap brakeMap = 9;                     //brake map, brake torque[Nm] vs brake pressure[bar] and wheel speed[rpm]
+    RealScalar const_fluid_time_front = 10;             //fluid dynamics time constant front
+    RealScalar const_fluid_time_rear = 11;              //fluid dynamics time constant rear
+    RealScalar const_fluid_transport_time_front = 12;   //fluid dynamics transport delay front
+    RealScalar const_fluid_transport_time_rear = 13;    //fluid dynamics transport delay rear
+}

@@ -1,0 +1,136 @@
+// Copyright 2024 Tencent Inc. All rights reserved.
+
+syntax = "proto3";
+
+package osi3;
+
+import "osi_version.proto";
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+message imu {
+  // quaternion definition
+  message Quaternion {
+    double qx = 1;
+    double qy = 2;
+    double qz = 3;
+    double qw = 4;
+  }
+
+  // euler angle
+  // Unit: rad
+  message EulerAngle {
+    double roll = 1;
+    double pitch = 2;
+    double yaw =3 ;
+  }
+
+  // imu sensor config
+  message IMUCfg {
+    string name = 1;
+    Vector3d position = 2;
+    Quaternion orientation = 3;
+    EulerAngle euler = 4;
+  }
+
+  // wheel speed
+  message WheelSpd {
+    // m/s, rear left wheel speed
+    double wheelSpdRL = 1;
+    // m/s, rear right wheel speed
+    double wheelSpdRR = 2;
+  }
+
+  // gps coord
+  message GNSSData{
+    // deg
+    double longti = 1;
+    // deg
+    double lat = 2;
+    // deg
+    double alt = 3;
+  }
+
+
+  // imu sensor data
+  message IMUSensorData {
+    // Unit: g(9.8003266714 m/s^2), x,y,z
+    Vector3d accel = 1;
+    // angular speed around x,y,z axis
+    // Unit: deg/s
+    Vector3d angular_v = 2;
+    // Unit: km/h
+    WheelSpd wheelspd = 3;
+  }
+
+  // imu ground truth
+  message IMUGroundTruth {
+    // Unit: m
+    Vector3d position = 1;
+    // gnss data
+    GNSSData gnss = 2;
+    // Unit: m/s
+    Vector3d velocity = 3;
+    // Unit: m/s
+    Vector3d velocity_truth = 4;
+    // Unit: m/s^2
+    Vector3d acc = 5;
+    // Unit: m/s^2
+    Vector3d acc_truth = 6;
+    // rotation
+    Quaternion quatRot = 7;
+    // rotation
+    Quaternion quatRot_truth = 8;
+    // Unit: m
+    double dist_2_gps = 9;
+  }
+
+  // imu rigid body in enu/global
+  message IMURigidENUGNSS {
+    // position in enu
+    // Unit: m
+    Vector3d posENU = 1;
+    // position in gnss
+    // Unit: deg
+    GNSSData gnss = 2;
+    // velocity in enu
+    // Unit: m/s
+    Vector3d velocity = 3;
+    // tranform in enu
+    // Unit: rad
+    EulerAngle eulerAngle = 4;
+    // rotation in enu
+    Quaternion quatRot = 5;
+  }
+
+  // The interface version used by the sender (i.e. the simulation
+  // environment).
+  //
+  InterfaceVersion version = 1;
+
+  // The data timestamp of the simulation environment. The zero time point is
+  // arbitrary but must be identical for all messages.
+  // Recommendation: Zero time point for start point of the simulation.
+  //
+  // \note Zero time point does not need to coincide with the UNIX epoch.
+  //
+  // \note For ground truth data this timestamp coincides both with the
+  // notional simulation time the data applies to and the time it was sent
+  // (there is no inherent latency for ground truth data, as opposed to
+  // sensor data).
+  //
+  Timestamp timestamp = 2;
+
+  // imu mount position
+  IMUCfg mount_pos = 3;
+
+  // imu sensor data
+  IMUSensorData imu_data = 4;
+
+  // imu ground truth
+  IMUGroundTruth imu_truth = 5;
+
+  // imu rigid data
+  IMURigidENUGNSS imu_rigid = 6;
+}

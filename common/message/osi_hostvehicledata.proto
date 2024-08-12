@@ -1,0 +1,569 @@
+syntax = "proto3";
+
+package osi3;
+
+import "osi_version.proto";
+import "osi_common.proto";
+
+option optimize_for = SPEED;
+
+// \brief Host vehicle data is about the perception of the vehicle about its own internal states.
+// It captures the knowledge the vehicle has internally, which can differ from the actual or
+// global truth for various reasons.
+// This message can also be understood as an interface container for
+// the signals of a rest bus simulation.
+//
+// It consists of different messages categorizing the vehicle in:
+// Basics, powertrain, brake system, steering, wheels and localization.
+//
+// \image html OSI_HostVehicle.svg
+//
+message HostVehicleData {
+  // The interface version used by the sender.
+  //
+  InterfaceVersion version = 9;
+
+  // The timestamp of the host vehicle data. Zero time is arbitrary but must be
+  // identical for all messages. Zero time does not need to coincide with
+  // the unix epoch. Recommended is the starting time point of the
+  // simulation or measurement.
+  //
+  // \note This is the point in time that the host vehicle data message becomes
+  // available as snapshot from the board net information.
+  //
+  Timestamp timestamp = 10;
+
+  // The ID of the host vehicle in any associated GroundTruth data.
+  //
+  Identifier host_vehicle_id = 11;
+
+  // Deprecated: Will be removed in next major release. Moved to vehicle_localization.
+  // Current estimated location based on GPS- and related navigation sensors.
+  //
+  // \note Note that dimension and base_polygon need not be set.
+  //
+  BaseMoving location = 1;
+
+  // Deprecated: Will be removed in next major release. Moved to vehicle_localization.
+  // Current estimated location error based on GPS and related navigation
+  // sensors.
+  //
+  // \note Note that dimension and base_polygon need not be set.
+  //
+  BaseMoving location_rmse = 2;
+
+  // The basic parameters and overall states of the vehicle.
+  //
+  VehicleBasics vehicle_basics = 3;
+
+  // Interface regarding the powertrain.
+  //
+  VehiclePowertrain vehicle_powertrain = 4;
+
+  // Interface regarding the brake system.
+  //
+  VehicleBrakeSystem vehicle_brake_system = 5;
+
+  // Interface regarding the steering.
+  //
+  VehicleSteering vehicle_steering = 6;
+
+  // Interface regarding the internal wheel states.
+  //
+  VehicleWheels vehicle_wheels = 7;
+
+  // Interface regarding the localization.
+  //
+  VehicleLocalization vehicle_localization = 8;
+
+  // State of any automated driving functions.
+  //
+  // This can include:
+  //  - information presented to the driver, for example, parking sensors
+  //  - warnings raised by the vehicle, for example, forward collision warning
+  //  - corrective action taken by the vehicle, for example, auto emergency braking
+  //  - full level 4 self driving systems
+  //
+  // \note OSI uses singular instead of plural for repeated field names.
+  //
+  repeated VehicleAutomatedDrivingFunction vehicle_automated_driving_function = 12;
+
+  //
+  // \brief Base parameters and overall states of the vehicle.
+  //
+  message VehicleBasics {
+    // The total mass of the vehicle (curb weight).
+    //
+    // Unit: kg
+    //
+    // \par Reference:
+    // Paragraph 42 of the German Road Traffic Admission Regulations (StVZO).
+    //
+    double curb_weight = 1;
+
+    // The operating state of the vehicle.
+    //
+    OperatingState operating_state = 2;
+
+    // Possible operating states of the vehicle.
+    // It is user specific which states are used and how their transitions work.
+    //
+    enum OperatingState {
+      // The operating state is unknown.
+      //
+      OPERATING_STATE_UNKNOWN = 0;
+
+      // The operating state is another one.
+      //
+      OPERATING_STATE_OTHER = 1;
+
+      // The minimum electrical state of the vehicle (and its ECUs).
+      // Usually the driver has left the vehicle a while ago.
+      //
+      OPERATING_STATE_SLEEP = 2;
+
+      // Cabin lights and entertainment are off. The vehicle can not be driven.
+      // Some ECUs are still operating and not in their minimum electrical sate.
+      // Usually the driver has left (and closed) the vehicle recently.
+      //
+      OPERATING_STATE_STANDBY = 3;
+
+      // Some features of the vehicle are available e.g. cabin lights.
+      // Entertainment is off and the vehicle can not be driven.
+      // Usually the driver wants to enter or leave the vehicle.
+      //
+      OPERATING_STATE_BOARDING = 4;
+
+      // Entertainment, navigation or similiar systems can be used by the driver.
+      // The vehicle can not be driven.
+      // Usually the driver sits in the vehicle before or after a drive.
+      //
+      OPERATING_STATE_ENTERTAINMENT = 5;
+
+      // The electrical state that is necessary to drive the vehicle.
+      //
+      OPERATING_STATE_DRIVING = 6;
+
+      // The electrical state that is necessary for analysis and diagnostics.
+      //
+      OPERATING_STATE_DIAGNOSTIC = 7;
+    }
+  }
+
+  //
+  // \brief State description of the powertrain.
+  //
+  message VehiclePowertrain {
+    // Position of the acceleration pedal.
+    // Range: 0-1 (Unpressed - fully pressed)
+    //
+    double pedal_position_acceleration = 1;
+
+    // Position of the clutch pedal.
+    // Range: 0-1 (Unpressed - fully pressed)
+    //
+    double pedal_position_clutch = 2;
+
+    // The actual gear of the transmission.
+    // For example, a gear lever can be on "D" and the transmission on "4", but not the
+    // other way around.
+    //
+    // The sign of this field is linked to the gear's mode as following:
+    // - zero: neutral position
+    // - positive: driving forward mode
+    // - negative: reverse mode (generally -1, but few vehicles have more than 1
+    //   reverse mode gears)
+    //
+    int32 gear_transmission = 3;
+
+    // Information about the motor(s).
+    //
+    repeated Motor motor = 4;
+
+    //
+    // \brief A description of the motor states.
+    //
+    message Motor {
+      // The type of the motor.
+      //
+      Type type = 1;
+
+      // Revolutions per minute of the motor.
+      //
+      // Unit: 1/min
+      //
+      double rpm = 2;
+
+      // Torque of the motor.
+      //
+      // Unit: N*m
+      //
+      double torque = 3;
+
+      // Definition which type of motor is used.
+      //
+      enum Type {
+        // The motor type is unknown.
+        //
+        TYPE_UNKNOWN = 0;
+
+        // It is another motor type.
+        //
+        TYPE_OTHER = 1;
+
+        // A motor working after the principle of Nicolaus Otto.
+        //
+        TYPE_OTTO = 2;
+
+        // A motor working after the principle of Rudolf Diesel.
+        //
+        TYPE_DIESEL = 3;
+
+        // A motor working electric.
+        //
+        TYPE_ELECTRIC = 4;
+      }
+    }
+  }
+
+  //
+  // \brief The focus here is on the description of the brake system.
+  //
+  message VehicleBrakeSystem {
+    // Position of the brake pedal.
+    // Range: 0-1 (Unpressed - fully pressed)
+    //
+    double pedal_position_brake = 1;
+  }
+
+  //
+  // \brief The focus here is on the description of the steering train.
+  //
+  message VehicleSteering {
+    // Description of the steering wheel.
+    //
+    VehicleSteeringWheel vehicle_steering_wheel = 1;
+  }
+
+  //
+  // \brief The focus here is on the description of internal wheel states.
+  //
+  message VehicleWheels {
+    // Description of each wheel.
+    //
+    // \note OSI uses singular instead of plural for repeated field names.
+    //
+    repeated WheelData wheel_data = 1;
+
+    //
+    // \brief The focus here is on the description of internal wheel states.
+    //
+    message WheelData {
+      // The axle which contains this wheel. A value of 0 represents the
+      // foremost axle of the vehicle, with higher numbers ascending
+      // towards the rearmost axle.
+      //
+      uint32 axle = 1;
+
+      // The index of the wheel on the axle, counted in positive y- direction,
+      // that is, right-to-left.
+      //
+      // For example, on a standard 2-axle, 4-wheel car, the rear-right
+      // wheel would be (axle=1, index=0).
+      // This concept also works for twin tires.
+      //
+      uint32 index = 2;
+
+      // Rotation rate of the wheel based on the processed output of the hall sensor
+      // measurements at the wheel.
+      // The rotation rate around the y-axis with respect to the wheel's coordinate system.
+      //
+      // Unit: rad/s.
+      //
+      // The sign convention is defined using the right-hand rule.
+      // It is applied on the y-axis of the vehicle's reference system, that is,
+      // the center of bounding box.
+      // Counterclockwise is positive and clockwise is negative.
+      //
+      // \image html OSI_RotationRate.svg
+      // \note The vehicle's reference coordinate system is only used to determine
+      // the sign convention of the rotation rate.
+      //
+      double rotation_rate = 3;
+
+      // Contains the longitudinal, measured slip of the tire.
+      // \par References:
+      // [1] kfz-tech.de, Schlupf, Retrieved June 30, 2021,
+      // from https://www.kfz-tech.de/Biblio/Formelsammlung/Schlupf.htm
+      //
+      // Unit: %
+      //
+      // The sign convention is defined using the right-hand rule.
+      // It is applied on the y-axis of the vehicle's reference system, that is, the center
+      // of bounding box.
+      // Counterclockwise is positive and clockwise is negative.
+      //
+      double slip = 4;
+    }
+  }
+
+  //
+  // \brief Current calculated and estimated location that can be based on GNSS and
+  // related navigation sensors.
+  // This message does not contain the individual sensor values of the sensor technology.
+  //
+  // This message contains the most accurate information the vehicle knows about its position
+  // available in the on-board network.
+  // Because of this the values can differ from the "true" values calculated out of
+  // GroundTruth::proj_string, GroundTruth::MovingObject::BaseMoving::position,
+  // GroundTruth::host_vehicle_id.
+  //
+  message VehicleLocalization {
+    // Most accurate position information of the vehicle available in the on-board network.
+    // The reference point for position, that is, the center (x,y,z) of the bounding box
+    // in context to the global coordinate system.
+    //
+    Vector3d position = 1;
+
+    // Most accurate orientation information of the vehicle available in the on-board network
+    // in context to the global coordinate system.
+    //
+    Orientation3d orientation = 2;
+
+    // Most accurate geodetic information of the vehicle available in the on-board network.
+    //
+    GeodeticPosition geodetic_position = 3;
+  }
+
+  //
+  // \brief State of one automated driving function on the host vehicle.
+  //
+  message VehicleAutomatedDrivingFunction {
+    // The particular driving function being reported about.
+    //
+    Name name = 1;
+
+    // Custom driving function name.
+    //
+    // Only used if name is set to NAME_OTHER.
+    //
+    string custom_name = 2;
+
+    // The state of the function.
+    //
+    // This is whether the function has actually been triggered, for
+    // example, a warning has been raised, or additional braking is
+    // in effect.
+    //
+    State state = 3;
+
+    // Custom state.
+    //
+    // Only used if the state is set to STATE_OTHER.
+    //
+    string custom_state = 4;
+
+    // Whether, and how, the driver has overridden this function.
+    //
+    DriverOverride driver_override = 5;
+
+    // Custom detail.
+    //
+    // An opaque set of key-value pairs which capture any user specific
+    // details that may be relevant.  This could include details about
+    // how a warning was raised (dashboard, audible, etc.) or it could
+    // be about settings which would influence evaluation, such as
+    // sensitivity settings.
+    //
+    repeated KeyValuePair custom_detail = 6;
+
+    // A list of possible automated driving features.
+    //
+    // \note This can span (in theory) from Level 0 all the way to Level 5.
+    //
+    // \par References:
+    // [1] CLEARING THE CONFUSION: Recommended Common Naming for Advanced Driver Assistance
+    // Technologies, SAE International, Retrieved October 22, 2021, from
+    // https://www.sae.org/binaries/content/assets/cm/content/miscellaneous/adas-nomenclature.pdf
+    // [2] Automated Driving, German Association of the Automotive Industry (VDA),
+    // Retrieved October 22, 2021, from
+    // https://www.vda.de/en/topics/innovation-and-technology/automated-driving/automated-driving
+    //
+    enum Name {
+      // Unknown feature, should not be used.
+      //
+      NAME_UNKNOWN = 0;
+
+      // Custom feature, see custom_name.
+      //
+      NAME_OTHER = 1;
+
+      // Blind spot warning.
+      //
+      NAME_BLIND_SPOT_WARNING = 2;
+
+      // Forward collision warning.
+      //
+      NAME_FORWARD_COLLISION_WARNING = 3;
+
+      // Lane departure warning.
+      //
+      NAME_LANE_DEPARTURE_WARNING = 4;
+
+      // Parking collision warning.
+      //
+      NAME_PARKING_COLLISION_WARNING = 5;
+
+      // Rear cross-traffic warning
+      //
+      NAME_REAR_CROSS_TRAFFIC_WARNING = 6;
+
+      // Automatic emergency braking
+      //
+      NAME_AUTOMATIC_EMERGENCY_BRAKING = 7;
+
+      // Emergency steering
+      //
+      NAME_AUTOMATIC_EMERGENCY_STEERING = 8;
+
+      // Reverse automatic emergency braking
+      //
+      NAME_REVERSE_AUTOMATIC_EMERGENCY_BRAKING = 9;
+
+      // Adaptive cruise control
+      //
+      NAME_ADAPTIVE_CRUISE_CONTROL = 10;
+
+      // Lane keeping assist
+      //
+      NAME_LANE_KEEPING_ASSIST = 11;
+
+      // Active driving assistance
+      //
+      NAME_ACTIVE_DRIVING_ASSISTANCE = 12;
+
+      // Backup camera
+      //
+      NAME_BACKUP_CAMERA = 13;
+
+      // Surround view camera
+      //
+      NAME_SURROUND_VIEW_CAMERA = 14;
+
+      // Active parking assistance
+      //
+      NAME_ACTIVE_PARKING_ASSISTANCE = 15;
+
+      // Remote parking assistance
+      //
+      NAME_REMOTE_PARKING_ASSISTANCE = 16;
+
+      // Trailer assistance
+      //
+      NAME_TRAILER_ASSISTANCE = 17;
+
+      // Automatic high beams
+      //
+      NAME_AUTOMATIC_HIGH_BEAMS = 18;
+
+      // Driver monitoring
+      //
+      NAME_DRIVER_MONITORING = 19;
+
+      // Head up display
+      //
+      NAME_HEAD_UP_DISPLAY = 20;
+
+      // Night vision
+      //
+      NAME_NIGHT_VISION = 21;
+
+      // Urban driving
+      //
+      NAME_URBAN_DRIVING = 22;
+
+      // Highway autopilot.
+      //
+      NAME_HIGHWAY_AUTOPILOT = 23;
+
+      // Cruise control.
+      //
+      NAME_CRUISE_CONTROL = 24;
+
+      // Speed limit control
+      //
+      NAME_SPEED_LIMIT_CONTROL = 25;
+    }
+
+    // The state that the feature is in.
+    //
+    // \note Not all of these will be applicable for all vehicles
+    // and features.
+    //
+    enum State {
+      // An unknown state, this should not be used.
+      //
+      STATE_UNKNOWN = 0;
+
+      // Used for custom states not covered by the definitions below.
+      //
+      // A string state can be specified in custom_state.
+      //
+      STATE_OTHER = 1;
+
+      // The function has errored in some way that renders it ineffective.
+      //
+      STATE_ERRORED = 2;
+
+      // The function cannot be used due to unfulfilled preconditions,
+      // for example it is a highway only feature and the vehicle is in
+      // an urban environment.
+      //
+      STATE_UNAVAILABLE = 3;
+
+      // The function can be used as all preconditions are satisfied, but
+      // it hasn't been enabled.
+      //
+      STATE_AVAILABLE = 4;
+
+      // The function is available but conditions have not caused it to be
+      // triggered, for example, no vehicles in front to trigger a FCW.
+      //
+      STATE_STANDBY = 5;
+
+      // The function is currently active, for example, a warning is being
+      // shown to the driver, or emergency braking is being applied/
+      //
+      STATE_ACTIVE = 6;
+    }
+
+    //
+    // \brief Driver override information
+    //
+    // Information about whether and how and driver may have overridden
+    // an automated driving function.
+    //
+    message DriverOverride {
+      // The feature has been overridden by a driver action.
+      //
+      // \note If false, the rest of this message should be ignored.
+      bool active = 1;
+
+      // What driver inputs have caused the override.
+      //
+      repeated Reason override_reason = 2;
+
+      // Ways in which a driver could override a driving function.
+      //
+      enum Reason {
+        // The driver has applied sufficient input via the break pedal.
+        //
+        REASON_BRAKE_PEDAL = 0;
+
+        // The driver has applied sufficient steering input.
+        //
+        REASON_STEERING_INPUT = 1;
+      }
+    }
+  }
+}
