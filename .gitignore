@@ -9,16 +9,8 @@
 **/build/
 **/Debug/
 */compile_commands.json
-simcore/traffic/bin/
-simcore/map_server/map_parser/*.so
-simcore/map_server/service/*.json
-!simcore/map_server/service/.devcontainer.json
-simcore/map_server/service/*.sqlite
-simcore/map_server/service/service
 **/.clangd
-simcore/framework/docs/_build
-simcore/framework/docs/api
-simcore/framework/docs/sphinx
+**/go.sum
 
 # compressed files
 *.7z
@@ -35,17 +27,6 @@ simcore/framework/docs/sphinx
 *.lib
 *.pdb
 *.vs
-simcore/vehicle_dynamics/lib
-!simcore/vehicle_dynamics/lib.tar.gz
-!simcore/vehicle_dynamics/controller.tar.gz
-
-# deps
-deps/
-
-# output
-txSim
-
-**/go.sum
 
 # nodejs modules
 **/node_modules
@@ -55,16 +36,14 @@ txSim
 **/*.pb.cc
 *_pb2.py
 
-#
-simcore/traffic/ditw/version/version.h
-simcore/traffic/app/version/version.h
-simcore/traffic/cloud/version/version.h
-simcore/traffic/ditw/traffic_monitor/version/version.h
-simcore/traffic/planning/version/version.h
-simcore/traffic/dummy_car/version/version.h
-simcore/traffic/cloud/stand_alone/version/version.h
-simcore/traffic/preview/version/version.h
-simcore/perfect_planning/dummy_driver/version/version.h
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+**/myvenv/
+**/venv/
+**.egg-info/
 
 # common/map_sdk
 common/map_sdk/hadmap
@@ -74,38 +53,47 @@ common/map_sdk/out/
 common/map_sdk/devel
 common/map_sdk/dll
 common/map_sdk/lib
-common/map_sdk/include
-
-# simcore/script
-simcore/script/sim_msg
-
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
-*.pyc
-
-**/myvenv/
-**/venv/
-**.egg-info/
-
-#
-!simcore/excel2asam/map_sdk_py/lib_win_py3118/*
-
-#
+# datas
+!datas/scenarios/*
+# simapp
 simapp/package-lock.json
 simapp/desktop/package-lock.json
+# simcore/post_script
+simcore/post_script/sim_msg
+# simcore/excel2asam
+!simcore/excel2asam/map_sdk_py/lib_win_py3118/*
+# simcore/traffic
+simcore/traffic/bin/
+simcore/traffic/ditw/version/version.h
+simcore/traffic/app/version/version.h
+simcore/traffic/cloud/version/version.h
+simcore/traffic/ditw/traffic_monitor/version/version.h
+simcore/traffic/planning/version/version.h
+simcore/traffic/dummy_car/version/version.h
+simcore/traffic/cloud/stand_alone/version/version.h
+simcore/traffic/preview/version/version.h
+# simcore/perfect_planning
+simcore/perfect_planning/dummy_driver/version/version.h
+# simcore/framework
 simcore/framework/cli/cli
 simcore/framework/cli/cli.exe
+simcore/framework/docs/_build
+simcore/framework/docs/api
+simcore/framework/docs/sphinx
+# simcore/map_server
 simcore/map_server/service/service.exe
-
-# display
+simcore/map_server/map_parser/*.so
+simcore/map_server/service/*.json
+!simcore/map_server/service/.devcontainer.json
+simcore/map_server/service/*.sqlite
+simcore/map_server/service/service
+# simcore/sensors
+!simcore/sensors/sim_label/models.zip
 simcore/sensors/display/**/Binaries
 simcore/sensors/display/**/Build
 simcore/sensors/display/**/Intermediate
 simcore/sensors/display/**/Saved
 simcore/sensors/display/**/fbm
 simcore/sensors/display/Display.sln
-
-# datas
-!datas/scenarios/*
+!simcore/sensors/display/**/ThirdParty/**
+!simcore/sensors/display/Source/Display/SimMsg/**
