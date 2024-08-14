@@ -69,6 +69,7 @@ private:
     cudaGraphicsResource_t cudaResource = NULL;
     cudaArray_t TransitionArray = NULL;
     cudaMipmappedArray_t mipmap = NULL;
+    cudaExternalMemory_t extMem = NULL;
     int imgWidth = 0;
     int imgHeight = 0;
     int imgWidth0 = 0;
