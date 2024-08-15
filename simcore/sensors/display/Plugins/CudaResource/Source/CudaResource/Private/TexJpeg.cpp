@@ -132,6 +132,9 @@ void UTexJpeg::FreeResource()
         checkCudaErrors(cudaFreeMipmappedArray(mipmap));
     }
     mipmap = NULL;
+    if(extMem)
+        checkCudaErrors(cudaDestroyExternalMemory(extMem));
+    extMem = NULL;
 
     if (enParamsJpg)
         checkCudaErrors(nvjpegEncoderParamsDestroy(enParamsJpg));
@@ -310,14 +313,13 @@ bool UTexJpeg::InitRTResource()
                 }
                 if (sharedHandle)
                 {
-                    cudaExternalMemory_t extMem = NULL;
                     cudaExternalMemoryHandleDesc exdesc = {};
                     memset(&exdesc, 0, sizeof(exdesc));
                     exdesc.type = cudaExternalMemoryHandleTypeD3D12Resource;
                     exdesc.handle.win32.handle = sharedHandle;
                     exdesc.size = D3D12Texture->GetMemorySize();
                     exdesc.flags = cudaExternalMemoryDedicated;
-                    if (checkCudaErrors(cudaImportExternalMemory(&extMem, &exdesc)))
+                    if (checkCudaErrors(cudaImportExternalMemory(&This->extMem, &exdesc)))
                     {
                         cudaExternalMemoryMipmappedArrayDesc desc = {};
 
@@ -330,7 +332,7 @@ bool UTexJpeg::InitRTResource()
                         desc.flags = cudaArrayDefault;
                         desc.numLevels = 1;
 
-                        if (checkCudaErrors(cudaExternalMemoryGetMappedMipmappedArray(&This->mipmap, extMem, &desc)))
+                        if (checkCudaErrors(cudaExternalMemoryGetMappedMipmappedArray(&This->mipmap, This->extMem, &desc)))
                         {
                             if (checkCudaErrors(cudaGetMipmappedArrayLevel(&(This->TransitionArray), This->mipmap, 0)))
                             {
@@ -379,13 +381,12 @@ bool UTexJpeg::InitRTResource()
                 }
                 if (fd >= 0)
                 {
-                    cudaExternalMemory_t extMem = NULL;
                     cudaExternalMemoryHandleDesc exdesc = {};
                     memset(&exdesc, 0, sizeof(exdesc));
                     exdesc.type = cudaExternalMemoryHandleTypeOpaqueFd;
                     exdesc.handle.fd = fd;
                     exdesc.size = VulkanTexture->Surface.GetMemorySize();
-                    if (checkCudaErrors(cudaImportExternalMemory(&extMem, &exdesc)))
+                    if (checkCudaErrors(cudaImportExternalMemory(&This->extMem, &exdesc)))
                     {
                         auto getCudaChannelFormatDescForVulkanFormat = [](VkFormat format) -> cudaChannelFormatDesc
                         {
@@ -564,7 +565,7 @@ bool UTexJpeg::InitRTResource()
                         desc.flags = cudaArrayColorAttachment;
                         desc.numLevels = VulkanTexture->Surface.GetNumMips();
 
-                        if (checkCudaErrors(cudaExternalMemoryGetMappedMipmappedArray(&This->mipmap, extMem, &desc)))
+                        if (checkCudaErrors(cudaExternalMemoryGetMappedMipmappedArray(&This->mipmap, This->extMem, &desc)))
                         {
                             if (checkCudaErrors(cudaGetMipmappedArrayLevel(&(This->TransitionArray), This->mipmap, 0)))
                             {
