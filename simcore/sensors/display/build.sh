@@ -13,6 +13,8 @@ mkdir "$DISPLAY_BUILD/bin"
 # prerequisites
 echo =================LINUX PREPARE=================
 sh ./download_deps.sh
+mkdir $DISPLAY_ROOT/Plugins/BoostLib/deps
+ln -s /usr/include/boost $DISPLAY_ROOT/Plugins/BoostLib/deps/boost
 
 # build
 echo =================LINUX PACKAGING CONFIGURATION=================
@@ -46,7 +48,8 @@ cp -f ../../Display-cloud.sh ./Display/Display-cloud.sh
 chmod +x ./Display/Display.sh
 chmod +x ./Display/Display-cloud.sh
 cd ../..
-mv ./Saved/StagedBuilds/Display ./build/bin/Display
+mv ./Saved/StagedBuilds/Display $DISPLAY_BUILD/bin/Display
+rm $DISPLAY_BUILD/bin/Display/Display/Binaries/Linux/ubuntu18_20/libcuda.so.1
 
 cd "$DISPLAY_BUILD/bin"
 tar -czf display.tar.gz ./Display
