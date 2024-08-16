@@ -261,8 +261,8 @@ public class CudaResource : ModuleRules
                 RuntimeDependencies.Add("$(TargetOutputDir)/ubuntu18_20/libcudart_static.a",
                     Path.Combine(cuda_path, cuda_lib, "libcudart_static.a"));
                 // libcuda.so
-                // RuntimeDependencies.Add("$(TargetOutputDir)/ubuntu18_20/libcuda.so.1",
-                //    Path.Combine(cuda_path, cuda_lib_stubs, "libcuda.so"));
+                RuntimeDependencies.Add("$(TargetOutputDir)/ubuntu18_20/libcuda.so.1",
+                   Path.Combine(cuda_path, cuda_lib_stubs, "libcuda.so"));
                 // libnppicc.so
                 RuntimeDependencies.Add("$(TargetOutputDir)/ubuntu18_20/libnppicc.so.11",
                     Path.Combine(cuda_path, cuda_lib, "libnppicc.so"));
