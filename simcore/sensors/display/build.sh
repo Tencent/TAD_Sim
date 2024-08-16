@@ -5,11 +5,6 @@ DISPLAY_ROOT="$(cd "$(dirname "$0")";pwd)"
 DISPLAY_BUILD="$DISPLAY_ROOT/build"
 ENGINE_ROOT="/home/ue4/UnrealEngine/Engine"
 
-# clean & mkdir
-rm -rf "$DISPLAY_BUILD"
-mkdir "$DISPLAY_BUILD"
-mkdir "$DISPLAY_BUILD/bin"
-
 # prerequisites
 echo =================LINUX PREPARE=================
 sh ./download_deps.sh
@@ -48,6 +43,14 @@ cp -f ../../Display-cloud.sh ./Display/Display-cloud.sh
 chmod +x ./Display/Display.sh
 chmod +x ./Display/Display-cloud.sh
 cd ../..
+
+# clean & mkdir
+rm -rf "$DISPLAY_ROOT/Build"
+rm -rf "$DISPLAY_BUILD"
+mkdir "$DISPLAY_BUILD"
+mkdir "$DISPLAY_BUILD/bin"
+
+# package
 mv ./Saved/StagedBuilds/Display $DISPLAY_BUILD/bin/Display
 rm $DISPLAY_BUILD/bin/Display/Display/Binaries/Linux/ubuntu18_20/libcuda.so.1
 
