@@ -21,7 +21,7 @@ import {
   PerspectiveCamera,
   PointLight,
   Scene,
-  SphereBufferGeometry,
+  SphereGeometry,
   Sprite,
   SpriteMaterial,
   Vector3,
@@ -62,7 +62,7 @@ function makeTransparent (mesh, opacity = 0.6) {
   }
 }
 
-const sphere = new SphereBufferGeometry(0.1, 16, 16)
+const sphere = new SphereGeometry(0.1, 16, 16)
 const center = new Mesh(sphere, new MeshBasicMaterial({ color: 0xFF4444 }))
 center.material.transparent = true
 center.material.opacity = 0.8
@@ -171,7 +171,7 @@ export default {
     })
     this.scene.add(this.sensorHelper)
 
-    this.light = new AmbientLight(0xFFFFFF, 0.8)
+    this.light = new AmbientLight(0xFFFFFF, 3)
     this.scene.add(this.light)
 
     this.pointLight = new PointLight(0xFFFFFF)

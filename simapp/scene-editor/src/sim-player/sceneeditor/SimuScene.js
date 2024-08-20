@@ -78,7 +78,7 @@ class SimuScene {
     this.renderer = new WebGLRenderer({ antialias: true })
     this.renderer.name = 'simuscene'
     this.renderer.setPixelRatio(window.devicePixelRatio)
-    this.ambientLight = new AmbientLight(0xFFFFFF, 1)
+    this.ambientLight = new AmbientLight(0xFFFFFF, 3)
     this.ct = new CoordConverter()
     this.hadmap = new Hadmap(this.ct, this)
     this.axis = new AxesHelper(20)
@@ -5671,14 +5671,14 @@ class SimuScene {
     }
 
     // vehicles
-    let intersects = this.raycaster.intersectObjects(this.sceneParser.vehicleModels, true)
+    let intersects = this.raycaster.intersectObjects(this.sceneParser.vehicleModels || [], true)
     if (intersects.length) {
       picked = intersects[0]
       type = 'car'
     }
 
     // planner
-    intersects = this.raycaster.intersectObjects(this.sceneParser.plannerModels, true)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.plannerModels || [], true)
     if (intersects.length) {
       if (picked) {
         picked = picked.distance > intersects[0].distance ? intersects[0] : picked
@@ -5689,7 +5689,7 @@ class SimuScene {
     }
 
     // obstacles
-    intersects = this.raycaster.intersectObjects(this.sceneParser.obstacleModels, true)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.obstacleModels || [], true)
 
     if (intersects.length) {
       if (picked) {
@@ -5700,7 +5700,7 @@ class SimuScene {
       }
     }
     // pedestrians
-    intersects = this.raycaster.intersectObjects(this.sceneParser.pedestrianModels, true)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.pedestrianModels || [], true)
     if (intersects.length) {
       if (picked) {
         picked = picked.distance > intersects[0].distance ? intersects[0] : picked
@@ -5711,7 +5711,7 @@ class SimuScene {
     }
 
     // signlights
-    intersects = this.raycaster.intersectObjects(this.sceneParser.signlightModels, true)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.signlightModels || [], true)
     if (intersects.length) {
       if (picked) {
         picked = picked.distance > intersects[0].distance ? intersects[0] : picked
@@ -5722,7 +5722,7 @@ class SimuScene {
     }
 
     // planner end
-    intersects = this.raycaster.intersectObjects(this.sceneParser.plannerEndModels)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.plannerEndModels || [])
     if (intersects.length) {
       if (!this.isFirstRouteBox(intersects[0].object, this.sceneParser.plannersEndModelMap)) {
         if (picked) {
@@ -5735,7 +5735,7 @@ class SimuScene {
     }
 
     // vehicle end
-    intersects = this.raycaster.intersectObjects(this.sceneParser.vehicleEndModels)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.vehicleEndModels || [])
     if (intersects.length) {
       if (!this.isFirstRouteBox(intersects[0].object, this.sceneParser.vehiclesEndModelMap)) {
         if (picked) {
@@ -5748,7 +5748,7 @@ class SimuScene {
     }
 
     // pedestrian end
-    intersects = this.raycaster.intersectObjects(this.sceneParser.pedestrianEndModels)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.pedestrianEndModels || [])
     if (intersects.length) {
       if (!this.isFirstRouteBox(intersects[0].object, this.sceneParser.pedestriansEndModelMap)) {
         if (picked) {
@@ -5761,7 +5761,7 @@ class SimuScene {
     }
 
     // measurement end
-    intersects = this.raycaster.intersectObjects(this.sceneParser.measurementEndModels)
+    intersects = this.raycaster.intersectObjects(this.sceneParser.measurementEndModels || [])
     if (intersects.length) {
       if (picked) {
         picked = picked.distance > intersects[0].distance ? intersects[0] : picked

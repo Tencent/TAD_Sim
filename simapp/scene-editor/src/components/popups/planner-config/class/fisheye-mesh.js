@@ -1,13 +1,13 @@
 /* eslint-disable */
 import {
   BufferGeometry,
-  ConeBufferGeometry,
+  ConeGeometry,
   FrontSide,
   BackSide,
   MathUtils,
   Mesh,
   MeshLambertMaterial,
-  SphereBufferGeometry,
+  SphereGeometry,
 } from 'three'
 
 const sphereWidthSegments = 128
@@ -84,7 +84,7 @@ class FisheyeMesh extends Mesh {
 
     // console.log(maxFov, vScale, hScale, 333333333333)
 
-    const sphereGeometry = new SphereBufferGeometry(
+    const sphereGeometry = new SphereGeometry(
       far,
       sphereWidthSegments,
       sphereHeightSegments,
@@ -103,7 +103,7 @@ class FisheyeMesh extends Mesh {
 
     const height = Math.cos(maxFov) * far
     this.capMeshF.geometry.dispose()
-    this.capMeshF.geometry = new ConeBufferGeometry(
+    this.capMeshF.geometry = new ConeGeometry(
       Math.sin(maxFov) * far,
       height,
       128,

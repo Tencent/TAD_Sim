@@ -81,7 +81,7 @@ class PlayerScene {
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.renderer.debug.checkShaderErrors = false
 
-    this.ambientLight = new AmbientLight(0xFFFFFF, 1)
+    this.ambientLight = new AmbientLight(0xFFFFFF, 3)
     // 坐标转换器
     this.ct = new CoordConverter()
     this.hadmap = new Hadmap(this.ct, this)

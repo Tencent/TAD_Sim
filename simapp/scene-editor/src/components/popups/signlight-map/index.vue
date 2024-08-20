@@ -9,7 +9,7 @@ import { throttle } from 'lodash-es'
 import {
   AmbientLight,
   AxesHelper,
-  Geometry,
+  BufferGeometry,
   GridHelper,
   Group,
   LineDashedMaterial,
@@ -74,7 +74,7 @@ export default {
     this.camera.up.set(0, 0, 1)
     this.scene.add(this.camera)
 
-    this.light = new AmbientLight(0x666666, 1)
+    this.light = new AmbientLight(0x666666, 3)
     this.scene.add(this.light)
 
     this.controls = new OrbitControls(this.camera, container)
@@ -287,8 +287,9 @@ export default {
     highlightLanelink (linkId, color = 0xFF0000) {
       const curLanelink = this.simuScene.hadmap.getLanelink(linkId)
       if (curLanelink?.data) {
-        const geom = new Geometry()
-        geom.vertices.push(...curLanelink.data)
+        const geom = new BufferGeometry()
+        const points = curLanelink.data.map(d => new Vector3(d.x, d.y, d.z))
+        geom.setFromPoints(points)
         const material = new LineDashedMaterial({
           color,
           dashSize: 2,
