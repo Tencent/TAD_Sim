@@ -6,15 +6,16 @@ import {
   BoxGeometry,
   DoubleSide,
   Group,
-  LinearEncoding,
   Mesh,
   MeshBasicMaterial,
   MeshLambertMaterial,
-  PlaneBufferGeometry,
+  PlaneGeometry,
   TextureLoader,
-  sRGBEncoding,
 } from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
+
+const LinearEncoding = 3000
+const sRGBEncoding = 3001
 
 const halfPI = Math.PI / 2
 // fbx加载器
@@ -35,7 +36,7 @@ const loadTexture = memoize(url => new Promise((resolve, reject) => {
   textureLoader.load(url, resolve, undefined, reject)
 }))
 // 交通灯箭头
-const signArrowGeometry = new PlaneBufferGeometry(1.5, 3)
+const signArrowGeometry = new PlaneGeometry(1.5, 3)
 
 /**
  * 加载一个箭头，用于信控配置
@@ -69,24 +70,24 @@ const boxMesh = new Mesh(boxGeo, boxMat)
  * 修复材质编码
  * @param {object} object - 包含材质的对象
  */
-function fixMaterialEncoding (object) {
-  if (object.material) {
-    if (isArray(object.material)) {
-      object.material.forEach((m) => {
-        if (m.map && m.map.encoding === sRGBEncoding) {
-          m.map.encoding = LinearEncoding
-        }
-      })
-    } else {
-      if (object.material.map && object.material.map.encoding === sRGBEncoding) {
-        object.material.map.encoding = LinearEncoding
-      }
-    }
-  }
-  if (isArray(object.children)) {
-    object.children.forEach(fixMaterialEncoding)
-  }
-}
+// function fixMaterialEncoding (object) {
+  // if (object.material) {
+  //   if (isArray(object.material)) {
+  //     object.material.forEach((m) => {
+  //       if (m.map && m.map.encoding === sRGBEncoding) {
+  //         m.map.encoding = LinearEncoding
+  //       }
+  //     })
+  //   } else {
+  //     if (object.material.map && object.material.map.encoding === sRGBEncoding) {
+  //       object.material.map.encoding = LinearEncoding
+  //     }
+  //   }
+  // }
+  // if (isArray(object.children)) {
+  //   object.children.forEach(fixMaterialEncoding)
+  // }
+// }
 
 /**
  * 设置模型透明度
@@ -267,7 +268,7 @@ class ScenarioModelsManager {
         }] = catalog.catalogParams
         promise = loadModel(this.getModelFinalPath(catalog, model3d)).then((mesh) => {
           mesh = mesh.clone()
-          fixMaterialEncoding(mesh)
+          // fixMaterialEncoding(mesh)
           const meshTransparent = mesh.clone()
           modelsMapCar[type] = mesh
           modelsMapCarLogsim[type] = meshTransparent
@@ -391,7 +392,7 @@ class ScenarioModelsManager {
       } else {
         promise = loadModel(this.getModelFinalPath(catalog, model3d)).then((mesh) => {
           mesh = mesh.clone()
-          fixMaterialEncoding(mesh)
+          // fixMaterialEncoding(mesh)
           const meshTransparent = mesh.clone()
           modelsMapPedestrian[type] = mesh
           modelsMapPedestrianLogsim[type] = meshTransparent
@@ -480,7 +481,7 @@ class ScenarioModelsManager {
         const { boundingBox: { center }, model3d } = catalog.catalogParams
         promise = loadModel(this.getModelFinalPath(catalog, model3d)).then((mesh) => {
           mesh = mesh.clone()
-          fixMaterialEncoding(mesh)
+          // fixMaterialEncoding(mesh)
           const meshTransparent = mesh.clone()
           modelsMapObstacle[type] = mesh
           modelsMapObstacleLogsim[type] = meshTransparent
@@ -543,7 +544,7 @@ class ScenarioModelsManager {
       const params = catalogSubCategory === 'combination' ? catalogParams.slice(1) : catalogParams
       promise = Promise.all(params.map(async (v) => {
         const g = (await loadModel(this.getModelFinalPath(catalog, v.model3d))).clone()
-        fixMaterialEncoding(g)
+        // fixMaterialEncoding(g)
         const {
           boundingBox: {
             center = { x: 0, y: 0, z: 0 },

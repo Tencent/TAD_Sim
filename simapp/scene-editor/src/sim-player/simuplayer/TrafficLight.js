@@ -1,4 +1,4 @@
-import { Color, Group, IcosahedronBufferGeometry, Mesh, MeshPhongMaterial, Vector3 } from 'three'
+import { Color, Group, IcosahedronGeometry, Mesh, MeshPhongMaterial, Vector3 } from 'three'
 
 const halfPI = Math.PI / 2
 
@@ -80,7 +80,7 @@ class TrafficLight {
       })
     } else {
       // 没有箭头的渲染一个球
-      const noPhaseGeo = new IcosahedronBufferGeometry(1, 2)
+      const noPhaseGeo = new IcosahedronGeometry(1, 2)
       const noPhaseMesh = new Mesh(noPhaseGeo, material)
       this.model.add(noPhaseMesh)
     }

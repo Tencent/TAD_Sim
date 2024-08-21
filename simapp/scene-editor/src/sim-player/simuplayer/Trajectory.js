@@ -41,19 +41,19 @@ planeMaterialTransparent.transparent = true
 function getMesh () {
   const planeFloat32Array = new Float32Array(curvePointCount * 3 * 2)
   const planeBufferAttribute = new BufferAttribute(planeFloat32Array, 3)
-  const planeBufferGeometry = new BufferGeometry()
+  const planeGeometry = new BufferGeometry()
   const planeIndex = getPlaneGeometryIndex(curvePointCount * 2)
 
   const lineFloat32Array = new Float32Array(curvePointCount * 3)
   const lineBufferAttribute = new BufferAttribute(lineFloat32Array, 3)
-  const lineBufferGeometry = new BufferGeometry()
+  const lineGeometry = new BufferGeometry()
 
-  planeBufferGeometry.setIndex(planeIndex)
-  planeBufferGeometry.setAttribute('position', planeBufferAttribute)
-  lineBufferGeometry.setAttribute('position', lineBufferAttribute)
+  planeGeometry.setIndex(planeIndex)
+  planeGeometry.setAttribute('position', planeBufferAttribute)
+  lineGeometry.setAttribute('position', lineBufferAttribute)
 
-  const plane = new Mesh(planeBufferGeometry, planeMaterial)
-  const line = new Line(lineBufferGeometry, lineMaterial)
+  const plane = new Mesh(planeGeometry, planeMaterial)
+  const line = new Line(lineGeometry, lineMaterial)
 
   return {
     plane,

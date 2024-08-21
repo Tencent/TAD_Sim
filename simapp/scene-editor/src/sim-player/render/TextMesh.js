@@ -1,7 +1,9 @@
 /**
  * 显示车道号用到的字体
  */
-import { FontLoader, Mesh, MeshBasicMaterial, TextGeometry } from 'three'
+import { Mesh, MeshBasicMaterial } from 'three'
+import { FontLoader } from 'three/addons/loaders/FontLoader'
+import {TextGeometry} from 'three/addons/geometries/TextGeometry'
 import { RenderOrder } from '../common/Constant'
 
 const loader = new FontLoader()
@@ -30,7 +32,7 @@ async function createNumberGeometry (id) {
   return new TextGeometry(String(id), {
     font: numberFont,
     size: 0.8,
-    height: 0,
+    depth: 0,
   }).center()
 }
 

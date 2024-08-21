@@ -97,3 +97,6 @@ simcore/sensors/display/**/fbm
 simcore/sensors/display/Display.sln
 !simcore/sensors/display/**/ThirdParty/**
 !simcore/sensors/display/Source/Display/SimMsg/**
+# simapp/desktop/serice
+
+simapp/desktop/service

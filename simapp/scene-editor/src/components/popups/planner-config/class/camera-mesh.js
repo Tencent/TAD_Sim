@@ -11,7 +11,7 @@ import {
   Euler,
 } from 'three'
 import {
-  ConvexBufferGeometry,
+  ConvexGeometry,
 } from 'three/examples/jsm/geometries/ConvexGeometry'
 
 class CameraMesh extends Group {
@@ -73,7 +73,7 @@ class CameraMesh extends Group {
     this.children[0].geometry.dispose()
     this.children[1].geometry.dispose()
 
-    this.children[0].geometry = new ConvexBufferGeometry([origin, topLeft, topRight, bottomLeft, bottomRight])
+    this.children[0].geometry = new ConvexGeometry([origin, topLeft, topRight, bottomLeft, bottomRight])
     this.children[1].geometry = this.children[0].geometry.clone()
   }
 

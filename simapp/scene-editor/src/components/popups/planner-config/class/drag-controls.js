@@ -71,7 +71,7 @@ const DragControls = function (_objects, _camera, _domElement) {
     _mouse.y = -((event.clientY - top) / height) * 2 + 1
 
     _raycaster.setFromCamera(_mouse, this._camera)
-    const intersects = _raycaster.intersectObjects(_objects, true)
+    const intersects = _raycaster.intersectObjects(_objects || [], true)
     resort(intersects)
 
     const position = new Vector3()
@@ -142,7 +142,7 @@ const DragControls = function (_objects, _camera, _domElement) {
     event.preventDefault()
     _domElement.setPointerCapture(pointerId)
     _dragButton = button
-    const intersects = _raycaster.intersectObjects(_objects, true)
+    const intersects = _raycaster.intersectObjects(_objects || [], true)
     resort(intersects)
     const position = new Vector3()
     if (_raycaster.ray.intersectPlane(_plane, _intersection)) {
@@ -188,7 +188,7 @@ const DragControls = function (_objects, _camera, _domElement) {
     _dragButton = null
     const position = new Vector3()
 
-    const intersects = _raycaster.intersectObjects(_objects, true)
+    const intersects = _raycaster.intersectObjects(_objects || [], true)
     resort(intersects)
     if (_raycaster.ray.intersectPlane(_plane, _intersection)) {
       position.copy(_intersection).setZ(0)
@@ -246,7 +246,7 @@ const DragControls = function (_objects, _camera, _domElement) {
       position.copy(_intersection).setZ(0)
     }
 
-    const intersects = _raycaster.intersectObjects(_objects, true)
+    const intersects = _raycaster.intersectObjects(_objects || [], true)
     if (intersects.length) {
       resort(intersects)
       target = intersects[0].object
