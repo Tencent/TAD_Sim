@@ -1,0 +1,2590 @@
+{
+  "nested": {
+    "sim_msg": {
+      "nested": {
+        "Location": {
+          "fields": {
+            "t": {
+              "type": "double",
+              "id": 1
+            },
+            "position": {
+              "type": "Vec3",
+              "id": 2
+            },
+            "velocity": {
+              "type": "Vec3",
+              "id": 3
+            },
+            "angular": {
+              "type": "Vec3",
+              "id": 4
+            },
+            "rpy": {
+              "type": "Vec3",
+              "id": 5
+            },
+            "acceleration": {
+              "type": "Vec3",
+              "id": 6
+            },
+            "egoLane": {
+              "type": "EgoLane",
+              "id": 7,
+              "options": {
+                "deprecated": true
+              }
+            }
+          },
+          "nested": {
+            "EgoLane": {
+              "fields": {
+                "lanepkid": {
+                  "type": "int64",
+                  "id": 1,
+                  "options": {
+                    "deprecated": true
+                  }
+                },
+                "sectionpkid": {
+                  "type": "uint64",
+                  "id": 2,
+                  "options": {
+                    "deprecated": true
+                  }
+                },
+                "roadpkid": {
+                  "type": "uint64",
+                  "id": 3,
+                  "options": {
+                    "deprecated": true
+                  }
+                },
+                "dist_2RefLine": {
+                  "type": "double",
+                  "id": 4,
+                  "options": {
+                    "deprecated": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Vec2": {
+          "fields": {
+            "x": {
+              "type": "double",
+              "id": 1
+            },
+            "y": {
+              "type": "double",
+              "id": 2
+            }
+          }
+        },
+        "Vec3": {
+          "fields": {
+            "x": {
+              "type": "double",
+              "id": 1
+            },
+            "y": {
+              "type": "double",
+              "id": 2
+            },
+            "z": {
+              "type": "double",
+              "id": 3
+            }
+          }
+        },
+        "Vec4": {
+          "fields": {
+            "x": {
+              "type": "double",
+              "id": 1
+            },
+            "y": {
+              "type": "double",
+              "id": 2
+            },
+            "z": {
+              "type": "double",
+              "id": 3
+            },
+            "w": {
+              "type": "double",
+              "id": 4
+            }
+          }
+        },
+        "TrajectoryPoint": {
+          "fields": {
+            "x": {
+              "type": "double",
+              "id": 1
+            },
+            "y": {
+              "type": "double",
+              "id": 2
+            },
+            "t": {
+              "type": "double",
+              "id": 3
+            },
+            "v": {
+              "type": "double",
+              "id": 4
+            },
+            "theta": {
+              "type": "double",
+              "id": 5
+            },
+            "kappa": {
+              "type": "double",
+              "id": 6
+            },
+            "s": {
+              "type": "double",
+              "id": 7
+            },
+            "a": {
+              "type": "double",
+              "id": 8
+            },
+            "z": {
+              "type": "double",
+              "id": 9
+            }
+          }
+        },
+        "Trajectory": {
+          "fields": {
+            "point": {
+              "rule": "repeated",
+              "type": "TrajectoryPoint",
+              "id": 1
+            },
+            "a": {
+              "type": "float",
+              "id": 2
+            },
+            "type": {
+              "type": "int32",
+              "id": 3
+            },
+            "flag": {
+              "type": "int32",
+              "id": 4
+            }
+          }
+        },
+        "Prediction": {
+          "fields": {
+            "id": {
+              "type": "int64",
+              "id": 1
+            },
+            "point": {
+              "rule": "repeated",
+              "type": "TrajectoryPoint",
+              "id": 2
+            }
+          }
+        },
+        "Predictions": {
+          "fields": {
+            "obs": {
+              "rule": "repeated",
+              "type": "Prediction",
+              "id": 1
+            }
+          }
+        },
+        "GradingCollisionState": {
+          "values": {
+            "GRADING_COLLISION_NOCOLLISION": 0,
+            "GRADING_COLLISION_VEHICLE": 1,
+            "GRADING_COLLISION_PEDESTRIAN": 2,
+            "GRADING_COLLISION_OBSTACLE": 3
+          }
+        },
+        "GradingAlgorithmState": {
+          "values": {
+            "GRADING_ALGORITHM_RUNNING": 0,
+            "GRADING_ALGORITHM_TIMEOUT": 1,
+            "GRADING_ALGORITHM_THROWEXCEPTION": 2
+          }
+        },
+        "GradingTrafficLightState": {
+          "values": {
+            "GRADING_TRAFFICLIGHT_RUNNING": 0,
+            "GRADING_TRAFFICLIGHT_JUMPREDLIGHT": 1
+          }
+        },
+        "GradingSpeedState": {
+          "values": {
+            "GRADING_SPEED_NORMAL": 0,
+            "GRADING_SPEED_OVERHIGH": 1,
+            "GRADING_SPEED_OVERLOW": 2
+          }
+        },
+        "GradingAccelerationState": {
+          "values": {
+            "GRADING_ACCELERATION_NORMAL": 0,
+            "GRADING_ACCELERATION_RAPIDACCELERATE": 1,
+            "GRADING_ACCELERATION_RAPIDDEACCELERATE": 2
+          }
+        },
+        "GradingTimeHeadwayState": {
+          "values": {
+            "GRADING_TIMEHEADWAY_NORMAL": 0,
+            "GRADING_TIMEHEADWAY_OVERLOW": 1
+          }
+        },
+        "GradingDistHeadwayState": {
+          "values": {
+            "GRADING_DISTHEADWAY_NORMAL": 0,
+            "GRADING_DISTHEADWAY_OVERLOW": 1
+          }
+        },
+        "GradingPosErrorState": {
+          "values": {
+            "GRADING_PosError_NORMAL": 0,
+            "GRADING_PosError_EXCEED": 1
+          }
+        },
+        "Grading": {
+          "fields": {
+            "speed": {
+              "type": "Speed",
+              "id": 1
+            },
+            "acceleration": {
+              "type": "Acceleration",
+              "id": 2
+            },
+            "collision": {
+              "rule": "repeated",
+              "type": "Collision",
+              "id": 3
+            },
+            "timeHeadway": {
+              "type": "TimeHeadway",
+              "id": 4
+            },
+            "algorithm": {
+              "type": "Algorithm",
+              "id": 5
+            },
+            "lane": {
+              "type": "Lane",
+              "id": 6
+            },
+            "trafficeLight": {
+              "type": "TrafficLight",
+              "id": 7
+            },
+            "timeStamp": {
+              "type": "TimeStamp",
+              "id": 8
+            },
+            "mileage": {
+              "type": "double",
+              "id": 9
+            },
+            "expData": {
+              "type": "ExpData",
+              "id": 10
+            },
+            "distHeadway": {
+              "type": "DistHeadway",
+              "id": 11
+            },
+            "control": {
+              "type": "Control",
+              "id": 12
+            },
+            "planning": {
+              "type": "Planning",
+              "id": 13
+            },
+            "lateralAcc": {
+              "type": "Acceleration",
+              "id": 14
+            },
+            "decAcc": {
+              "type": "Acceleration",
+              "id": 15
+            },
+            "eventDetector": {
+              "type": "EventDetector",
+              "id": 16
+            }
+          },
+          "nested": {
+            "TimeStamp": {
+              "fields": {
+                "timeStamp": {
+                  "type": "uint64",
+                  "id": 1
+                }
+              }
+            },
+            "Speed": {
+              "fields": {
+                "speed": {
+                  "type": "double",
+                  "id": 1
+                },
+                "state": {
+                  "type": "GradingSpeedState",
+                  "id": 2
+                },
+                "threshold": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "Acceleration": {
+              "fields": {
+                "acceleration": {
+                  "type": "double",
+                  "id": 1
+                },
+                "state": {
+                  "type": "GradingAccelerationState",
+                  "id": 2
+                },
+                "threshold": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "Collision": {
+              "fields": {
+                "state": {
+                  "type": "GradingCollisionState",
+                  "id": 1
+                },
+                "location": {
+                  "type": "Vec3",
+                  "id": 2
+                }
+              }
+            },
+            "TimeHeadway": {
+              "fields": {
+                "ATH": {
+                  "type": "float",
+                  "id": 1
+                },
+                "state": {
+                  "type": "GradingTimeHeadwayState",
+                  "id": 2
+                },
+                "threshold": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "DistHeadway": {
+              "fields": {
+                "distToFellow": {
+                  "type": "double",
+                  "id": 1
+                },
+                "distState": {
+                  "type": "GradingDistHeadwayState",
+                  "id": 2
+                },
+                "threshold": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "Algorithm": {
+              "fields": {
+                "state": {
+                  "type": "GradingAlgorithmState",
+                  "id": 1
+                }
+              }
+            },
+            "Lane": {
+              "fields": {
+                "isOnSolidLine": {
+                  "type": "bool",
+                  "id": 1
+                },
+                "isOnDottedLine": {
+                  "type": "bool",
+                  "id": 2
+                },
+                "isOnStopLine": {
+                  "type": "bool",
+                  "id": 3
+                }
+              }
+            },
+            "TrafficLight": {
+              "fields": {
+                "state": {
+                  "type": "GradingTrafficLightState",
+                  "id": 1
+                },
+                "runTrafficlightThresh": {
+                  "type": "uint64",
+                  "id": 2
+                },
+                "runTrafficlightCount": {
+                  "type": "uint64",
+                  "id": 3
+                }
+              }
+            },
+            "Control": {
+              "fields": {
+                "posError_H": {
+                  "type": "double",
+                  "id": 1
+                },
+                "state": {
+                  "type": "GradingPosErrorState",
+                  "id": 2
+                },
+                "threshold": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "Planning": {
+              "fields": {
+                "isReachEndpoint": {
+                  "type": "bool",
+                  "id": 1
+                },
+                "currentPoint": {
+                  "type": "Vec3",
+                  "id": 2
+                },
+                "endpoint": {
+                  "type": "Vec3",
+                  "id": 3
+                }
+              }
+            },
+            "CarExpData": {
+              "fields": {
+                "id": {
+                  "type": "double",
+                  "id": 1
+                },
+                "value": {
+                  "type": "double",
+                  "id": 2
+                }
+              }
+            },
+            "ExpData": {
+              "fields": {
+                "distFromCar": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 1
+                },
+                "distFromCar_H": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 2
+                },
+                "distFromCar_V": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 3
+                },
+                "thFromCar": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 4
+                },
+                "dotSFellow": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 5
+                },
+                "dotXFellow": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 6
+                },
+                "dotYFellow": {
+                  "rule": "repeated",
+                  "type": "CarExpData",
+                  "id": 7
+                },
+                "dotSEgo": {
+                  "type": "double",
+                  "id": 8
+                },
+                "dotXEgo": {
+                  "type": "double",
+                  "id": 9
+                },
+                "dotYEgo": {
+                  "type": "double",
+                  "id": 10
+                }
+              }
+            },
+            "Statistics": {
+              "fields": {
+                "sceneName": {
+                  "type": "string",
+                  "id": 1
+                },
+                "reportDate": {
+                  "type": "string",
+                  "id": 2
+                },
+                "isPass": {
+                  "type": "bool",
+                  "id": 3
+                },
+                "totalTime": {
+                  "type": "double",
+                  "id": 4
+                },
+                "totalMilleage": {
+                  "type": "double",
+                  "id": 5
+                },
+                "isTimeout": {
+                  "type": "bool",
+                  "id": 6
+                },
+                "gradingXml": {
+                  "type": "string",
+                  "id": 7
+                },
+                "detail": {
+                  "type": "Detail",
+                  "id": 8
+                },
+                "customDetail": {
+                  "type": "CustomDetail",
+                  "id": 9
+                },
+                "reason": {
+                  "type": "string",
+                  "id": 10
+                }
+              },
+              "nested": {
+                "DetailItem": {
+                  "fields": {
+                    "evalValue": {
+                      "type": "double",
+                      "id": 1
+                    },
+                    "isEnabled": {
+                      "type": "bool",
+                      "id": 2
+                    },
+                    "isPass": {
+                      "type": "bool",
+                      "id": 3
+                    }
+                  }
+                },
+                "Detail": {
+                  "fields": {
+                    "countOverSpeed": {
+                      "type": "DetailItem",
+                      "id": 1
+                    },
+                    "countOverAcceleration": {
+                      "type": "DetailItem",
+                      "id": 2
+                    },
+                    "countOverDecelleration": {
+                      "type": "DetailItem",
+                      "id": 3
+                    },
+                    "countOverTurningAcceleration": {
+                      "type": "DetailItem",
+                      "id": 4
+                    },
+                    "countTooCloseTTC": {
+                      "type": "DetailItem",
+                      "id": 5
+                    },
+                    "countTooCloseDistance": {
+                      "type": "DetailItem",
+                      "id": 6
+                    },
+                    "countOverMaxPosError_H": {
+                      "type": "DetailItem",
+                      "id": 7
+                    },
+                    "average_PosError_H": {
+                      "type": "DetailItem",
+                      "id": 8
+                    },
+                    "max_PosError_H": {
+                      "type": "DetailItem",
+                      "id": 9
+                    },
+                    "max_PosError_H_L": {
+                      "type": "DetailItem",
+                      "id": 10
+                    },
+                    "max_PosError_H_R": {
+                      "type": "DetailItem",
+                      "id": 11
+                    },
+                    "count_CrossSolidLine": {
+                      "type": "DetailItem",
+                      "id": 12
+                    },
+                    "count_RanRedLight": {
+                      "type": "DetailItem",
+                      "id": 13
+                    },
+                    "reachEndPoint": {
+                      "type": "DetailItem",
+                      "id": 14
+                    },
+                    "collision": {
+                      "type": "DetailItem",
+                      "id": 15
+                    }
+                  }
+                },
+                "CustomDetail": {
+                  "fields": {
+                    "custom_ReachEndPoint": {
+                      "type": "DetailItem",
+                      "id": 1
+                    },
+                    "customMaxPosError_Exceed": {
+                      "type": "DetailItem",
+                      "id": 2
+                    }
+                  }
+                }
+              }
+            },
+            "EventDetector": {
+              "fields": {
+                "dtSecond": {
+                  "type": "double",
+                  "id": 1
+                },
+                "curTSecond": {
+                  "type": "double",
+                  "id": 2
+                },
+                "Acceleration_Above_Thresh": {
+                  "type": "EventState",
+                  "id": 3
+                },
+                "Speed_Above_Thresh": {
+                  "type": "EventState",
+                  "id": 4
+                },
+                "If_Collision": {
+                  "type": "EventState",
+                  "id": 5
+                },
+                "TimeHeadAway_Below_Thresh": {
+                  "type": "EventState",
+                  "id": 6
+                },
+                "Run_TrafficLight": {
+                  "type": "EventState",
+                  "id": 7
+                },
+                "On_SolidLine": {
+                  "type": "EventState",
+                  "id": 8
+                },
+                "Deceleration_Above_Thresh": {
+                  "type": "EventState",
+                  "id": 9
+                },
+                "detectedEvents": {
+                  "keyType": "string",
+                  "type": "DetectedEvent",
+                  "id": 10
+                },
+                "hasEdge": {
+                  "type": "EventState",
+                  "id": 11
+                }
+              },
+              "nested": {
+                "EventState": {
+                  "values": {
+                    "EventNotDetected": 0,
+                    "EventDetected": 1
+                  }
+                },
+                "DetectedEvent": {
+                  "fields": {
+                    "edge": {
+                      "type": "EventState",
+                      "id": 1
+                    },
+                    "state": {
+                      "type": "EventState",
+                      "id": 2
+                    },
+                    "additionals": {
+                      "keyType": "string",
+                      "type": "string",
+                      "id": 3
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Control": {
+          "fields": {
+            "header": {
+              "type": "Header",
+              "id": 1
+            },
+            "controlMode": {
+              "type": "CONTROL_MODE",
+              "id": 2
+            },
+            "contrlType": {
+              "type": "CONTROL_TYPE",
+              "id": 3
+            },
+            "gearCmd": {
+              "type": "GEAR_MODE",
+              "id": 4
+            },
+            "pedalCmd": {
+              "type": "PedalControl",
+              "id": 5
+            },
+            "accCmd": {
+              "type": "AccControl",
+              "id": 6
+            },
+            "bodyCmd": {
+              "type": "BodyCommand",
+              "id": 7
+            },
+            "chassisCmd": {
+              "type": "ChassisCommand",
+              "id": 8
+            },
+            "powertrainCmd": {
+              "type": "PowerTrainCommand",
+              "id": 9
+            },
+            "accSteerCmd": {
+              "type": "AccSteerControl",
+              "id": 10
+            }
+          },
+          "nested": {
+            "CONTROL_MODE": {
+              "values": {
+                "CM_MANUAL": 0,
+                "CM_AUTO_DRIVE": 1,
+                "CM_ONLY_STEER": 2,
+                "CM_ONLY_SPEED": 3
+              }
+            },
+            "GEAR_MODE": {
+              "values": {
+                "NO_CONTROL": 0,
+                "PARK": 1,
+                "REVERSE": 2,
+                "NEUTRAL": 3,
+                "DRIVE": 4
+              }
+            },
+            "CONTROL_TYPE": {
+              "values": {
+                "PEDAL_CONTROL": 0,
+                "ACC_CONTROL": 1,
+                "ACC_STEER_CONTROL": 2
+              }
+            },
+            "TurnLight": {
+              "values": {
+                "TURN_LIGHT_OFF": 0,
+                "TURN_LEFT": 1,
+                "TURN_RIGHT": 2
+              }
+            },
+            "FogLamp": {
+              "values": {
+                "FOG_LAMP_OFF": 0,
+                "FRONT_FOG_LAMP": 1,
+                "REAR_FOG_LAMP": 2,
+                "ALL_FOG_LAMP": 3
+              }
+            },
+            "PedalControl": {
+              "fields": {
+                "steer": {
+                  "type": "double",
+                  "id": 1
+                },
+                "throttle": {
+                  "type": "double",
+                  "id": 2
+                },
+                "brake": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            },
+            "AccControl": {
+              "fields": {
+                "acc": {
+                  "type": "double",
+                  "id": 1
+                },
+                "frontWheelAngle": {
+                  "type": "double",
+                  "id": 2
+                }
+              }
+            },
+            "AccSteerControl": {
+              "fields": {
+                "acc": {
+                  "type": "double",
+                  "id": 1
+                },
+                "steer": {
+                  "type": "double",
+                  "id": 2
+                }
+              }
+            },
+            "BodyCommand": {
+              "fields": {
+                "horn": {
+                  "type": "bool",
+                  "id": 1
+                },
+                "turnLight": {
+                  "type": "TurnLight",
+                  "id": 2
+                },
+                "positionLamp": {
+                  "type": "bool",
+                  "id": 3
+                },
+                "lowBeam": {
+                  "type": "bool",
+                  "id": 4
+                },
+                "highBeam": {
+                  "type": "bool",
+                  "id": 5
+                },
+                "warnLight": {
+                  "type": "bool",
+                  "id": 6
+                },
+                "fogLamp": {
+                  "type": "FogLamp",
+                  "id": 7
+                }
+              }
+            },
+            "ChassisCommand": {
+              "fields": {
+                "epb": {
+                  "type": "bool",
+                  "id": 1
+                }
+              }
+            },
+            "PowerTrainCommand": {
+              "fields": {
+                "switchOffEngine": {
+                  "type": "bool",
+                  "id": 1
+                }
+              }
+            }
+          }
+        },
+        "Header": {
+          "fields": {
+            "timeStamp": {
+              "type": "double",
+              "id": 1
+            },
+            "frameId": {
+              "type": "uint64",
+              "id": 2
+            },
+            "sequence": {
+              "type": "double",
+              "id": 3
+            }
+          }
+        },
+        "Control_V2": {
+          "fields": {
+            "header": {
+              "type": "Header",
+              "id": 1
+            },
+            "controlType": {
+              "type": "CONTROL_TYPE",
+              "id": 2
+            },
+            "gearCmd": {
+              "type": "GEAR_MODE",
+              "id": 3
+            },
+            "controlCmd": {
+              "type": "ControlCmd",
+              "id": 4
+            },
+            "bodyCmd": {
+              "type": "BodyCommand",
+              "id": 5
+            },
+            "chassisCmd": {
+              "type": "ChassisCommand",
+              "id": 6
+            },
+            "powertrainCmd": {
+              "type": "PowerTrainCommand",
+              "id": 7
+            },
+            "controlFlags": {
+              "type": "ControlFlags",
+              "id": 8
+            }
+          },
+          "nested": {
+            "GEAR_MODE": {
+              "values": {
+                "NO_CONTROL": 0,
+                "PARK": 1,
+                "REVERSE": 2,
+                "NEUTRAL": 3,
+                "DRIVE": 4
+              }
+            },
+            "CONTROL_TYPE": {
+              "fields": {
+                "accControlType": {
+                  "type": "ACCEL_CONTROL_TYPE",
+                  "id": 1
+                },
+                "brakeControlType": {
+                  "type": "BRAKE_CONTROL_TYPE",
+                  "id": 2
+                },
+                "steerControlType": {
+                  "type": "STEER_CONTROL_TYPE",
+                  "id": 3
+                }
+              },
+              "nested": {
+                "ACCEL_CONTROL_TYPE": {
+                  "values": {
+                    "TARGET_ACC_CONTROL": 0,
+                    "REQUEST_TORQUE_CONTROL": 1,
+                    "REQUEST_DISTANCE_AND_VELOCITY": 2,
+                    "REQUEST_THROTTLE": 3,
+                    "ACCEL_NO_CONTROL": 7
+                  }
+                },
+                "BRAKE_CONTROL_TYPE": {
+                  "values": {
+                    "BRAKE_TARGET_ACC_CONTROL": 0,
+                    "REQUEST_BRAKE_PRESSURE_CONTROL": 1,
+                    "BRAKE_NO_CONTROL": 7
+                  }
+                },
+                "STEER_CONTROL_TYPE": {
+                  "values": {
+                    "TARGET_STEER_ANGLE": 0,
+                    "REQUEST_STEER_TORQUE_CONTROL": 1,
+                    "REQUEST_FRONT_WHEEL_ANGLE": 2,
+                    "STEER_NO_CONTROL": 7
+                  }
+                }
+              }
+            },
+            "ControlCmd": {
+              "fields": {
+                "requestAcc": {
+                  "type": "double",
+                  "id": 1
+                },
+                "requestTorque": {
+                  "type": "double",
+                  "id": 2
+                },
+                "requestBrakePressure": {
+                  "type": "double",
+                  "id": 3
+                },
+                "requestSteerWheelAngle": {
+                  "type": "double",
+                  "id": 4
+                },
+                "requestSteerTorque": {
+                  "type": "double",
+                  "id": 5
+                },
+                "requestDistance_2Stop": {
+                  "type": "double",
+                  "id": 6
+                },
+                "maxVelocity": {
+                  "type": "double",
+                  "id": 7
+                },
+                "requestThrottle": {
+                  "type": "double",
+                  "id": 8
+                },
+                "requestFrontWheelAngle": {
+                  "type": "double",
+                  "id": 9
+                }
+              }
+            },
+            "OnOff": {
+              "values": {
+                "OFF": 0,
+                "ON": 1
+              }
+            },
+            "BodyCommand": {
+              "fields": {
+                "horn": {
+                  "type": "OnOff",
+                  "id": 1
+                },
+                "leftTurn": {
+                  "type": "OnOff",
+                  "id": 2
+                },
+                "rightTurn": {
+                  "type": "OnOff",
+                  "id": 3
+                },
+                "frontFogLamp": {
+                  "type": "OnOff",
+                  "id": 4
+                },
+                "rearFogLamp": {
+                  "type": "OnOff",
+                  "id": 5
+                },
+                "positionLamp": {
+                  "type": "OnOff",
+                  "id": 6
+                },
+                "lowBeam": {
+                  "type": "OnOff",
+                  "id": 7
+                },
+                "highBeam": {
+                  "type": "OnOff",
+                  "id": 8
+                },
+                "hazardLight": {
+                  "type": "OnOff",
+                  "id": 9
+                }
+              }
+            },
+            "ChassisCommand": {
+              "fields": {}
+            },
+            "PowerTrainCommand": {
+              "fields": {}
+            },
+            "ControlFlags": {
+              "fields": {
+                "flag_1": {
+                  "type": "uint32",
+                  "id": 1
+                },
+                "flag_2": {
+                  "type": "uint32",
+                  "id": 2
+                },
+                "flag_3": {
+                  "type": "uint32",
+                  "id": 3
+                },
+                "flag_4": {
+                  "type": "uint32",
+                  "id": 4
+                },
+                "flag_5": {
+                  "type": "uint32",
+                  "id": 5
+                },
+                "flag_6": {
+                  "type": "uint32",
+                  "id": 6
+                },
+                "flag_7": {
+                  "type": "uint32",
+                  "id": 7
+                },
+                "flag_8": {
+                  "type": "uint32",
+                  "id": 8
+                }
+              }
+            }
+          }
+        },
+        "TwinInfo": {
+          "fields": {}
+        },
+        "ManualVehicleControlInfo": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "vehControlInfo": {
+              "type": "Location",
+              "id": 2
+            }
+          }
+        },
+        "ManualVehicleControlInfoArray": {
+          "fields": {
+            "vehiclesControlInfo": {
+              "rule": "repeated",
+              "type": "ManualVehicleControlInfo",
+              "id": 1
+            }
+          }
+        },
+        "ControlState": {
+          "values": {
+            "Autonomous": 0,
+            "Manual": 1
+          }
+        },
+        "NearestObjectDirection": {
+          "values": {
+            "FRONT": 0,
+            "BACK_DIRECTION": 1,
+            "LEFT": 2,
+            "LEFT_FRONT": 3,
+            "LEFT_BACK": 4,
+            "RIGHT": 5,
+            "RIGHT_FRONT": 6,
+            "RIGHT_BACK": 7
+          }
+        },
+        "NearestObject": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "euclidDist": {
+              "type": "double",
+              "id": 2
+            },
+            "dir": {
+              "type": "NearestObjectDirection",
+              "id": 3
+            }
+          }
+        },
+        "VehicleRelativePositionalRelationship": {
+          "values": {
+            "No_Relationship": 0,
+            "Ego_In_Front": 1,
+            "Ego_In_Back": 2,
+            "Ego_Vehicle_Overlap": 3
+          }
+        },
+        "ForwardCollisionWarning": {
+          "fields": {
+            "state": {
+              "type": "VehicleRelativePositionalRelationship",
+              "id": 1
+            },
+            "euclideanDistance": {
+              "type": "double",
+              "id": 2
+            },
+            "laneProjDistance": {
+              "type": "double",
+              "id": 3
+            },
+            "egoV": {
+              "type": "double",
+              "id": 4
+            },
+            "vehicleV": {
+              "type": "double",
+              "id": 5
+            },
+            "ttcEuclideanDistance": {
+              "type": "double",
+              "id": 6
+            },
+            "ttcLaneProjDistance": {
+              "type": "double",
+              "id": 7
+            },
+            "thwEuclideanDistance": {
+              "type": "double",
+              "id": 8
+            },
+            "thwLaneProjDistance": {
+              "type": "double",
+              "id": 9
+            }
+          }
+        },
+        "Extra_Info": {
+          "fields": {
+            "localCartesianPoint": {
+              "type": "Vec3",
+              "id": 1
+            },
+            "frontVeh": {
+              "type": "bool",
+              "id": 2
+            },
+            "rearVeh": {
+              "type": "bool",
+              "id": 3
+            },
+            "speedMs": {
+              "type": "float",
+              "id": 4
+            },
+            "distToEgoM": {
+              "type": "float",
+              "id": 5
+            }
+          }
+        },
+        "Car": {
+          "fields": {
+            "id": {
+              "type": "int64",
+              "id": 1
+            },
+            "t": {
+              "type": "double",
+              "id": 2
+            },
+            "x": {
+              "type": "double",
+              "id": 3
+            },
+            "y": {
+              "type": "double",
+              "id": 4
+            },
+            "heading": {
+              "type": "double",
+              "id": 5
+            },
+            "v": {
+              "type": "double",
+              "id": 6
+            },
+            "vl": {
+              "type": "double",
+              "id": 7
+            },
+            "theta": {
+              "type": "double",
+              "id": 8
+            },
+            "length": {
+              "type": "double",
+              "id": 9
+            },
+            "width": {
+              "type": "double",
+              "id": 10
+            },
+            "height": {
+              "type": "double",
+              "id": 11
+            },
+            "type": {
+              "type": "int32",
+              "id": 12
+            },
+            "laneId": {
+              "type": "int32",
+              "id": 13
+            },
+            "acc": {
+              "type": "double",
+              "id": 14
+            },
+            "age": {
+              "type": "int32",
+              "id": 15,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "z": {
+              "type": "double",
+              "id": 16
+            },
+            "txRoadId": {
+              "type": "uint64",
+              "id": 17
+            },
+            "txSectionId": {
+              "type": "uint64",
+              "id": 18
+            },
+            "txLaneId": {
+              "type": "int64",
+              "id": 19
+            },
+            "txLanelinkId": {
+              "type": "uint64",
+              "id": 20
+            },
+            "planningLine": {
+              "type": "Trajectory",
+              "id": 21
+            },
+            "showAbsVelocity": {
+              "type": "double",
+              "id": 22
+            },
+            "showAbsAcc": {
+              "type": "double",
+              "id": 23
+            },
+            "showRelativeVelocity": {
+              "type": "double",
+              "id": 24
+            },
+            "showRelativeAcc": {
+              "type": "double",
+              "id": 25
+            },
+            "showRelativeVelocityHorizontal": {
+              "type": "double",
+              "id": 26
+            },
+            "showRelativeAccHorizontal": {
+              "type": "double",
+              "id": 27
+            },
+            "showRelativeDistVertical": {
+              "type": "double",
+              "id": 28
+            },
+            "showRelativeDistHorizontal": {
+              "type": "double",
+              "id": 29
+            },
+            "controlState": {
+              "type": "ControlState",
+              "id": 30
+            },
+            "show_NearestObjectInfo": {
+              "rule": "repeated",
+              "type": "NearestObject",
+              "id": 31
+            },
+            "angleAlongCenterlineDegree": {
+              "type": "double",
+              "id": 32,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "strid": {
+              "type": "string",
+              "id": 33,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "twinData": {
+              "type": "TwinInfo",
+              "id": 34,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "fcw": {
+              "type": "ForwardCollisionWarning",
+              "id": 35
+            },
+            "lOffset": {
+              "type": "double",
+              "id": 36
+            },
+            "toTxRoadId": {
+              "type": "uint64",
+              "id": 37
+            },
+            "toTxSectionId": {
+              "type": "uint64",
+              "id": 38
+            },
+            "toTxLaneId": {
+              "type": "int64",
+              "id": 39
+            },
+            "serializationArchive": {
+              "type": "bytes",
+              "id": 40
+            },
+            "extraInfo": {
+              "type": "Extra_Info",
+              "id": 41
+            },
+            "accL": {
+              "type": "float",
+              "id": 42
+            }
+          }
+        },
+        "StaticObstacle": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "t": {
+              "type": "double",
+              "id": 2
+            },
+            "x": {
+              "type": "double",
+              "id": 3
+            },
+            "y": {
+              "type": "double",
+              "id": 4
+            },
+            "heading": {
+              "type": "double",
+              "id": 5
+            },
+            "length": {
+              "type": "double",
+              "id": 6
+            },
+            "width": {
+              "type": "double",
+              "id": 7
+            },
+            "height": {
+              "type": "double",
+              "id": 8
+            },
+            "type": {
+              "type": "int32",
+              "id": 9
+            },
+            "age": {
+              "type": "int32",
+              "id": 10
+            },
+            "z": {
+              "type": "double",
+              "id": 11
+            },
+            "strid": {
+              "type": "string",
+              "id": 12,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "twinData": {
+              "type": "TwinInfo",
+              "id": 13,
+              "options": {
+                "deprecated": true
+              }
+            }
+          }
+        },
+        "DynamicObstacle": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "t": {
+              "type": "double",
+              "id": 2
+            },
+            "x": {
+              "type": "double",
+              "id": 3
+            },
+            "y": {
+              "type": "double",
+              "id": 4
+            },
+            "heading": {
+              "type": "double",
+              "id": 5
+            },
+            "length": {
+              "type": "double",
+              "id": 6
+            },
+            "width": {
+              "type": "double",
+              "id": 7
+            },
+            "height": {
+              "type": "double",
+              "id": 8
+            },
+            "type": {
+              "type": "int32",
+              "id": 9
+            },
+            "v": {
+              "type": "double",
+              "id": 10
+            },
+            "vl": {
+              "type": "double",
+              "id": 11
+            },
+            "acc": {
+              "type": "double",
+              "id": 12
+            },
+            "age": {
+              "type": "int32",
+              "id": 13,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "z": {
+              "type": "double",
+              "id": 14
+            },
+            "showAbsVelocity": {
+              "type": "double",
+              "id": 15
+            },
+            "showAbsAcc": {
+              "type": "double",
+              "id": 16
+            },
+            "showRelativeVelocity": {
+              "type": "double",
+              "id": 17
+            },
+            "showRelativeAcc": {
+              "type": "double",
+              "id": 18
+            },
+            "showRelativeVelocityHorizontal": {
+              "type": "double",
+              "id": 19
+            },
+            "showRelativeAccHorizontal": {
+              "type": "double",
+              "id": 20
+            },
+            "showRelativeDistVertical": {
+              "type": "double",
+              "id": 21
+            },
+            "showRelativeDistHorizontal": {
+              "type": "double",
+              "id": 22
+            },
+            "strid": {
+              "type": "string",
+              "id": 23,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "twinData": {
+              "type": "TwinInfo",
+              "id": 24,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "polyId": {
+              "type": "int64",
+              "id": 25
+            }
+          }
+        },
+        "LaneUid": {
+          "fields": {
+            "txRoadId": {
+              "type": "uint64",
+              "id": 1
+            },
+            "txSectionId": {
+              "type": "uint64",
+              "id": 2
+            },
+            "txLaneId": {
+              "type": "int64",
+              "id": 3
+            }
+          }
+        },
+        "Phase": {
+          "values": {
+            "U": 0,
+            "L": 1,
+            "T": 2,
+            "R": 3,
+            "L0": 4,
+            "R0": 5
+          }
+        },
+        "TrafficLight": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "x": {
+              "type": "double",
+              "id": 2
+            },
+            "y": {
+              "type": "double",
+              "id": 3
+            },
+            "heading": {
+              "type": "double",
+              "id": 4
+            },
+            "color": {
+              "type": "int32",
+              "id": 5
+            },
+            "age": {
+              "type": "int32",
+              "id": 6
+            },
+            "z": {
+              "type": "double",
+              "id": 7
+            },
+            "txRoadId": {
+              "type": "uint64",
+              "id": 8,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "txSectionId": {
+              "type": "uint64",
+              "id": 9,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "txLaneId": {
+              "type": "int64",
+              "id": 10,
+              "options": {
+                "deprecated": true
+              }
+            },
+            "controlLanes": {
+              "rule": "repeated",
+              "type": "LaneUid",
+              "id": 11
+            },
+            "controlPhases": {
+              "rule": "repeated",
+              "type": "Phase",
+              "id": 12
+            },
+            "nextColor": {
+              "type": "int32",
+              "id": 13
+            },
+            "nextAge": {
+              "type": "int32",
+              "id": 14
+            },
+            "plan": {
+              "type": "string",
+              "id": 15
+            },
+            "junction": {
+              "type": "string",
+              "id": 16
+            },
+            "phaseNumber": {
+              "type": "string",
+              "id": 17
+            },
+            "signalHead": {
+              "type": "string",
+              "id": 18
+            }
+          }
+        },
+        "EgoInfo": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "angleAlongCenterlineDegree": {
+              "type": "float",
+              "id": 2
+            },
+            "slope": {
+              "type": "float",
+              "id": 3
+            }
+          }
+        },
+        "Capsule": {
+          "fields": {
+            "id": {
+              "type": "int64",
+              "id": 1
+            },
+            "droneId": {
+              "type": "int64",
+              "id": 2
+            },
+            "t": {
+              "type": "double",
+              "id": 3
+            },
+            "x": {
+              "type": "double",
+              "id": 4
+            },
+            "y": {
+              "type": "double",
+              "id": 5
+            },
+            "z": {
+              "type": "double",
+              "id": 6
+            },
+            "heading": {
+              "type": "double",
+              "id": 7
+            },
+            "pitch": {
+              "type": "double",
+              "id": 8
+            },
+            "roll": {
+              "type": "double",
+              "id": 9
+            },
+            "headA": {
+              "type": "double",
+              "id": 10
+            },
+            "headB": {
+              "type": "double",
+              "id": 11
+            },
+            "bodyL": {
+              "type": "double",
+              "id": 12
+            },
+            "tailA": {
+              "type": "double",
+              "id": 13
+            },
+            "tailB": {
+              "type": "double",
+              "id": 14
+            },
+            "height": {
+              "type": "double",
+              "id": 15
+            },
+            "v": {
+              "type": "double",
+              "id": 16
+            },
+            "acc": {
+              "type": "double",
+              "id": 17
+            },
+            "type": {
+              "type": "int32",
+              "id": 18
+            },
+            "txAirwayId": {
+              "type": "int32",
+              "id": 19
+            },
+            "planId": {
+              "type": "string",
+              "id": 20
+            },
+            "priorty": {
+              "type": "int32",
+              "id": 21
+            }
+          }
+        },
+        "Drone": {
+          "fields": {
+            "id": {
+              "type": "int64",
+              "id": 1
+            },
+            "t": {
+              "type": "double",
+              "id": 2
+            },
+            "name": {
+              "type": "string",
+              "id": 3
+            },
+            "owner": {
+              "type": "string",
+              "id": 4
+            },
+            "x": {
+              "type": "double",
+              "id": 5
+            },
+            "y": {
+              "type": "double",
+              "id": 6
+            },
+            "z": {
+              "type": "double",
+              "id": 7
+            },
+            "heading": {
+              "type": "double",
+              "id": 8
+            },
+            "pitch": {
+              "type": "double",
+              "id": 9
+            },
+            "roll": {
+              "type": "double",
+              "id": 10
+            },
+            "v": {
+              "type": "double",
+              "id": 11
+            },
+            "acc": {
+              "type": "double",
+              "id": 12
+            },
+            "type": {
+              "type": "int32",
+              "id": 13
+            },
+            "txAirwayId": {
+              "type": "int32",
+              "id": 14
+            },
+            "planId": {
+              "type": "string",
+              "id": 15
+            },
+            "priorty": {
+              "type": "int32",
+              "id": 16
+            },
+            "status": {
+              "type": "int32",
+              "id": 17
+            }
+          }
+        },
+        "Detection": {
+          "fields": {
+            "id": {
+              "type": "int64",
+              "id": 1
+            },
+            "t": {
+              "type": "double",
+              "id": 2
+            },
+            "droneId": {
+              "type": "int64",
+              "id": 3
+            },
+            "capsuleId": {
+              "type": "int64",
+              "id": 4
+            },
+            "detectionType": {
+              "type": "DetectionType",
+              "id": 5
+            },
+            "txAirwayId": {
+              "type": "int32",
+              "id": 6
+            },
+            "detectionStatus": {
+              "type": "DetectionStatus",
+              "id": 7
+            },
+            "exceptionStatus": {
+              "type": "ExceptionStatus",
+              "id": 8
+            }
+          },
+          "nested": {
+            "DetectionType": {
+              "values": {
+                "OFFTRACK_CAPSULE": 0,
+                "OFFTRACK_AIRWAY": 1
+              }
+            },
+            "DetectionStatus": {
+              "values": {
+                "OFFTRACK_START": 0,
+                "OFFTRACK_END": 1
+              }
+            },
+            "ExceptionStatus": {
+              "values": {
+                "EXCEPTION_START": 0,
+                "EXCEPTION_UNSTART": 1
+              }
+            }
+          }
+        },
+        "Traffic": {
+          "fields": {
+            "cars": {
+              "rule": "repeated",
+              "type": "Car",
+              "id": 1
+            },
+            "staticObstacles": {
+              "rule": "repeated",
+              "type": "StaticObstacle",
+              "id": 2
+            },
+            "dynamicObstacles": {
+              "rule": "repeated",
+              "type": "DynamicObstacle",
+              "id": 3
+            },
+            "trafficLights": {
+              "rule": "repeated",
+              "type": "TrafficLight",
+              "id": 4
+            },
+            "roadNetworkAverVelocity": {
+              "type": "double",
+              "id": 5
+            },
+            "roadNetworkTotalVehicleCount": {
+              "type": "int32",
+              "id": 6
+            },
+            "time": {
+              "type": "uint64",
+              "id": 7
+            },
+            "egos": {
+              "rule": "repeated",
+              "type": "EgoInfo",
+              "id": 8
+            },
+            "drones": {
+              "rule": "repeated",
+              "type": "Drone",
+              "id": 9
+            },
+            "capsules": {
+              "rule": "repeated",
+              "type": "Capsule",
+              "id": 10
+            },
+            "detections": {
+              "rule": "repeated",
+              "type": "Detection",
+              "id": 11
+            }
+          }
+        },
+        "TrafficRecords": {
+          "fields": {
+            "trafficRecord": {
+              "rule": "repeated",
+              "type": "Traffic",
+              "id": 1
+            }
+          }
+        },
+        "DisengageEventType": {
+          "values": {
+            "Disengage_Manual": 0,
+            "Disengage_Planning": 1,
+            "Disengage_Route": 2,
+            "Disengage_Perception": 3,
+            "Disengage_OS": 4,
+            "Disengage_Sim": 5
+          }
+        },
+        "TrajectoryInfo": {
+          "fields": {
+            "timeStamp": {
+              "type": "double",
+              "id": 1
+            },
+            "trajectoryLine": {
+              "type": "Trajectory",
+              "id": 2
+            }
+          }
+        },
+        "TrafficRecords4Logsim": {
+          "fields": {
+            "egoLocation": {
+              "rule": "repeated",
+              "type": "Location",
+              "id": 1
+            },
+            "trafficRecord": {
+              "rule": "repeated",
+              "type": "Traffic",
+              "id": 2
+            },
+            "disengageEvents": {
+              "rule": "repeated",
+              "type": "DisengageEventInfo",
+              "id": 3
+            },
+            "durationMs": {
+              "type": "uint64",
+              "id": 4
+            },
+            "egoTrajectory": {
+              "rule": "repeated",
+              "type": "TrajectoryInfo",
+              "id": 5
+            }
+          },
+          "nested": {
+            "DisengageEventInfo": {
+              "fields": {
+                "timestampMs": {
+                  "type": "int64",
+                  "id": 1
+                },
+                "type": {
+                  "type": "DisengageEventType",
+                  "id": 2
+                }
+              }
+            }
+          }
+        },
+        "VehicleState": {
+          "fields": {
+            "timeStamp": {
+              "type": "double",
+              "id": 1
+            },
+            "chassisState": {
+              "type": "ChassisState",
+              "id": 2
+            },
+            "powertrainState": {
+              "type": "PowerTrainState",
+              "id": 3
+            },
+            "bodyState": {
+              "type": "BodyState",
+              "id": 4
+            }
+          },
+          "nested": {
+            "Direction": {
+              "values": {
+                "Dir_StandStill": 0,
+                "Dir_Forward": 1,
+                "Dir_Backward": 2
+              }
+            },
+            "WheelSpinDirection": {
+              "fields": {
+                "fl": {
+                  "type": "Direction",
+                  "id": 1
+                },
+                "fr": {
+                  "type": "Direction",
+                  "id": 2
+                },
+                "rl": {
+                  "type": "Direction",
+                  "id": 3
+                },
+                "rr": {
+                  "type": "Direction",
+                  "id": 4
+                }
+              }
+            },
+            "Wheel4": {
+              "fields": {
+                "frontLeft": {
+                  "type": "double",
+                  "id": 1
+                },
+                "frontRight": {
+                  "type": "double",
+                  "id": 2
+                },
+                "rearLeft": {
+                  "type": "double",
+                  "id": 3
+                },
+                "rearRight": {
+                  "type": "double",
+                  "id": 4
+                }
+              }
+            },
+            "WheelContact": {
+              "fields": {
+                "fl": {
+                  "type": "Vec3",
+                  "id": 1
+                },
+                "fr": {
+                  "type": "Vec3",
+                  "id": 2
+                },
+                "rr": {
+                  "type": "Vec3",
+                  "id": 3
+                },
+                "rl": {
+                  "type": "Vec3",
+                  "id": 4
+                }
+              }
+            },
+            "GEAR_MODE": {
+              "values": {
+                "NO_CONTROL": 0,
+                "PARK": 1,
+                "REVERSE": 2,
+                "NEUTRAL": 3,
+                "DRIVE": 4
+              }
+            },
+            "Door4": {
+              "fields": {
+                "frontLeft": {
+                  "type": "int32",
+                  "id": 1
+                },
+                "frontRight": {
+                  "type": "int32",
+                  "id": 2
+                },
+                "rearLeft": {
+                  "type": "int32",
+                  "id": 3
+                },
+                "rearRight": {
+                  "type": "int32",
+                  "id": 4
+                }
+              }
+            },
+            "PowerTrainState": {
+              "fields": {
+                "geadMode": {
+                  "type": "GEAR_MODE",
+                  "id": 1
+                },
+                "totalMileage": {
+                  "type": "float",
+                  "id": 2
+                },
+                "engineSpeed": {
+                  "type": "double",
+                  "id": 3
+                },
+                "accpedalPosition": {
+                  "type": "double",
+                  "id": 4
+                },
+                "gearEngaged": {
+                  "type": "int32",
+                  "id": 5
+                },
+                "trip_A": {
+                  "type": "float",
+                  "id": 6
+                },
+                "bmsState": {
+                  "type": "BMSState",
+                  "id": 7
+                },
+                "speedKph": {
+                  "type": "float",
+                  "id": 8
+                },
+                "thermalEnergy": {
+                  "type": "float",
+                  "id": 9
+                },
+                "actualDriveTroque": {
+                  "type": "double",
+                  "id": 10
+                },
+                "motorRequestTorque": {
+                  "type": "double",
+                  "id": 11
+                },
+                "motorActualTorque": {
+                  "type": "double",
+                  "id": 12
+                },
+                "energySourceLevel": {
+                  "type": "double",
+                  "id": 13
+                },
+                "frontMotorSpeed": {
+                  "type": "double",
+                  "id": 14
+                },
+                "rearMotorSpeed": {
+                  "type": "double",
+                  "id": 15
+                },
+                "omegaGearSpeed": {
+                  "type": "double",
+                  "id": 16
+                }
+              },
+              "nested": {
+                "BMSState": {
+                  "fields": {
+                    "batTemperature": {
+                      "type": "float",
+                      "id": 1
+                    },
+                    "batSoc": {
+                      "type": "float",
+                      "id": 2
+                    },
+                    "batPwr": {
+                      "type": "float",
+                      "id": 3
+                    },
+                    "batVoltage": {
+                      "type": "float",
+                      "id": 4
+                    },
+                    "batChargeTime": {
+                      "type": "int32",
+                      "id": 5
+                    },
+                    "chagingTimeSeq": {
+                      "rule": "repeated",
+                      "type": "uint32",
+                      "id": 6
+                    },
+                    "batCharging": {
+                      "type": "bool",
+                      "id": 7
+                    }
+                  }
+                }
+              }
+            },
+            "BodyState": {
+              "fields": {
+                "SAS_Status": {
+                  "type": "int32",
+                  "id": 1
+                },
+                "LeftTurnSigLampSts": {
+                  "type": "bool",
+                  "id": 2
+                },
+                "RightTurnSigLampSts": {
+                  "type": "bool",
+                  "id": 3
+                },
+                "BrakePedSts": {
+                  "type": "bool",
+                  "id": 4
+                },
+                "DoorStatus": {
+                  "type": "Door4",
+                  "id": 5
+                },
+                "ACAmbtTemp": {
+                  "type": "double",
+                  "id": 6
+                },
+                "cabinTemperature": {
+                  "type": "float",
+                  "id": 7
+                },
+                "bodyFrameVelocity": {
+                  "type": "Vec3",
+                  "id": 8
+                },
+                "sinSlope": {
+                  "type": "double",
+                  "id": 9
+                },
+                "vehDirection": {
+                  "type": "Direction",
+                  "id": 10
+                },
+                "slipAngle": {
+                  "type": "double",
+                  "id": 11
+                }
+              }
+            },
+            "ChassisState": {
+              "fields": {
+                "tirePressure": {
+                  "type": "Wheel4",
+                  "id": 1
+                },
+                "SteeringWheelAngle": {
+                  "type": "double",
+                  "id": 2
+                },
+                "SteeringWheelAngleSign": {
+                  "type": "double",
+                  "id": 3
+                },
+                "ESP_MasterCylindBrakePress": {
+                  "type": "double",
+                  "id": 4
+                },
+                "wheelSpeed": {
+                  "type": "Wheel4",
+                  "id": 5
+                },
+                "VehDynYawRate": {
+                  "type": "double",
+                  "id": 6
+                },
+                "BrakePedalPos": {
+                  "type": "double",
+                  "id": 7
+                },
+                "ESPFailSts": {
+                  "type": "bool",
+                  "id": 8
+                },
+                "EspFuncOffSts": {
+                  "type": "bool",
+                  "id": 9
+                },
+                "wheelContact": {
+                  "type": "WheelContact",
+                  "id": 10
+                },
+                "SteeringWheelSpd": {
+                  "type": "double",
+                  "id": 11
+                },
+                "SteeringWheelTorque": {
+                  "type": "double",
+                  "id": 12
+                },
+                "wheelSpinDir": {
+                  "type": "WheelSpinDirection",
+                  "id": 13
+                },
+                "vehCurvature": {
+                  "type": "double",
+                  "id": 14
+                },
+                "wheelRotSpd": {
+                  "type": "Wheel4",
+                  "id": 15
+                }
+              }
+            }
+          }
+        },
+        "DebugMessage": {
+          "fields": {
+            "debug0": {
+              "type": "double",
+              "id": 1
+            },
+            "debug1": {
+              "type": "double",
+              "id": 2
+            },
+            "debug2": {
+              "type": "double",
+              "id": 3
+            },
+            "debug3": {
+              "type": "double",
+              "id": 4
+            },
+            "debug4": {
+              "type": "double",
+              "id": 5
+            },
+            "debug5": {
+              "type": "double",
+              "id": 6
+            },
+            "debug6": {
+              "type": "double",
+              "id": 7
+            },
+            "debug7": {
+              "type": "double",
+              "id": 8
+            },
+            "debug8": {
+              "type": "double",
+              "id": 9
+            },
+            "debug9": {
+              "type": "double",
+              "id": 10
+            },
+            "nDebug0": {
+              "type": "int64",
+              "id": 11
+            },
+            "nDebug1": {
+              "type": "int64",
+              "id": 12
+            },
+            "nDebug2": {
+              "type": "int64",
+              "id": 13
+            },
+            "nDebug3": {
+              "type": "int64",
+              "id": 14
+            },
+            "nDebug4": {
+              "type": "int64",
+              "id": 15
+            },
+            "nDebug5": {
+              "type": "int64",
+              "id": 16
+            },
+            "nDebug6": {
+              "type": "int64",
+              "id": 17
+            },
+            "nDebug7": {
+              "type": "int64",
+              "id": 18
+            },
+            "nDebug8": {
+              "type": "int64",
+              "id": 19
+            },
+            "nDebug9": {
+              "type": "int64",
+              "id": 20
+            },
+            "sDebug0": {
+              "type": "string",
+              "id": 21
+            },
+            "sDebug1": {
+              "type": "string",
+              "id": 22
+            },
+            "sDebug2": {
+              "type": "string",
+              "id": 23
+            },
+            "sDebug3": {
+              "type": "string",
+              "id": 24
+            },
+            "sDebug4": {
+              "type": "string",
+              "id": 25
+            },
+            "sDebug5": {
+              "type": "string",
+              "id": 26
+            },
+            "sDebug6": {
+              "type": "string",
+              "id": 27
+            },
+            "sDebug7": {
+              "type": "string",
+              "id": 28
+            },
+            "sDebug8": {
+              "type": "string",
+              "id": 29
+            },
+            "sDebug9": {
+              "type": "string",
+              "id": 30
+            }
+          }
+        }
+      }
+    }
+  }
+}
