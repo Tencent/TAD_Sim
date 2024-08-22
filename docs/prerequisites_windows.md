@@ -1,4 +1,4 @@
-# windows 平台开发指引
+# windows 平台开发指引 - desktop
 
 ## 1. 安装 go
 > **提示：** go 影响 simcore/map_server & & simcore/framework
@@ -103,7 +103,14 @@
   pip --version
   ```
 
-## 5. 安装 Visual Studio 2022 及工作负荷
+## 5. 安装 Doxygen
+> **提示：** Doxygen 影响 docs/user_guidelines & simcore/framework/docs
+
+- 安装
+  - 下载安装包 [Doxygen Downloads](https://www.doxygen.nl/download.html), 下载  `System Installer`
+  - 点击界面安装, 建议默认安装位置
+
+## 6. 安装 Visual Studio 2022 及工作负荷
 > **提示：** Visual Studio 2022 影响 adapter & common & co_simulation & simcore
 
 - 下载安装包 [Visual Studio Downloads](https://visualstudio.microsoft.com/zh-hans/downloads/), 当前使用为专业版
@@ -112,8 +119,7 @@
 - 工作负荷中, 安装 使用 C++ 的桌面开发, 右侧可选为默认
   <div align="center"><img src="./images/visual_studio_workloads.png" alt="" width="900px"></div><br>
 
-
-## 6. 安装 vcpkg 及依赖
+## 7. 安装 vcpkg 及依赖
 > **提示：** vcpkg 及 c++ 依赖影响 adapter & common & co_simulation & simcore
 
 > **注意：** 因 vcpkg 不断更新, 当前采用命令行安装依赖项, 版本不可指定, 故建议安装 2024 年 5 月前的 vcpkg 版本
@@ -159,25 +165,3 @@
   cmake --version
   ```
 
-## 7. 安装 .NET
-> **提示：** .NET 影响 simcore/sensor/display
-
-- 安装
-  - 下载安装包 [.NET Downloads](https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net481-developer-pack-offline-installer), 这个链接会自动下载项目需要的 Developer Pack 模式
-  - 点击界面安装, 建议默认安装位置
-
-## 8. 安装 UE
-> **提示：** UE 影响 simcore/sensor/display
-
-- 安装
-  - 下载安装包 [UE Downloads](https://www.unrealengine.com/zh-CN/download), 点击下载 `下载启动程序`
-  - 点击界面安装, 建议默认安装位置
-- 注册 Epic Game 账号并登录
-- UE 软件内下载出现的工具
-
-## 9. 安装 Doxygen
-> **提示：** Doxygen 影响 docs/user_guidelines & simcore/framework/docs
-
-- 安装
-  - 下载安装包 [Doxygen Downloads](https://www.doxygen.nl/download.html), 下载  `System Installer`
-  - 点击界面安装, 建议默认安装位置

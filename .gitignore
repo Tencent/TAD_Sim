@@ -97,3 +97,5 @@ simcore/sensors/display/**/fbm
 simcore/sensors/display/Display.sln
 !simcore/sensors/display/**/ThirdParty/**
 !simcore/sensors/display/Source/Display/SimMsg/**
+#
+!tools/docker_libraries/**

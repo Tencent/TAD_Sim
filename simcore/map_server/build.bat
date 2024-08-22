@@ -24,7 +24,7 @@ cmake --build . --config Release
 
 
 @REM map_parser
-cd ../../hadmap_server/map_parser 
+cd ../../hadmap_server/map_parser
 md build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -A x64
@@ -33,6 +33,7 @@ cmake --build . --config Release
 
 @REM txSimService
 cd ../../../service
+go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy
 go build
 

@@ -25,6 +25,7 @@ SDK_NAME="txSimSDK_linux.tar.gz"
 # Clean & mkdir
 rm -rf "$FRAMEWORK_BUILD"
 mkdir "$FRAMEWORK_BUILD"
+rm -rf "$FRAMEWORK_ROOT/src/node_addon/build"
 rm -rf "$FRAMEWORK_TXSIM"
 mkdir "$FRAMEWORK_TXSIM"
 mkdir "$FRAMEWORK_TXSIM_INC"
@@ -43,6 +44,7 @@ echo "framework build successfully."
 # build framework cli
 echo "framework_cli build start..."
 cd "$FRAMEWORK_CLI"
+go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy -compat=1.17
 go build
 echo "framework_cli build successfully."

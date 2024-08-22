@@ -34,6 +34,7 @@ set "SDK_NAME=txSimSDK_windows.tar.gz"
 @REM Clean & mkdir
 IF EXIST "%FRAMEWORK_BUILD%" rmdir /s /q "%FRAMEWORK_BUILD%"
 mkdir "%FRAMEWORK_BUILD%"
+IF EXIST "%FRAMEWORK_BUILD%\src\node_addon\build" rmdir /s /q "%FRAMEWORK_BUILD%\src\node_addon\build"
 IF EXIST "%FRAMEWORK_TXSIM%" rmdir /s /q "%FRAMEWORK_TXSIM%"
 mkdir "%FRAMEWORK_TXSIM%"
 mkdir "%FRAMEWORK_TXSIM_INC%"
@@ -56,6 +57,7 @@ echo "framework build successfully."
 @REM build framework cli
 echo "framework_cli build start..."
 cd "%FRAMEWORK_CLI%"
+go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy -compat="1.17"
 go build
 echo "framework_cli build successfully."
