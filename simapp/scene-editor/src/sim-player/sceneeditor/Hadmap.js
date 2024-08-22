@@ -11,6 +11,7 @@ import {
   Raycaster,
   Vector3,
 } from 'three'
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils'
 import { yawToVector3 } from 'sim-player/common/MeshUtils'
 import { MapModelsManager } from 'models-manager/index'
 import PlayerGlobals from '../simuplayer/PlayerGlobals'
@@ -36,7 +37,7 @@ import i18n from '@/locales'
  * 地图类，可以加载地图以及提供一些地图方面的方法
  */
 class Hadmap {
-  constructor (ct, simuScene) {
+  constructor(ct, simuScene) {
     this.name = `hadmap${new Date().toLocaleTimeString()}`
 
     this.roads = []
@@ -98,7 +99,7 @@ class Hadmap {
   /**
    * 销毁地图
    */
-  dispose () {
+  dispose() {
     this.roads.forEach((r) => {
       r.dispose()
     }, this)
@@ -153,7 +154,7 @@ class Hadmap {
   /**
    * 根据当前运行环境初始化数据
    */
-  initData () {
+  initData() {
     if (GlobalConfig.runMode === RunMode.Cloud) {
       Hadmap.mapsdkURL = Utility.composeUrl('/simService/maps/forward/hadmapdata')
       Hadmap.getMapInfoList = Utility.composeUrl('/simService/maps/forward/hadmapinfolist')
@@ -168,13 +169,13 @@ class Hadmap {
   /**
    * 清除地图数据
    */
-  clearHadmap () {
+  clearHadmap() {
     this.removeFromScene(this.simuScene.scene)
     this.dispose()
     this.isLoaded = false
   }
 
-  loaded () {
+  loaded() {
     return this.isLoaded
   }
 
@@ -182,7 +183,7 @@ class Hadmap {
    * 设置采样间隔
    * @param sd
    */
-  setSampleDistance (sd) {
+  setSampleDistance(sd) {
     this.sampleDistance = sd
   }
 
@@ -190,7 +191,7 @@ class Hadmap {
    * 获取地图数据
    * @return {Promise<boolean>}
    */
-  async loadHadmapinfo () {
+  async loadHadmapinfo() {
     let response = null
     try {
       response = await axios({
@@ -237,7 +238,7 @@ class Hadmap {
   /**
    * 删除所有地图数据
    */
-  removeHadMaps () {
+  removeHadMaps() {
     this.allHadmapInfoNameMap.clear()
   }
 
@@ -245,7 +246,7 @@ class Hadmap {
    * 添加地图数据
    * @param hadmap
    */
-  addHadmap (hadmap) {
+  addHadmap(hadmap) {
     const hm = this.findHadmap(hadmap.mapName)
     if (!hm) {
       this.allHadmapInfoNameMap.set(hadmap.mapName, hadmap)
@@ -257,7 +258,7 @@ class Hadmap {
    * @param name
    * @return {any}
    */
-  findHadmap (name) {
+  findHadmap(name) {
     return this.allHadmapInfoNameMap.get(name)
   }
 
@@ -269,7 +270,7 @@ class Hadmap {
    * @param extraParams
    * @return {Promise<{lanes: any, roads: any, links: any, mapObjects: any, trafficLights: any}>}
    */
-  async loadMapToSceneLocal (mapName, scene, sceneParser, extraParams = {}) {
+  async loadMapToSceneLocal(mapName, scene, sceneParser, extraParams = {}) {
     const {
       sampleDistance,
       simuScene,
@@ -485,7 +486,7 @@ class Hadmap {
    * @param searchDistance
    * @return {Promise<unknown>}
    */
-  async getNearbyLaneInfo (lon, lat, alt, searchDistance) {
+  async getNearbyLaneInfo(lon, lat, alt, searchDistance) {
     return axios({
       method: 'get',
       url: Hadmap.mapsdkURL,
@@ -508,7 +509,7 @@ class Hadmap {
    * @param {number} [searchDistance]
    * @returns {Promise<Array>}
    */
-  async batchGetNearbyLaneInfo (points, searchDistance) {
+  async batchGetNearbyLaneInfo(points, searchDistance) {
     try {
       const { data } = await axios({
         method: 'post',
@@ -537,7 +538,7 @@ class Hadmap {
    * @param offset
    * @return {Promise<{err: number}|any>}
    */
-  async getLonLat (rid, sid, lid, shift, offset) {
+  async getLonLat(rid, sid, lid, shift, offset) {
     const { data } = await axios({
       method: 'get',
       url: Hadmap.mapsdkURL,
@@ -571,7 +572,7 @@ class Hadmap {
    * @param offset
    * @return {Promise<{err: number}|any>}
    */
-  async getLonLatByPoint (lon, lat, type, lid, shift, offset) {
+  async getLonLatByPoint(lon, lat, type, lid, shift, offset) {
     const { data } = await axios({
       method: 'get',
       url: Hadmap.mapsdkURL,
@@ -601,7 +602,7 @@ class Hadmap {
    * @param {{startLon: number, startLat: number, type: string, id: number, shift: number, offset: number}[]} points
    * @returns {Promise<any>}
    */
-  async batchGetLonLatByPoint (points) {
+  async batchGetLonLatByPoint(points) {
     // startLon, startLat, type, id, shift, offset
     try {
       const { data } = await axios({
@@ -626,7 +627,7 @@ class Hadmap {
    * @param {{lon: number, lat: number, type: string, id: number, shift: number, offset: number}[]} points
    * @returns {Promise<any>}
    */
-  async batchGetLaneShiftPos4 (points) {
+  async batchGetLaneShiftPos4(points) {
     const lonlatInfos = await this.batchGetLonLatByPoint(points)
     const laneInfos = await this.batchGetNearbyLaneInfo(lonlatInfos.map(ll => ({ startLon: ll.lon, startLat: ll.lat })))
     return lonlatInfos.map((info, i) => {
@@ -646,7 +647,7 @@ class Hadmap {
    * @param dataType
    * @return {{}}
    */
-  pushMapData (data, dataType) {
+  pushMapData(data, dataType) {
     const Count = {}
     Count.totalCount = 0
 
@@ -682,7 +683,7 @@ class Hadmap {
    * @param data
    * @return {number[]|*[]}
    */
-  getMapRange (data) {
+  getMapRange(data) {
     if (data?.array) {
       const min = [Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY]
       const max = [Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.NEGATIVE_INFINITY]
@@ -726,7 +727,7 @@ class Hadmap {
    * @param scene
    * @param Count
    */
-  addToScene (type, scene, Count) {
+  addToScene(type, scene, Count) {
     // 内部标志线 count 有可能是 0
     if (Count.totalCount < 1 && type !== Hadmap.HadmapElementType.MAPOBJECTDATA) {
       return
@@ -741,18 +742,18 @@ class Hadmap {
         mat = RoadData.mat
 
         const positions = Array.from({ length: nPointCount * 3 })
-        this.allRoadGeom = new BufferGeometry()
-        this.allRoadGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
+        // this.allRoadGeom = new BufferGeometry()
+        // this.allRoadGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
 
-        const nCount = dataArr.length
-        let offset = 0
-        for (let i = 0; i < nCount; ++i) {
-          if (dataArr[i].geom) {
-            this.allRoadGeom.merge(dataArr[i].geom, offset)
-            offset += dataArr[i].data.length
-          }
-        }
-
+        // const nCount = dataArr.length
+        // let offset = 0
+        // for (let i = 0; i < nCount; ++i) {
+        //   if (dataArr[i].geom) {
+        //     this.allRoadGeom.merge(dataArr[i].geom, offset)
+        //     offset += dataArr[i].data.length
+        //   }
+        // }
+        this.allRoadGeom = mergeGeometries(dataArr.filter(d => !!d.geom).map(d => d.geom))
         this.allRoad = new LineSegments(this.allRoadGeom, mat)
         scene.add(this.allRoad)
         this.allRoadGeom.userData._type = 'roadData'
@@ -761,17 +762,20 @@ class Hadmap {
         mat = laneMat
 
         const positions = Array.from({ length: nPointCount * 3 })
-        this.allLaneGeom = new BufferGeometry()
-        this.allLaneGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
+        // this.allLaneGeom = new BufferGeometry()
+        // this.allLaneGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
 
-        const nCount = dataArr.length
-        let offset = 0
-        for (let i = 0; i < nCount; ++i) {
-          if (dataArr[i].geom) {
-            this.allLaneGeom.merge(dataArr[i].geom, offset)
-            offset += dataArr[i].data.length
-          }
-        }
+        // const nCount = dataArr.length
+        // let offset = 0
+
+        // for (let i = 0; i < nCount; ++i) {
+        //   if (dataArr[i].geom) {
+        //     this.allLaneGeom.merge(dataArr[i].geom, offset)
+        //     offset += dataArr[i].data.length
+        //   }
+        // }
+
+        this.allLaneGeom = mergeGeometries(dataArr.filter(d => !!d.geom).map(d => d.geom))
 
         this.allLane = new LineSegments(this.allLaneGeom, mat)
         scene.add(this.allLane)
@@ -787,17 +791,18 @@ class Hadmap {
         mat.depthWrite = false
 
         const positions = Array.from({ length: nPointCount * 3 })
-        this.allLaneLinkGeom = new BufferGeometry()
-        this.allLaneLinkGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
+        // this.allLaneLinkGeom = new BufferGeometry()
+        // this.allLaneLinkGeom.setAttribute('position', new Float32BufferAttribute(positions, 3))
 
-        const nCount = dataArr.length
-        let offset = 0
-        for (let i = 0; i < nCount; ++i) {
-          if (dataArr[i].geom) {
-            this.allLaneLinkGeom.merge(dataArr[i].geom, offset)
-            offset += dataArr[i].data.length
-          }
-        }
+        // const nCount = dataArr.length
+        // let offset = 0
+        // for (let i = 0; i < nCount; ++i) {
+        //   if (dataArr[i].geom) {
+        //     this.allLaneLinkGeom.merge(dataArr[i].geom, offset)
+        //     offset += dataArr[i].data.length
+        //   }
+        // }
+        this.allLaneLinkGeom = mergeGeometries(dataArr.filter(d => !!d.geom).map(d => d.geom))
 
         this.allLaneLink = new LineSegments(this.allLaneLinkGeom, mat)
         // this.allLaneLink.renderOrder = RenderOrder.LANE
@@ -833,7 +838,7 @@ class Hadmap {
    * 将地图从场景中移除
    * @param scene
    */
-  removeFromScene (scene) {
+  removeFromScene(scene) {
     if (this.allRoad) {
       scene.remove(this.allRoad)
     }
@@ -857,7 +862,7 @@ class Hadmap {
    * @param type
    * @return {undefined|LaneLinkData|LaneBoundaryData|RoadData|CustomLane}
    */
-  createMapElement (type) {
+  createMapElement(type) {
     if (type === Hadmap.HadmapElementType.ROADDATA) {
       return new RoadData()
     } else if (type === Hadmap.HadmapElementType.LANEDATA) {
@@ -876,7 +881,7 @@ class Hadmap {
    * @param type
    * @return {undefined|LineDashedMaterial|LineBasicMaterial}
    */
-  getMapElementMaterial (type) {
+  getMapElementMaterial(type) {
     if (type === Hadmap.HadmapElementType.ROADDATA) {
       return RoadData.mat
     } else if (type === Hadmap.HadmapElementType.LANEDATA) {
@@ -894,7 +899,7 @@ class Hadmap {
    * @param rawData
    * @param dataType
    */
-  pushElement (data, rawData, dataType) {
+  pushElement(data, rawData, dataType) {
     if (dataType === Hadmap.HadmapElementType.ROADDATA) {
       const tmp = this.roadsMap.get(`${rawData.roadid}`)
       if (tmp === undefined) {
@@ -946,7 +951,7 @@ class Hadmap {
   /**
    * 重新排列数据
    */
-  rearrangeData () {
+  rearrangeData() {
     // section lane relationship
     let len = this.lanes.length
     for (let i = 0; i < len; ++i) {
@@ -982,7 +987,7 @@ class Hadmap {
   /**
    * 生成车道线Mesh
    */
-  generateLaneMesh () {
+  generateLaneMesh() {
     const len = this.lanes.length
     for (let i = 0; i < len; ++i) {
       const mesh = this.lanes[i].generateMesh(this, this.simuScene.scene)
@@ -1004,7 +1009,7 @@ class Hadmap {
    * @param sectionId
    * @return {any}
    */
-  getSection (roadId, sectionId) {
+  getSection(roadId, sectionId) {
     roadId = `${roadId}`
     sectionId = `${sectionId}`
     const rsObj = { rid: roadId, sid: sectionId }
@@ -1019,7 +1024,7 @@ class Hadmap {
    * @param laneId
    * @return {any}
    */
-  getLane (roadId, sectionId, laneId) {
+  getLane(roadId, sectionId, laneId) {
     roadId = `${roadId}`
     sectionId = `${sectionId}`
     laneId = `${laneId}`
@@ -1033,7 +1038,7 @@ class Hadmap {
    * @param roadId
    * @return {any}
    */
-  getRoad (roadId) {
+  getRoad(roadId) {
     roadId = `${roadId}`
     return this.roadsMap.get(roadId)
   }
@@ -1043,7 +1048,7 @@ class Hadmap {
    * @param lanelinkId
    * @return {any}
    */
-  getLanelink (lanelinkId) {
+  getLanelink(lanelinkId) {
     return this.lanelinksMap.get(`${lanelinkId}`)
   }
 
@@ -1052,14 +1057,14 @@ class Hadmap {
    * @param bid
    * @return {any}
    */
-  getLaneBoundary (bid) {
+  getLaneBoundary(bid) {
     return this.laneboundariesMap.get(`${bid}`)
   }
 
   /**
    * 设置road的显示状态
    */
-  setRoadVisible () {
+  setRoadVisible() {
     // 只有播放的时候才受store变量的控制
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.road : true
     if (this.allRoad) {
@@ -1070,7 +1075,7 @@ class Hadmap {
   /**
    * 设置lane的显示状态
    */
-  setLaneVisible () {
+  setLaneVisible() {
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.lane : true
     if (this.allLane) {
       this.allLane.visible = show
@@ -1080,7 +1085,7 @@ class Hadmap {
   /**
    * 设置lane mesh的显示状态
    */
-  setLaneMeshVisible () {
+  setLaneMeshVisible() {
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.roadmesh : true
     if (this.laneGroup) {
       this.laneGroup.visible = show
@@ -1090,7 +1095,7 @@ class Hadmap {
   /**
    * 设置车道分界线的显示状态
    */
-  setLaneBoundaryVisible () {
+  setLaneBoundaryVisible() {
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.laneboundary : true
     this.laneboundaries.forEach((lb) => {
       if (lb.mesh) {
@@ -1102,7 +1107,7 @@ class Hadmap {
   /**
    * 设置lanelink显示状态
    */
-  setLaneLinkVisible () {
+  setLaneLinkVisible() {
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.lanelink : true
     if (this.allLaneLink) {
       this.allLaneLink.visible = show
@@ -1112,7 +1117,7 @@ class Hadmap {
   /**
    * 设置mapobject显示状态
    */
-  setMapObjectVisible () {
+  setMapObjectVisible() {
     const show = this.isPlayerScene ? store.state.playerViewConfig.mapViewConfig.mapobject : true
     if (this.allMapObject) {
       this.allMapObject.visible = show
@@ -1122,7 +1127,7 @@ class Hadmap {
   /**
    * 设置所有显示状态
    */
-  setVisible () {
+  setVisible() {
     this.setRoadVisible()
     this.setLaneVisible()
     this.setLaneMeshVisible()
@@ -1135,7 +1140,7 @@ class Hadmap {
    * 获取地图的包围盒
    * @return {Box3}
    */
-  getBoundingBox () {
+  getBoundingBox() {
     const arr = [this.lonMin, this.latMin, this.altMin, this.lonMax, this.latMax, this.altMax]
     this.boundingBox.setFromArray(arr)
     return this.boundingBox
@@ -1148,7 +1153,7 @@ class Hadmap {
    * @param camera
    * @return {Promise<void>}
    */
-  async showLaneId (xNor, yNor, camera) {
+  async showLaneId(xNor, yNor, camera) {
     try {
       const scene = this.simuScene.scene
       const pickedInfo = this.getPointerPosInLaneLine(xNor, yNor, camera)
@@ -1193,7 +1198,7 @@ class Hadmap {
    * @param camera
    * @return {{point: Vector3, lane: *}|null}
    */
-  getPointerPosInLaneLine (xNor, yNor, camera) {
+  getPointerPosInLaneLine(xNor, yNor, camera) {
     const lanes = this.lanes
     if (!lanes) {
       return null
@@ -1243,7 +1248,7 @@ class Hadmap {
    * @param routes
    * @return {Promise<void>}
    */
-  async showSignlights ({ signlights, routes }) {
+  async showSignlights({ signlights, routes }) {
     if (!signlights.length) return
     const points = routes.map((r) => {
       [r.startLon, r.startLat] = r.start.split(',')
@@ -1273,8 +1278,7 @@ class Hadmap {
           }
         }
       } else {
-        const msg = `route: ${r.id} (lon: ${
-          r.startLon} lat: ${r.startLat}) no lane`
+        const msg = `route: ${r.id} (lon: ${r.startLon} lat: ${r.startLat}) no lane`
         console.error('queryinfobypt error:', msg)
         MessageBox.promptEditorUIMessage('error', msg)
       }
@@ -1326,7 +1330,7 @@ class Hadmap {
   /**
    * 隐藏所有信号灯
    */
-  hideAllSignlights () {
+  hideAllSignlights() {
     this.signlights.forEach((signlight) => {
       signlight.removeFromScene(this.signlightGroup)
     })
@@ -1337,7 +1341,7 @@ class Hadmap {
    * 更改灯颜色
    * @param {{id:string, color: 'red'|'yellow'|'green'|'gray', disabled: false}[]} options
    */
-  changeSignlightColors (options) {
+  changeSignlightColors(options) {
     options.forEach((opt) => {
       const signlight = this.signlights.find(s => s.id === opt.id)
       if (signlight) {
@@ -1354,7 +1358,7 @@ class Hadmap {
    * @param roadId
    * @return {Vector3}
    */
-  getPositionNormal (position, roadId) {
+  getPositionNormal(position, roadId) {
     let normal = new Vector3(0, 0, 1)
     const rayDir = new Vector3(0, 0, -1)
     const farPoint = new Vector3()
@@ -1369,7 +1373,7 @@ class Hadmap {
     } else {
       roadMeshes = this.laneGroup.children
     }
-    const intersections = rayCaster.intersectObjects(roadMeshes, true)
+    const intersections = rayCaster.intersectObjects(roadMeshes || [], true)
     if (intersections.length) {
       [{ face: { normal } }] = intersections
     } else {

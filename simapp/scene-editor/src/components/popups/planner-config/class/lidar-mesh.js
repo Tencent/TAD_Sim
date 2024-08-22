@@ -1,14 +1,14 @@
 /* eslint-disable */
 import {
   BufferGeometry,
-  ConeBufferGeometry,
-  CircleBufferGeometry,
+  ConeGeometry,
+  CircleGeometry,
   FrontSide,
   BackSide,
   Group,
   MathUtils,
   Mesh,
-  SphereBufferGeometry,
+  SphereGeometry,
   MeshLambertMaterial,
 } from 'three'
 
@@ -86,7 +86,7 @@ class LidarMesh extends Group {
     const rightFovRad = rightFov * DEG2RAD
     const leftFovRad = leftFov * DEG2RAD
 
-    const sphereGeometry = new SphereBufferGeometry(
+    const sphereGeometry = new SphereGeometry(
       far,
       sphereWidthSegments,
       sphereHeightSegments,
@@ -103,7 +103,7 @@ class LidarMesh extends Group {
     this.upperConeMeshF.geometry.dispose()
     this.upperConeMeshB.geometry.dispose()
     const upperHeight = Math.sin(upperFovRad) * far
-    this.upperConeMeshF.geometry = new ConeBufferGeometry(
+    this.upperConeMeshF.geometry = new ConeGeometry(
       Math.cos(upperFovRad) * far,
       upperHeight,
       128,
@@ -120,7 +120,7 @@ class LidarMesh extends Group {
     this.lowerConeMeshF.geometry.dispose()
     this.lowerConeMeshB.geometry.dispose()
     const lowerHeight = Math.sin(lowerFovRad) * far
-    this.lowerConeMeshF.geometry = new ConeBufferGeometry(
+    this.lowerConeMeshF.geometry = new ConeGeometry(
       Math.cos(lowerFovRad) * far,
       lowerHeight,
       128,
@@ -148,7 +148,7 @@ class LidarMesh extends Group {
 
       this.leftCircleMeshF.geometry.dispose()
       this.leftCircleMeshB.geometry.dispose()
-      this.leftCircleMeshF.geometry = new CircleBufferGeometry(
+      this.leftCircleMeshF.geometry = new CircleGeometry(
         far,
         32,
         halfPi - upperFovRad,
@@ -160,7 +160,7 @@ class LidarMesh extends Group {
 
       this.rightCircleMeshF.geometry.dispose()
       this.rightCircleMeshB.geometry.dispose()
-      this.rightCircleMeshF.geometry = new CircleBufferGeometry(
+      this.rightCircleMeshF.geometry = new CircleGeometry(
         far,
         32,
         halfPi + lowerFovRad,

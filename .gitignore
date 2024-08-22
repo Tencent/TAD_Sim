@@ -57,6 +57,7 @@ common/map_sdk/lib
 !datas/scenarios/*
 # simapp
 simapp/package-lock.json
+simapp/desktop/service
 simapp/desktop/package-lock.json
 # simcore/post_script
 simcore/post_script/sim_msg
@@ -97,8 +98,5 @@ simcore/sensors/display/**/fbm
 simcore/sensors/display/Display.sln
 !simcore/sensors/display/**/ThirdParty/**
 !simcore/sensors/display/Source/Display/SimMsg/**
-# simapp/desktop/serice
-
-simapp/desktop/service
-#
+# tools
 !tools/docker_libraries/**

@@ -20,7 +20,7 @@ function useOldVersionDependencies () {
   const mapEditorDir = path.join(rootDir, 'map-editor')
   execSync('npm i three@0.144.0', { cwd: mapEditorDir })
 
-  // scene-editor
-  const sceneEditorDir = path.join(rootDir, 'scene-editor')
-  execSync('npm i three@0.122.0', { cwd: sceneEditorDir })
+  // scene-editor have been resolved. @joybee007 2024/8/20
+  // const sceneEditorDir = path.join(rootDir, 'scene-editor')
+  // execSync('npm i three@0.122.0', { cwd: sceneEditorDir })
 }

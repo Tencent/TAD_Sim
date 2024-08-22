@@ -7,7 +7,6 @@ import {
   GridHelper,
   Group,
   HemisphereLight,
-  LinearEncoding,
   LoadingManager,
   Material,
   Mesh,
@@ -20,7 +19,6 @@ import {
   SpriteMaterial,
   Vector3,
   WebGLRenderer,
-  sRGBEncoding,
 } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
@@ -33,6 +31,9 @@ import { CatalogCategory,
 } from 'models-manager/src/catalogs/class.ts'
 import { base64ToFile, computeBoundingBox, createTextTexture, fileURLToPath, getModel3dURL } from '@/common/utils'
 import { uploadThumbnail } from '@/api/models.ts'
+
+const LinearEncoding = 3000
+const sRGBEncoding = 3001
 
 const props = defineProps<{
   data?: CatalogModel
@@ -194,29 +195,29 @@ const fbxLoader = new FBXLoader(loadingManager)
 
 function prepareMesh (mesh: Mesh) {
   mesh.rotation.set(0, 0, 0)
-  fixMaterialEncoding(mesh)
+  // fixMaterialEncoding(mesh)
   return mesh
 }
 
-function fixMaterialEncoding (object: Mesh) {
-  object.traverse((o) => {
-    if (o instanceof Mesh) {
-      if (Array.isArray(o.material)) {
-        o.material.forEach((m) => {
-          const { map } = m as MeshPhongMaterial
-          if (map?.encoding === sRGBEncoding) {
-            map.encoding = LinearEncoding
-          }
-        })
-      } else {
-        const { map } = o.material as MeshPhongMaterial
-        if (map?.encoding === sRGBEncoding) {
-          map.encoding = LinearEncoding
-        }
-      }
-    }
-  })
-}
+// function fixMaterialEncoding (object: Mesh) {
+//   object.traverse((o) => {
+//     if (o instanceof Mesh) {
+//       if (Array.isArray(o.material)) {
+//         o.material.forEach((m) => {
+//           const { map } = m as MeshPhongMaterial
+//           if (map?.encoding === sRGBEncoding) {
+//             map.encoding = LinearEncoding
+//           }
+//         })
+//       } else {
+//         const { map } = o.material as MeshPhongMaterial
+//         if (map?.encoding === sRGBEncoding) {
+//           map.encoding = LinearEncoding
+//         }
+//       }
+//     }
+//   })
+// }
 
 type OnCleanup = (cleanupFn: () => void) => void
 
