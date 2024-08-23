@@ -4,7 +4,7 @@
 echo "start build Opendrive IO"
 
 cd opendrive_io
-# check build 
+# check build
 folder_path="./build"
 
 if [ -d "$folder_path" ]; then
@@ -27,6 +27,7 @@ make -j
 
 # 3 SERVICE
 cd ../../../service
+go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy
 go build
 cp ./service ../build/bin/txSimService

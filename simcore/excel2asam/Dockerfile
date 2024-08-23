@@ -31,7 +31,7 @@ RUN apt-get -y update \
     && make -j12 \
     && make install \
     # 设置 pip mirrors
-    && echo "[global]\nindex-url = https://mirrors.tencent.com/tencent_pypi/simple" > /etc/pip.conf \
+    && echo "[global]\nindex-url = https://mirrors.tencent.com/pypi/simple\ntrusted-host = mirrors.cloud.tencent.com\n" > /etc/pip.conf \
     # 升级 pip
     && /usr/local/bin/python3 -m pip install -i https://mirrors.tencent.com/pypi/simple/ --upgrade pip \
     # 安装 Python 依赖包
