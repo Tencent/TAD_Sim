@@ -182,6 +182,15 @@
   - 编译指令:
     ```bash
     # for ubuntu
+    # 切换到项目根目录, 构建手册时需要使用仓库代码
+    # 所以在镜像中需要挂载完整仓库, 故此处需要再根目录下
+    cd TAD_Sim
+
+    # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
+    # 复用 desktop 的镜像
+    docker run -it --rm -v .:/build -w /build tadsim:desktop_v1.0 /bin/bash
+
+    # 切换到工作目录
     cd TAD_Sim/docs/user_guidelines
     ./build.sh
     ```

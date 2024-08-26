@@ -7,7 +7,7 @@ ENGINE_ROOT="/home/ue4/UnrealEngine/Engine"
 
 # prerequisites
 echo =================LINUX PREPARE=================
-sh ./download_deps.sh
+# sh ./download_deps.sh
 mkdir $DISPLAY_ROOT/Plugins/BoostLib/deps
 ln -s /usr/include/boost $DISPLAY_ROOT/Plugins/BoostLib/deps/boost
 

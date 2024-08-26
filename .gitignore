@@ -94,7 +94,6 @@ simcore/sensors/display/**/Binaries
 simcore/sensors/display/**/Build
 simcore/sensors/display/**/Intermediate
 simcore/sensors/display/**/Saved
-simcore/sensors/display/**/fbm
 simcore/sensors/display/Display.sln
 !simcore/sensors/display/**/ThirdParty/**
 !simcore/sensors/display/Source/Display/SimMsg/**

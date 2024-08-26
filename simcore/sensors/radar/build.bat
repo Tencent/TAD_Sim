@@ -19,7 +19,7 @@ mkdir "%RADAR_BUILD%"
 
 @REM build
 cd "%RADAR_BUILD%"
-curl https://raw.githubusercontent.com/metayeti/mINI/master/src/mini/ini.h -o ini.h
+@REM curl https://raw.githubusercontent.com/metayeti/mINI/master/src/mini/ini.h -o ini.h
 cmake .. -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake"
 cmake --build . --config Release
 

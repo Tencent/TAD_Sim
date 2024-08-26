@@ -26,7 +26,7 @@ mkdir "%DISPLAY_BUILD%"
 mkdir "%DISPLAY_BUILD%\bin"
 
 @REM prerequisites
-call download_deps.bat
+@REM call download_deps.bat
 
 @REM build
 echo "=================WIN64 PACKAGING CONFIGURATION================="

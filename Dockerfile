@@ -122,7 +122,6 @@ RUN wget -O node-v${NODE_VERSION}-linux-x64.tar.xz https://nodejs.org/download/r
     && cp -r * /usr/local/ \
     && cd .. \
     && node --version \
-    && npm config set registry https://mirrors.tencent.com/npm/ \
     && npm install -g cmake-js node-addon-api \
     && rm -rf node* \
     && mkdir -p /root/.cmake-js/node-x64/v${NODE_VERSION}/include/node \
@@ -359,6 +358,8 @@ ENV PATH="$PATH:/usr/local/go/bin"
 ENV NODE_PATH="/usr/local/lib/node_modules"
 ENV CMAKE_JS_INC="/root/.cmake-js/node-x64/v17.9.1/include/node"
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+
+USER root
 
 CMD ["bash"]
 
