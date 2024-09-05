@@ -11,8 +11,6 @@
 > **提示：** UE 影响 simcore/sensor/display
 
 - 安装
-  - 下载安装包 [UE Downloads](https://www.unrealengine.com/zh-CN/download), 点击下载 `下载启动程序`
-  - 点击界面安装, 建议默认安装位置
-- 注册 Epic Game 账号并登录
-- UE 软件内下载出现的工具
-
+  - 下载启动程序 [UE Downloads](https://www.unrealengine.com/zh-CN/download)
+  - 安装 Epic Games 启动程序 (注册 Epic Game 账号并登录)
+  - 安装虚幻引擎

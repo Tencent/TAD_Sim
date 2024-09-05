@@ -147,11 +147,10 @@
   cd vcpkg
   # 安装本项目涉及的 c++ 依赖
   # 一次安装较多时容易报错, 故建议多次少量安装
-  .\vcpkg.exe install boost eigen3 flann gflags glm glog protobuf cereal
-  .\vcpkg.exe install gtest curl proj libspatialite sqlite3 jsoncpp
-  .\vcpkg.exe install tbb uriparser xerces-c cppzmq  fftw3
-  .\vcpkg.exe install pugixml libxml2 tinyxml tinyxml2 log4cplus
-  .\vcpkg.exe install pybind11 soci[sqlite3] chronoengine grpc
+  .\vcpkg.exe install eigen3 gflags glm cereal gtest jsoncpp tbb uriparser fftw3
+  .\vcpkg.exe install pugixml libxml2 tinyxml tinyxml2 log4cplus sqlite3 soci[sqlite3]
+  .\vcpkg.exe install flann glog curl proj libspatialite xerces-c cppzmq
+  .\vcpkg.exe install python3 pybind11 chronoengine protobuf grpc boost
   ```
 - 设置 cmake 系统 PATH
   ```powershell
@@ -161,7 +160,7 @@
   ```
 - 验证
   ```powershell
-  # current: 3.9.2
+  # current: 3.29.2
   cmake --version
   ```
 

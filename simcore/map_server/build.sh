@@ -1,33 +1,58 @@
 #!/bin/bash
 
-# 1 OPENDRIVE IO
-echo "start build Opendrive IO"
+# Setting build parmameters
+MAP_SERVER_ROOT="$(cd "$(dirname "$0")";pwd)"
+MAP_SERVER_BUILD="$MAP_SERVER_ROOT/build"
+# Setting build parmameters OPENDRIVE_IO
+OPENDRIVE_IO_ROOT="$MAP_SERVER_ROOT/opendrive_io"
+OPENDRIVE_IO_BUILD="$OPENDRIVE_IO_ROOT/build"
+# Setting build parmameters MAP_PARSER
+MAP_PARSER_ROOT="$MAP_SERVER_ROOT/hadmap_server/map_parser"
+MAP_PARSER_BUILD="$MAP_PARSER_ROOT/build"
+# Setting build parmameters SERVER
+SERVER_ROOT="$MAP_SERVER_ROOT/service"
 
-cd opendrive_io
-# check build
-folder_path="./build"
+# Clean & mkdir
+rm -rf "$MAP_SERVER_BUILD"
+mkdir -p "$MAP_SERVER_BUILD/bin"
+# Clean & mkdir OPENDRIVE_IO
+rm -rf "$OPENDRIVE_IO_BUILD"
+mkdir -p "$OPENDRIVE_IO_BUILD"
+# Clean & mkdir MAPPARSER
+rm -rf "$MAP_PARSER_BUILD"
+mkdir -p "$MAP_PARSER_BUILD"
+# Clean & mkdir service
+[ -e "$SERVER_ROOT/go.sum" ] && rm "$SERVER_ROOT/go.sum"
+[ -e "$SERVER_ROOT/service" ] && rm -r "$SERVER_ROOT/service"
 
-if [ -d "$folder_path" ]; then
-    rm -rf build
-    echo "Build exists"
-else
-    echo "Build does not exist"
-fi
-mkdir -p build
-cd build
-cmake  -DCMAKE_BUILD_TYPE=Release ..
-make -j
+# build
+# build opendriveio
+cd "$OPENDRIVE_IO_BUILD"
+echo "opendrive_io build start..."
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j8
+echo -e "opendrive_io build successfully.\n"
 
-# 2 map_parser
-cd ../../hadmap_server/map_parser
-mkdir -p build
-cd build
-cmake  -DCMAKE_BUILD_TYPE=Release ..
-make -j
+# build map_parser
+cd "$MAP_PARSER_BUILD"
+echo "map_parser build start..."
+cmake -DCMAKE_BUILD_TYPE=Release ..
+make -j8
+echo -e "map_parser build successfully.\n"
 
-# 3 SERVICE
-cd ../../../service
+# build server (txSimService)
+cd "$SERVER_ROOT"
+echo "service build start..."
 go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy
 go build
-cp ./service ../build/bin/txSimService
+echo -e "service build successfully.\n"
+
+# deploy
+cp -rf "$OPENDRIVE_IO_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
+cp -rf "$MAP_PARSER_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
+cp -rf "$MAP_PARSER_BUILD/lib/"* "$MAP_SERVER_BUILD/bin/"
+cp "$SERVER_ROOT/service" "$MAP_SERVER_BUILD/bin/txSimService"
+
+# Change the working directory back to the original directory where the script was run
+cd "$MAP_SERVER_ROOT"

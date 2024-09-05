@@ -44,7 +44,7 @@ xcopy .\external_grading_kpi.json .\txSimGradingSDK\ /R /Y
 xcopy .\build_windows_vs2022.bat .\txSimGradingSDK\ /R /Y
 
 :: Use the tar command to compress related files and package them into SDK
-tar zcvf txSimGradingSDK_windows.tar.gz txSimGradingSDK
+tar zcvf txSimGradingSDK.tar.gz txSimGradingSDK
 
 :: Remove the temporary file folders
 rd /s /q .\txSimGradingSDK

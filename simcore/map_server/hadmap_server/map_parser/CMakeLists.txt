@@ -1,32 +1,35 @@
 cmake_minimum_required(VERSION 3.1)
 project(scene_wrapper)
-set(EXECUTABLE_OUTPUT_PATH      ../../../build/bin)
-set(LIBRARY_OUTPUT_PATH         ../../../build/bin)
-set(ARCHIVE_OUTPUT_DIRECTORY    ../../../build/lib)
 
-if (CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+# set output
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU" OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-warning")
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4819") # 禁用特定于 MSVC 的警告
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
 endif()
 
-#if(POLICY CMP0135)
-#  cmake_policy(SET CMP0135 NEW)
-#endif()
+# if(POLICY CMP0135)
+# cmake_policy(SET CMP0135 NEW)
+# endif()
 
-#if(EXISTS ${CMAKE_SOURCE_DIR}/.clang-format)
-#  execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/.clang-format ${CMAKE_BINARY_DIR}/.clang-format)
-#endif()
-
+# if(EXISTS ${CMAKE_SOURCE_DIR}/.clang-format)
+# execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/.clang-format ${CMAKE_BINARY_DIR}/.clang-format)
+# endif()
 set(UPDATOR_PROGRAM updator-scenario)
 set(XOSC_CONVERTER xosc-converter)
-#set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build: Debug Release RelWithDebInfo MinSizeRel")
-#set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
+
+# set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build: Debug Release RelWithDebInfo MinSizeRel")
+# set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -Wall -g2 -ggdb")
 set(CMAKE_CXX_STANDARD 14 CACHE INTERNAL "-std=c++xx" FORCE)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_options($<$<BOOL:${UNIX}>:-fPIC>)
+
 # add_compile_options($<$<BOOL:${MSVC}>:/wd"4828">)
 add_compile_options(-DRANDOM_WITHOUT_BOOST)
 add_compile_options(-DSCENE_EVENTS_UPGRAD)
@@ -43,7 +46,6 @@ include(common)
 include(third_party)
 list(REMOVE_ITEM COMMON_SRCS ${COMMON_DIR}/utils/xsd_validator.h ${COMMON_DIR}/utils/xsd_validator.cc)
 list(REMOVE_ITEM COMMON_TEST ${COMMON_DIR}/utils/xsd_validator_test.cc)
-
 
 include(${CMAKE_CURRENT_SOURCE_DIR}/../../../cmake/helper_funcs.cmake)
 protobuf_generate_cpps(PROTO_SRC PROTO_HDR
@@ -63,7 +65,6 @@ protobuf_generate_cpps(PROTO_SRC PROTO_HDR
   ../../../../common/message/scene_sensor_group.proto
   ../../../../common/message/scene_infrastructure_group.proto)
 include_directories(${CMAKE_BINARY_DIR})
-
 
 if(WIN32)
   include_directories(
@@ -101,8 +102,6 @@ else()
     -DSOCI_DLL
   )
 endif()
-
-
 
 file(GLOB_RECURSE SRC_FILES
   ./src/database/*.cpp
@@ -146,6 +145,7 @@ target_link_libraries(map_parser
   ${THIRD_PARTY_LIBS}
   ${MAPSDK_LIBRARYS}
 )
+
 # ============WRAPPER=========
 if(WIN32)
   file(GLOB SCENE_WRAPPER_SOURCE ./scene_wrapper_windows/*.cpp)
@@ -154,7 +154,8 @@ else()
   file(GLOB SCENE_WRAPPER_SOURCE ./scene_wrapper_linux/*.cpp)
   file(GLOB SCENE_WRAPPER_HEADER ./scene_wrapper_linux/*.h)
 endif()
-add_library(${PROJECT_NAME} SHARED  ${SCENE_WRAPPER_SOURCE} ${SCENE_WRAPPER_HEADER})
+
+add_library(${PROJECT_NAME} SHARED ${SCENE_WRAPPER_SOURCE} ${SCENE_WRAPPER_HEADER})
 target_link_libraries(${PROJECT_NAME} map_parser ${MAPSDK_LIBRARYS} ${THIRD_PARTY_LIBS})
 
 # ============UPDATOR=========
@@ -168,7 +169,6 @@ target_link_libraries(${UPDATOR_PROGRAM} map_parser ${MAPSDK_LIBRARYS} ${THIRD_P
 # file(GLOB_RECURSE CONVERTER_SOURCE ./converter/*.cpp)
 # add_executable(${XOSC_CONVERTER} ${CONVERTER_SOURCE} ${CONVERTER_HEADER})
 # target_link_libraries(${XOSC_CONVERTER} map_parser ${MAPSDK_LIBRARYS} ${THIRD_PARTY_LIBS})
-
 if(UNIX)
   include_directories(src)
 endif()
@@ -187,15 +187,14 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 endif()
 
 # if(WIN32)
-#   install(TARGETS ${PROJECT_NAME} xosc_convert_tool
-# 	RUNTIME DESTINATION .
+# install(TARGETS ${PROJECT_NAME} xosc_convert_tool
+# RUNTIME DESTINATION .
 # )
 # endif()
-
 if(WIN32)
-if(NOT CMAKE_BUILD_TYPE)
-copy_mapsdk_deps(${LIBRARY_OUTPUT_PATH}/Release)
-else()
-copy_mapsdk_deps(${LIBRARY_OUTPUT_PATH}/${CMAKE_BUILD_TYPE})
-endif()
+  if(NOT CMAKE_BUILD_TYPE)
+    copy_mapsdk_deps(${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/Release)
+  else()
+    copy_mapsdk_deps(${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${CMAKE_BUILD_TYPE})
+  endif()
 endif()
