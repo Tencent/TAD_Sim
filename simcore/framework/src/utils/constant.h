@@ -871,8 +871,6 @@ enum CoordinationMode : int16_t {
   //! @details 返回：返回坐标系类型优先级的枚举值
   //!
   kCoordinatePriority = 3,
-  kCoordinateIntergroupSync = 4,
-  kCoordinateIntragroupSync = 5,
 };
 
 inline CoordinationMode Int2CoordMode(int16_t v) {

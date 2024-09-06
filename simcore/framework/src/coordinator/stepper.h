@@ -427,9 +427,6 @@ inline std::unique_ptr<SimStepper> CreateSimStepper(tx_sim::impl::CoordinationMo
       return std::unique_ptr<SimStepper>(new AsyncStepper);
     case tx_sim::impl::kCoordinatePriority:
       return std ::unique_ptr<SimStepper>(new PriorityStepper);
-    case tx_sim::impl::kCoordinateIntergroupSync:
-      return std::unique_ptr<SimStepper>(new IntergroupSyncStepper);
-    // case tx_sim::impl::kCoordinateIntragroupSync: return std::unique_ptr<SimStepper>(new IntragroupSyncStepper);
     default:
       return nullptr;  // already checked in LoadCoordinatorConfig().
   }
