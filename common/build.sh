@@ -15,11 +15,6 @@ build_project() {
   echo "=== End build $project"
 }
 
-# Clean
-cd map_sdk
-[ -d "hadmap" ] && rm -rf "hadmap"
-cd ..
-
 # Start compiling
 build_project "message" "generate_cpp.sh"
 build_project "map_sdk" "build.sh"

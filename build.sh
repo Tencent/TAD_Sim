@@ -23,8 +23,8 @@ TADSIM_BUILD_SCENARIO="$TADSIM_BUILD/scenario"
 
 # ====== Clean ======
 echo "=== Begin clean"
-find . -type f -iname "*.sh" -exec chmod +x {} \;
-find . -type d \( -name "build" -o -name "node_modules" \) -exec rm -rf {} + 2>/dev/null
+# find . -type f -iname "*.sh" -exec chmod +x {} \;
+# find . -type d \( -name "build" -o -name "node_modules" \) -exec rm -rf {} + 2>/dev/null
 [ -d "$TADSIM_BUILD" ] && rm -rf "$TADSIM_BUILD" || true
 echo "=== End clean"
 
@@ -199,8 +199,7 @@ echo "=== Begin gen"
 cd "$TADSIM_ROOT"
 chmod 777 -R "$TADSIM_BUILD"
 cd "$TADSIM_BUILD"
-export electron_mirror=https://registry.npmmirror.com/-/binary/electron/
-export electron_builder_binaries_mirror=https://mirrors.huaweicloud.com/electron-builder-binaries/
+
 # # 修改版本号
 # if command -v python >/dev/null 2>&1; then
 #     python "$TADSIM_ROOT/tools/modify_version.py"
@@ -216,13 +215,14 @@ export electron_builder_binaries_mirror=https://mirrors.huaweicloud.com/electron
 
 # 重新安装依赖, 拷贝后会有概率不能正常使用环境
 npm install
+
 # 编译, 最终结果为 build/release/tadsim_x.x.x_amd64.deb
 npm run release
 echo "=== End gen"
 
 # ====== 拷贝 SDK 产物 ======
 echo "=== Begin copy SDK zips"
-cp -rf "$TADSIM_ROOT/simcore/grading/external_eval/txSimGradingSDK_linux.tar.gz" "$TADSIM_BUILD/release/"
-cp -rf "$TADSIM_ROOT/simcore/framework/build/txSimSDK_linux.tar.gz" "$TADSIM_BUILD/release/"
+cp -rf "$TADSIM_ROOT/simcore/grading/external_eval/txSimGradingSDK.tar.gz" "$TADSIM_BUILD/release/txSimGradingSDK_linux.tar.gz"
+cp -rf "$TADSIM_ROOT/simcore/framework/build/txSimSDK.tar.gz" "$TADSIM_BUILD/release/txSimSDK_linux.tar.gz"
 cp -rf "$TADSIM_ROOT/common/map_sdk/hadmap.tar.gz" "$TADSIM_BUILD/release/txSimMapSDK_linux.tar.gz"
 echo "=== End copy SDK zips"

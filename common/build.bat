@@ -8,15 +8,10 @@ if defined VCPKG_ROOT (
     pause
 )
 
-@REM Clean map_sdk
-pushd "map_sdk"
-call clean.bat > NUL 2>&1
-popd
-
 @REM Start compiling
 call :build_project "message" "generate_cpp.bat"
 call :build_project "map_sdk" "build.bat"
-call :build_project "map_sdk" "build-debug.bat"
+@REM call :build_project "map_sdk" "build-debug.bat"
 exit /b
 
 :build_project

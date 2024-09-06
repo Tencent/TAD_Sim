@@ -10,7 +10,7 @@ mkdir "$V2X_BUILD"
 
 # build
 cd "$V2X_BUILD"
-wget https://raw.githubusercontent.com/metayeti/mINI/master/src/mini/ini.h -O ./ini.h
+# wget https://raw.githubusercontent.com/metayeti/mINI/master/src/mini/ini.h -O ./ini.h
 cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 ninja -j8
 

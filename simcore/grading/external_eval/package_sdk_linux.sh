@@ -43,7 +43,7 @@ dst_dir=./lib/x64/Release && mkdir -p $dst_dir && cp -r ../build/bin/libstateflo
 dst_dir=./lib/x64/Release && mkdir -p $dst_dir && cp -r ../build/bin/libeval_no_check_kpis.a $dst_dir
 
 # Use the tar command to compress related files and package them into SDK
-tar zcvf txSimGradingSDK_linux.tar.gz --transform 's,^,txSimGradingSDK/,' \
+tar zcvf txSimGradingSDK.tar.gz --transform 's,^,txSimGradingSDK/,' \
         deps \
         include \
         lib \

@@ -23,6 +23,7 @@ if "%~1"=="static" (
 set "GRADING_ROOT=%~dp0"
 set "GRADING_ROOT=%GRADING_ROOT:~0,-1%"
 set "GRADING_BUILD=%GRADING_ROOT%\build"
+set "SDK_NAME=txSimGradingSDK.tar.gz"
 
 @REM Clean & mkdir
 IF EXIST "%GRADING_BUILD%" rmdir /s /q "%GRADING_BUILD%"
@@ -39,7 +40,7 @@ cmake --build . --config Release -j 8 --verbose
 @REM Execute the SDK compilation script and copy the output to the 'build' directory
 @REM Note: the SDK is available when "static" is passed in
 call "%GRADING_ROOT%\external_eval\package_sdk_windows.bat"
-xcopy "%GRADING_ROOT%\external_eval\txSimGradingSDK_windows.tar.gz" "%GRADING_ROOT%\build\bin" /r /y
+xcopy "%GRADING_ROOT%\external_eval\%SDK_NAME%" "%GRADING_ROOT%\build\bin" /r /y
 
 @REM Change the working directory back to the original directory where the script was run
 cd "%GRADING_ROOT%"

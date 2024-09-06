@@ -26,3 +26,13 @@ datas/* text eol=crlf
 
 # simcore/sensors/display/Content
 *.uasset filter=lfs diff=lfs merge=lfs -text
+
+# simcore/tools/docker_libraries
+*.tar.gz filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.tar.xz filter=lfs diff=lfs merge=lfs -text
+*.tar.bz2 filter=lfs diff=lts=lf merge=lfs -text
+
+#
+*.png binary
+*.ts text

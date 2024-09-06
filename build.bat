@@ -18,7 +18,7 @@ set "TADSIM_BUILD_SCENARIO=%TADSIM_BUILD%\scenario"
 @REM ======  Clean ======
 echo "=== Begin clean"
 @REM for /r %%f in (*.bat) do (attrib +r +a "%%f")
-for /r /d %%D in (build node_modules) do rmdir /s /q "%%D" 2>nul
+@REM for /r /d %%D in (build node_modules) do rmdir /s /q "%%D" 2>nul
 IF EXIST "%TADSIM_BUILD%" rmdir /s /q "%TADSIM_BUILD%"
 echo "=== End clean"
 
@@ -158,8 +158,6 @@ echo "=== End pack scenario"
 @REM ======  打包成 exe 应用 ======
 echo "=== Begin gen"
 cd %TADSIM_BUILD%
-set electron_mirror=https://registry.npmmirror.com/-/binary/electron/
-set electron_builder_binaries_mirror=https://mirrors.huaweicloud.com/electron-builder-binaries/
 @REM @REM 修改版本号
 @REM where /q python
 @REM IF ERRORLEVEL 1 (
@@ -175,14 +173,15 @@ set electron_builder_binaries_mirror=https://mirrors.huaweicloud.com/electron-bu
 @REM ) ELSE (
 @REM     python "%TADSIM_ROOT%\tools\modify_version.py"
 @REM )
+
 @REM 编译, 最终结果为 build/release/tadsim-x.x.x.exe
 call npm run release
 echo "=== End gen"
 
 @REM ======  拷贝 SDK 产物 ======
 echo "=== Begin copy SDK zips"
-copy "%TADSIM_ROOT%\simcore\grading\external_eval\txSimGradingSDK_windows.tar.gz" "%TADSIM_BUILD%\release\"  /y
-copy "%TADSIM_ROOT%\simcore\framework\build\txSimSDK_windows.tar.gz" "%TADSIM_BUILD%\release\"  /y
+copy "%TADSIM_ROOT%\simcore\grading\external_eval\txSimGradingSDK.tar.gz" "%TADSIM_BUILD%\release\txSimGradingSDK_windows.tar.gz"  /y
+copy "%TADSIM_ROOT%\simcore\framework\build\txSimSDK.tar.gz" "%TADSIM_BUILD%\release\txSimSDK_windows.tar.gz"  /y
 copy "%TADSIM_ROOT%\common\map_sdk\hadmap.tar.gz" "%TADSIM_BUILD%\release\txSimMapSDK_windows.tar.gz"  /y
 echo "=== End copy SDK zips"
 
