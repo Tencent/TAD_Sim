@@ -6082,8 +6082,10 @@ class SimuScene {
 
   locateCameraOverMap () {
     const box = this.hadmap.getBoundingBox()
-    const center = box.getCenter()
-    const size = box.getSize()
+    const center = new Vector3()
+    box.getCenter(center)
+    const size = new Vector3()
+    box.getSize(size)
     const boxAspect = size.x / size.y
 
     let finalHeight = Math.max(size.y, 1)
