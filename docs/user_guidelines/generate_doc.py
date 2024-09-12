@@ -180,7 +180,8 @@ class DocGenerator:
         pathfiles = [str(path) for path in pathdir.glob(f"**/*{suffix}")]
 
         # 使用 fileinput.input() 函数读取多个文件
-        with fileinput.input(files=pathfiles, inplace=True, backup=".bak", encoding="utf-8") as f:
+        # with fileinput.input(files=pathfiles, inplace=True, backup=".bak", encoding="utf-8") as f:
+        with fileinput.input(files=pathfiles, inplace=True, backup=".bak") as f:
             keep = True
 
             # 遍历行, 处理起始为 <!-- ifconfig:: --> 终止为 <!-- end --> 标记的行
@@ -235,7 +236,8 @@ class DocGenerator:
         target_string = target_string.replace("\\", "/")
 
         # 使用 fileinput 模块操作文件
-        for line in fileinput.input(str(pathfile_doxyfile), inplace=True, encoding="utf-8"):
+        # for line in fileinput.input(str(pathfile_doxyfile), inplace=True, encoding="utf-8"):
+        for line in fileinput.input(str(pathfile_doxyfile), inplace=True):
             # Replace the target string
             line = re.sub(original_string, target_string, line, flags=re.MULTILINE)
             # Write the file out again
@@ -304,8 +306,8 @@ class DocGenerator:
         # 拷贝项目整体文件夹至生成目录
         self._copy_project_for_preprocess(self.source, self.tadsim_docs_dir_dist)
 
-        # 预处理, 通过标记筛选文件内容
-        self._preprocess(edition=self.edition, pathdir=self.tadsim_docs_dir_sphinx)
+        # # 预处理, 通过标记筛选文件内容
+        # self._preprocess(edition=self.edition, pathdir=self.tadsim_docs_dir_sphinx)
 
         # 运行 Doxygen
         self._run_doxygen()
