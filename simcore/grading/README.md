@@ -32,7 +32,8 @@
 
 - **TADSim 仿真数据**
 
-  - [TAD Sim 系统消息定义-主线](https://doc.weixin.qq.com/sheet/e3_AYIAKQZaABoSjqd81bFQWODMbOrxX?scode=AJEAIQdfAAogVn3mUpAYIAKQZaABo&tab=njdi31)
+  - [腾讯文档 TAD_Sim 消息说明](https://doc.weixin.qq.com/sheet/e3_AVwAKQaaAB480BcFBYISxG1eFNjZE?scode=AEwA3wKoAGM30VymmLAVwAKQaaAB4%3FnewPad%3D1&tab=njdi31)
+
 - **评测指标**
 
   - 评测模块使用 KPI 作为基本组成单元, 一个 KPI 对应一个用户关心的评测指标.

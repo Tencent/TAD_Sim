@@ -421,7 +421,7 @@ $$
 
 ### 5.3. 输出
 
-详细信息见 ​[TAD Sim 系统消息定义-主线](https://doc.weixin.qq.com/sheet/e3_AYIAKQZaABoSjqd81bFQWODMbOrxX?scode=AJEAIQdfAAoZD6H544Ac4ANAaJAFk&tab=njdi31)
+详细信息见 [腾讯文档 TAD_Sim 消息说明](https://doc.weixin.qq.com/sheet/e3_AVwAKQaaAB480BcFBYISxG1eFNjZE?scode=AEwA3wKoAGM30VymmLAVwAKQaaAB4%3FnewPad%3D1&tab=njdi31)
 
 | Topic               | proto                   | 子模块                                   | 说明                                               |
 | ------------------- | ----------------------- | ---------------------------------------- | -------------------------------------------------- |
