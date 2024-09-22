@@ -9,6 +9,10 @@ RUN echo "I am running on ${BUILDPLATFORM}, building for ${TARGETPLATFORM}" > /l
 # Disable interactive mode
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Setting username
+ARG USERNAME=tadsim
+ARG WORKDIRNAME=/build/
+
 # Setting Version
 ARG NINJA_VERSION=1.10.2
 ARG CMAKE_VERSION=3.20.1
@@ -35,7 +39,7 @@ ARG CEREAL_VERSION=1.3.0
 ARG NLOHMANN_VERSION=3.11.3
 
 #
-WORKDIR /build/
+WORKDIR ${WORKDIRNAME}
 
 # Install basic dependencies
 RUN apt-get update \
@@ -128,8 +132,8 @@ RUN tar xf node-v${NODE_VERSION}-linux-x64.tar.xz \
     && node --version \
     && npm install -g cmake-js node-addon-api \
     && rm -rf node* \
-    && mkdir -p /root/.cmake-js/node-x64/v${NODE_VERSION}/include/node \
-    && cp -r /usr/local/include/node/* /root/.cmake-js/node-x64/v${NODE_VERSION}/include/node
+    && mkdir -p /home/${USERNAME}/.cmake-js/node-x64/v${NODE_VERSION}/include/node \
+    && cp -r /usr/local/include/node/* /home/${USERNAME}/.cmake-js/node-x64/v${NODE_VERSION}/include/node
 
 # Install grpc and protobuf
 # RUN git config --global url."https://github.com/".insteadOf git://github.com/ \
@@ -316,15 +320,12 @@ RUN tar xf Python-${PYTHON_VERSION}.tgz \
     && make install \
     && ldconfig \
     && cd .. \
-    && rm -fr Python-${PYTHON_VERSION}*
-# config default python version
-RUN ln -sf /usr/local/bin/python${PIP_VERSION} /usr/local/bin/python3 \
+    && rm -fr Python-${PYTHON_VERSION}* \
+    # config default python version
+    && ln -sf /usr/local/bin/python${PIP_VERSION} /usr/local/bin/python3 \
     && ln -sf /usr/local/bin/pip${PIP_VERSION} /usr/local/bin/pip3 \
     # config pip
-    && echo "[global]\nindex-url = https://mirrors.tencent.com/pypi/simple\ntrusted-host = mirrors.cloud.tencent.com\n" > /etc/pip.conf \
-    && /usr/local/bin/python${PIP_VERSION} -m pip install -i https://mirrors.tencent.com/pypi/simple/ --upgrade pip \
-    && pip install -i https://mirrors.tencent.com/pypi/simple/ wheel pyinstaller breathe exhale sphinx_rtd_theme pybind11 \
-    && rm -rf /root/.cache/pip
+    && echo "[global]\nindex-url = https://mirrors.tencent.com/pypi/simple\ntrusted-host = mirrors.cloud.tencent.com\n" > /etc/pip.conf
 
 # Install Chrono
 # RUN wget -O chrono-${CHRONO_VERSION}.tar.gz https://github.com/projectchrono/chrono/archive/${CHRONO_VERSION}.tar.gz  \
@@ -358,21 +359,32 @@ RUN tar zxf json-${NLOHMANN_VERSION}.tar.gz \
 RUN ldconfig \
     && rm -rf /usr/local/share/doc /usr/local/share/man /usr/local/share/locale/*
 
+# Create user & Change ownership of directory
+RUN useradd -ms /bin/bash ${USERNAME} \
+    && chown -R ${USERNAME}:${USERNAME} ${WORKDIRNAME} \
+    && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
+
+# Switch to new user
+USER ${USERNAME}
+
 #
 ENV PATH="$PATH:/usr/local/go/bin"
+ENV PATH="$PATH:/home/${USERNAME}/.local/bin"
 ENV NODE_PATH="/usr/local/lib/node_modules"
-ENV CMAKE_JS_INC="/root/.cmake-js/node-x64/v17.9.1/include/node"
+ENV CMAKE_JS_INC="/home/${USERNAME}/.cmake-js/node-x64/v${NODE_VERSION}/include/node"
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 
-USER root
+# config pip
+RUN /usr/local/bin/python${PIP_VERSION} -m pip install -i https://mirrors.tencent.com/pypi/simple/ --upgrade pip \
+    && pip install -i https://mirrors.tencent.com/pypi/simple/ wheel pyinstaller breathe exhale sphinx_rtd_theme pybind11
 
 CMD ["bash"]
 
 # Use docker build to build by current platform
-# docker build . -t tadsim:desktop_local --build-arg BASE_MIRROR=ccr.ccs.tencentyun.com/library/ -f ./Dockerfile_local
+# docker build . -t tadsim:desktop --build-arg BASE_MIRROR=ccr.ccs.tencentyun.com/library/ -f ./Dockerfile_local
 
 # Use docker buildx to build choose platform (linux/amd64 or linux/arm64)
 # docker buildx build . --platform linux/amd64 -t tadsim:desktop BASE_MIRROR=ccr.ccs.tencentyun.com/library/
 
 # Run a docker container interactively, sets it as the working directory, and starts a Bash shell.
-# docker run --rm --network host --privileged -v .:/build -it tadsim:desktop_local /bin/bash
+# docker run --rm --network host --privileged -v .:/build -it tadsim:desktop /bin/bash

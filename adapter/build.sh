@@ -9,7 +9,7 @@ build_project() {
   # Go to the project directory
   cd "$project" || exit
   # Calling the compilation script
-  "./$build_script"
+  bash "$build_script"
   # Return to the original directory
   cd "$original_dir" || exit
   echo "=== End build $project"
