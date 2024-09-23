@@ -14,8 +14,12 @@ find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 if(WIN32)
 # If it is a Windows system, do not perform any operations
 else()
+  execute_process(COMMAND whoami OUTPUT_VARIABLE CURRENT_USER)
+  string(STRIP "${CURRENT_USER}" CURRENT_USER)
+  message(STATUS "Current user: ${CURRENT_USER}")
+
   set(CMAKE_PREFIX_PATH
-    "/usr/local/lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/pybind11/share/cmake/pybind11"
+    "/home/${CURRENT_USER}/.local/lib/python${Python3_VERSION_MAJOR}.${Python3_VERSION_MINOR}/site-packages/pybind11/share/cmake/pybind11"
     "${CMAKE_PREFIX_PATH}"
   )
 endif()

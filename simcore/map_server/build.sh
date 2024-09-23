@@ -31,6 +31,8 @@ cd "$OPENDRIVE_IO_BUILD"
 echo "opendrive_io build start..."
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j8
+# deploy opendriveio
+cp -rf "$OPENDRIVE_IO_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
 echo -e "opendrive_io build successfully.\n"
 
 # build map_parser
@@ -38,6 +40,9 @@ cd "$MAP_PARSER_BUILD"
 echo "map_parser build start..."
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j8
+# deploy map_parser
+cp -rf "$MAP_PARSER_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
+cp -rf "$MAP_PARSER_BUILD/lib/"* "$MAP_SERVER_BUILD/bin/"
 echo -e "map_parser build successfully.\n"
 
 # build server (txSimService)
@@ -46,13 +51,9 @@ echo "service build start..."
 go env -w GOPROXY=https://goproxy.io,direct
 go mod tidy
 go build
-echo -e "service build successfully.\n"
-
-# deploy
-cp -rf "$OPENDRIVE_IO_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
-cp -rf "$MAP_PARSER_BUILD/bin/"* "$MAP_SERVER_BUILD/bin/"
-cp -rf "$MAP_PARSER_BUILD/lib/"* "$MAP_SERVER_BUILD/bin/"
+# deploy server
 cp "$SERVER_ROOT/service" "$MAP_SERVER_BUILD/bin/txSimService"
+echo -e "service build successfully.\n"
 
 # Change the working directory back to the original directory where the script was run
 cd "$MAP_SERVER_ROOT"

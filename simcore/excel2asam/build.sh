@@ -36,7 +36,7 @@ mkdir -p "$EXCEL2ASAM_PROJECT_BINARY"
 
 # 编译 map_sdk_py 并移动产物至指定位置
 cd "$EXCEL2ASAM_ROOT/map_sdk_py"
-./build.sh
+bash "build.sh"
 cd "$EXCEL2ASAM_ROOT"
 cp -rf "$EXCEL2ASAM_ROOT/map_sdk_py/build/lib"/* "$EXCEL2ASAM_PROJECT_BINARY/"
 

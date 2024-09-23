@@ -41,7 +41,7 @@ $PYTHON -m pip install --upgrade pip
 # 安装第三方依赖库 & gen proto python
 $PYTHON -m pip install grpcio-tools
 cd "$SCRIPT_BUILD_MESSAGE"
-./generate_python_by_grpcio.sh
+bash generate_python_by_grpcio.sh
 
 cd "$SCRIPT_ROOT"
 # =============================== vissim 后处理脚本 ===============================

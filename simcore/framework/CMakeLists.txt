@@ -494,9 +494,20 @@ if(TXSIM_WITH_DOC MATCHES ON)
   # - Doxygen has rerun
   # - Our doc files have been updated
   # - The Sphinx config has been updated
+  if(UNIX)
+    execute_process(COMMAND whoami OUTPUT_VARIABLE CURRENT_USER)
+  elseif(WIN32)
+    execute_process(COMMAND cmd.exe /c echo %USERNAME% OUTPUT_VARIABLE CURRENT_USER)
+  endif()
+
+  string(STRIP "${CURRENT_USER}" CURRENT_USER)
+  message(STATUS "Current user: ${CURRENT_USER}")
+
   add_custom_command(OUTPUT ${SPHINX_INDEX_FILE}
     COMMAND
-    ${SPHINX_EXECUTABLE} -b html
+
+    # ${SPHINX_EXECUTABLE} -b html
+    ${CMAKE_COMMAND} -E env USER=${CURRENT_USER} ${SPHINX_EXECUTABLE} -b html
 
     # Tell Breathe where to find the Doxygen output
     -Dbreathe_projects.txSimSDK=${DOXYGEN_OUTPUT_DIR}/xml
