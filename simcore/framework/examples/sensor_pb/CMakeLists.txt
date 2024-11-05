@@ -49,4 +49,5 @@ add_library(sim-sensor SHARED
 target_link_libraries(sim-sensor
   ${LIB_PROTOBUF}
   ${LIB_BOOST_FS}
-  ${LIB_JSON})
+  ${LIB_JSON}
+)
