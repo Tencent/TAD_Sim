@@ -10,6 +10,7 @@
 #include "common/coord_trans.h"
 #include "structs/hadmap_curve.h"
 #include "structs/map_structs.h"
+
 namespace hadmap {
 struct txObject::ObjData {
  public:
@@ -176,11 +177,13 @@ txObject& txObject::setLaneLinkid(const int& id) {
   instancePtr->od_data.lanelinkid = id;
   return *this;
 }
+
 // only be used when geom is in ENU
 txObject& txObject::transfer(const txPoint& oldEnuC, const txPoint& newEnuC) {
   for (auto& geomPtr : instancePtr->geoms) geomPtr->transfer(oldEnuC, newEnuC);
   return *this;
 }
+
 // transfer to enu
 txObject& txObject::transfer2ENU(const txPoint& enuCenter) {
   for (auto& geomPtr : instancePtr->geoms) geomPtr->transfer2ENU(enuCenter);
@@ -219,6 +222,7 @@ txObject& txObject::setData(tx_object_t data) {
   instancePtr->data = data;
   return *this;
 }
+
 // set pole type
 int setPoleType(const std::string name, const std::string type, uint32_t& ntype, uint32_t& nsubtype) {
   if (name == "Vertical_Pole" || name == "UprightPole") {
@@ -302,6 +306,7 @@ int setTrafficType(const std::string name, const std::string& type, const std::s
   }
   return 0;
 }
+
 // set trafficlight type
 int setSignType(const std::string name, const std::string& type, const std::string subType, int st, uint32_t& ntype,
                 uint32_t& nsubtype) {
@@ -613,9 +618,9 @@ int setSignType(const std::string name, const std::string& type, const std::stri
 // set warn type
 void txObject::setObjectType(const std::string name, const std::string type, const std::string subType, int st) {
   if (0 == setPoleType(name, type, instancePtr->data.type, instancePtr->data.subtype)) {
-    return;
+    // return;
   } else if (0 == setTrafficType(name, type, subType, st, instancePtr->data.type, instancePtr->data.subtype)) {
-    return;
+    // return;
   } else if (type.size() > 4 && std::string(type.substr(0, 4)) == std::string("1010") ||
              st == OBJECT_SOURCE_SIGNAL) {  // warning sign
     setSignType(name, type, subType, st, instancePtr->data.type, instancePtr->data.subtype);
@@ -911,35 +916,42 @@ void txObject::setObjectType(const std::string name, const std::string type, con
     instancePtr->data.type = OBJECT_TYPE_PedestrianBridge;
     instancePtr->data.subtype = PedestrianBridge;
   }
+
   instancePtr->od_data.type = instancePtr->data.type;
   instancePtr->od_data.subtype = instancePtr->data.subtype;
   this->setRawTypeString(type, subType);
   strcpy(instancePtr->data.name, name.c_str());
   strcpy(instancePtr->od_data.name, name.c_str());
 }
+
 // get poleType
-void getPole(uint32_t dataSubType, std::string& name, std::string& type, std::string& subtype) {
-  switch (dataSubType) {
+void getPole(uint32_t data_subtype, std::string& name, std::string& type, std::string& subtype) {
+  switch (data_subtype) {
     case OtherSubtype:
       return;
     case POLE_VERTICAL:
-      name = "pole";
-      type = "Vertical_Pole";
+      name = "Vertical_Pole";
+      type = "pole";
       subtype = "none";
       break;
     case POLE_CROSS:
-      name = "pole";
-      type = "Cross_Pole";
+      name = "Cross_Pole";
+      type = "pole";
       subtype = "none";
       break;
     case POLE_Cantilever:
-      name = "pole";
-      type = "Cantilever_Pole";
+      name = "Cantilever_Pole";
+      type = "pole";
       subtype = "none";
       break;
     case POLE_Pillar_6m:
-      name = "pole";
-      type = "Pillar_Pole_6m";
+      name = "Pillar_Pole_6m";
+      type = "pole";
+      subtype = "none";
+      break;
+    case POLE_Pillar_3m:
+      name = "Pillar_Pole_3m";
+      type = "pole";
       subtype = "none";
       break;
     default:
@@ -948,474 +960,474 @@ void getPole(uint32_t dataSubType, std::string& name, std::string& type, std::st
 }
 
 // get SIGN_WARNING Type
-void getSign(uint32_t dataSubType, std::string& name, std::string& type, std::string& subtype) {
-  type = "null";
+void getSign(uint32_t data_subtype, std::string& name, std::string& type, std::string& subtype) {
+  name = "null";
   subtype = "-1";
-  switch (dataSubType) {
+  switch (data_subtype) {
     case SIGN_WARNING_SLOWDOWN:
-      name = "1010103200001111";
+      type = "1010103200001111";
       break;
     case SIGN_WARNING_TURNLEFT:
-      name = "1010100211001111";
+      type = "1010100211001111";
       break;
     case SIGN_WARNING_TURNRIGHT:
-      name = "1010100212001111";
+      type = "1010100212001111";
       break;
     case SIGN_WARNING_T_RIGHT:
-      name = "1010100121001111";
+      type = "1010100121001111";
       break;
     case SIGN_WARNING_T_DOWN:
-      name = "1010100123001111";
+      type = "1010100123001111";
       break;
     case SIGN_WARNING_CROSS:
-      name = "1010100111101111";
+      type = "1010100111101111";
       break;
     case SIGN_WARNING_CHILD:
-      name = "1010101100001111";
+      type = "1010101100001111";
       break;
     case SIGN_WARNING_UP:
-      name = "1010100511001111";
+      type = "1010100511001111";
       break;
     case SIGN_WARNING_BUILDING:
-      name = "1010103500001111";
+      type = "1010103500001111";
       break;
     case SIGN_WARNING_NARROW_LEFT:
-      name = "1010100711001111";
+      type = "1010100711001111";
       break;
     case SIGN_WARNING_NARROW_BOTH:
-      name = "1010100713001111";
+      type = "1010100713001111";
       break;
     case SIGN_WARNING_RAILWAY:
-      name = "1010102812001111";
+      type = "1010102812001111";
       break;
     case SIGN_WARNING_T_LEFT:
-      name = "1010100122001111";
+      type = "1010100122001111";
       break;
     case SIGN_WARNING_STEEP_LEFT:
-      name = "1010101811001111";
+      type = "1010101811001111";
       break;
     case SIGN_WARNING_STEEP_RIGHT:
-      name = "1010101812001111";
+      type = "1010101812001111";
       break;
     case SIGN_WARNING_VILLAGE:
-      name = "1010102000001111";
+      type = "1010102000001111";
       break;
     case SIGN_WARNING_DIKE_LEFT:
-      name = "1010101911001111";
+      type = "1010101911001111";
       break;
     case SIGN_WARNING_DIKE_RIGHT:
-      name = "1010101912001111";
+      type = "1010101912001111";
       break;
     case SIGN_WARAING_T_CROSSED:
-      name = "1010104012001111";
+      type = "1010104012001111";
       break;
     case SIGN_WARAING_FERRY:
-      name = "1010102200001111";
+      type = "1010102200001111";
       break;
     case SIGN_WARAING_FALL_ROCK:
-      name = "1010101512001111";
+      type = "1010101512001111";
       break;
     case SIGN_WARAING_REVERSE_CURVE_LEFT:
-      name = "1010100311001111";
+      type = "1010100311001111";
       break;
     case SIGN_WARAING_REVERSE_CURVE_RIGHT:
-      name = "1010100312001111";
+      type = "1010100312001111";
       break;
     case SIGN_WARAING_WATER_PAVEMENT:
-      name = "1010102700001111";
+      type = "1010102700001111";
       break;
     case SIGN_WARNING_T_BOTH:
-      name = "1010100112001111";
+      type = "1010100112001111";
       break;
     case SIGN_WARNING_JOIN_LEFT:
-      name = "1010100131001111";
+      type = "1010100131001111";
       break;
     case SIGN_WARNING_JOIN_RIGHT:
-      name = "1010100132001111";
+      type = "1010100132001111";
       break;
     case SIGN_WARNING_Y_LEFT:
-      name = "1010100134001111";
+      type = "1010100134001111";
       break;
     case SIGN_WARNING_Y_RIGHT:
-      name = "1010100134001111";
+      type = "1010100134001111";
       break;
     case SIGN_WARNING_CIRCLE_CROSS:
-      name = "1010100141001111";
+      type = "1010100141001111";
       break;
     case SIGN_WARNING_CURVE_AHEAD:
-      name = "1010100400001111";
+      type = "1010100400001111";
       break;
     case SIGN_WARNING_LONG_DESCENT:
-      name = "1010100600001111";
+      type = "1010100600001111";
       break;
     case SIGN_WARNING_ROUGH_ROAD:
-      name = "1010102400001111";
+      type = "1010102400001111";
       break;
     case SIGN_WARNING_SNOW:
-      name = "1010104312001111";
+      type = "1010104312001111";
       break;
     case SIGN_WARNING_DISABLE:
-      name = "1010103000001111";
+      type = "1010103000001111";
       break;
     case SIGN_WARNING_ANIMALS:
-      name = "1010101300001111";
+      type = "1010101300001111";
       break;
     case SIGN_WARNING_ACCIDENT:
-      name = "1010103100001111";
+      type = "1010103100001111";
       break;
     case SIGN_WARNING_TIDALBU_LANE:
-      name = "1010103800001111";
+      type = "1010103800001111";
       break;
     case SIGN_WARNING_BAD_WEATHER:
-      name = "1010104314001111";
+      type = "1010104314001111";
       break;
     case SIGN_WARNING_LOWLYING:
-      name = "1010102600001111";
+      type = "1010102600001111";
       break;
     case SIGN_WARNING_HIGHLYING:
-      name = "1010102500001111";
+      type = "1010102500001111";
       break;
     case SIGN_WARNING_DOWNHILL:
-      name = "1010100512001111";
+      type = "1010100512001111";
       break;
     case SIGN_WARNING_QUEUESLIKELY:
-      name = "1010104400001111";
+      type = "1010104400001111";
       break;
     case SIGN_WARNING_CROSS_PLANE:
-      name = "1010104011001111";
+      type = "1010104011001111";
       break;
     case SIGN_WARNING_TUNNEL:
-      name = "1010102100001111";
+      type = "1010102100001111";
       break;
     case SIGN_WARNING_TUNNEL_LIGHT:
-      name = "1010103700001111";
+      type = "1010103700001111";
       break;
     case SIGN_WARNING_HUMPBACK_BRIDGE:
-      name = "1010102300001111";
+      type = "1010102300001111";
       break;
     case SIGN_WARNING_NARROW_RIGHT:
-      name = "1010100712001111";
+      type = "1010100712001111";
       break;
     case SIGN_WARNING_NON_MOTOR:
-      name = "1010102900001111";
+      type = "1010102900001111";
       break;
     case SIGN_WARNING_SLIPPERY:
-      name = "1010101700001111";
+      type = "1010101700001111";
       break;
     case SIGN_WARNING_TRIFFICLIGHT:
-      name = "1010101400001111";
+      type = "1010101400001111";
       break;
     case SIGN_WARNING_DETOUR_RIGHT:
-      name = "1010103313001111";
+      type = "1010103313001111";
       break;
     case SIGN_WARNING_NARROW_BRIDGE:
-      name = "1010100800001111";
+      type = "1010100800001111";
       break;
     case SIGN_WARNING_KEEP_DISTANCE:
-      name = "1010103900001111";
+      type = "1010103900001111";
       break;
     case SIGN_WARNING_MERGE_LEFT:
-      name = "1010104111001111";
+      type = "1010104111001111";
       break;
     case SIGN_WARNING_CROSSWIND:
-      name = "1010101600001111";
+      type = "1010101600001111";
       break;
     case SIGN_WARNING_ICY_ROAD:
-      name = "1010104311001111";
+      type = "1010104311001111";
       break;
     case SIGN_WARNING_ROCKFALL:
-      name = "1010101511001111";
+      type = "1010101511001111";
       break;
     case SIGN_WARNING_CAUTION:
-      name = "1010103400001111";
+      type = "1010103400001111";
       break;
     case SIGN_WARNING_FOGGY:
-      name = "1010104313001111";
+      type = "1010104313001111";
       break;
     case SIGN_WARNING_LIVESTOCK:
-      name = "1010101200001111";
+      type = "1010101200001111";
       break;
     case SIGN_WARNING_DETOUR_LEFT:
-      name = "1010103312001111";
+      type = "1010103312001111";
       break;
     case SIGN_WARNING_DETOUR_BOTH:
-      name = "1010103311001111";
+      type = "1010103311001111";
       break;
     case SIGN_WARNING_BOTHWAY:
-      name = "1010100900001111";
+      type = "1010100900001111";
       break;
     case SIGN_BAN_STRAIGHT:
-      name = "1010202400001413";
+      type = "1010202400001413";
       break;
     case SIGN_BAN_VEHICLE:
-      name = "1010200600001413";
+      type = "1010200600001413";
       break;
     case SIGN_BAN_SPPED_120:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "120";
       break;
     case SIGN_BAN_SPPED_100:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "100";
       break;
     case SIGN_BAN_SPPED_80:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "80";
       break;
     case SIGN_BAN_SPPED_70:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "70";
       break;
     case SIGN_BAN_SPPED_60:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "60";
       break;
     case SIGN_BAN_SPPED_50:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "50";
       break;
     case SIGN_BAN_SPPED_40:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "40";
       break;
     case SIGN_BAN_SPPED_30:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "30";
       break;
     case SIGN_BAN_STOP_YIELD:
-      name = "1010200100001914";
+      type = "1010200100001914";
       break;
     case SIGN_BAN_HEIGHT_5:
-      name = "1010203500001413";
+      type = "1010203500001413";
       subtype = "5";
       break;
     case SIGN_BAN_SPPED_20:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "20";
       break;
     case SIGN_BAN_SPPED_05:
-      name = "1010203800001413";
+      type = "1010203800001413";
       subtype = "5";
       break;
     case SIGN_BAN_DIVERINTO:
-      name = "1010200500001513";
+      type = "1010200500001513";
       break;
     case SIGN_BAN_MOTOR_BIKE:
-      name = "1010201400001413";
+      type = "1010201400001413";
       break;
     case SIGN_BAN_WEIGHT_50:
-      name = "1010203600001413";
+      type = "1010203600001413";
       subtype = "55";
       break;
     case SIGN_BAN_WEIGHT_20:
-      name = "1010203600001413";
+      type = "1010203600001413";
       subtype = "20";
       break;
     case SIGN_BAN_HONKING:
-      name = "1010203300001413";
+      type = "1010203300001413";
       break;
     case SIGN_BAN_TRUCK:
-      name = "1010200700001413";
+      type = "1010200700001413";
       break;
     case SIGN_BAN_WEIGHT_30:
-      name = "1010203600001413";
+      type = "1010203600001413";
       subtype = "30";
       break;
     case SIGN_BAN_WEIGHT_10:
-      name = "1010203600001413";
+      type = "1010203600001413";
       subtype = "10";
       break;
     case SIGN_BAN_TEMP_PARKING:
-      name = "1010203111001713";
+      type = "1010203111001713";
       break;
     case SIGN_BAN_AXLE_WEIGHT_14:
-      name = "1010203700001413";
+      type = "1010203700001413";
       subtype = "14";
       break;
     case SIGN_BAN_AXLE_WEIGHT_13:
-      name = "1010203700001413";
+      type = "1010203700001413";
       subtype = "13";
       break;
     case SIGN_BAN_WEIGHT_40:
-      name = "1010203700001413";
+      type = "1010203700001413";
       subtype = "40";
       break;
     case SIGN_BAN_SLOW:
-      name = "1010200200002012";
+      type = "1010200200002012";
       break;
     case SIGN_BAN_TURN_LEFT:
-      name = "1010202211001413";
+      type = "1010202211001413";
       break;
     case SIGN_BAN_DANGEROUS_GOODS:
-      name = "1010204100001413";
+      type = "1010204100001413";
       break;
     case SIGN_BAN_TRACTORS:
-      name = "1010201200001413";
+      type = "1010201200001413";
       break;
     case SIGN_BAN_TRICYCLE:
-      name = "1010201300001413";
+      type = "1010201300001413";
       break;
     case SIGN_BAN_MINIBUS:
-      name = "1010201000001413";
+      type = "1010201000001413";
       break;
     case SIGN_BAN_STRAIGHT_AND_LEFT:
-      name = "1010202600001413";
+      type = "1010202600001413";
       break;
     case SIGN_BAN_VEHICLE_BY_HUMAN:
-      name = "1010202000001413";
+      type = "1010202000001413";
       break;
     case SIGN_BAN_TRACYCLE01_BY_HUMAN:
-      name = "1010201800001413";
+      type = "1010201800001413";
       break;
     case SIGN_BAN_TRACYCLE02_BY_HUMAN:
-      name = "1010201900001413";
+      type = "1010201900001413";
       break;
     case SIGN_BAN_TURN_RIGHT:
-      name = "1010202311001413";
+      type = "1010202311001413";
       break;
     case SIGN_BAN_LEFT_AND_RIGHT:
-      name = "1010202500001413";
+      type = "1010202500001413";
       break;
     case SIGN_BAN_STRAIGHT_AND_RIGHT:
-      name = "1010202700001413";
+      type = "1010202700001413";
       break;
     case SIGN_BAN_GO:
-      name = "1010200400001213";
+      type = "1010200400001213";
       break;
     case SIGN_BAN_GIVE_WAY:
-      name = "1010200300002113";
+      type = "1010200300002113";
       break;
     case SIGN_BAN_BUS_TURN_RIGHT:
-      name = "1010202312001413";
+      type = "1010202312001413";
       break;
     case SIGN_BAN_TRUCK_TURN_RIGHT:
-      name = "1010202315001413";
+      type = "1010202315001413";
       break;
     case SIGN_BAN_NO_OVERTAKING:
-      name = "1010203000001613";
+      type = "1010203000001613";
       break;
     case SIGN_BAN_BUS_TURN_LEFT:
-      name = "1010202212001413";
+      type = "1010202212001413";
       break;
     case SIGN_BAN_OVERTAKING:
-      name = "1010202900001413";
+      type = "1010202900001413";
       break;
     case SIGN_BAN_ANIMALS:
-      name = "1010201700001413";
+      type = "1010201700001413";
       break;
     case SIGN_BAN_BUS:
-      name = "1010200900001413";
+      type = "1010200900001413";
       break;
     case SIGN_BAN_ELECTRO_TRICYCLE:
-      name = "1010200800001413";
+      type = "1010200800001413";
       break;
     case SIGN_BAN_NO_MOTOR:
-      name = "1010201600001413";
+      type = "1010201600001413";
       break;
     case SIGN_BAN_TRUCK_TURN_LEFT:
-      name = "1010202215001413";
+      type = "1010202215001413";
       break;
     case SIGN_BAN_TRAILER:
-      name = "1010201100001413";
+      type = "1010201100001413";
       break;
     case SIGN_BAN_HUMAN:
-      name = "1010202100001413";
+      type = "1010202100001413";
       break;
     case SIGN_BAN_THE_TWO_TYPES:
-      name = "1010201500001413";
+      type = "1010201500001413";
       break;
     case SIGN_BAN_HEIGHT_3_5:
-      name = "1010203500001413";
+      type = "1010203500001413";
       subtype = "3.5";
       break;
     case SIGN_BAN_HEIGHT_3:
-      name = "1010203400001413";
+      type = "1010203400001413";
       subtype = "3";
       break;
     case SIGN_BAN_AXLE_WEIGHT_10:
-      name = "1010203600001413";
+      type = "1010203600001413";
       subtype = "10";
       break;
     case SIGN_BAN_CUSTOMS_MARK:
-      name = "1010204200001413";
+      type = "1010204200001413";
       break;
     case SIGN_BAN_STOP:
-      name = "1010204000001413";
+      type = "1010204000001413";
       break;
     case SIGN_BAN_LONG_PARKING:
-      name = "1010203200001713";
+      type = "1010203200001713";
       break;
     case SIGN_BAN_REMOVE_LIMIT_40:
-      name = "1010203900001613";
+      type = "1010203900001613";
       break;
     case SIGN_INDOCATION_STRAIGHT:
-      name = "1010300100002413";
+      type = "1010300100002413";
       break;
     case SIGN_INDOCATION_LOWEST_SPEED_60:
-      name = "1010301500002413";
+      type = "1010301500002413";
       subtype = "60";
       break;
     case SIGN_INDOCATION_LOWEST_SPEED_40:
-      name = "1010301500002413";
+      type = "1010301500002413";
       subtype = "40";
       break;
     case SIGN_INDOCATION_ALONG_RIGHT:
-      name = "1010300700002413";
+      type = "1010300700002413";
       break;
     case SIGN_INDOCATION_PEDESTRIAN_CROSSING:
-      name = "1010301800002616";
+      type = "1010301800002616";
       break;
     case SIGN_INDOCATION_TURN_RIGHT:
-      name = "1010300300002413";
+      type = "1010300300002413";
       break;
     case SIGN_INDOCATION_ROUNDABOUT:
-      name = "1010301100002416";
+      type = "1010301100002416";
       break;
     case SIGN_INDOCATION_TURN_LEFT:
-      name = "1010300200002413";
+      type = "1010300200002413";
       break;
     case SIGN_INDOCATION_STRAIGHT_RIGHT:
-      name = "1010300500002413";
+      type = "1010300500002413";
       break;
     case SIGN_INDOCATION_STRAIGHT_LEFT:
-      name = "1010300400002413";
+      type = "1010300400002413";
       break;
     case SIGN_INDOCATION_LOWEST_SPEED_50:
-      name = "1010301500002413";
+      type = "1010301500002413";
       subtype = "50";
       break;
     case SIGN_INDOCATION_WALK:
-      name = "1010301300002413";
+      type = "1010301300002413";
       break;
     case SIGN_INDOCATION_NO_MOTOR:
-      name = "1010302014002413";
+      type = "1010302014002413";
       break;
     case SIGN_INDOCATION_MOTOR:
-      name = "1010302012002413";
+      type = "1010302012002413";
       break;
     case SIGN_INDOCATION_ALONG_LEFT:
-      name = "1010300800002413";
+      type = "1010300800002413";
       break;
     case SIGN_INDOCATION_PASS_STAIGHT_001:
-      name = "1010301000002413";
+      type = "1010301000002413";
       break;
     case SIGN_INDOCATION_PASS_STAIGHT_002:
-      name = "1010300900002413";
+      type = "1010300900002413";
       break;
     case SIGN_INDOCATION_WHISTLE:
-      name = "1010301400002413";
+      type = "1010301400002413";
       break;
     case SIGN_INDOCATION_LEFT_AND_RIGHT:
-      name = "1010300600002413";
+      type = "1010300600002413";
       break;
     case SIGN_BAN_UTURN:
-      name = "1010202800001413";
+      type = "1010202800001413";
       break;
     case SIGN_WARNING_PED:
-      name = "1010101000001111";
+      type = "1010101000001111";
       break;
     case SIGN_INDOCATION_PARKING:
-      name = "1010302111002416";
+      type = "1010302111002416";
       break;
     default:
       break;
@@ -1423,128 +1435,128 @@ void getSign(uint32_t dataSubType, std::string& name, std::string& type, std::st
 }
 
 // get SIGN_WARNING Type
-void getRoadSign(uint32_t dataSubType, std::string& name, std::string& type, std::string& subtype) {
+void getRoadSign(uint32_t data_subtype, std::string& name, std::string& type, std::string& subtype) {
   type = "null";
   subtype = "-1";
-  switch (dataSubType) {
+  switch (data_subtype) {
     case RoadSign_Turn_Left_Waiting:
-      name = "none";
-      type = "Turn_Left_Waiting";
+      name = "Turn_Left_Waiting";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Crosswalk_Warning_Line:
-      name = "none";
-      type = "Crosswalk_Warning_Line";
+      name = "Crosswalk_Warning_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_White_Broken_Line:
-      name = "none";
-      type = "White_Broken_Line_Vehicle_Distance_Confirmation";
+      name = "White_Broken_Line_Vehicle_Distance_Confirmation";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_White_Semicircle_Line:
-      name = "none";
-      type = "White_Semicircle_Line_Vehicle_Distance_Confirmation";
+      name = "White_Semicircle_Line_Vehicle_Distance_Confirmation";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Disable_Parking:
-      name = "none";
-      type = "Disabled_Parking_Space_Road_Mark";
+      name = "Disabled_Parking_Space_Road_Mark";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Lateral_Dec:
-      name = "none";
-      type = "Lateral_Deceleration_Marking";
+      name = "Lateral_Deceleration_Marking";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Longitudinal_Dec:
-      name = "none";
-      type = "Longitudinal_Deceleration_Marking";
+      name = "Longitudinal_Deceleration_Marking";
+      type = "none";
       subtype = "";
     case RoadSign_100_120:
-      name = "none";
-      type = "Word_Mark_100_120";
+      name = "Word_Mark_100_120";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_80_100:
-      name = "none";
-      type = "Word_Mark_80_100";
+      name = "Word_Mark_80_100";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Non_Motor_Vehicle:
-      name = "none";
-      type = "Non_Motor_Vehicle";
+      name = "Non_Motor_Vehicle";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Circular_Center:
-      name = "none";
-      type = "Circular_Center_Circle";
+      name = "Circular_Center_Circle";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Rhombus_Center:
-      name = "none";
-      type = "Rhombus_Center_Circle";
+      name = "Rhombus_Center_Circle";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Mesh_Line:
-      name = "none";
-      type = "Mesh_Line";
+      name = "Mesh_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_BusOnly:
-      name = "none";
-      type = "Bus_Only_Lane_Line";
+      name = "Bus_Only_Lane_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_SmallCarOnly:
-      name = "none";
-      type = "Small_Cars_Lane_Line";
+      name = "Small_Cars_Lane_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_BigCarOnly:
-      name = "none";
-      type = "Big_Cars_Lane_Line";
+      name = "Big_Cars_Lane_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Non_Motor_Vehicle_Line:
-      name = "none";
-      type = "Non_Motor_Vehicle_Line";
+      name = "Non_Motor_Vehicle_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Turning_Forbidden:
-      name = "none";
-      type = "Turning_Forbidden";
+      name = "Turning_Forbidden";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Crosswalk_with_Left_and_Right_Side:
-      name = "none";
-      type = "Crosswalk_with_Left_and_Right_Side";
+      name = "Crosswalk_with_Left_and_Right_Side";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Road_Guide_Lane_Line:
-      name = "none";
-      type = "Road_Guide_Lane_Line";
+      name = "Road_Guide_Lane_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Variable_Direction_Lane_Line:
-      name = "none";
-      type = "Variable_Direction_Lane_Line";
+      name = "Variable_Direction_Lane_Line";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Intersection_Guide_Line:
-      name = "none";
-      type = "Intersection_Guide_Line";
+      name = "Intersection_Guide_Line";
+      type = "none";
       subtype = "";
       break;
 
     case RoadSign_U_Turning_Forbidden:
-      name = "none";
-      type = "U_Turning_Forbidden";
+      name = "U_Turning_Forbidden";
+      type = "none";
       subtype = "";
       break;
     case RoadSign_Non_Motor_Vehicle_Area:
-      name = "none";
-      type = "Non_Motor_Vehicle_Area";
+      name = "Non_Motor_Vehicle_Area";
+      type = "none";
       subtype = "";
       break;
   }
@@ -1553,387 +1565,387 @@ void getRoadSign(uint32_t dataSubType, std::string& name, std::string& type, std
 #define nSingleObjectTypeNumMax 100
 #define nSingleSignTypeNumMax 1000  // 由于SIGN 数量超过了100个，所以预留1000个位置
 
-void txObject::getObjectFromatType(std::string& type, std::string& name, std::string& subtype) const {
+void txObject::getObjectFromatType(std::string& name, std::string& type, std::string& subtype) const {
   if (instancePtr->data.subtype >= POLE_VERTICAL &&
       instancePtr->data.subtype < POLE_VERTICAL + nSingleObjectTypeNumMax) {
-    getPole(instancePtr->data.subtype, type, name, subtype);
+    getPole(instancePtr->data.subtype, name, type, subtype);
   } else if (instancePtr->data.subtype >= SIGN_WARNING_SLOWDOWN &&
-             instancePtr->data.subtype < POLE_VERTICAL + nSingleSignTypeNumMax) {
-    getSign(instancePtr->data.subtype, type, name, subtype);
+             instancePtr->data.subtype < SIGN_WARNING_SLOWDOWN + nSingleSignTypeNumMax) {
+    getSign(instancePtr->data.subtype, name, type, subtype);
   } else if (instancePtr->data.subtype >= RoadSign_Turn_Left_Waiting &&
              instancePtr->data.subtype < RoadSign_Turn_Left_Waiting + nSingleObjectTypeNumMax) {
-    getRoadSign(instancePtr->data.subtype, type, name, subtype);
+    getRoadSign(instancePtr->data.subtype, name, type, subtype);
   } else {
     switch (instancePtr->data.subtype) {
       case OtherSubtype:
         return;
         break;
       case LIGHT_VERTICAL_ALLDIRECT:
-        name = "1000001";
-        type = "verticalOmnidirectionalLight";
+        name = "verticalOmnidirectionalLight";
+        type = "1000001";
         subtype = "-1";
         break;
       case LIGHT_VERTICAL_STRAIGHTROUND:
-        name = "1000011";
-        type = "verticalStraightRoundLight";
+        name = "verticalStraightRoundLight";
+        type = "1000011";
         subtype = "60";
         break;
       case LIGHT_VERTICAL_LEFTTURN:
-        name = "1000011";
-        type = "verticalLeftTurnLigh";
+        name = "verticalLeftTurnLigh";
+        type = "1000011";
         subtype = "10";
         break;
       case LIGHT_VERTICAL_STRAIGHT:
-        name = "1000011";
-        type = "verticalStraightLight";
+        name = "verticalStraightLight";
+        type = "1000011";
         subtype = "30";
         break;
       case LIGHT_VERTICAL_RIGHTTURN:
-        name = "1000011";
-        type = "verticalRightTurnLight";
+        name = "verticalRightTurnLight";
+        type = "1000011";
         subtype = "20";
         break;
       case LIGHT_VERTICAL_UTURN:
-        name = "1000011";
-        type = "verticalUTurnLigh";
+        name = "verticalUTurnLigh";
+        type = "1000011";
         subtype = "70";
         break;
       case LIGHT_HORIZON_PEDESTRIAN:
-        name = "1000002";
-        type = "verticalPedestrianLight";
+        name = "verticalPedestrianLight";
+        type = "1000002";
         subtype = "-1";
         break;
       case LIGHT_HORIZON_ALLDIRECT:
-        name = "1000003";
-        type = "horizontalOmnidirectionalLight";
+        name = "horizontalOmnidirectionalLight";
+        type = "1000003";
         subtype = "-1";
         break;
       case LIGHT_HORIZON_STRAIGHTROUND:
-        name = "1000021";
-        type = "horizontalStraightRoundLight";
+        name = "horizontalStraightRoundLight";
+        type = "1000021";
         subtype = "60";
         break;
       case LIGHT_HORIZON_LEFTTURN:
-        name = "1000021";
-        type = "horizontalLeftTurnLight";
+        name = "horizontalLeftTurnLight";
+        type = "1000021";
         subtype = "10";
         break;
       case LIGHT_HORIZON_STRAIGHT:
-        name = "1000021";
-        type = "horizontalStraightLight";
+        name = "horizontalStraightLight";
+        type = "1000021";
         subtype = "30";
         break;
       case LIGHT_HORIZON_RIGHTTURN:
-        name = "1000021";
-        type = "horizontalRightTurnLight";
+        name = "horizontalRightTurnLight";
+        type = "1000021";
         subtype = "20";
         break;
       case LIGHT_HORIZON_UTURN:
-        name = "1000021";
-        type = "horizontalUTurnLight";
+        name = "horizontalUTurnLight";
+        type = "1000021";
         subtype = "70";
         break;
       case LIGHT_BICYCLELIGHT:
-        name = "1000013";
-        type = "bicycleLight";
+        name = "bicycleLight";
+        type = "1000013";
         subtype = "-1";
         break;
       case LIGHT_TWOCOLOR:
-        name = "1000009";
-        type = "twoColorIndicatorLight";
+        name = "twoColorIndicatorLight";
+        type = "1000009";
         subtype = "-1";
         break;
       case CrossWalk_001:
-        name = "none";
-        type = "Crosswalk_Line";
+        name = "Crosswalk_Line";
+        type = "none";
         subtype = "";
         break;
-
+      //
       case Arrow_Straight:
-        name = "none";
-        type = "Arrow_Forward";
+        name = "Arrow_Forward";
+        type = "none";
         subtype = "";
         break;
       case Arrow_StraightLeft:
-        name = "none";
-        type = "Arrow_Left_And_Forward";
+        name = "Arrow_Left_And_Forward";
+        type = "none";
         subtype = "";
         break;
       case Arrow_Left:
-        name = "none";
-        type = "Arrow_Left";
+        name = "Arrow_Left";
+        type = "none";
         subtype = "";
         break;
       case Arrow_Right:
-        name = "none";
-        type = "Arrow_Right";
+        name = "Arrow_Right";
+        type = "none";
         subtype = "";
         break;
       case Arrow_StraightRight:
-        name = "none";
-        type = "Arrow_Right_And_Forward";
+        name = "Arrow_Right_And_Forward";
+        type = "none";
         subtype = "";
         break;
       case Arrow_Uturn:
-        name = "none";
-        type = "Arrow_U_Turns";
+        name = "Arrow_U_Turns";
+        type = "none";
         subtype = "";
         break;
       case Arrow_StraightUturn:
-        name = "none";
-        type = "Arrow_Forward_And_U_Turns";
+        name = "Arrow_Forward_And_U_Turns";
+        type = "none";
         subtype = "";
         break;
       case Arrow_LeftUturn:
-        name = "none";
-        type = "Arrow_Left_And_U_Turns";
+        name = "Arrow_Left_And_U_Turns";
+        type = "none";
         subtype = "";
         break;
       case Arrow_LeftRight:
-        name = "none";
-        type = "Arrow_Left_And_Right";
+        name = "Arrow_Left_And_Right";
+        type = "none";
         subtype = "";
         break;
       case Arrow_TurnStraight:
-        name = "none";
-        type = "Arrow_Turn_And_Straight";
+        name = "Arrow_Turn_And_Straight";
+        type = "none";
         subtype = "";
         break;
       case Arrow_SkewLeft:
-        name = "none";
-        type = "Turn_And_Merge_Left";
+        name = "Turn_And_Merge_Left";
+        type = "none";
         subtype = "";
         break;
       case Arrow_SkewRight:
-        name = "none";
-        type = "Turn_And_Merge_Right";
+        name = "Turn_And_Merge_Right";
+        type = "none";
         subtype = "";
         break;
-
+      //
       case Stop_Line:
-        name = "none";
-        type = "Stop_Line";
+        name = "Stop_Line";
+        type = "none";
         subtype = "";
         break;
       case Stop_Line_GiveWay:
-        name = "none";
-        type = "Stop_To_Give_Way";
+        name = "Stop_To_Give_Way";
+        type = "none";
         subtype = "";
         break;
       case Stop_Slow_Line_GiveWay:
-        name = "none";
-        type = "Slow_Down_To_Give_Way";
+        name = "Slow_Down_To_Give_Way";
+        type = "none";
         subtype = "";
         break;
-
+      //
       case Parking_Space_001:
-        name = "parkingSpace";
-        type = "Parking_Space_Mark";
+        name = "Parking_Space_Mark";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Parking_Space_002:
-        name = "parkingSpace";
-        type = "Time_Limit_Parking_Space_Mark";
+        name = "Time_Limit_Parking_Space_Mark";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Parking_Space_003:
-        name = "parkingSpace";
-        type = "Parking_6m";
+        name = "Parking_6m";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Parking_Space_004:
-        name = "parkingSpace";
-        type = "Parking_5m";
+        name = "Parking_5m";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Parking_Space_005:
-        name = "parkingSpace";
-        type = "Parking_45deg";
+        name = "Parking_45deg";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Parking_Space_006:
-        name = "parkingSpace";
-        type = "Parking_60deg";
+        name = "Parking_60deg";
+        type = "parkingSpace";
         subtype = "";
         break;
       case Sensors_Camera:
-        name = "none";
-        type = "Camera";
+        name = "Camera";
+        type = "none";
         subtype = "";
         break;
       case Sensors_Radar:
-        name = "none";
-        type = "Millimeter_Wave_Radar";
+        name = "Millimeter_Wave_Radar";
+        type = "none";
         subtype = "";
         break;
       case Sensors_RSU:
-        name = "none";
-        type = "RSU";
+        name = "RSU";
+        type = "none";
         subtype = "";
         break;
       case Sensors_Lidar:
-        name = "none";
-        type = "Lidar";
+        name = "Lidar";
+        type = "none";
         subtype = "";
         break;
       case Surface_Pothole:
-        name = "none";
-        type = "Pothole";
+        name = "Pothole";
+        type = "none";
         subtype = "";
         break;
       case Surface_Patch:
-        name = "patch";
-        type = "Patch";
+        name = "Patch";
+        type = "patch";
         subtype = "";
         break;
       case Surface_Crack:
-        name = "barrier";
-        type = "Crack";
+        name = "Crack";
+        type = "barrier";
         subtype = "";
         break;
       case Surface_Asphalt_Line:
-        name = "none";
-        type = "Asphalt_Line";
+        name = "Asphalt_Line";
+        type = "none";
         subtype = "";
         break;
       case Surface_Rut_Track:
-        name = "none";
-        type = "Rut_Track";
+        name = "Rut_Track";
+        type = "none";
         subtype = "";
         break;
       case Surface_Stagnant_Water:
-        name = "none";
-        type = "Stagnant_Water";
+        name = "Stagnant_Water";
+        type = "none";
         subtype = "";
         break;
       case Surface_Protrusion:
-        name = "obstacle";
-        type = "Protrusion";
+        name = "Protrusion";
+        type = "obstacle";
         subtype = "";
         break;
       case Surface_Well_Cover:
-        name = "none";
-        type = "Well_Cover";
+        name = "Well_Cover";
+        type = "none";
         subtype = "";
         break;
       case SpeedBump_001:
-        name = "barrier";
-        type = "Deceleration_Zone";
+        name = "Deceleration_Zone";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Reflective_Road_Sign:
-        name = "barrier";
-        type = "Reflective_Road_Sign";
+        name = "Reflective_Road_Sign";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Parking_Hole:
-        name = "barrier";
-        type = "Parking_Hole";
+        name = "Parking_Hole";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Parking_Lot:
-        name = "barrier";
-        type = "Parking_Lot";
+        name = "Parking_Lot";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Ground_Lock:
-        name = "barrier";
-        type = "Ground_Lock";
+        name = "Ground_Lock";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Plastic_Vehicle_Stopper:
-        name = "barrier";
-        type = "Plastic_Vehicle_Stopper";
+        name = "Plastic_Vehicle_Stopper";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Parking_Limit_Position_Pole_2m:
-        name = "barrier";
-        type = "Parking_Limit_Position_Pole_2m";
+        name = "Parking_Limit_Position_Pole_2m";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Traffic_Barrier:
-        name = "obstacle";
-        type = "Traffic_Barrier";
+        name = "Traffic_Barrier";
+        type = "obstacle";
         subtype = "";
         break;
       case Obstacle_Road_Curb:
-        name = "barrier";
-        type = "Road_Curb";
+        name = "Road_Curb";
+        type = "barrier";
         subtype = "";
         break;
       case Obstacle_Lamp:
-        name = "none";
-        type = "Lamp";
+        name = "Lamp";
+        type = "none";
         subtype = "";
         break;
       case Obstacle_Traffic_Cone:
-        name = "obstacle";
-        type = "Traffic_Cone";
+        name = "Traffic_Cone";
+        type = "obstacle";
         subtype = "";
         break;
       case Obstacle_Traffic_Horse:
-        name = "obstacle";
-        type = "Traffic_Horse";
+        name = "Traffic_Horse";
+        type = "obstacle";
         subtype = "";
         break;
       case Obstacle_GarbageCan:
-        name = "obstacle";
-        type = "GarbageCan";
+        name = "GarbageCan";
+        type = "obstacle";
         subtype = "";
         break;
       case Obstacle_Obstacle:
-        name = "obstacle";
-        type = "Obstacle";
+        name = "Obstacle";
+        type = "obstacle";
         subtype = "";
         break;
       case Obstacle_Support_Vehicle_Stopper:
-        name = "barrier";
-        type = "Support_Vehicle_Stopper";
+        name = "Support_Vehicle_Stopper";
+        type = "barrier";
         subtype = "";
         break;
       case ChargingPile_001:
-        name = "barrier";
-        type = "Charging_Station";
+        name = "Charging_Station";
+        type = "barrier";
         subtype = "";
         break;
       case Tree_001:
-        name = "tree";
-        type = "Tree";
+        name = "Tree";
+        type = "tree";
         subtype = "";
         break;
       case Shrub_001:
-        name = "vegetation";
-        type = "Shrub";
+        name = "Shrub";
+        type = "vegetation";
         subtype = "";
         break;
       case Grass_001:
-        name = "vegetation";
-        type = "Grass";
+        name = "Grass";
+        type = "vegetation";
         subtype = "";
         break;
       case Building_001:
-        name = "building";
-        type = "Building";
+        name = "Building";
+        type = "building";
         subtype = "";
         break;
       case BusStation_001:
-        name = "none";
-        type = "BusStation";
+        name = "BusStation";
+        type = "none";
         subtype = "";
         break;
       case Tunnel_001:
-        name = "none";
-        type = "Tunnel";
+        name = "Tunnel";
+        type = "none";
         subtype = "";
         break;
       case PedestrianBridge:
-        name = "none";
-        type = "PedestrianBridge";
+        name = "PedestrianBridge";
+        type = "none";
         subtype = "";
         break;
       case CustomSubType:
-        name = "custom";
-        type = this->getName();
+        name = this->getName();
+        type = "custom";
         subtype = "";
       default:
         break;
@@ -1944,6 +1956,7 @@ void txObject::getObjectFromatType(std::string& type, std::string& name, std::st
     type = this->getName();
   }
 }
+
 void txObject::setPos(double x, double y, double z) {
   instancePtr->data.x = x;
   instancePtr->data.y = y;

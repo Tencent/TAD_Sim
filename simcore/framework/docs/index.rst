@@ -32,11 +32,12 @@ Welcome to txSimSDK's documentation!
 
 2. 进入examples目录执行如下命令::
 
+     cd my_module
      mkdir build && cd build
      cmake ..
      make
 
-   编译成功后产出在 ``examples/build/lib/libmy-module.so`` (动态库)和 ``examples/build/bin/my-module-main`` (可执行文件)。
+   编译成功后产出在 ``examples/my_module/build/lib/libmy-module.so`` (动态库)和 ``examples/my_module/build/bin/my-module-main`` (可执行文件)。
 
 | 具体的接口函数说明参考API文档 :doc:`tx_sim::SimModule <api/classtx__sim_1_1SimModule>` 。
 | 如果需要将算法编译为可执行程序，还需参考 :doc:`tx_sim::SimModuleService <api/classtx__sim_1_1SimModuleService>` 。
