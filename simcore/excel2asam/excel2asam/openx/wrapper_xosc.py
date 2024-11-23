@@ -23,10 +23,7 @@ from scenariogeneration import xosc
 from excel2asam.config import settings
 from excel2asam.map.lib.hadmap_py import Waypoint
 from excel2asam.openx.wrapper_xosc_factory import CreatAction, CreatTrigger
-from excel2asam.utils import KAction, KEvent, KTrigger, WrapperCatalogLoader, check_add_suffix
-
-# TODO: 扩展 scenariogeneration 能力, 待第三方库具备这个能力后可删除
-xosc.CatalogLoader.load_catalog = WrapperCatalogLoader.load_catalog
+from excel2asam.utils import KAction, KEvent, KTrigger, check_add_suffix
 
 
 @dataclass(order=True)
@@ -434,7 +431,7 @@ class GenXosc:
 
     gen_folder: Path
     oscminor: int
-    pathdir_catalog: Path
+    pathfile_catalogs: List[Path]
 
     def __post_init__(self):
         self.author = settings.sys.author
@@ -442,14 +439,12 @@ class GenXosc:
         wrapper_catalog = WrapperCatalog()
         self.catalog = wrapper_catalog.get_result()
 
-        self._entry_library = self._get_entry_library(self.pathdir_catalog)
+        self._entry_library = self._get_entry_library(self.pathfile_catalogs)
 
         self.creat_action = CreatAction()
         self.creat_trigger = CreatTrigger()
 
-    def _get_entry_library(self, pathdir: Path, suffix: str = "xosc") -> dict:
-        pathfile_catalogs = pathdir.glob(f"**/*.{suffix}")
-
+    def _get_entry_library(self, pathfile_catalogs: List[Path]) -> dict:
         mapping = {
             "Vehicle": "Veh",
             "Pedestrian": "Vru",
@@ -464,7 +459,9 @@ class GenXosc:
         catalog_library = xosc.CatalogLoader()
         for pathfile in pathfile_catalogs:
             logger.opt(lazy=True).debug(f"Loading catalog file: {pathfile}")
-            catalog_library.load_catalog(pathfile.stem, str(pathfile.parent))
+            catalog_library.load_catalog(str(pathfile.with_suffix("")), str(pathfile.parent))
+
+        logger.opt(lazy=True).debug(f"{catalog_library.all_catalogs = }")
 
         out: Dict[str, Any] = {}
         for catalogname, catalog in catalog_library.all_catalogs.items():
@@ -599,18 +596,17 @@ class GenXosc:
 
             # 设置 waypoint
             if f"{hname}.Ini.Wpts" in scene:
-                wpts = scene[f"{hname}.Ini.Wpts"]
-                # if isinstance(wpts[0], Waypoint):
-                #     wrapper_init.set_worldposition(entityname, wpts[0])
-                # # 判断 wpts 中第二位是否存在(是否为 0.0), 构建 wpts 时, 不存在 wpt 的值会赋值为 0.0
-                # if len(wpts) > 1 and isinstance(wpts[1], Waypoint):
-                #     wrapper_init.set_routing(entityname, wpts)
+                wpts = [x for x in scene[f"{hname}.Ini.Wpts"] if isinstance(x, Waypoint)]
 
-                if isinstance(wpts[0], Waypoint):
-                    if len(wpts) == 1:
-                        wrapper_init.set_worldposition(entityname, wpts[0])
-                    elif len(wpts) > 1 and all(isinstance(wpt, Waypoint) for wpt in wpts):
-                        wrapper_init.set_routing(entityname, wpts)
+                # 设置初始位置
+                if len(wpts) == 1:
+                    wrapper_init.set_worldposition(entityname, wpts[0])
+                # 当存在轨迹时, 设置多个 routing
+                elif len(wpts) > 1:
+                    wrapper_init.set_routing(entityname, wpts)
+                # 无轨迹点
+                else:
+                    logger.opt(lazy=True).info(f"without wpts, info: {wpts = }")
 
             # 设置 kevents
             kevents = [

@@ -42,7 +42,7 @@ from excel2asam.utils import SceneFilter, deep_update_settings
 @dataclass(order=True)
 class ProducerFactory(ABC):
     parser_factory: ParserFactory
-    pathdir_catalog: Path
+    pathdir_catalogs: Path
     pathdir_hadmap: Path
     pathdir_output: Path
     task_generalized_id: int
@@ -66,7 +66,7 @@ class ProducerFactory(ABC):
 
         #
         logger.opt(lazy=True).info(f"{' Input Parameter: ':=^55}")
-        logger.opt(lazy=True).info(f"{self.pathdir_catalog = }")
+        logger.opt(lazy=True).info(f"{self.pathdir_catalogs = }")
         logger.opt(lazy=True).info(f"{self.pathdir_hadmap = }")
         logger.opt(lazy=True).info(f"{self.pathdir_output = }")
         logger.opt(lazy=True).info(f"{self.task_generalized_id = }")
@@ -186,6 +186,15 @@ class ProducerFactory(ABC):
         except OSError as e:
             logger.error(f"Error creating output directories: {e}")
             raise
+
+    def _find_pathfile_catalogs(self, suffix: str = "xosc") -> List:
+        pathfile_catalogs = [
+            pathfile for pathdir in self.pathdir_catalogs for pathfile in pathdir.glob(f"**/*.{suffix}")
+        ]
+
+        logger.opt(lazy=True).debug(f"{pathfile_catalogs = }")
+
+        return pathfile_catalogs
 
     def hook_send_maps_insert(self, scene: dict):
         pass
@@ -347,7 +356,7 @@ class ProducerFactory(ABC):
         gxosc = GenXosc(
             gen_folder=self.pathdir_output_xosc,
             oscminor=settings.get("sys.version.oscminor", 0),
-            pathdir_catalog=self.pathdir_catalog,
+            pathfile_catalogs=self._find_pathfile_catalogs(suffix="xosc"),
         )
         concrete_xosc = concrete.apply(lambda x: x.dropna().to_dict(), axis=1).tolist()
         for count, scene in enumerate(concrete_xosc, start=1):
@@ -492,11 +501,12 @@ def parse_arguments() -> argparse.Namespace:
         help="Input data (required)",
     )
     parser.add_argument(
-        "--pathdir_catalog",
+        "--pathdir_catalogs",
         type=str,
         required=False,
-        default="./catalogs",
-        help="Directory of the catalogs files (default='./catalogs') (optional)",
+        default=["./catalogs"],
+        nargs="+",
+        help="Directory of the catalogs files (default='[./catalogs]') (optional)",
     )
     parser.add_argument(
         "--pathdir_hadmap",
@@ -530,7 +540,7 @@ def main():
     # 获取配置文件
     input_mode = args.input_mode
     input_data = args.input_data
-    pathdir_catalog = Path(args.pathdir_catalog)
+    pathdir_catalogs = [Path(x) for x in args.pathdir_catalogs]
     pathdir_hadmap = Path(args.pathdir_hadmap)
     pathdir_output = Path(args.pathdir_output) if args.pathdir_output else Path.cwd()
     producer_mode = args.producer_mode
@@ -549,7 +559,7 @@ def main():
         raise ValueError(f"Invalid input_mode: {args.input_mode = }")
 
     # 根据模式获得 producer_factory
-    params = parser_factory, pathdir_catalog, pathdir_hadmap, pathdir_output, task_generalized_id
+    params = parser_factory, pathdir_catalogs, pathdir_hadmap, pathdir_output, task_generalized_id
     if producer_mode == "local":
         producer_factory = LocalProducerFactory(*params)
     elif producer_mode == "desktop":

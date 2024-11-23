@@ -16,7 +16,7 @@ pytest-html==4.1.1
 pytest-xdist==3.6.1
 requests==2.32.3
 ruff==0.5.7
-scenariogeneration==0.14.4
+scenariogeneration==0.14.8
 scikit_learn==1.5.0
-xmlschema==2.5.1
+xmlschema==3.4.3
 pybind11==2.12.0

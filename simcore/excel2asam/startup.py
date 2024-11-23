@@ -9,6 +9,7 @@ CONTAINER_NAME = "ubuntu2004_py3118"
 TAG = "v1.0"
 WORK_DIR = "work"
 GPU_OPTIONS = ""
+BASE_MIRROR = "ccr.ccs.tencentyun.com/library/"
 
 # Current script path
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -40,7 +41,7 @@ def docker_pull() -> bool:
 def docker_build() -> bool:
     print("\033[42;37m[INFO] Docker pulling failed, start building \033[0m")
     result = subprocess.run(
-        f"docker buildx build . --platform=linux/amd64 -t {USER_NAME}/{CONTAINER_NAME}:{TAG} -o type=docker",
+        f"docker buildx build . --platform=linux/amd64 -t {USER_NAME}/{CONTAINER_NAME}:{TAG} --build-arg={BASE_MIRROR}",
         shell=True,
     )
     return result.returncode == 0

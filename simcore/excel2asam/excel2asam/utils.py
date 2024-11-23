@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import contextlib
 import json
-import os
 import subprocess
 import time
-import xml.etree.ElementTree as ET
 from ast import literal_eval
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -28,7 +26,6 @@ import numpy as np
 import pandas as pd
 from dynaconf import Dynaconf
 from loguru import logger
-from scenariogeneration.xosc import CatalogReference
 
 from excel2asam.config import settings
 from excel2asam.map.lib.hadmap_py import Waypoint
@@ -554,37 +551,6 @@ class KMark(NamedTuple):
     type: str
     color: str
     status: str
-
-
-#
-class WrapperCatalogLoader:
-    def __init__(self):
-        """CatalogLoader makes it possible to read certain elements from a catalog
-
-        Main use case for this is to be able to parametrize and write scenarios based on a catalog based entry
-
-        """
-        self.all_catalogs = {}
-
-    def load_catalog(self, catalog_reference, catalog_path):
-        """CatalogLoader makes it possible to read certain elements from a catalog
-
-        Parameters
-        ----------
-            catalog_reference (CatalogReference or str): name/reference to the catalog
-
-            catalog_path (str): path to the catalog
-        """
-        if isinstance(catalog_reference, CatalogReference):
-            fullpath = os.path.join(catalog_path, catalog_reference.catalogname + ".xosc")
-            name_ref = catalog_reference.catalogname
-        else:
-            fullpath = os.path.join(catalog_path, catalog_reference + ".xosc")
-            name_ref = catalog_reference
-
-        with open(fullpath, "r", encoding="utf-8") as f:
-            catalog_element = ET.parse(f).find("Catalog")
-            self.all_catalogs[name_ref] = catalog_element
 
 
 @dataclass(order=True)

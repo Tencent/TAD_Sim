@@ -242,7 +242,7 @@ class GenXodr:
 
         #
         if not junctioners and not roads:
-            print("no junctioner and no road")
+            print("no junctioner and no roads, use road_base")
             odr.add_road(road_base)
 
         # print(f"{len(roads) = }")
