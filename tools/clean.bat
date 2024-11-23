@@ -1,6 +1,7 @@
 @echo off
 
 @REM ======  Setting build parmameters ======
+@REM 获取当前脚本所在目录并去掉路径末尾的反斜杠
 set "TOOLS_ROOT=%~dp0"
 set "TOOLS_ROOT=%TOOLS_ROOT:~0,-1%"
 @REM 获取上一级目录
@@ -222,4 +223,19 @@ echo.
 echo "Clean docs user_guidelines start..."
 IF EXIST "%TADSIM_ROOT%\docs\user_guidelines\build" rmdir /s /q "%TADSIM_ROOT%\docs\user_guidelines\build"
 echo "Clean docs user_guidelines successfully."
+echo.
+
+@REM ====== Clean build ======
+@REM Clean build
+echo "Clean build start..."
+IF EXIST "%TADSIM_ROOT%\build" rmdir /s /q "%TADSIM_ROOT%\build"
+echo "Clean build successfully."
+echo.
+
+@REM ====== Recovery git change by build ======
+echo "Recovery git change by build start..."
+git checkout -- "%TADSIM_ROOT%\simapp\map-editor\package.json"
+git checkout -- "%TADSIM_ROOT%\simcore\map_server\service\go.mod"
+git checkout -- "%TADSIM_ROOT%\simcore\perfect_planning\version\version.h"
+echo "Recovery git change by build successfully."
 echo.
