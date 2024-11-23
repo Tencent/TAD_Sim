@@ -246,19 +246,19 @@
     "binArgs": [],
     "category": 112
   },{
-    "name": "OSI_Adaptor",
+    "name": "OSI_Adapter",
     "execPeriod": 10,
     "responseTime": 10,
     "endpoint": "",
     "initArgs": {
-      "enableAdaptor":"1",
+      "enableAdapter":"1",
       "channels": "TXSIM_DETECTED_LINES||ENVIRONMENTAL||TRAFFIC"
     },
     "cmdTimeout": 60000,
     "stepTimeout": 60000,
     "autoLaunch": true,
     "depPaths": [ "@{InstallDirectory}/simdeps" ],
-    "soPath": "@{InstallDirectory}/osi/libtxSimOSIAdaptor.so",
+    "soPath": "@{InstallDirectory}/osi/libtxSimOSIAdapter.so",
     "binPath": "",
     "binArgs": [],
     "category": 1001
