@@ -43,6 +43,13 @@
   ```powershell
   # current: gcc.exe (Rev6, Built by MSYS2 project) 13.2.0
   gcc --version
+  # 如果此时 MSYS 终端执行 gcc --version 提示指令不存在, 但是 powershell 中是正常的, 问题出现在 MSYS 终端的环境变量
+  # 在 MSYS 终端中输入 echo $PATH, 检查是否有 C:\msys64\ucrt64\bin
+  # 没有的话手动设置, 在 MSYS 终端执行
+  #   编辑文件, nano ~/.bashrc
+  #   文件末尾添加 export PATH=$PATH:/c/msys64/ucrt64/bin
+  #   Ctrl+X, 然后按 Y, 最后按 Enter
+  #   使更改生效 source ~/.bashrc
   ```
 
 ## 3. 安装 nodejs 及依赖
@@ -81,6 +88,9 @@
 - 验证依赖
   ```powershell
   # current: 7.3.0
+  # 如果在执行遇到禁止运行脚本的问题, 可以通过下面步骤解决
+  # - 管理员方式打开 powershell
+  # - 更改执行策略 Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
   cmake-js --version
   # +-- cmake-js@7.3.0
   # `-- node-addon-api@8.1.0
@@ -97,9 +107,9 @@
   - 点击界面安装, 建议默认安装位置 (安装时请选中 Add python.exe to PATH)
 - 验证
   ```powershell
-  # current: 3.9.4
+  # current: 3.11.8
   python --version
-  # current: 3.9.4
+  # current: 3.11.8
   pip --version
   ```
 
@@ -109,15 +119,33 @@
 - 安装
   - 下载安装包 [Doxygen Downloads](https://www.doxygen.nl/download.html), 下载  `System Installer`
   - 点击界面安装, 建议默认安装位置
+- 验证
+  ```powershell
+  # current: 1.12.0 (c73f5d30f9e8b1df5ba15a1d064ff2067cbb8267)
+  doxygen --version
+  ```
 
 ## 6. 安装 Visual Studio 2022 及工作负荷
 > **提示：** Visual Studio 2022 影响 adapter & common & co_simulation & simcore
-
-- 下载安装包 [Visual Studio Downloads](https://visualstudio.microsoft.com/zh-hans/downloads/), 当前使用为专业版
+- 安装
+  - 下载安装包 [Visual Studio Downloads](https://visualstudio.microsoft.com/zh-hans/downloads/), 当前使用为专业版
   <div align="center"><img src="./images/visual_studio_download.png" alt="" width="900px"></div><br>
 
-- 工作负荷中, 安装 使用 C++ 的桌面开发, 右侧可选为默认
+  - 工作负荷中, 安装 使用 C++ 的桌面开发, 右侧可选为默认
   <div align="center"><img src="./images/visual_studio_workloads.png" alt="" width="900px"></div><br>
+
+- 设置 Visual Studio 系统 PATH
+  ```powershell
+  # 专业版会自动设置
+  # 社区版, 执行下面指令, 其中的 C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE 替换为实际目录
+  $env:Path += ";C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE"
+  [System.Environment]::SetEnvironmentVariable("Path", $env:Path, [System.EnvironmentVariableTarget]::Machine)
+  ```
+- 验证
+  ```powershell
+  # 此时 Visual Studio 会启动
+  devenv
+  ```
 
 ## 7. 安装 vcpkg 及依赖
 > **提示：** vcpkg 及 c++ 依赖影响 adapter & common & co_simulation & simcore
@@ -130,9 +158,11 @@
   ```powershell
   # 官方安装详细说明: https://learn.microsoft.com/zh-cn/vcpkg/get_started/get-started?pivots=shell-powershell
   # 克隆 vckg 代码
-  git clone https://github.com/Microsoft/vcpkg.git
+  git clone --no-checkout https://github.com/Microsoft/vcpkg.git
   # 进入目录
   cd vcpkg
+  # 检出指定的标签
+  git checkout tags/2024.04.26
   # 执行启动脚本
   .\bootstrap-vcpkg.bat
   ```
@@ -147,10 +177,7 @@
   cd vcpkg
   # 安装本项目涉及的 c++ 依赖
   # 一次安装较多时容易报错, 故建议多次少量安装
-  .\vcpkg.exe install eigen3 gflags glm cereal gtest jsoncpp tbb uriparser fftw3
-  .\vcpkg.exe install pugixml libxml2 tinyxml tinyxml2 log4cplus sqlite3 soci[sqlite3]
-  .\vcpkg.exe install flann glog curl proj libspatialite xerces-c cppzmq
-  .\vcpkg.exe install python3 pybind11 chronoengine protobuf grpc boost
+  .\vcpkg.exe install eigen3 gflags glm cereal gtest jsoncpp tbb uriparser fftw3 pugixml libxml2 tinyxml tinyxml2 log4cplus sqlite3 soci[sqlite3] flann glog curl proj libspatialite xerces-c cppzmq python3 pybind11 chronoengine protobuf grpc boost
   ```
 - 设置 cmake 系统 PATH
   ```powershell
@@ -161,6 +188,17 @@
 - 验证
   ```powershell
   # current: 3.29.2
+  # 如果在 vscode 的 terminal 中执行提示找不到 cmake 需要重启 vscode
   cmake --version
   ```
 
+## 8. 安装 LLVM 进行代码格式化
+- 安装
+  - 下载 LLVM, 详情请查看 [LLVM Downloads](https://github.com/llvm/llvm-project), Releases 中下载最新版本的 exe 程序.
+  - 默认安装步骤安装
+- VS Code 配置
+  - 左侧 Extensions 中安装 Clang-Format
+  - Settings 中 Extensions/Clang-Format configuration 中配置
+    - Executable 中配置 clang-format 的路径, 默认为 C:\Program Files\LLVM\bin\clang-format.exe
+    - 对应语言勾选 (C/Cpp 必须)
+    - Style 为 file

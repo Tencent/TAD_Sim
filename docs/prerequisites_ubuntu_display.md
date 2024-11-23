@@ -25,10 +25,10 @@ cd TAD_Sim
 
 # 使用 docker build 按当前平台进行构建
 # 注意如果本机是 arm 芯片, 则需要使用下面 buildx 方式进行构建
-docker build . -t tadsim:display_v1.0 -f ./Dockerfile_display
+docker build . -t tadsim/display:v1.0 -f ./Dockerfile_display
 
 # 使用 docker buildx 选择平台（linux/amd64 或 linux/arm64）进行构建
 # 目前仅支持 linux/amd64
-docker buildx build . --platform linux/amd64 -t tadsim:display_v1.0 -f ./Dockerfile_display
+docker buildx build . --platform linux/amd64 -t tadsim/display:v1.0 -f ./Dockerfile_display
 
 ```
