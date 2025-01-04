@@ -375,7 +375,7 @@ class FeishuSpreadsheetParser(ParserFactory):
 #
 @dataclass(order=True)
 class Parser:
-    parser_mode: str
+    input_mode: str
     input_data: str
     virtual_real_is_virtual: bool
 
@@ -401,22 +401,22 @@ class Parser:
     #
     def _get_parser_factory(self):
         # 根据模式获得 parser_factory
-        if self.parser_mode == "excel":
+        if self.input_mode == "excel":
             pf = ExcelParser(Path(self.input_data))
-        elif self.parser_mode == "feishu_bitable":
+        elif self.input_mode == "feishu_bitable":
             pf = FeishuBitableParser(
                 app_id=settings.feishu.app_id,
                 app_secret=settings.feishu.app_secret,
                 token=self.input_data,
             )
-        elif self.parser_mode == "feishu_spreadsheet":
+        elif self.input_mode == "feishu_spreadsheet":
             pf = FeishuSpreadsheetParser(
                 app_id=settings.feishu.app_id,
                 app_secret=settings.feishu.app_secret,
                 token=self.input_data,
             )
         else:
-            raise ValueError(f"Invalid parser_mode: {self.parser_mode = }")
+            raise ValueError(f"Invalid input_mode: {self.input_mode = }")
 
         return pf
 

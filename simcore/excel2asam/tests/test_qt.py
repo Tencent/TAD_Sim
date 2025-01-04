@@ -68,7 +68,7 @@ def get_pathfiles_expecteds_by_suffixes_name(pathdir: Path, name: str, *suffixes
 def test_map_virtual_excel(pathfile, expected):
     # 创建实例, 初始化, 处理文件
     pder = LocalProducer(
-        parser_mode="excel",
+        input_mode="excel",
         input_data=pathfile,
         pathdir_catalogs=[PATHDIR_CATALOGS],
         pathdir_hadmap=Path(""),
@@ -92,7 +92,7 @@ def test_map_virtual_excel(pathfile, expected):
 def test_map_real_excel(pathfile, expected):
     # 创建实例, 初始化, 处理文件
     pder = LocalProducer(
-        parser_mode="excel",
+        input_mode="excel",
         input_data=pathfile,
         pathdir_catalogs=[PATHDIR_CATALOGS],
         pathdir_hadmap=PATHDIR_MAPS,
@@ -112,7 +112,7 @@ def test_map_real_excel(pathfile, expected):
 def test_map_virtual_feishu_bitable():
     # 创建实例, 初始化, 处理文件
     pder = LocalProducer(
-        parser_mode="feishu_bitable",
+        input_mode="feishu_bitable",
         input_data="",
         pathdir_catalogs=[PATHDIR_CATALOGS],
         pathdir_hadmap=Path(""),

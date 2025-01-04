@@ -44,7 +44,7 @@ class Feishu {
 }
 
 class Parser {
-    -parser_mode : str
+    -input_mode : str
     -input_data : str
     -virtual_real_is_virtual : bool
     +_get_parser_factory()

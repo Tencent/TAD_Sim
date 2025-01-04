@@ -40,7 +40,7 @@ from excel2asam.parser import Parser
 
 @dataclass(order=True)
 class _BaseProducer:
-    parser_mode: str
+    input_mode: str
     input_data: str
     pathdir_catalogs: Path
     pathdir_hadmap: Path
@@ -233,7 +233,7 @@ class _BaseProducer:
 
     def step1_get_logic_param(self) -> Set[pd.DataFrame, dict]:
         # 检查数据源路径合法性, 并解析
-        parser = Parser(self.parser_mode, self.input_data, self.virtual_real_is_virtual)
+        parser = Parser(self.input_mode, self.input_data, self.virtual_real_is_virtual)
 
         # 实例化 Formater, 并格式化 scenes 场景描述 和 param 地图参数 和 用户设置
         formater = Formater(parser.define, parser.param, parser.settings_user, parser.classify_user, self.scene_filter)
