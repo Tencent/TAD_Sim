@@ -175,7 +175,7 @@ class VirtualMapper:
             (),
         ]
 
-        return {index: value for index, value in enumerate(mapping)}
+        return dict(enumerate(mapping))
 
     def _get_ref_value(self, cond: pd.Series, hname: str, relname: str) -> np.ndarray:
         dfn = self.scenes.loc[cond]

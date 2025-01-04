@@ -63,6 +63,7 @@ simapp/desktop/package-lock.json
 simcore/post_script/sim_msg
 # simcore/excel2asam
 !simcore/excel2asam/map_sdk_py/lib_win_py3118/*
+simcore/excel2asam/excel2asam/.secrets.toml
 # simcore/traffic
 simcore/traffic/bin/
 simcore/traffic/ditw/version/version.h

@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="2020-10-06T17:00:00" author="TAD Sim" />
+    <Catalog name="PedestrianCatalog">
+        <Pedestrian mass="80.0" model="NONE" name="human" pedestrianCategory="pedestrian">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.9794" />
+                <Dimensions height="1.9588" length="0.35314" width="1.448439" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="0" />
+                <Property name="model3d" value="man/sm_mrcarl_a.fbx" />
+                <Property name="zhName" value="男青年" />
+                <Property name="enName" value="Man" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="30.0" model="NONE" name="child" pedestrianCategory="pedestrian">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.71924" />
+                <Dimensions height="1.43848" length="0.231114" width="1.03118" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="1" />
+                <Property name="model3d" value="boy/sm_boy.fbx" />
+                <Property name="zhName" value="男童" />
+                <Property name="enName" value="Boy" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50.0" model="NONE" name="oldman" pedestrianCategory="pedestrian">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.818" />
+                <Dimensions height="1.63695" length="0.3552" width="1.1853" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="2" />
+                <Property name="model3d" value="oldman/sm_linainai.fbx" />
+                <Property name="zhName" value="老人" />
+                <Property name="enName" value="The Elderly" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50.0" model="NONE" name="woman" pedestrianCategory="pedestrian">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.86023" />
+                <Dimensions height="1.72045" length="0.285919" width="1.20467" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="3" />
+                <Property name="model3d" value="pasha/sk_pasha.fbx" />
+                <Property name="zhName" value="女青年" />
+                <Property name="enName" value="Woman" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="40.0" model="NONE" name="girl" pedestrianCategory="pedestrian">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.71805" />
+                <Dimensions height="1.43609" length="0.27427" width="1.03121" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="4" />
+                <Property name="model3d" value="lucy/sk_lucy.fbx" />
+                <Property name="zhName" value="女童" />
+                <Property name="enName" value="Girl" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="10.0" model="NONE" name="cat" pedestrianCategory="animal">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.20925" />
+                <Dimensions height="0.418491" length="0.642467" width="0.140562" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="100" />
+                <Property name="model3d" value="cat/sm_cat.fbx" />
+                <Property name="zhName" value="猫" />
+                <Property name="enName" value="Cat" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="animal" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="10.0" model="NONE" name="dog" pedestrianCategory="animal">
+            <ParameterDeclarations />
+            <BoundingBox>
+                <Center x="0.0" y="0.0" z="0.42046" />
+                <Dimensions height="0.84092" length="1.23874" width="0.29294" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="101" />
+                <Property name="model3d" value="dog/sm_dog.fbx" />
+                <Property name="zhName" value="狗" />
+                <Property name="enName" value="Dog" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="animal" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman002" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.90206" />
+                <Dimensions width="1.24161" length="0.33046" height="1.80412" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="5" />
+                <Property name="model3d" value="sm_longhairwoman/sm_longhairwoman_web.fbx" />
+                <Property name="zhName" value="女青年002" />
+                <Property name="enName" value="Woman002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman003" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.94762" />
+                <Dimensions width="1.38317" length="0.32843" height="1.89524" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="6" />
+                <Property name="model3d" value="sm_shorthairedwoman/sm_shorthairedwoman_web.fbx" />
+                <Property name="zhName" value="女青年003" />
+                <Property name="enName" value="Woman003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman004" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.94652" />
+                <Dimensions width="1.3856" length="0.32378" height="1.89304" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="7" />
+                <Property name="model3d" value="sm_hairbandwoman/sm_hairbandwoman_web.fbx" />
+                <Property name="zhName" value="女青年004" />
+                <Property name="enName" value="Woman004" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman005" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.9" />
+                <Dimensions width="1.24584" length="0.33695" height="1.80019" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="8" />
+                <Property name="model3d" value="sm_shirtwoman/sm_shirtwoman_web.fbx" />
+                <Property name="zhName" value="女青年005" />
+                <Property name="enName" value="Woman005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman006" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.89889" />
+                <Dimensions width="1.24459" length="0.33189" height="1.79778" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="9" />
+                <Property name="model3d" value="sm_youngwoman/sm_youngwoman_web.fbx" />
+                <Property name="zhName" value="女青年006" />
+                <Property name="enName" value="Woman006" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="50" model="NONE" name="Woman007" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.91897" />
+                <Dimensions width="1.28499" length="0.271604" height="1.83794" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="10" />
+                <Property name="model3d" value="sm_nvqingnian/sm_nvqingnian_web.fbx" />
+                <Property name="zhName" value="女青年007" />
+                <Property name="enName" value="Woman007" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="75" model="NONE" name="Man002" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.94226" />
+                <Dimensions width="1.33628" length="0.33933" height="1.88452" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="12" />
+                <Property name="model3d" value="sm_youngman/sm_youngman_web.fbx" />
+                <Property name="zhName" value="男青年002" />
+                <Property name="enName" value="Man002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="75" model="NONE" name="Man003" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.93769" />
+                <Dimensions width="1.33672" length="0.34858" height="1.87538" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="13" />
+                <Property name="model3d" value="sm_blackman/sm_blackman_web.fbx" />
+                <Property name="zhName" value="男青年003" />
+                <Property name="enName" value="Man003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="75" model="NONE" name="Man004" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.90422" />
+                <Dimensions width="1.29127" length="0.34417" height="1.80843" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="14" />
+                <Property name="model3d" value="sm_middleagedman/sm_middleagedman_web.fbx" />
+                <Property name="zhName" value="男青年004" />
+                <Property name="enName" value="Man004" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="75" model="NONE" name="Man005" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.86" />
+                <Dimensions width="1.31611" length="0.32418" height="1.72" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="15" />
+                <Property name="model3d" value="sm_maozinan/sm_maozinan_web.fbx" />
+                <Property name="zhName" value="男青年005" />
+                <Property name="enName" value="Man005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="75" model="NONE" name="Man006" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.90914" />
+                <Dimensions width="1.30123" length="0.34986" height="1.81828" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="16" />
+                <Property name="model3d" value="sm_workerman/sm_workerman_web.fbx" />
+                <Property name="zhName" value="男青年006" />
+                <Property name="enName" value="Man006" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="65" model="NONE" name="Oldman002" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.90074" />
+                <Dimensions width="1.29577" length="0.33423" height="1.80147" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="17" />
+                <Property name="model3d" value="sm_oldman/sm_oldman_web.fbx" />
+                <Property name="zhName" value="男老年002" />
+                <Property name="enName" value="Oldman002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+        <Pedestrian mass="65" model="NONE" name="Oldman003" pedestrianCategory="pedestrian">
+            <BoundingBox>
+                <Center x="0" y="0" z="0.909" />
+                <Dimensions width="1.39567" length="0.365679" height="1.81882" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="18" />
+                <Property name="model3d" value="sm_laoyeye/sm_laoyeye_web.fbx" />
+                <Property name="zhName" value="男老年003" />
+                <Property name="enName" value="Oldman003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="pedestrian" />
+            </Properties>
+        </Pedestrian>
+    </Catalog>
+</OpenSCENARIO>

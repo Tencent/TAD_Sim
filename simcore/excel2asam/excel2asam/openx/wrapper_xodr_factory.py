@@ -295,6 +295,9 @@ class CreatJunctionRoads:
         roads = []
         junctioner = xodr.CommonJunctionCreator(id=self.start_junction_id, name=kjunction.type)
 
+        #
+        hdg = -1.571
+        h_offset = 0.0
         # 循环遍历创建 junctioner 和 roads
         for i, (angle, radius) in enumerate(zip(angles, radii)):
             # 设置 road id, 每增加一条路, id 加 1
@@ -307,9 +310,6 @@ class CreatJunctionRoads:
             # 复制 base_road 属性, 然后修改 id 和 length
             road = self._copy_set_road_from_road_base(new_id=road_id, length=self.length)
 
-            #
-            hdg = -1.571
-            h_offset = 0.0
             t_obj = self.rightlane_num * self.width + 1
             t_sig = t_obj / 2
             s = self.length
@@ -481,14 +481,14 @@ class CreatJunctionRoads:
         # 对于入口或出口分开设置
         rd4_rightlane_num = len(rd4.lanes.lanesections[-1].rightlanes)
         if mode == "Converging":
-            for i in range(0, rd4_rightlane_num):
+            for i in range(rd4_rightlane_num):
                 rd4.lanes.lanesections[-1].rightlanes[i].lane_type = xodr.LaneType.entry
             junctioner1.add_incoming_road_circular_geometry(rd4, radius, math.pi + angle, "successor")
             junctioner1.add_connection(
                 road_one_id=rd2.id, road_two_id=rd4.id, lane_one_id=-self.rightlane_num - 1, lane_two_id=-1
             )
         else:
-            for i in range(0, rd4_rightlane_num):
+            for i in range(rd4_rightlane_num):
                 rd4.lanes.lanesections[-1].rightlanes[i].lane_type = xodr.LaneType.exit
             junctioner2.add_incoming_road_circular_geometry(rd4, self.radius, 2 * math.pi - angle, "predecessor")
             junctioner2.add_connection(

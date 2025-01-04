@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="2020-02-21T10:00:00" description="Example - Vehicle Catalog" author="TAD Sim" />
+    <Catalog name="CarCatalog">
+        <Vehicle name="suv" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.433" y="0.0" z="1.169" />
+                <Dimensions width="2.182" length="4.772" height="2.339" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="0.732" trackWidth="1.455" positionX="2.909" positionZ="0.366" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="0.732" trackWidth="1.455" positionX="0" positionZ="0.366" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="1" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="SUV" />
+                <Property name="Preset" value="true" />
+                <Property name="Dynamic" value="1" />
+                <Property name="model3d" value="mainsuv/sm_mainsuv1.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="AIV_FullLoad_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="2.299825" />
+                <Dimensions width="3.6" length="15.3236" height="4.59965" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.82162" trackWidth="2.015" positionX="3.86006" positionZ="0.91081" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.82162" trackWidth="2.015" positionX="-3.86006" positionZ="0.91081" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="3" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="拖板车001(满载)" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="aiv/sm_tuobanche_jzx.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="WheelBaseCenter_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="AIV_Empty_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="1.09236" />
+                <Dimensions width="3.6" length="15.3236" height="2.18472" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.82162" trackWidth="2.015" positionX="3.86006" positionZ="0.91081" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.82162" trackWidth="2.015" positionX="-3.86006" positionZ="0.91081" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="4" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="拖板车001(空载)" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="aiv/sm_tubanche.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="WheelBaseCenter_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="MPV_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.283" y="0.0" z="0.996" />
+                <Dimensions width="2.14735" length="4.47884" height="1.93244" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="0.604" trackWidth="1.462" positionX="2.809" positionZ="0.302" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="0.604" trackWidth="1.462" positionX="0" positionZ="0.302" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="5" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="MPV_001" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="mpv/BP_V_WLHG_B_lod_jihzxtd.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="MiningDumpTruck_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="2.288" y="0.0" z="2.641" />
+                <Dimensions width="6.1117" length="10.4734" height="5.28209" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="2.626" trackWidth="4.31" positionX="5.12187" positionZ="1.313" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="2.626" trackWidth="4.31" positionX="0" positionZ="1.313" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="6" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="翻斗车" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="maintruck/maintruk_jiaotongche.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="AIV_FullLoad_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.958" y="0.0" z="2.216085" />
+                <Dimensions width="2.94674" length="15.4843" height="4.43217" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.34205" trackWidth="2.181" positionX="4.62208" positionZ="0.671025" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="4.62271" positionZ="0.671025" />
+                <additionalAxles maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="2.99439" positionZ="0.671025" />
+                <additionalAxles maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="2.99376" positionZ="0.671025" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="7" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="拖板车002(满载)" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="sm_AIV_FullLoad_002/SM_AIV_FullLoad_002.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="WheelBaseCenter_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="AIV_Empty_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.958" y="0.0" z="1.183" />
+                <Dimensions width="2.94674" length="15.4843" height="2.36692" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.34205" trackWidth="2.181" positionX="4.62208" positionZ="0.671025" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="4.62271" positionZ="0.671025" />
+                <additionalAxles maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="2.99439" positionZ="0.671025" />
+                <additionalAxles maxSteering="0.034906585" wheelDiameter="1.34205" trackWidth="2.181" positionX="2.99376" positionZ="0.671025" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="8" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="拖板车002(空载)" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="sm_AIV_Empty_002/SM_AIV_Empty_002.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="WheelBaseCenter_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="MIFA_01" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.4996" y="0.0" z="0.921305" />
+                <Dimensions width="2.26135" length="5.15401" height="1.84261" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="0.705" trackWidth="1.674" positionX="3.142" positionZ="0.352" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="0.705" trackWidth="1.674" positionX="0" positionZ="0.352" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="9" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="MIFA_01" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="sm_MIFA_01/sm_MIFA_01.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="AIV_V5_FullLoad_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.806" y="0.018" z="2.246" />
+                <Dimensions height="4.49165" length="14.8718" width="2.95673" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="7.583" positionZ="0.688055" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="0" positionZ="0.688055" />
+            </Axles>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+            <Properties>
+                <Property name="Alias" value="拖板车005(满载)" />
+                <Property name="Preset" value="true" />
+                <Property name="SensorGroup" value="10" />
+                <Property name="Weight" value="1.5" />
+                <Property name="controller" value="L4_Planning" />
+                <Property name="model3d" value="aiv002/sm_aiv_new_full.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_V5_Empty_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.806" y="0.018" z="1.107" />
+                <Dimensions height="2.21339" length="14.8718" width="2.95673" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="7.583" positionZ="0.688055" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="0" positionZ="0.688055" />
+            </Axles>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+            <Properties>
+                <Property name="Alias" value="拖板车005(空载)" />
+                <Property name="Preset" value="true" />
+                <Property name="SensorGroup" value="11" />
+                <Property name="Weight" value="1.5" />
+                <Property name="controller" value="L4_Planning" />
+                <Property name="model3d" value="aiv002/sm_aiv_new.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Unloaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="7.582" y="0.0" z="1.9" />
+                <Dimensions width="3.39096" length="25.1608" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="13" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="空载长挂车" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_wuxiang_dm.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Half_loaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="7.54" y="0.0" z="1.9" />
+                <Dimensions width="3.4" length="25.2444" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="14" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="半载长挂车" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_xiaoxiang_dm.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Full_loaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="6.04" y="0.0" z="1.9" />
+                <Dimensions width="5" length="28.2444" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="15" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="满载长挂车" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_daxiang_dm.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Truck_004" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.47046" y="0.0" z="2.16185" />
+                <Dimensions width="3.17184" length="12.0673" height="4.3237" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.09418" trackWidth="2.21716" positionX="6.06448" positionZ="0.54709" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.09418" trackWidth="2.21716" positionX="0" positionZ="0.54709" />
+            </Axles>
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="16" />
+                <Property name="Weight" value="1.5" />
+                <Property name="Alias" value="卡车004" />
+                <Property name="Preset" value="true" />
+                <Property name="model3d" value="sm_baisifu/sm_baisifu.fbx" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+    </Catalog>
+    <Catalog name="TruckCatalog">
+        <Vehicle name="truck_truck1" vehicleCategory="truck">
+            <!--定义车头-->
+            <BoundingBox>
+                <Center x="2.15" y="0" z="1.9185" />
+                <Dimensions width="2.500" length="6.300" height="3.837" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10" trackWidth="2.088" positionX="3.850" positionZ="0.55" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10" trackWidth="1.850" positionX="0" positionZ="0.55" />
+            </Axles>
+            <Properties>
+                <Property name="Weight" value="1.5" />
+                <Property name="model3d" value="main-combination/sk_hyblue_web.fbx" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="truck_trailer1" vehicleCategory="trailer">
+            <!--定义挂车1-->
+            <BoundingBox>
+                <Center x="4.18" y="0" z="1.969" />
+                <Dimensions width="2.500" length="12.200" height="3.938" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.034906585" wheelDiameter="1.054" trackWidth="1.840" positionX="2.62" positionZ="0.527" />
+                <!--AdditionalAxle maxSteering="0.034906585" wheelDiameter="1.054" trackWidth="1.840" positionX="1.31" positionZ="0.527"/-->
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.054" trackWidth="1.840" positionX="0" positionZ="0.527" />
+            </Axles>
+            <Properties>
+                <Property name="Weight" value="1.5" />
+                <Property name="model3d" value="main-combination/sk_hyblue_container_web.fbx" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="truck" vehicleCategory="combination">
+            <!--定义由上面三部分拼接的拖挂卡车整体，是本catalog中唯一的ego，即被测主车，车型为combination说明这里要定义的是拖挂车的挂接关系-->
+            <BoundingBox>
+                <!--上面读到combination的时候中间这段都可以忽略-->
+                <Center x="1.4" y="0.0" z="0.9" />
+                <Dimensions width="2.0" length="5.0" height="1.8" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.5235987756" wheelDiameter="0.8" trackWidth="1.68" positionX="2.98" positionZ="0.4" />
+                <RearAxle maxSteering="0.5235987756" wheelDiameter="0.8" trackWidth="1.68" positionX="0" positionZ="0.4" />
+            </Axles>
+            <!--上面读到combination的时候中间这段都可以忽略-->
+            <Properties>
+                <Property name="controller" value="L4_Planning" />
+                <Property name="SensorGroup" value="2" />
+                <Property name="Alias" value="卡车" />
+                <Property name="Preset" value="true" />
+                <Property name="Dynamic" value="" />
+                <Property name="model3d" value="" />
+                <Property name="model_id" value="-1" />
+                <Property name="interfaceCategory" value="ego" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+            <Tractor name="truck_truck1" />
+            <!--引用车头-->
+            <Trailer name="truck_trailer1" trailingUnit="1" offsetX="-9.23" offsetZ="0" />
+            <!--引用第一节挂车-->
+        </Vehicle>
+    </Catalog>
+</OpenSCENARIO>

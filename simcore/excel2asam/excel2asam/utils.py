@@ -293,6 +293,32 @@ def process_range(total: int, interval: int, ini: int, func: Callable[..., Any],
         func(start, end, *args)
 
 
+def get_pathfiles_by_suffixes(pathdir: Path, *suffixes: str) -> list:
+    """
+    This function takes a directory path and any number of file suffixes as
+    arguments, and returns a list of files in the directory (and its subdirectories)
+    that end with any of the given suffixes.
+
+    Args:
+        pathdir (Path): The path of the directory to search for the files.
+        *suffixes (str): Any number of suffixes to filter the files.
+
+    Returns:
+        list: A list of files (including the full path), ordered by the file name,
+        that end with any of the given suffixes.
+
+    """
+    # Convert suffixes to tuples
+    suffixes = tuple(f".{x}" if x[0] != "." else x for x in suffixes)
+
+    if not pathdir.is_dir():
+        print(f"{pathdir} is not a valid directory.")
+        return []
+
+    # Use rglob for recursive search and sort the result for preserving order
+    return [f for f in sorted(pathdir.rglob("*")) if f.is_file() and f.suffix in suffixes]
+
+
 @dataclass(order=True)
 class SceneFilter:
     """
@@ -301,7 +327,7 @@ class SceneFilter:
 
     def __post_init__(self):
         """
-        初始化SceneFilter实例.
+        初始化 SceneFilter 实例.
         """
 
         self.cols_common = [
@@ -564,11 +590,7 @@ class BinaryDependencySorter:
 
     def find_filenames_binary(self) -> List[str]:
         """Find all binary file names in the given directory matching the binary_name pattern."""
-        filenames_binary = []
-        for file in self.pathdir_binary.glob(self.binary_name):
-            if file.is_file():
-                filenames_binary.append(file.name)
-        return filenames_binary
+        return [file.name for file in self.pathdir_binary.glob(self.binary_name) if file.is_file()]
 
     def get_dependencies(self, pathfile_binary: Path) -> List[str]:
         """Get the dependencies of a binary file."""
@@ -616,7 +638,7 @@ class BinaryDependencySorter:
                     queue.append(neighbor)
 
         if visited_count != len(self.dependency_graph):
-            raise Exception("Cycle detected in dependency graph")
+            print("Cycle detected in dependency graph")
 
         return sorted_list
 
@@ -629,7 +651,3 @@ class BinaryDependencySorter:
         except Exception as e:
             print(e)
             return []
-
-
-if __name__ == "__main__":
-    pass

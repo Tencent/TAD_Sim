@@ -1,0 +1,361 @@
+<?xml version="1.0"?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="1970-01-01T08:00:00" description="" author="TAD Sim" />
+    <Catalog name="MiscObjectCatalog">
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Sedan">
+            <BoundingBox>
+               <Center x="0" y="0.0" z="0.72131" />
+                <Dimensions height="1.44262" length="4.75579" width="2.05123" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="0" />
+                <Property name="model3d" value="sedan/sm_borsche01.fbx" />
+                <Property name="zhName" value="轿车" />
+                <Property name="enName" value="Sedan" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Cone">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.35" />
+                <Dimensions height="0.7" length="0.4" width="0.4" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="3" />
+                <Property name="model3d" value="roadcone/sm_roadcone.fbx" />
+                <Property name="zhName" value="路锥" />
+                <Property name="enName" value="Road Cone" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Box">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.5" />
+                <Dimensions height="1" length="1" width="1" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="1" />
+                <Property name="model3d" value="woodenbox/sm_woodbox_a.fbx" />
+                <Property name="zhName" value="木箱" />
+                <Property name="enName" value="Wooden Box" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Sand">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.221639" />
+                <Dimensions height="0.443278" length="1.733" width="1.733" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="4" />
+                <Property name="model3d" value="sand001/sm_sand_001.fbx" />
+                <Property name="zhName" value="沙堆" />
+                <Property name="enName" value="Sand" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Box_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.58073" />
+                <Dimensions height="1.16146" length="0.69514" width="0.47067" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="5" />
+                <Property name="model3d" value="box001/sm_box_001.fbx" />
+                <Property name="zhName" value="电信集电箱" />
+                <Property name="enName" value="Telecom Collector Box" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.1815" />
+                <Dimensions height="0.363" length="0.283963" width="0.283963" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="101" />
+                <Property name="model3d" value="stob001/sm_stob_001.fbx" />
+                <Property name="zhName" value="石墩" />
+                <Property name="enName" value="Stone Pile" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.22593" />
+                <Dimensions height="0.45186" length="1.06878" width="0.26732" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="102" />
+                <Property name="model3d" value="stob002/sm_stob_002.fbx" />
+                <Property name="zhName" value="阻拦水泥墙" />
+                <Property name="enName" value="Block Cement Wall" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_003">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.438858" />
+                <Dimensions height="0.877717" length="0.420028" width="0.413225" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="103" />
+                <Property name="model3d" value="stob003/sm_stob_003.fbx" />
+                <Property name="zhName" value="防撞水桶" />
+                <Property name="enName" value="Anti-Collision Bucke" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Stob_004">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.300646" />
+                <Dimensions height="0.601291" length="0.308119" width="0.308119" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="104" />
+                <Property name="model3d" value="stob004/sm_stob_004.fbx" />
+                <Property name="zhName" value="消防栓" />
+                <Property name="enName" value="Fire Hydrant" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_005">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.26445" />
+                <Dimensions height="0.5289" length="0.4893" width="0.4893" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="105" />
+                <Property name="model3d" value="stob005/sm_stob_005.fbx" />
+                <Property name="zhName" value="防撞桶" />
+                <Property name="enName" value="Crash Bucket" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_006">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.18739" />
+                <Dimensions height="0.37477" length="1.46176" width="0.06109" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="106" />
+                <Property name="model3d" value="stob006/sm_stob_006.fbx" />
+                <Property name="zhName" value="自行车拦车杆" />
+                <Property name="enName" value="Bicycle Stop Bar" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="barrier" name="Stob_tran_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.42067" />
+                <Dimensions height="0.84133" length="2.06572" width="0.40064" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="201" />
+                <Property name="model3d" value="stob_tran/sm_stob_tran_001.fbx" />
+                <Property name="zhName" value="水马" />
+                <Property name="enName" value="Water-Filled Barrier" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Trash_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.494061" />
+                <Dimensions height="0.988122" length="0.998753" width="0.493244" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="301" />
+                <Property name="model3d" value="trash001/sm_trash_001.fbx" />
+                <Property name="zhName" value="垃圾桶1" />
+                <Property name="enName" value="Garbage Can 1" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Trash_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.50123" />
+                <Dimensions height="1.00247" length="0.930262" width="0.49631" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="302" />
+                <Property name="model3d" value="trash002/sm_trash_002.fbx" />
+                <Property name="zhName" value="垃圾桶2" />
+                <Property name="enName" value="Garbage Can 2" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Wheel_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.6175" />
+                <Dimensions height="1.235" length="1.0050" width="1.0407" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="401" />
+                <Property name="model3d" value="wheel001/sm_wheel_001.fbx" />
+                <Property name="zhName" value="多轮胎" />
+                <Property name="enName" value="Multiple Tires" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Wheel_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.152945" />
+                <Dimensions height="0.30589" length="0.973" width="0.973" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="402" />
+                <Property name="model3d" value="wheel002/sm_wheel_002.fbx" />
+                <Property name="zhName" value="单轮胎" />
+                <Property name="enName" value="Single Tire" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Stone_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="1.25658" />
+                <Dimensions height="2.51316" length="1.0375" width="2.21" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="403" />
+                <Property name="model3d" value="stone_001/shitou_zhongxin.fbx" />
+                <Property name="zhName" value="石头" />
+                <Property name="enName" value="Stone" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Warning_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.181204" />
+                <Dimensions height="0.362407" length="0.145926" width="0.377138" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="501" />
+                <Property name="model3d" value="warning/sm_sanjiaojingshipai.fbx" />
+                <Property name="zhName" value="三角警告牌" />
+                <Property name="enName" value="Warning Triangle" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Port_Container_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="1.21915" />
+                <Dimensions height="2.4383" length="6.058" width="2.438" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="603" />
+                <Property name="model3d" value="jizhuangxiang/sm_jizhuangxiang_a.fbx" />
+                <Property name="zhName" value="集装箱001" />
+                <Property name="enName" value="Container 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Port_Container_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="1.29565" />
+                <Dimensions height="2.5913" length="12.192" width="2.438" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="604" />
+                <Property name="model3d" value="jizhuangxiang/sm_jizhuangxiang_b.fbx" />
+                <Property name="zhName" value="集装箱002" />
+                <Property name="enName" value="Container 002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+		 <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Stone_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.05" />
+                <Dimensions height="0.1" length="0.1" width="0.1" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="404" />
+                <Property name="model3d" value="cube/sm_cube.fbx" />
+                <Property name="zhName" value="石头002" />
+                <Property name="enName" value="Stone002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Cone002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.35" />
+                <Dimensions height="0.7" length="0.4" width="0.4" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="311" />
+                <Property name="model3d" value="newredroadcone/newredroadcone.fbx" />
+                <Property name="zhName" value="路锥002" />
+                <Property name="enName" value="Road Cone002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="Warning_002">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="0.225" />
+                <Dimensions height="0.45" length="0.46" width="0.18" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="502" />
+                <Property name="model3d" value="warning-45cm/sm_sanjiaojingshipai_45cm.fbx" />
+                <Property name="zhName" value="三角警告牌002" />
+                <Property name="enName" value="Warning Triangle002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+        <MiscObject mass="1.000000" miscObjectCategory="obstacle" name="ChargingStation_001">
+            <BoundingBox>
+                <Center x="0.000000" y="0.000000" z="3.750715" />
+                <Dimensions height="7.50143" length="1.54" width="6" />
+            </BoundingBox>
+            <Properties>
+                <Property name="model_id" value="801" />
+                <Property name="model3d" value="charging-pile/sm_chongdianzhuang.fbx" />
+                <Property name="zhName" value="充电桩001" />
+                <Property name="enName" value="Charging Station001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="obstacle" />
+            </Properties>
+        </MiscObject>
+    </Catalog>
+</OpenSCENARIO>
