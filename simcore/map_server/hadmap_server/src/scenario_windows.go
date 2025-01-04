@@ -3387,21 +3387,38 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer file.Close()
-	// 获取其他 key 值
+
+	// 获取并验证model_dir
 	model_dir := r.FormValue("model_dir")
 	if model_dir == "" {
 		w.WriteHeader(http.StatusBadRequest)
 		log.Info(w, "Error retrieving the key value")
 		return
 	}
-	files, err := filepath.Glob(filepath.Join(model_dir, "*.fbx"))
+
+	// 清理和验证model_dir
+	cleanModelDir := filepath.Clean(model_dir)
+	if !isValidDirectory(cleanModelDir) {
+		w.WriteHeader(http.StatusBadRequest)
+		log.Info(w, "Invalid directory path")
+		return
+	}
+
+	files, err := filepath.Glob(filepath.Join(cleanModelDir, "*.fbx"))
+	if err != nil || len(files) == 0 {
+		w.WriteHeader(http.StatusInternalServerError)
+		log.Info("Error finding files:", err)
+		return
+	}
+
 	firstFile := files[0]
 	fileName := filepath.Base(firstFile)
 	ext := filepath.Ext(fileName)
 	newFileName := "thumbnail_" + strings.TrimSuffix(fileName, ext) + filepath.Ext(header.Filename)
-	destFilePath := filepath.Join(model_dir, newFileName)
-	// 保存上传的文件
-	out, err := os.Create(destFilePath)
+	destFilePath := filepath.Join(cleanModelDir, newFileName)
+
+	// 使用os.OpenFile和syscall.O_CREAT|syscall.O_EXCL来安全创建文件
+	out, err := os.OpenFile(destFilePath, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0666)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		log.Info(w, "Error creating the file:", err)
@@ -3416,6 +3433,7 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		log.Info(w, "Error writing the file:", err)
 		return
 	}
+
 	ret := DstFile{
 		Path: destFilePath,
 	}
@@ -3424,8 +3442,19 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		log.Info("Error converting to JSON:", err)
 		return
 	}
+
 	// 文件上传成功，返回成功信息
 	fmt.Fprintf(w, string(jsonData))
+}
+
+// 验证目录路径是否合法
+func isValidDirectory(dir string) bool {
+	// 检查目录是否存在并且是一个目录
+	info, err := os.Stat(dir)
+	if err != nil || !info.IsDir() {
+		return false
+	}
+	return true
 }
 
 func uploadOptionsHandler(w http.ResponseWriter, r *http.Request) {
