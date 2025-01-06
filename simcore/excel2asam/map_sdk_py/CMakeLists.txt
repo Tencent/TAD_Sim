@@ -29,7 +29,7 @@ find_package(pybind11 CONFIG REQUIRED)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../cmake")
 
 if(WIN32)
-  find_package(map_sdk_debug REQUIRED)
+  find_package(map_sdk REQUIRED)
 else()
   find_package(map_sdk REQUIRED)
 endif()

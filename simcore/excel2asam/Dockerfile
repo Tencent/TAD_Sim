@@ -7,7 +7,13 @@
 # version 1.0.0
 # Copyright 2024 Tencent Inc. All rights reserved.
 # ============================================================================
-FROM ubuntu:20.04
+ARG BASE_MIRROR=docker.io/library/
+ARG BASE_IMAGE=ubuntu:20.04
+ARG BUILDPLATFORM=linux/amd64
+
+FROM --platform=${BUILDPLATFORM} ${BASE_MIRROR}${BASE_IMAGE}
+ARG TARGETPLATFORM
+RUN echo "I am running on ${BUILDPLATFORM}, building for ${TARGETPLATFORM}" > /log
 
 # 禁用交互模式
 ENV DEBIAN_FRONTEND=noninteractive

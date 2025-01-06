@@ -12,10 +12,8 @@ from __future__ import annotations
 
 import contextlib
 import json
-import os
 import subprocess
 import time
-import xml.etree.ElementTree as ET
 from ast import literal_eval
 from collections import defaultdict, deque
 from dataclasses import dataclass
@@ -28,7 +26,6 @@ import numpy as np
 import pandas as pd
 from dynaconf import Dynaconf
 from loguru import logger
-from scenariogeneration.xosc import CatalogReference
 
 from excel2asam.config import settings
 from excel2asam.map.lib.hadmap_py import Waypoint
@@ -296,6 +293,32 @@ def process_range(total: int, interval: int, ini: int, func: Callable[..., Any],
         func(start, end, *args)
 
 
+def get_pathfiles_by_suffixes(pathdir: Path, *suffixes: str) -> list:
+    """
+    This function takes a directory path and any number of file suffixes as
+    arguments, and returns a list of files in the directory (and its subdirectories)
+    that end with any of the given suffixes.
+
+    Args:
+        pathdir (Path): The path of the directory to search for the files.
+        *suffixes (str): Any number of suffixes to filter the files.
+
+    Returns:
+        list: A list of files (including the full path), ordered by the file name,
+        that end with any of the given suffixes.
+
+    """
+    # Convert suffixes to tuples
+    suffixes = tuple(f".{x}" if x[0] != "." else x for x in suffixes)
+
+    if not pathdir.is_dir():
+        print(f"{pathdir} is not a valid directory.")
+        return []
+
+    # Use rglob for recursive search and sort the result for preserving order
+    return [f for f in sorted(pathdir.rglob("*")) if f.is_file() and f.suffix in suffixes]
+
+
 @dataclass(order=True)
 class SceneFilter:
     """
@@ -304,7 +327,7 @@ class SceneFilter:
 
     def __post_init__(self):
         """
-        初始化SceneFilter实例.
+        初始化 SceneFilter 实例.
         """
 
         self.cols_common = [
@@ -556,37 +579,6 @@ class KMark(NamedTuple):
     status: str
 
 
-#
-class WrapperCatalogLoader:
-    def __init__(self):
-        """CatalogLoader makes it possible to read certain elements from a catalog
-
-        Main use case for this is to be able to parametrize and write scenarios based on a catalog based entry
-
-        """
-        self.all_catalogs = {}
-
-    def load_catalog(self, catalog_reference, catalog_path):
-        """CatalogLoader makes it possible to read certain elements from a catalog
-
-        Parameters
-        ----------
-            catalog_reference (CatalogReference or str): name/reference to the catalog
-
-            catalog_path (str): path to the catalog
-        """
-        if isinstance(catalog_reference, CatalogReference):
-            fullpath = os.path.join(catalog_path, catalog_reference.catalogname + ".xosc")
-            name_ref = catalog_reference.catalogname
-        else:
-            fullpath = os.path.join(catalog_path, catalog_reference + ".xosc")
-            name_ref = catalog_reference
-
-        with open(fullpath, "r", encoding="utf-8") as f:
-            catalog_element = ET.parse(f).find("Catalog")
-            self.all_catalogs[name_ref] = catalog_element
-
-
 @dataclass(order=True)
 class BinaryDependencySorter:
     pathdir_binary: Path
@@ -598,11 +590,7 @@ class BinaryDependencySorter:
 
     def find_filenames_binary(self) -> List[str]:
         """Find all binary file names in the given directory matching the binary_name pattern."""
-        filenames_binary = []
-        for file in self.pathdir_binary.glob(self.binary_name):
-            if file.is_file():
-                filenames_binary.append(file.name)
-        return filenames_binary
+        return [file.name for file in self.pathdir_binary.glob(self.binary_name) if file.is_file()]
 
     def get_dependencies(self, pathfile_binary: Path) -> List[str]:
         """Get the dependencies of a binary file."""
@@ -650,7 +638,7 @@ class BinaryDependencySorter:
                     queue.append(neighbor)
 
         if visited_count != len(self.dependency_graph):
-            raise Exception("Cycle detected in dependency graph")
+            print("Cycle detected in dependency graph")
 
         return sorted_list
 
@@ -663,7 +651,3 @@ class BinaryDependencySorter:
         except Exception as e:
             print(e)
             return []
-
-
-if __name__ == "__main__":
-    pass

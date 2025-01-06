@@ -15,7 +15,6 @@ from __future__ import annotations
 import argparse
 import sys
 import traceback
-from abc import ABC
 from dataclasses import dataclass
 from datetime import datetime
 from multiprocessing.dummy import Pool as ThreadPool
@@ -35,14 +34,15 @@ from excel2asam.map.map_manager import MapManager
 from excel2asam.map.mapper import RealMapper, VirtualMapper
 from excel2asam.openx.wrapper_xodr import GenXodr
 from excel2asam.openx.wrapper_xosc import GenXosc
-from excel2asam.parser import ExcelParserFactory, FeishuBittableParserFactory, Parser, ParserFactory
 from excel2asam.utils import SceneFilter, deep_update_settings
+from excel2asam.parser import Parser
 
 
 @dataclass(order=True)
-class ProducerFactory(ABC):
-    parser_factory: ParserFactory
-    pathdir_catalog: Path
+class _BaseProducer:
+    input_mode: str
+    input_data: str
+    pathdir_catalogs: Path
     pathdir_hadmap: Path
     pathdir_output: Path
     task_generalized_id: int
@@ -58,15 +58,15 @@ class ProducerFactory(ABC):
 
         #
         self._ini = 0
-        self._interval_logic = 100
-        self._interval_concrete = 1000
+        # self._interval_logic = 100
+        # self._interval_concrete = 1000
 
         # 设置输出文件夹并创建 log 文件
         self.pathdir_output_xosc, self.pathdir_output_xodr = self._set_output_folder_structure()
 
         #
         logger.opt(lazy=True).info(f"{' Input Parameter: ':=^55}")
-        logger.opt(lazy=True).info(f"{self.pathdir_catalog = }")
+        logger.opt(lazy=True).info(f"{self.pathdir_catalogs = }")
         logger.opt(lazy=True).info(f"{self.pathdir_hadmap = }")
         logger.opt(lazy=True).info(f"{self.pathdir_output = }")
         logger.opt(lazy=True).info(f"{self.task_generalized_id = }")
@@ -187,6 +187,15 @@ class ProducerFactory(ABC):
             logger.error(f"Error creating output directories: {e}")
             raise
 
+    def _find_pathfile_catalogs(self, suffix: str = "xosc") -> List:
+        pathfile_catalogs = [
+            pathfile.resolve() for pathdir in self.pathdir_catalogs for pathfile in pathdir.glob(f"**/*.{suffix}")
+        ]
+
+        logger.opt(lazy=True).debug(f"{pathfile_catalogs = }")
+
+        return pathfile_catalogs
+
     def hook_send_maps_insert(self, scene: dict):
         pass
 
@@ -199,15 +208,7 @@ class ProducerFactory(ABC):
     def hook_send_status_fail(self):
         pass
 
-    def send_generalized_empty_error(self, *args):
-        logger.opt(lazy=True).warning("GeneralizedEmptyError found, No task_generalized defined")
-        self.hook_send_status_fail()
-
-    def send_testcase_empty_error(self, *args):
-        logger.opt(lazy=True).warning("TestcaseEmptyError found, No task_testcaselist defined")
-        self.hook_send_status_fail()
-
-    def send_except(self, *args):
+    def send_except_infos(self, *args):
         e = args[0]
 
         # 获取异常的 traceback 对象
@@ -232,7 +233,7 @@ class ProducerFactory(ABC):
 
     def step1_get_logic_param(self) -> Set[pd.DataFrame, dict]:
         # 检查数据源路径合法性, 并解析
-        parser = Parser(self.parser_factory, self.virtual_real_is_virtual)
+        parser = Parser(self.input_mode, self.input_data, self.virtual_real_is_virtual)
 
         # 实例化 Formater, 并格式化 scenes 场景描述 和 param 地图参数 和 用户设置
         formater = Formater(parser.define, parser.param, parser.settings_user, parser.classify_user, self.scene_filter)
@@ -323,7 +324,10 @@ class ProducerFactory(ABC):
         logger.opt(lazy=True).info(f"预计场景留存总数: {self._total_concretes}")
         logger.opt(lazy=True).info(f"预计生成剔除总数: {self._total_invalid}")
 
-    def step5_generate_file_xodr(self, concrete: pd.DataFrame) -> None:
+    def step5_generate_file_xodr(self, concrete: pd.DataFrame, enable: bool) -> bool:
+        if not enable:
+            return False
+
         # 生成 xodr 文件, 通过迭代器进行循环, 进而生成 xodr
         gxodr = GenXodr(
             gen_folder=self.pathdir_output_xodr,
@@ -342,12 +346,14 @@ class ProducerFactory(ABC):
 
         logger.opt(lazy=True).info(f"Finished xodr file {len(concrete_map)}")
 
+        return True
+
     def step6_generate_file_xosc(self, concrete: pd.DataFrame) -> None:
         # 生成 xosc 文件, 通过范围进行循环, 进而生成 xosc (用于控制外调接口性能)
         gxosc = GenXosc(
             gen_folder=self.pathdir_output_xosc,
             oscminor=settings.get("sys.version.oscminor", 0),
-            pathdir_catalog=self.pathdir_catalog,
+            pathfile_catalogs=self._find_pathfile_catalogs(suffix="xosc"),
         )
         concrete_xosc = concrete.apply(lambda x: x.dropna().to_dict(), axis=1).tolist()
         for count, scene in enumerate(concrete_xosc, start=1):
@@ -357,51 +363,89 @@ class ProducerFactory(ABC):
 
         logger.opt(lazy=True).info(f"Finished xosc file {len(concrete_xosc)}")
 
+    def generate_with_step(self) -> None:
+        # 读取并格式化所有 logic 场景 & 地图描述参数
+        logic, param = self.step1_get_logic_param()
+        # 获取 mapfiles_define
+        mapfiles_define = self.step2_get_mapfiles_define(logic, param)
+        # 获取全部 concrete 场景
+        concrete = self.step3_get_concrete(logic, param, mapfiles_define)
+        # 等待确认
+        self.step4_ready_and_waiting(wait_time_sec=0.5)
+        # 生成虚拟地图, 如果需要
+        self.step5_generate_file_xodr(concrete, self.virtual_real_is_virtual)
+        # 生成场景文件
+        self.step6_generate_file_xosc(concrete)
+
     def process(self) -> None:
         try:
-            # 读取并格式化所有 logic 场景 & 地图描述参数
-            logic, param = self.step1_get_logic_param()
-            # 获取 mapfiles_define
-            mapfiles_define = self.step2_get_mapfiles_define(logic, param)
-            # 获取全部 concrete 场景
-            concrete = self.step3_get_concrete(logic, param, mapfiles_define)
-            # 等待确认
-            self.step4_ready_and_waiting(wait_time_sec=0.5)
-            # 生成虚拟地图, 如果需要
-            if self.virtual_real_is_virtual:
-                self.step5_generate_file_xodr(concrete)
-            # 生成场景文件
-            self.step6_generate_file_xosc(concrete)
+            self.generate_with_step()
+
+        # 处理
+        except exp.PermissionError:
+            logger.opt(lazy=True).warning("PermissionError found")
+            self.hook_send_status_fail()
+
+        # 处理
+        except exp.RequestError:
+            logger.opt(lazy=True).warning("RequestError found")
+            self.hook_send_status_fail()
+
+        # 处理
+        except exp.PathfileIllegalError:
+            logger.opt(lazy=True).warning("PathfileIllegalError found")
+            self.hook_send_status_fail()
+
+        # 处理
+        except exp.SheetDefineNotFoundError:
+            logger.opt(lazy=True).warning("SheetDefineNotFoundError found")
+            self.hook_send_status_fail()
+
+        # 处理
+        except exp.ColumnsDefineNotFoundError:
+            logger.opt(lazy=True).warning("ColumnsDefineNotFoundError found")
+            self.hook_send_status_fail()
+
+        # 处理
+        except exp.AfterFilterEmptyError:
+            logger.opt(lazy=True).warning("AfterFilterEmptyError found")
+            self.hook_send_status_fail()
 
         # 处理未定义测试用例为空的情况
         except exp.TestcaseEmptyError:
-            self.send_testcase_empty_error()
+            logger.opt(lazy=True).warning("TestcaseEmptyError found")
+            self.hook_send_status_fail()
 
         # 处理未定义语义生成
         except exp.GeneralizedEmptyError:
-            self.send_generalized_empty_error()
+            logger.opt(lazy=True).warning("GeneralizedEmptyError found")
+            self.hook_send_status_fail()
 
         # 处理选择场景库地图 & 地图参数定义错误的情况
-        # except exp.MapConfigError:
-        #    pass
+        except exp.MapConfigError:
+            logger.opt(lazy=True).warning("MapConfigError found")
+            self.hook_send_status_fail()
 
         # 处理其余异常情况
         except Exception as e:
-            self.send_except(e)
+            self.send_except_infos(e)
 
         finally:
             self.send_finally()
-            sys.exit(0)  # 退出整个程序
+            # sys.exit(0)  # 退出整个程序
 
 
 @dataclass(order=True)
-class LocalProducerFactory(ProducerFactory):
+class LocalProducer(_BaseProducer):
     def __post_init__(self) -> None:
         super().__post_init__()
 
+    def hook_send_status_fail(self):
+        raise
+
 
 @dataclass(order=True)
-class DesktopProducerFactory(ProducerFactory):
+class DesktopProducer(_BaseProducer):
     def __post_init__(self):
         # 调用 Producer 类的 __post_init__ 方法
         super().__post_init__()
@@ -433,6 +477,14 @@ class DesktopProducerFactory(ProducerFactory):
             logger.opt(lazy=True).info("semantic/statu returned 2, exiting program...")
             sys.exit(0)  # 退出整个程序
 
+    def hook_send_status_fail(self):
+        self.api.send_semantic_statu(
+            gen_status=2,  # 生成失败
+            all_count=self._total_concretes,
+            non_count=self._total_invalid,
+            finished_count=self._ini,
+        )
+
     def step4_ready_and_waiting(self, wait_time_sec: int) -> None:
         super().step4_ready_and_waiting(wait_time_sec)
 
@@ -462,14 +514,6 @@ class DesktopProducerFactory(ProducerFactory):
                 # 等待 wait_time_sec 秒后再次检查
                 sleep(wait_time_sec)
 
-    def hook_send_status_fail(self):
-        self.api.send_semantic_statu(
-            gen_status=2,  # 生成失败
-            all_count=self._total_concretes,
-            non_count=self._total_invalid,
-            finished_count=self._ini,
-        )
-
 
 def parse_arguments() -> argparse.Namespace:
     """设置命令行参数."""
@@ -481,7 +525,7 @@ def parse_arguments() -> argparse.Namespace:
         "--input_mode",
         type=str,
         required=False,
-        choices=["excel", "feishu", "tencentdoc"],
+        choices=["excel", "feishu_bitable", "feishu_spreadsheet", "tencent_doc"],
         default="excel",
         help="Mode parameter, (default=excel) (optional)",
     )
@@ -492,11 +536,12 @@ def parse_arguments() -> argparse.Namespace:
         help="Input data (required)",
     )
     parser.add_argument(
-        "--pathdir_catalog",
+        "--pathdir_catalogs",
         type=str,
         required=False,
-        default="./catalogs",
-        help="Directory of the catalogs files (default='./catalogs') (optional)",
+        default=["./catalogs"],
+        nargs="+",
+        help="Directory of the catalogs files (default='[./catalogs]') (optional)",
     )
     parser.add_argument(
         "--pathdir_hadmap",
@@ -530,35 +575,23 @@ def main():
     # 获取配置文件
     input_mode = args.input_mode
     input_data = args.input_data
-    pathdir_catalog = Path(args.pathdir_catalog)
+    pathdir_catalogs = [Path(x) for x in args.pathdir_catalogs]
     pathdir_hadmap = Path(args.pathdir_hadmap)
     pathdir_output = Path(args.pathdir_output) if args.pathdir_output else Path.cwd()
     producer_mode = args.producer_mode
     task_generalized_id = int(datetime.now().strftime("%Y%m%d%H%M%S"))
 
-    # 根据模式获得 parser_factory
-    if input_mode == "excel":
-        parser_factory = ExcelParserFactory(Path(input_data))
-    elif input_mode == "feishu":
-        parser_factory = FeishuBittableParserFactory(
-            app_id=settings.feishu.app_id,
-            app_secret=settings.feishu.app_secret,
-            app_token=input_data,
-        )
-    else:
-        raise ValueError(f"Invalid input_mode: {args.input_mode = }")
-
-    # 根据模式获得 producer_factory
-    params = parser_factory, pathdir_catalog, pathdir_hadmap, pathdir_output, task_generalized_id
+    # 根据模式获得 producer
+    params = input_mode, input_data, pathdir_catalogs, pathdir_hadmap, pathdir_output, task_generalized_id
     if producer_mode == "local":
-        producer_factory = LocalProducerFactory(*params)
+        producer = LocalProducer(*params)
     elif producer_mode == "desktop":
-        producer_factory = DesktopProducerFactory(*params)
+        producer = DesktopProducer(*params)
     else:
         raise ValueError(f"Invalid producer_mode: {producer_mode}")
 
     # 执行生成动作
-    producer_factory.process()
+    producer.process()
 
 
 if __name__ == "__main__":

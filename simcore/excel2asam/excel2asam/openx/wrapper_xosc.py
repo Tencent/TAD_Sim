@@ -23,10 +23,7 @@ from scenariogeneration import xosc
 from excel2asam.config import settings
 from excel2asam.map.lib.hadmap_py import Waypoint
 from excel2asam.openx.wrapper_xosc_factory import CreatAction, CreatTrigger
-from excel2asam.utils import KAction, KEvent, KTrigger, WrapperCatalogLoader, check_add_suffix
-
-# TODO: 扩展 scenariogeneration 能力, 待第三方库具备这个能力后可删除
-xosc.CatalogLoader.load_catalog = WrapperCatalogLoader.load_catalog
+from excel2asam.utils import KAction, KEvent, KTrigger, check_add_suffix
 
 
 @dataclass(order=True)
@@ -434,7 +431,7 @@ class GenXosc:
 
     gen_folder: Path
     oscminor: int
-    pathdir_catalog: Path
+    pathfile_catalogs: List[Path]
 
     def __post_init__(self):
         self.author = settings.sys.author
@@ -442,14 +439,12 @@ class GenXosc:
         wrapper_catalog = WrapperCatalog()
         self.catalog = wrapper_catalog.get_result()
 
-        self._entry_library = self._get_entry_library(self.pathdir_catalog)
+        self._entry_library = self._get_entry_library(self.pathfile_catalogs)
 
         self.creat_action = CreatAction()
         self.creat_trigger = CreatTrigger()
 
-    def _get_entry_library(self, pathdir: Path, suffix: str = "xosc") -> dict:
-        pathfile_catalogs = pathdir.glob(f"**/*.{suffix}")
-
+    def _get_entry_library(self, pathfile_catalogs: List[Path]) -> dict:
         mapping = {
             "Vehicle": "Veh",
             "Pedestrian": "Vru",
@@ -464,7 +459,9 @@ class GenXosc:
         catalog_library = xosc.CatalogLoader()
         for pathfile in pathfile_catalogs:
             logger.opt(lazy=True).debug(f"Loading catalog file: {pathfile}")
-            catalog_library.load_catalog(pathfile.stem, str(pathfile.parent))
+            catalog_library.load_catalog(str(pathfile.with_suffix("")), str(pathfile.parent))
+
+        logger.opt(lazy=True).debug(f"{catalog_library.all_catalogs = }")
 
         out: Dict[str, Any] = {}
         for catalogname, catalog in catalog_library.all_catalogs.items():
@@ -526,33 +523,70 @@ class GenXosc:
         default_model_by_category = {"Veh": "Sedan", "Vru": "human", "Misc": "Cone"}
 
         k_name = f"{category}_{model}"
-        if k_name in entry_library_keys:
-            out = f"{category}_{model}"
-        else:
-            out = f"{category}_{default_model_by_category[category]}"
+        return (
+            f"{category}_{model}"
+            if k_name in entry_library_keys
+            else f"{category}_{default_model_by_category[category]}"
+        )
 
-        return out
+    def one_entitie(self, scene: dict, hname: str, entityname: str, wrapper_entities: WrapperEntities) -> None:
+        controller = scene.get(f"{hname}.Phy.Controller")
+        entity = self._get_entity_with_default(
+            category=scene[f"{hname}.Phy.Category"],
+            model=scene[f"{hname}.Phy.Model"],
+            entry_library_keys=self._entry_library.keys(),
+        )
+        entityobject = self._entry_library[entity]
+        wrapper_entities.set_entities(entityname, entityobject, controller)
 
-    def generate(self, scene: dict, func: Callable[..., Any] = None) -> None:
-        # print("============== start =====================")
-        # print(f"{scene['ConcreteId'] = } {scene[settings.sys.l0.cols.mapfile] = }")
-        # print("============== end =====================")
+    def one_init(self, scene: dict, hname: str, entityname: str, wrapper_init: WrapperInit) -> None:
+        # 设置初始速度
+        if f"{hname}.Ini.Speed" in scene:
+            speed = scene[f"{hname}.Ini.Speed"]
+            # print(f"{speed = }")
+            wrapper_init.set_absolute_speed(entityname, speed)
 
-        # 创建 wrapper_pardecs
-        wrapper_pardecs = WrapperPardecs()
+        # 设置 waypoint
+        if f"{hname}.Ini.Wpts" in scene:
+            wpts = [x for x in scene[f"{hname}.Ini.Wpts"] if isinstance(x, Waypoint)]
 
-        # 创建 wrapper_roadnetwork
-        wrapper_roadnetwork = WrapperRoadNetwork()
-        wrapper_roadnetwork.set_roadnetwork(f"{scene[settings.sys.l0.cols.mapfile]}")
+            # 设置初始位置
+            if len(wpts) == 1:
+                wrapper_init.set_worldposition(entityname, wpts[0])
+            # 当存在轨迹时, 设置多个 routing
+            elif len(wpts) > 1:
+                wrapper_init.set_routing(entityname, wpts)
+            # 无轨迹点
+            else:
+                logger.opt(lazy=True).info(f"without wpts, info: {wpts = }")
 
-        # 如果存在交通灯, 则进行信控相关语义灯的配置, tadsim 在 wrapper_roadnetwork 和 wrapper_pardecs 自定义内容
-        leg_mapping = settings.sys.l1.JunctionType.leg
-        leg = leg_mapping[scene["Junction.Type"]] if scene["Junction.Type"] in leg_mapping.keys() else 0
+    def one_story(self, scene: dict, hname: str, entityname: str, wrapper_story: WrapperStory) -> None:
+        # 设置 kevents
+        kevents = [
+            KEvent(
+                trigger=self._format_ktrig(hname, scene, i),
+                actions=[
+                    self._format_kaction(hname, scene, i, j)
+                    for j in range(1, scene[f"{hname}.Dyn{i}.{settings.sys.l0.cols.allnum_action}"] + 1)
+                ],
+            )
+            for i in range(1, scene[f"{hname}.{settings.sys.l0.cols.allnum_dyn}"] + 1)
+        ]
 
+        # print(f"{kevents = }")
+        wrapper_story.set_story(entityname, kevents)
+
+    def all_trafficlights(
+        self, scene: dict, wrapper_pardecs: WrapperPardecs, wrapper_roadnetwork: WrapperRoadNetwork
+    ) -> None:
         # TODO: 暂时屏蔽掉改功能, 因为位置点还是设置有问题存在
         # have_trafficlight = True if (scene["Trafficlight.Status"] and leg) else False
         have_trafficlight = False
         if have_trafficlight:
+            # 如果存在交通灯, 则进行信控相关语义灯的配置, tadsim 在 wrapper_roadnetwork 和 wrapper_pardecs 自定义内容
+            leg_mapping = settings.sys.l1.JunctionType.leg
+            leg = leg_mapping[scene["Junction.Type"]] if scene["Junction.Type"] in leg_mapping.keys() else 0
+
             # 设置的信控方案, 存在用户设置则使用用户, 否则使用系统预设, 并设置选择的方案
             # user_cycle = scene["Trafficlight.Cycle"]
             user_cycle = scene.get("Trafficlight.Cycle")
@@ -571,6 +605,21 @@ class GenXosc:
                 route=str(scene.get("Trafficlight.Route")),
             )
 
+    def generate(self, scene: dict, func: Callable[..., Any] = None) -> None:
+        # print("============== start =====================")
+        # print(f"{scene['ConcreteId'] = } {scene[settings.sys.l0.cols.mapfile] = }")
+        # print("============== end =====================")
+
+        # 创建 wrapper_pardecs
+        wrapper_pardecs = WrapperPardecs()
+
+        # 创建 wrapper_roadnetwork
+        wrapper_roadnetwork = WrapperRoadNetwork()
+        wrapper_roadnetwork.set_roadnetwork(f"{scene[settings.sys.l0.cols.mapfile]}")
+
+        # 创建交通灯
+        self.all_trafficlights(scene, wrapper_pardecs, wrapper_roadnetwork)
+
         # 设置环境
         wrapper_init = WrapperInit(self.creat_action)
         wrapper_init.set_environment(ktime=float(scene.get("Env.Time", 12.0)), kwether=str(scene.get("Env.Weather")))
@@ -580,52 +629,16 @@ class GenXosc:
         wrapper_story = WrapperStory(self.creat_action, self.creat_trigger)
         for hname in ["Ego", *[f"Npc{i}" for i in range(1, scene[settings.sys.l0.cols.allnum_npc] + 1)]]:
             # print(f"{hname = }")
-            # 设置物理属性
             entityname = hname  # 设置相同, 为后续扩展留下接口
-            controller = scene.get(f"{hname}.Phy.Controller")
-            entity = self._get_entity_with_default(
-                category=scene[f"{hname}.Phy.Category"],
-                model=scene[f"{hname}.Phy.Model"],
-                entry_library_keys=self._entry_library.keys(),
-            )
-            entityobject = self._entry_library[entity]
-            wrapper_entities.set_entities(entityname, entityobject, controller)
 
-            # 设置初始速度
-            if f"{hname}.Ini.Speed" in scene:
-                speed = scene[f"{hname}.Ini.Speed"]
-                # print(f"{speed = }")
-                wrapper_init.set_absolute_speed(entityname, speed)
+            # 设置物理属性
+            self.one_entitie(scene, hname, entityname, wrapper_entities)
 
-            # 设置 waypoint
-            if f"{hname}.Ini.Wpts" in scene:
-                wpts = scene[f"{hname}.Ini.Wpts"]
-                # if isinstance(wpts[0], Waypoint):
-                #     wrapper_init.set_worldposition(entityname, wpts[0])
-                # # 判断 wpts 中第二位是否存在(是否为 0.0), 构建 wpts 时, 不存在 wpt 的值会赋值为 0.0
-                # if len(wpts) > 1 and isinstance(wpts[1], Waypoint):
-                #     wrapper_init.set_routing(entityname, wpts)
+            # 设置初始属性
+            self.one_init(scene, hname, entityname, wrapper_init)
 
-                if isinstance(wpts[0], Waypoint):
-                    if len(wpts) == 1:
-                        wrapper_init.set_worldposition(entityname, wpts[0])
-                    elif len(wpts) > 1 and all(isinstance(wpt, Waypoint) for wpt in wpts):
-                        wrapper_init.set_routing(entityname, wpts)
-
-            # 设置 kevents
-            kevents = [
-                KEvent(
-                    trigger=self._format_ktrig(hname, scene, i),
-                    actions=[
-                        self._format_kaction(hname, scene, i, j)
-                        for j in range(1, scene[f"{hname}.Dyn{i}.{settings.sys.l0.cols.allnum_action}"] + 1)
-                    ],
-                )
-                for i in range(1, scene[f"{hname}.{settings.sys.l0.cols.allnum_dyn}"] + 1)
-            ]
-
-            # print(f"{kevents = }")
-            wrapper_story.set_story(entityname, kevents)
+            # 设置动态属性
+            self.one_story(scene, hname, entityname, wrapper_story)
 
         # 合并生成 Storyboard
         storyboard = xosc.StoryBoard(wrapper_init.get_result())

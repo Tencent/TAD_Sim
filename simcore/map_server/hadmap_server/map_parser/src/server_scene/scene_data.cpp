@@ -3092,15 +3092,18 @@ const wchar_t* CSceneData::StartExe(const wchar_t* wstrparam) {
   // --pathdir_output
   boost::filesystem::path output_path = CEngineConfig::Instance().getTadsimDir();
   str_cmd += make_cmd_string("pathdir_output", output_path.string());
-  // --pathdir_catalog
-  boost::filesystem::path catalog_path = CEngineConfig::Instance().getCataLogDir();
-  catalog_path = catalog_path.parent_path().parent_path();
-  str_cmd += make_cmd_string("pathdir_catalog", catalog_path.string());
+  // --pathdir_catalogs
+  // boost::filesystem::path catalog_path_data = CEngineConfig::Instance().getCataLogDir();
+  // catalog_path_data = catalog_path_data.parent_path().parent_path();
+  boost::filesystem::path catalog_path_sys = CEngineConfig::Instance().getSysCatalogsDir();
+  str_cmd += make_cmd_string("pathdir_catalogs", catalog_path_sys.string());
   // --pathdir_hadmap
   if (root.get("mapType", 0).asInt()) {
     str_cmd += make_cmd_string("pathdir_hadmap", CEngineConfig::Instance().getHadmapDataDir());
   }
+  // --producer_mode
   str_cmd += "--producer_mode=desktop";
+
   // 保存需要生成场景集名称,用于确定后生成场景集
   m_SemanticSetName = root.get("scenariosSet", "").asString();
 

@@ -41,14 +41,17 @@ class ModelDbscan:
         closest_npc = None
         if row["AllnumNpc"] > 0:
             for i in range(1, row["AllnumNpc"] + 1):
-                if not pd.isnull(row[f"Npc{i}.Rel.Ref"]) and row[f"Npc{i}.Rel.Ref"] == "Ego":
-                    if (
+                if (
+                    not pd.isnull(row[f"Npc{i}.Rel.Ref"])
+                    and row[f"Npc{i}.Rel.Ref"] == "Ego"
+                    and (
                         not pd.isnull(row[f"Npc{i}.Rel.Long"])
                         and row[f"Npc{i}.Rel.Long"] > 0
                         and row[f"Npc{i}.Rel.Long"] < min_distance
-                    ):
-                        min_distance = row[f"Npc{i}.Rel.Long"]
-                        closest_npc = i
+                    )
+                ):
+                    min_distance = row[f"Npc{i}.Rel.Long"]
+                    closest_npc = i
 
         if closest_npc is not None:
             if not pd.isnull(row[f"Npc{closest_npc}.AllnumDyn"]) and row[f"Npc{closest_npc}.AllnumDyn"] > 0:
@@ -233,7 +236,7 @@ class ModelDbscan:
         if self.n_x.empty:
             return result
 
-        n_components = 3 if self.n_x.shape[0] > 3 else self.n_x.shape[0]
+        n_components = min(self.n_x.shape[0], 3)
         pca_weights = self.pca(n_components)
 
         clf = DBSCAN(eps=eps, min_samples=min_samples)

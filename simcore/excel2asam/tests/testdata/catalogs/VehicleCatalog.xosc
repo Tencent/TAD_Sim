@@ -1,0 +1,1598 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="0" date="2018-11-8T17:00:00" author="TAD Sim" />
+    <!-- Cars -->
+    <Catalog name="VehicleCatalog">
+        <Vehicle name="MPV_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.281" y="0.0" z="0.966" />
+                <Dimensions height="1.93244" length="4.47884" width="2.14375" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.6" trackWidth="1.46" positionX="2.809" positionZ="0.3" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.6" trackWidth="1.46" positionX="0" positionZ="0.3" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="505" />
+                <Property name="model3d" value="mpv/BP_V_WLHG_B_lod_jihzxtd.fbx" />
+                <Property name="zhName" value="商务车001" />
+                <Property name="enName" value="MPV 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MPV_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.281" y="0.0" z="0.966" />
+                <Dimensions height="1.93244" length="4.4861" width="2.1474" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.6" trackWidth="1.46" positionX="2.809" positionZ="0.3" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.6" trackWidth="1.46" positionX="0" positionZ="0.3" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="511" />
+                <Property name="model3d" value="wlhg/m_wlhg.fbx" />
+                <Property name="zhName" value="商务车002" />
+                <Property name="enName" value="MPV 002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_FullLoad_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="2.299825" />
+                <Dimensions height="4.59965" length="15.3236" width="3.6" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.82162" trackWidth="2.015" positionX="7.72012" positionZ="0.91081" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.82162" trackWidth="2.015" positionX="0" positionZ="0.91081" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="503" />
+                <Property name="model3d" value="aiv/sm_tuobanche_jzx.fbx" />
+                <Property name="zhName" value="拖板车001(满载)" />
+                <Property name="enName" value="AIV full load 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_Empty_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="1.09236" />
+                <Dimensions height="2.18472" length="15.3236" width="3.6" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.82162" trackWidth="2.015" positionX="7.72012" positionZ="0.91081" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.82162" trackWidth="2.015" positionX="0" positionZ="0.91081" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="504" />
+                <Property name="model3d" value="aiv/sm_tubanche.fbx" />
+                <Property name="zhName" value="拖板车001（空载）" />
+                <Property name="enName" value="AIV empty 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_FullLoad_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="2.216" />
+                <Dimensions height="4.43217" length="15.4843" width="2.94674" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.34205" trackWidth="2.181" positionX="4.62208" positionZ="0.671025" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.34205" trackWidth="2.181" positionX="0" positionZ="0.671025" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="506" />
+                <Property name="model3d" value="sm_AIV_FullLoad_002/SM_AIV_FullLoad_002.fbx" />
+                <Property name="zhName" value="拖板车002（满载）" />
+                <Property name="enName" value="AIV full load 002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_Empty_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.809" y="0.0" z="1.183" />
+                <Dimensions height="2.36692" length="15.4843" width="2.94674" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.34205" trackWidth="2.181" positionX="7.616" positionZ="0.671025" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.34205" trackWidth="2.181" positionX="0" positionZ="0.671025" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="507" />
+                <Property name="model3d" value="sm_AIV_Empty_002/SM_AIV_Empty_002.fbx" />
+                <Property name="zhName" value="拖板车002（空载）" />
+                <Property name="enName" value="AIV empty 002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MIFA_01" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.499" y="0.0" z="0.921" />
+                <Dimensions height="1.84261" length="5.15401" width="2.26134" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.704" trackWidth="1.674" positionX="3.141" positionZ="0.352" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.704" trackWidth="1.674" positionX="0" positionZ="0.352" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="508" />
+                <Property name="model3d" value="sm_MIFA_01/sm_MIFA_01.fbx" />
+                <Property name="zhName" value="MIFA" />
+                <Property name="enName" value="MIFA" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Sedan" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.452" y="0" z="0.748" />
+                <Dimensions width="2.015" length="5.007" height="1.495" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="0.709" trackWidth="1.496" positionX="2.904" positionZ="0.355" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="0.709" trackWidth="1.496" positionX="0" positionZ="0.355" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="1" />
+                <Property name="model3d" value="sk_redcar/sk_redcar_lod4.fbx" />
+                <Property name="zhName" value="轿车" />
+                <Property name="enName" value="Sedan" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.434" y="0.0" z="0.8832" />
+                <Dimensions height="1.76632" length="4.76566" width="2.1822" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.775" trackWidth="1.687" positionX="2.91" positionZ="0.375" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.775" trackWidth="1.687" positionX="0" positionZ="0.375" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="2" />
+                <Property name="model3d" value="suv/sm_suv.fbx" />
+                <Property name="zhName" value="SUV" />
+                <Property name="enName" value="SUV" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Truck" vehicleCategory="truck">
+            <BoundingBox>
+                <Center x="1.86441" y="0.0" z="1.751" />
+                <Dimensions height="3.502" length="6.48103" width="3.19717" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.863827" trackWidth="1.942" positionX="3.802" positionZ="0.4319135" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.882451" trackWidth="1.906" positionX="0" positionZ="0.4412255" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="4" />
+                <Property name="model3d" value="xiaohuoche/xiaohuoche.fbx" />
+                <Property name="zhName" value="小货车" />
+                <Property name="enName" value="Small Truck" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Bus" vehicleCategory="bus">
+            <BoundingBox>
+                <Center x="3.39276" y="0.0" z="1.57813" />
+                <Dimensions height="3.15625" length="11.04464" width="3.07824" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.986" trackWidth="2.475" positionX="6.325" positionZ="0.493" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.986" trackWidth="2.475" positionX="0" positionZ="0.493" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="3" />
+                <Property name="model3d" value="gongjiaoche/gongjiaoche.fbx" />
+                <Property name="zhName" value="公交车" />
+                <Property name="enName" value="Bus" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Sedan_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.546" y="0.0" z="0.6819" />
+                <Dimensions height="1.3638" length="4.70412" width="1.84725" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.63" trackWidth="1.434" positionX="2.825" positionZ="0.315" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.63" trackWidth="1.434" positionX="0" positionZ="0.315" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="6" />
+                <Property name="model3d" value="sedan001/sedan001.fbx" />
+                <Property name="zhName" value="轿车001" />
+                <Property name="enName" value="Sedan001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Sedan_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.343" y="0.0" z="0.82558" />
+                <Dimensions height="1.65116" length="4.7044" width="1.95503" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.673" trackWidth="1.39" positionX="2.729" positionZ="0.336" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.673" trackWidth="1.39" positionX="0" positionZ="0.336" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="7" />
+                <Property name="model3d" value="sedan002/SK_Taxi.fbx" />
+                <Property name="zhName" value="轿车002" />
+                <Property name="enName" value="Sedan002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Sedan_003" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.478" y="0.0" z="0.7557" />
+                <Dimensions height="1.5114" length="5.09049" width="2.10347" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.678" trackWidth="1.586" positionX="2.956" positionZ="0.339" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.678" trackWidth="1.586" positionX="0" positionZ="0.339" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="8" />
+                <Property name="model3d" value="sedan003/jiaoche003.fbx" />
+                <Property name="zhName" value="轿车003" />
+                <Property name="enName" value="Sedan003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Sedan_004" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.578" y="0.0" z="0.98992" />
+                <Dimensions height="1.97984" length="5.993" width="2.50257" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.844" trackWidth="1.627" positionX="3.546" positionZ="0.422" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.844" trackWidth="1.627" positionX="0" positionZ="0.422" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="9" />
+                <Property name="model3d" value="sedan004/sedan004.fbx" />
+                <Property name="zhName" value="轿车004" />
+                <Property name="enName" value="Sedan004" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.466" y="0.0" z="0.87335" />
+                <Dimensions height="1.7467" length="4.74135" width="2.30868" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.742" trackWidth="1.803" positionX="2.963" positionZ="0.371" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.742" trackWidth="1.803" positionX="0" positionZ="0.371" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="10" />
+                <Property name="model3d" value="suv001/suv001.fbx" />
+                <Property name="zhName" value="SUV001" />
+                <Property name="enName" value="SUV001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV_002" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.351" y="0.0" z="0.81223" />
+                <Dimensions height="1.62446" length="4.59537" width="2.04714" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.699" trackWidth="1.614" positionX="2.802" positionZ="0.349" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.699" trackWidth="1.614" positionX="0" positionZ="0.349" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="11" />
+                <Property name="model3d" value="suv002/suv002.fbx" />
+                <Property name="zhName" value="SUV002" />
+                <Property name="enName" value="SUV002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV_003" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.377" y="0.0" z="0.87566" />
+                <Dimensions height="1.75131" length="4.71951" width="2.25958" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.817" trackWidth="1.602" positionX="2.815" positionZ="0.408" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.817" trackWidth="1.602" positionX="0" positionZ="0.408" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="12" />
+                <Property name="model3d" value="suv003/suv003.fbx" />
+                <Property name="zhName" value="SUV003" />
+                <Property name="enName" value="SUV003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV_004" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.43" y="0.0" z="0.88316" />
+                <Dimensions height="1.76632" length="4.76566" width="2.1822" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.732" trackWidth="1.687" positionX="2.91" positionZ="0.366" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.732" trackWidth="1.687" positionX="0" positionZ="0.366" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="13" />
+                <Property name="model3d" value="suv004/suv_004.fbx" />
+                <Property name="zhName" value="SUV004" />
+                <Property name="enName" value="SUV004" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="SUV_005" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.478" y="0.0" z="0.84803" />
+                <Dimensions height="1.69606" length="4.73441" width="2.12369" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.776" trackWidth="1.576" positionX="2.87" positionZ="0.388" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.776" trackWidth="1.576" positionX="0" positionZ="0.388" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="18" />
+                <Property name="model3d" value="suv005/suv005.fbx" />
+                <Property name="zhName" value="SUV005" />
+                <Property name="enName" value="SUV005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Truck_002" vehicleCategory="truck">
+            <BoundingBox>
+                <Center x="1.72344" y="0.0" z="1.03438" />
+                <Dimensions height="2.06875" length="5.58606" width="2.40489" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.65783" trackWidth="1.597" positionX="3.603" positionZ="0.328915" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.65783" trackWidth="1.597" positionX="0" positionZ="0.328915" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="14" />
+                <Property name="model3d" value="xiaohuoche002/xiaohuoche002.fbx" />
+                <Property name="zhName" value="小货车002" />
+                <Property name="enName" value="Truck002" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Truck_003" vehicleCategory="truck">
+            <BoundingBox>
+                <Center x="1.86441" y="0.0" z="1.7455" />
+                <Dimensions height="3.502" length="6.481" width="3.197" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.864" trackWidth="2.475" positionX="3.802" positionZ="0.432" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.864" trackWidth="2.475" positionX="0" positionZ="0.432" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="15" />
+                <Property name="model3d" value="xiaohuoche003/xiaohuoche003.fbx" />
+                <Property name="zhName" value="小货车003" />
+                <Property name="enName" value="Truck003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Bus_001" vehicleCategory="bus">
+            <BoundingBox>
+                <Center x="3.39276" y="0.0" z="1.57813" />
+                <Dimensions height="3.15626" length="11.04464" width="3.07825" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.986" trackWidth="2.474" positionX="6.325" positionZ="0.4935" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.986" trackWidth="2.474" positionX="0" positionZ="0.4935" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="16" />
+                <Property name="model3d" value="gongjiaoche001/gongjiaoche001.fbx" />
+                <Property name="zhName" value="公交车001" />
+                <Property name="enName" value="Bus001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Semi_Trailer_Truck_001" vehicleCategory="semitrailer">
+            <BoundingBox>
+                <Center x="4.851" y="-0.019" z="2.05954" />
+                <Dimensions height="4.11907" length="15.6571" width="3.16956" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.04312" trackWidth="1.995" positionX="9.33" positionZ="0.5216" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.04312" trackWidth="1.995" positionX="0" positionZ="0.5216" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="17" />
+                <Property name="model3d" value="kache001/kache001.fbx" />
+                <Property name="zhName" value="卡车001" />
+                <Property name="enName" value="Semi Trailer Truck 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Truck_with_cargobox" vehicleCategory="semitrailer">
+            <BoundingBox>
+                <Center x="4.5" y="0.0" z="2" />
+                <Dimensions height="4.0497" length="15.2742" width="3.1718" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.09418" trackWidth="2.226" positionX="8.71" positionZ="0.54709" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.09418" trackWidth="2.226" positionX="0" positionZ="0.54709" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="509" />
+                <Property name="model3d" value="sm_Truck_with_cargobox/sm_Truck_with_cargobox.fbx" />
+                <Property name="zhName" value="卡车 (满载)" />
+                <Property name="enName" value="Truck with cargobox" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Truck_without_cargobox" vehicleCategory="semitrailer">
+            <BoundingBox>
+                <Center x="4.5" y="0.0" z="1.9" />
+                <Dimensions height="3.861" length="15.2742" width="3.1718" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.09418" trackWidth="2.226" positionX="8.71" positionZ="0.54709" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.09418" trackWidth="2.226" positionX="0" positionZ="0.54709" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="510" />
+                <Property name="model3d" value="sm_Truck_without_cargobox/sm_Truck_without_cargobox.fbx" />
+                <Property name="zhName" value="卡车 (空载)" />
+                <Property name="enName" value="Truck without cargobox" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AdminVehicle_01" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.705057" y="0.0" z="0.913438" />
+                <Dimensions height="1.82383" length="2.53191" width="1.14829" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.660817" trackWidth="0" positionX="1.641" positionZ="0.3304085" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.660817" trackWidth="0" positionX="0" positionZ="0.3304085" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="601" />
+                <Property name="model3d" value="police/sm_motor-jiaojing.fbx" />
+                <Property name="zhName" value="警车01" />
+                <Property name="enName" value="Police Motorcycle 01" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AdminVehicle_02" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.36245" y="0.0" z="0.94219" />
+                <Dimensions height="1.88438" length="4.55232" width="2.10891" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.714523" trackWidth="1.599" positionX="2.689" positionZ="0.3572615" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.714523" trackWidth="1.599" positionX="0" positionZ="0.3572615" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="602" />
+                <Property name="model3d" value="police_suv/sm_policesuv.fbx" />
+                <Property name="zhName" value="警车02" />
+                <Property name="enName" value="Police Motorcycle 02" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Bus_005" vehicleCategory="bus">
+            <BoundingBox>
+                <Center x="2.657" y="0.0" z="1.7291" />
+                <Dimensions height="3.45819" length="12.21695" width="2.96635" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.626" trackWidth="2.214" positionX="5.964" positionZ="0.313" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.626" trackWidth="2.214" positionX="0" positionZ="0.313" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="25" />
+                <Property name="model3d" value="bus/sm_bus-tegv10.fbx" />
+                <Property name="zhName" value="公交车005" />
+                <Property name="enName" value="Bus005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Ambulance" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.64724" y="0.0" z="1.2832" />
+                <Dimensions height="2.56639" length="6.05947" width="2.42539" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.71876" trackWidth="1.71" positionX="3.665" positionZ="0.35938" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.71876" trackWidth="1.71" positionX="0" positionZ="0.35938" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="501" />
+                <Property name="model3d" value="ambulance/SM_Ambulance_a.fbx" />
+                <Property name="zhName" value="救护车" />
+                <Property name="enName" value="Ambulance" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="moto_001" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.663" y="0.0" z="0.88302" />
+                <Dimensions height="1.76603" length="1.91923" width="0.853312" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.61786" trackWidth="0" positionX="1.134" positionZ="0.308" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.61786" trackWidth="0" positionX="0" positionZ="0.308" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="301" />
+                <Property name="model3d" value="motocycle001/sm_motorcycle_a_001.fbx" />
+                <Property name="zhName" value="摩托车001" />
+                <Property name="enName" value="Motorcycles001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="bike_001" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.557" y="0.0" z="0.8654" />
+                <Dimensions height="1.73079" length="1.81366" width="0.70831" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.698682" trackWidth="0" positionX="1.114" positionZ="0.349341" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.698682" trackWidth="0" positionX="0" positionZ="0.349341" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="201" />
+                <Property name="model3d" value="bike001/sm_bike_web.fbx" />
+                <Property name="zhName" value="自行车001" />
+                <Property name="enName" value="Bikes001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="elecBike_001" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.595" y="0.0" z="0.89841" />
+                <Dimensions height="1.79682" length="1.85863" width="0.801045" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.515268" trackWidth="0" positionX="1.266" positionZ="0.257634" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.515268" trackWidth="0" positionX="0" positionZ="0.257634" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="202" />
+                <Property name="model3d" value="elecbike/sm_elecbike.fbx" />
+                <Property name="zhName" value="电动车001" />
+                <Property name="enName" value="Electric Bike 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="tricycle_001" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.687" y="0.0" z="0.91604" />
+                <Dimensions height="1.83208" length="3.07313" width="1.2084" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.514" trackWidth="0" positionX="2.004" positionZ="0.257634" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.514" trackWidth="0.838" positionX="0" positionZ="0.257634" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="203" />
+                <Property name="model3d" value="tricycle001/sm_tricycle_001.fbx" />
+                <Property name="zhName" value="快递车001" />
+                <Property name="enName" value="Express Car 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="tricycle_002" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.742" y="0.0" z="0.82189" />
+                <Dimensions height="1.64377" length="2.86315" width="1.06661" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.446254" trackWidth="0" positionX="1.95" positionZ="0.223209" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.446254" trackWidth="1.484" positionX="0" positionZ="0.223209" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="204" />
+                <Property name="model3d" value="tricycle002/sm_dd_sl_man.fbx" />
+                <Property name="zhName" value="电动三轮车" />
+                <Property name="enName" value="Electric Tricycle" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="vendingCar_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="0.564" y="0.0" z="0.664" />
+                <Dimensions height="1.32712" length="1.60779" width="0.78042" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.297772" trackWidth="1.016" positionX="1.072" positionZ="0.148" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.297772" trackWidth="1.016" positionX="0" positionZ="0.148" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="401" />
+                <Property name="model3d" value="vendingCar_001/vendingCar.fbx" />
+                <Property name="zhName" value="自动售卖车" />
+                <Property name="enName" value="Vending Car" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_001" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.295" y="-21.942" z="38.423" />
+                <Dimensions height="76.8453" length="27.8862" width="133.336" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="601" />
+                <Property name="model3d" value="anqiao/sm_diaoqiao_a.fbx" />
+                <Property name="zhName" value="岸桥001" />
+                <Property name="enName" value="Quay Crane 001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="602" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a.fbx" />
+                <Property name="zhName" value="场桥" />
+                <Property name="enName" value="RMG" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002_0_0" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="603" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a_0m.fbx" />
+                <Property name="zhName" value="场桥 0m" />
+                <Property name="enName" value="Field Bridge 0m" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002_0_2" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="604" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a_0.2m.fbx" />
+                <Property name="zhName" value="场桥 0.2m" />
+                <Property name="enName" value="Field Bridge 0.2m" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002_0_5" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="605" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a_0.5m.fbx" />
+                <Property name="zhName" value="场桥 0.5m" />
+                <Property name="enName" value="Field Bridge 0.5m" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002_1_0" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="606" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a_1m.fbx" />
+                <Property name="zhName" value="场桥 1m" />
+                <Property name="enName" value="Field Bridge 1m" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_002_5_0" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.001" y="0" z="11.675" />
+                <Dimensions height="23.3495" length="13.3515" width="27.8283" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="607" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_a_5m.fbx" />
+                <Property name="zhName" value="场桥 5m" />
+                <Property name="enName" value="Field Bridge 5m" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_004" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="-0.099" y="0" z="15.62465" />
+                <Dimensions height="31.2493" length="43.1749" width="24.6610" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="609" />
+                <Property name="model3d" value="changqiao/sm_longmendiao_b_5m.fbx" />
+                <Property name="zhName" value="罗泾港场桥" />
+                <Property name="enName" value="Luojing Port RTG" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Port_Crane_003" vehicleCategory="crane">
+            <BoundingBox>
+                <Center x="0.354" y="-6.187" z="23.969" />
+                <Dimensions height="47.9388" length="15.6372" width="76.5348" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles />
+            <Properties>
+                <Property name="model_id" value="608" />
+                <Property name="model3d" value="anqiao2/sm_anqiaodiao_b_zc.fbx" />
+                <Property name="zhName" value="罗泾港岸桥" />
+                <Property name="enName" value="Luojing Port Quay Crane" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="machine" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_V5_FullLoad_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.806" y="0.018" z="2.24583" />
+                <Dimensions height="4.49165" length="14.87183" width="2.95673" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="7.583" positionZ="0.688055" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="0" positionZ="0.688055" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="513" />
+                <Property name="model3d" value="aiv002/sm_aiv_new_full.fbx" />
+                <Property name="zhName" value="拖板车005（满载）" />
+                <Property name="enName" value="AIV full load 005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="AIV_V5_Empty_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="3.806" y="0.018" z="1.1067" />
+                <Dimensions height="2.21339" length="14.87183" width="2.95673" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="7.583" positionZ="0.688055" />
+                <RearAxle maxSteering="0.52" wheelDiameter="1.37611" trackWidth="2.167" positionX="0" positionZ="0.688055" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="514" />
+                <Property name="model3d" value="aiv002/sm_aiv_new.fbx" />
+                <Property name="zhName" value="拖板车005（空载）" />
+                <Property name="enName" value="AIV empty 005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MiningDumpTruck_001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="2.288" y="0.0" z="2.641" />
+                <Dimensions width="6.1117" length="10.4734" height="5.28209" />
+            </BoundingBox>
+            <Performance maxSpeed="69" maxAcceleration="10" maxDeceleration="30" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="2.626" trackWidth="4.31" positionX="5.12187" positionZ="1.313" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="2.626" trackWidth="4.31" positionX="0" positionZ="1.313" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="512" />
+                <Property name="model3d" value="maintruck/maintruk_jiaotongche.fbx" />
+                <Property name="zhName" value="翻斗车" />
+                <Property name="enName" value="Dump Truck" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="LandRover_RangeRover_2010" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.20349" y="0" z="0.91326" />
+                <Dimensions width="2.13512" length="4.82234" height="1.82652" />
+            </BoundingBox>
+            <Performance maxSpeed="58.3" maxAcceleration="4" maxDeceleration="8.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.76277" trackWidth="1.64722" positionX="2.7586" positionZ="0.38135" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.76277" trackWidth="1.64722" positionX="0" positionZ="0.38135" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="27" />
+                <Property name="model3d" value="sm_landrover_lod_2/sm_landrover_lod_2.fbx" />
+                <Property name="zhName" value="路虎 揽胜 2010" />
+                <Property name="enName" value="LandRover RangeRover 2010" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="BMW_MINI_CooperS_2010" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.28159" y="0" z="0.89653" />
+                <Dimensions width="1.91649" length="3.71736" height="1.79307" />
+            </BoundingBox>
+            <Performance maxSpeed="62.5" maxAcceleration="4.5" maxDeceleration="8.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.64178" trackWidth="1.44008" positionX="2.46279" positionZ="0.32089" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.64178" trackWidth="1.44008" positionX="0" positionZ="0.32089" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="28" />
+                <Property name="model3d" value="sm_bmw_mini_lod_2/sm_bmw_mini_lod_2.fbx" />
+                <Property name="zhName" value="宝马 MINI CooperS 2010" />
+                <Property name="enName" value="BMW MINI CooperS 2010" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Opel_Corsa_2009" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.04806" y="0" z="0.64953" />
+                <Dimensions width="1.56498" length="3.26267" height="1.31389" />
+            </BoundingBox>
+            <Performance maxSpeed="50" maxAcceleration="3.6" maxDeceleration="8" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.53224" trackWidth="1.10571" positionX="1.99112" positionZ="0.26612" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.53224" trackWidth="1.10571" positionX="0" positionZ="0.26612" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="29" />
+                <Property name="model3d" value="sm_opel_corsa_lod_2/sm_opel_corsa_lod_2.fbx" />
+                <Property name="zhName" value="欧宝 Corsa 2009" />
+                <Property name="enName" value="Opel Corsa 2009" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Lexus_IS_2009" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.36553" y="0" z="0.75888" />
+                <Dimensions width="2.13826" length="4.9517" height="1.51776" />
+            </BoundingBox>
+            <Performance maxSpeed="58.3" maxAcceleration="4" maxDeceleration="8.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.69873" trackWidth="1.67156" positionX="2.89565" positionZ="0.34936" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.69873" trackWidth="1.67156" positionX="0" positionZ="0.34936" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="30" />
+                <Property name="model3d" value="sm_lexus_car_lod_2/sm_lexus_car_lod_2.fbx" />
+                <Property name="zhName" value="雷克萨斯 IS 2009" />
+                <Property name="enName" value="Lexus IS 2009" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Suzuki_Celerio_2011" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.00452" y="0" z="0.66171" />
+                <Dimensions width="1.52584" length="2.90432" height="1.32505" />
+            </BoundingBox>
+            <Performance maxSpeed="48.6" maxAcceleration="3.7" maxDeceleration="7.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.46452" trackWidth="1.13215" positionX="1.87034" positionZ="0.23226" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.46452" trackWidth="1.13215" positionX="0" positionZ="0.23226" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="31" />
+                <Property name="model3d" value="sm_suzuki_car_lod_2/sm_suzuki_car_lod_2.fbx" />
+                <Property name="zhName" value="铃木 雨燕 2011" />
+                <Property name="enName" value="Suzuki Celerio 2011" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Lancia_DeltaIntegrale_Evo1" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.33942" y="0" z="0.69473" />
+                <Dimensions width="2.01761" length="4.0377" height="1.3912" />
+            </BoundingBox>
+            <Performance maxSpeed="61.1" maxAcceleration="4" maxDeceleration="8" />
+            <Axles>
+                <FrontAxle maxSteering="0.7" wheelDiameter="0.63283" trackWidth="1.50959" positionX="2.57002" positionZ="0.316415" />
+                <RearAxle maxSteering="0.7" wheelDiameter="0.63283" trackWidth="1.50959" positionX="0" positionZ="0.316415" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="32" />
+                <Property name="model3d" value="sm_lanciacar_lod_2/sm_lanciacar_lod_2.fbx" />
+                <Property name="zhName" value="蓝旗亚 DeltaIntegrale Evo1" />
+                <Property name="enName" value="Lancia Delta Integrale Evo1" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Chevrolet_ExpressVan1500_2001" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.656" y="0" z="1.11611" />
+                <Dimensions width="2.22021" length="5.66142" height="2.23232" />
+            </BoundingBox>
+            <Performance maxSpeed="44.4" maxAcceleration="3" maxDeceleration="6.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.5" wheelDiameter="0.76255" trackWidth="1.72493" positionX="3.59257" positionZ="0.38038" />
+                <RearAxle maxSteering="0.5" wheelDiameter="0.76255" trackWidth="1.72493" positionX="0" positionZ="0.38038" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="33" />
+                <Property name="model3d" value="sm_chererolet_van_modelcenterpoint_no_logo_lod_2/sm_chererolet_van_modelcenterpoint_no_logo_lod_2.fbx" />
+                <Property name="zhName" value="雪佛兰 ExpressVan1500 2001" />
+                <Property name="enName" value="Chevrolet ExpressVan1500 2001" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MercedesBenz_SL_2005" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.28009" y="0" z="0.64638" />
+                <Dimensions width="2.0651" length="4.61372" height="1.29357" />
+            </BoundingBox>
+            <Performance maxSpeed="69.4" maxAcceleration="3.8" maxDeceleration="8.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.64198" trackWidth="1.56701" positionX="2.604" positionZ="0.32099" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.64198" trackWidth="1.56701" positionX="0" positionZ="0.32099" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="34" />
+                <Property name="model3d" value="sm_benz_sl_lod_2/sm_benz_sl_lod_2.fbx" />
+                <Property name="zhName" value="奔驰 SL 2005" />
+                <Property name="enName" value="MercedesBenz SL 2005" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Dodge_Charger_2006" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.44951" y="0" z="0.72653" />
+                <Dimensions width="2.04449" length="5.07492" height="1.45771" />
+            </BoundingBox>
+            <Performance maxSpeed="63.9" maxAcceleration="4.3" maxDeceleration="9" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.72039" trackWidth="1.6103" positionX="3.06438" positionZ="0.3602" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.72039" trackWidth="1.6103" positionX="0" positionZ="0.3602" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="35" />
+                <Property name="model3d" value="sm_dodge_charger_lod_2/sm_dodge_charger_lod_2.fbx" />
+                <Property name="zhName" value="道奇 Charger 2006" />
+                <Property name="enName" value="Dodge Charger 2006" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Porsche_911_TurboS_2020" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.1017" y="0" z="0.57576" />
+                <Dimensions width="1.84421" length="4.11847" height="1.15159" />
+            </BoundingBox>
+            <Performance maxSpeed="91.7" maxAcceleration="6.3" maxDeceleration="9.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.66283" trackWidth="1.46159" positionX="2.20369" positionZ="0.33141" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.66283" trackWidth="1.46159" positionX="0" positionZ="0.33141" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="36" />
+                <Property name="model3d" value="sm_porsche_sportscar_lod_2/sm_porsche_sportscar_lod_2.fbx" />
+                <Property name="zhName" value="保时捷 911 TurboS 2020" />
+                <Property name="enName" value="Porsche 911 Turbo S 2020" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Nissan_GTR_2009" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.38149" y="0" z="0.67862" />
+                <Dimensions width="2.04736" length="4.71262" height="1.35998" />
+            </BoundingBox>
+            <Performance maxSpeed="87.5" maxAcceleration="4.7" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.70866" trackWidth="1.62433" positionX="2.7664" positionZ="0.35433" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.70866" trackWidth="1.62433" positionX="0" positionZ="0.35433" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="37" />
+                <Property name="model3d" value="sm_nissan_gtr_lod_2/sm_nissan_gtr_lod_2.fbx" />
+                <Property name="zhName" value="日产 GTR 2009" />
+                <Property name="enName" value="Nissan GTR 2009" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Opel_Ampera_2009" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.05518" y="0" z="0.53895" />
+                <Dimensions width="1.6357" length="3.41207" height="1.35998" />
+            </BoundingBox>
+            <Performance maxSpeed="44.4" maxAcceleration="3" maxDeceleration="7" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.5105" trackWidth="1.18268" positionX="2.01534" positionZ="0.25525" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.5105" trackWidth="1.18268" positionX="0" positionZ="0.25525" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="38" />
+                <Property name="model3d" value="sm_opel_ampera_lod_2/sm_opel_ampera_lod_2.fbx" />
+                <Property name="zhName" value="欧宝 Ampera 2009" />
+                <Property name="enName" value="Opel Ampera 2009" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Dodge_ViperMambaEdition_RCH680" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.12099" y="0" z="1.33755" />
+                <Dimensions width="2.28232" length="5.95549" height="2.67519" />
+            </BoundingBox>
+            <Performance maxSpeed="61.1" maxAcceleration="4.2" maxDeceleration="9" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.62978" trackWidth="1.53912" positionX="3.27838" positionZ="0.31489" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.62978" trackWidth="1.53912" positionX="0" positionZ="0.31489" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="39" />
+                <Property name="model3d" value="sm_dodge_mastin_rch680_modelcenterpoint_no_logo_lod_2/sm_dodge_mastin_rch680_modelcenterpoint_no_logo_lod_2.fbx" />
+                <Property name="zhName" value="道奇 玛斯汀版 RCH680" />
+                <Property name="enName" value="Dodge ViperMambaEdition RCH680" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Mitsubishi_iMiEV_2018" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.45727" y="0" z="0.914" />
+                <Dimensions width="2.0005" length="3.86348" height="1.82858" />
+            </BoundingBox>
+            <Performance maxSpeed="36.1" maxAcceleration="2.6" maxDeceleration="8.2" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.64306" trackWidth="1.43515" positionX="2.82305" positionZ="0.32153" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.64306" trackWidth="1.43515" positionX="0" positionZ="0.32153" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="40" />
+                <Property name="model3d" value="sm_mitsubishi_miev_modelcenterpoint_no_logo_lod_2/sm_mitsubishi_miev_modelcenterpoint_no_logo_lod_2.fbx" />
+                <Property name="zhName" value="三菱 iMiEV 2018" />
+                <Property name="enName" value="Mitsubishi iMiEV 2018" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Audi_A8_2015" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.39142" y="0" z="0.73503" />
+                <Dimensions width="2.07242" length="5.02399" height="1.47007" />
+            </BoundingBox>
+            <Performance maxSpeed="69.4" maxAcceleration="4.2" maxDeceleration="8.8" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.76318" trackWidth="1.56508" positionX="2.91829" positionZ="0.38159" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.76318" trackWidth="1.56508" positionX="0" positionZ="0.38159" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="41" />
+                <Property name="model3d" value="sm_audi_a8_modelcenterpoint_no_logo_lod_2/sm_audi_a8_modelcenterpoint_no_logo_lod_2.fbx" />
+                <Property name="zhName" value="奥迪 A8 2015" />
+                <Property name="enName" value="Audi A8 2015" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Honda_CreaScoopy_AF55" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.605" y="0" z="0.848" />
+                <Dimensions width="0.718275" length="1.82932" height="1.69529" />
+            </BoundingBox>
+            <Performance maxSpeed="25" maxAcceleration="1.5" maxDeceleration="4" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.38309" trackWidth="0" positionX="1.1" positionZ="0.19154" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.38309" trackWidth="0" positionX="0" positionZ="0.19154" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="303" />
+                <Property name="model3d" value="sm_motorcycle_01_modelcenterpoint_lod_2/sm_motorcycle_01_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="本田 小龟 55" />
+                <Property name="enName" value="Honda CreaScoopy AF55" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="HarleyDavidson_VRod_2003" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.843" y="0" z="0.876" />
+                <Dimensions width="0.960727" length="2.42703" height="1.75129" />
+            </BoundingBox>
+            <Performance maxSpeed="55.6" maxAcceleration="3.5" maxDeceleration="4.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.6932" trackWidth="0" positionX="1.71652" positionZ="0.3466" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.6932" trackWidth="0" positionX="0" positionZ="0.3466" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="304" />
+                <Property name="model3d" value="sm_motorcycle_02_modelcenterpoint_lod_2/sm_motorcycle_02_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="哈雷 VROD 2003" />
+                <Property name="enName" value="HarleyDavidson VRod 2003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Aprilia_SR50R_Euro4" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.666" y="0" z="0.937" />
+                <Dimensions width="0.847271" length="1.90391" height="1.87437" />
+            </BoundingBox>
+            <Performance maxSpeed="25" maxAcceleration="1.2" maxDeceleration="3.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.54" trackWidth="0" positionX="1.348" positionZ="0.27" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.54" trackWidth="0" positionX="0" positionZ="0.27" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="305" />
+                <Property name="model3d" value="sm_motorcycle_03_modelcenterpoint_lod_2/sm_motorcycle_03_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="阿普利亚 SR50R Euro4" />
+                <Property name="enName" value="Aprilia SR50R Euro4" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Suzuki_GSXR1000_2010" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.679" y="0" z="0.83" />
+                <Dimensions width="0.745956" length="2.00376" height="1.66073" />
+            </BoundingBox>
+            <Performance maxSpeed="83.3" maxAcceleration="5.6" maxDeceleration="5.5" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.646" trackWidth="0" positionX="1.535" positionZ="0.323" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.646" trackWidth="0" positionX="0" positionZ="0.323" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="306" />
+                <Property name="model3d" value="sm_motorcyce_04_modelcenterpoint_lod_2/sm_motorcyce_04_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="铃木 GSXR1000 2010" />
+                <Property name="enName" value="Suzuki GSXR1000 2010" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Honda_Monkey125_2017" vehicleCategory="motorbike">
+            <BoundingBox>
+                <Center x="0.546" y="0" z="0.846" />
+                <Dimensions width="0.835441" length="1.77226" height="1.69205" />
+            </BoundingBox>
+            <Performance maxSpeed="27.8" maxAcceleration="2.7" maxDeceleration="4" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.43734" trackWidth="0" positionX="0.99954" positionZ="0.21864" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.43734" trackWidth="0" positionX="0" positionZ="0.21864" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="307" />
+                <Property name="model3d" value="sm_honda_monkey_lod_2/sm_honda_monkey_lod_2.fbx" />
+                <Property name="zhName" value="本田 小猴子125 2017" />
+                <Property name="enName" value="Honda Monkey125 2017" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="moto" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Giant_EscapeR3_2018" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.497" y="0.003" z="0.883" />
+                <Dimensions width="0.533328" length="1.66617" height="1.76526" />
+            </BoundingBox>
+            <Performance maxSpeed="15" maxAcceleration="1" maxDeceleration="3" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.68257" trackWidth="0" positionX="1.02239" positionZ="0.34129" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.68257" trackWidth="0" positionX="0" positionZ="0.34129" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="308" />
+                <Property name="model3d" value="sm_giant_bicycle_lod_2/sm_giant_bicycle_lod_2.fbx" />
+                <Property name="zhName" value="捷安特 EscapeR3 2018" />
+                <Property name="enName" value="Giant EscapeR3 2018" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Giant_SCR2_2017" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.506" y="0.006" z="0.854" />
+                <Dimensions width="0.447251" length="1.68344" height="1.70857" />
+            </BoundingBox>
+            <Performance maxSpeed="15" maxAcceleration="1" maxDeceleration="3" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.76164" trackWidth="0" positionX="1.15137" positionZ="0.38082" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.76164" trackWidth="0" positionX="0" positionZ="0.38082" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="309" />
+                <Property name="model3d" value="sm_giant_scr2_modelcenterpoint_lod_2/sm_giant_scr2_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="捷安特 SCR2 2017" />
+                <Property name="enName" value="Giant SCR2 2017" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Maruishi_Bicycle_26Inch" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.53" y="0.002" z="0.884" />
+                <Dimensions width="0.533328" length="1.66617" height="1.76526" />
+            </BoundingBox>
+            <Performance maxSpeed="15" maxAcceleration="1" maxDeceleration="3" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.80642" trackWidth="0" positionX="1.27601" positionZ="0.40321" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.80642" trackWidth="0" positionX="0" positionZ="0.40321" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="310" />
+                <Property name="model3d" value="sm_maruishi_bicycle_lod_2/sm_maruishi_bicycle_lod_2.fbx" />
+                <Property name="zhName" value="丸石自行车 26英寸" />
+                <Property name="enName" value="Maruishi Bicycle 26Inch" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Xidesheng_AD350_2020" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.493" y="0.007" z="0.863" />
+                <Dimensions width="0.580105" length="1.66704" height="1.7268" />
+            </BoundingBox>
+            <Performance maxSpeed="15" maxAcceleration="1" maxDeceleration="3" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.68729" trackWidth="0" positionX="0.98494" positionZ="0.34365" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.68729" trackWidth="0" positionX="0" positionZ="0.34365" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="311" />
+                <Property name="model3d" value="sm_xds_bicycle_modelcenterpoint_lod_2/sm_xds_bicycle_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="喜德盛 AD350 2020" />
+                <Property name="enName" value="Xidesheng AD350 2020" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Toyota_Tacoma_2017" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.4737" y="0" z="0.91201" />
+                <Dimensions width="2.1868" length="5.274" height="1.835" />
+            </BoundingBox>
+            <Performance maxSpeed="57.2" maxAcceleration="3.6" maxDeceleration="8.2" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.79351" trackWidth="1.59815" positionX="3.2786" positionZ="0.39675" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.79351" trackWidth="1.59815" positionX="0" positionZ="0.39675" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="42" />
+                <Property name="model3d" value="sm_toyota_tacoma_lod_2/sm_toyota_tacoma_lod_2.fbx" />
+                <Property name="zhName" value="丰田 TACOMA 2017" />
+                <Property name="enName" value="Toyota Tacoma 2017" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Lamborghini_Gallardo_2011" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.41877" y="0" z="0.57955" />
+                <Dimensions width="2.24445" length="4.33047" height="1.1591" />
+            </BoundingBox>
+            <Performance maxSpeed="89.4" maxAcceleration="5.8" maxDeceleration="9.4" />
+            <Axles>
+                <FrontAxle maxSteering="0.5" wheelDiameter="0.6344" trackWidth="1.5957" positionX="2.54216" positionZ="0.3172" />
+                <RearAxle maxSteering="0.5" wheelDiameter="0.6344" trackWidth="1.5957" positionX="0" positionZ="0.3172" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="43" />
+                <Property name="model3d" value="sm_lamborghini_gallardo_lod_2/sm_lamborghini_gallardo_lod_2.fbx" />
+                <Property name="zhName" value="兰博基尼 Gallardo 2011" />
+                <Property name="enName" value="Lamborghini Gallardo 2011" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MercedesBenz_SLSAMG_2014" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.31028" y="0" z="0.61948" />
+                <Dimensions width="2.08113" length="4.66064" height="1.2441" />
+            </BoundingBox>
+            <Performance maxSpeed="90.3" maxAcceleration="4.9" maxDeceleration="8.8" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.66391" trackWidth="1.67524" positionX="2.68581" positionZ="0.33195" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.66391" trackWidth="1.67524" positionX="0" positionZ="0.33195" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="44" />
+                <Property name="model3d" value="sm_benz_slsamg_modelcenterpoint_no_logo_lod_2/sm_benz_slsamg_modelcenterpoint_no_logo_lod_2.fbx" />
+                <Property name="zhName" value="奔驰 SLSAMG 2014" />
+                <Property name="enName" value="MercedesBenz SLSAMG 2014" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Scania_R620_2012" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="5.36691" y="0" z="2.15896" />
+                <Dimensions width="2.8402" length="15.8857" height="4.31937" />
+            </BoundingBox>
+            <Performance maxSpeed="42.2" maxAcceleration="3.2" maxDeceleration="7.9" />
+            <Axles>
+                <FrontAxle maxSteering="0.4" wheelDiameter="1.08855" trackWidth="2.0957" positionX="11.7896" positionZ="0.5443" />
+                <RearAxle maxSteering="0.4" wheelDiameter="1.08855" trackWidth="2.0957" positionX="0" positionZ="0.5443" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="45" />
+                <Property name="model3d" value="sm_scania_r620_lod_2/sm_scania_r620_lod_2.fbx" />
+                <Property name="zhName" value="斯堪尼亚 R620 2012" />
+                <Property name="enName" value="Scania R620 2012" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MAN_LionsCoach_2003" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="2.82254" y="0" z="1.93516" />
+                <Dimensions width="2.89438" length="12.251" height="3.8705" />
+            </BoundingBox>
+            <Performance maxSpeed="31.1" maxAcceleration="2.7" maxDeceleration="7" />
+            <Axles>
+                <FrontAxle maxSteering="0.65" wheelDiameter="0.98511" trackWidth="2.05526" positionX="6.05695" positionZ="0.4926" />
+                <RearAxle maxSteering="0.65" wheelDiameter="0.98511" trackWidth="2.05526" positionX="0" positionZ="0.4926" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="46" />
+                <Property name="model3d" value="sm_manyen_bus_modelcenterpoint_lod_2/sm_manyen_bus_modelcenterpoint_lod_2.fbx" />
+                <Property name="zhName" value="曼恩 LionsCoach 2003" />
+                <Property name="enName" value="MAN LionsCoach 2003" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Cadillac_XTSLimousine_2018" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="2.1247" y="0" z="0.80022" />
+                <Dimensions width="2.0659" length="6.8652" height="1.6023" />
+            </BoundingBox>
+            <Performance maxSpeed="65.3" maxAcceleration="3.5" maxDeceleration="8" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.70476" trackWidth="1.58601" positionX="4.60033" positionZ="0.35238" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.70476" trackWidth="1.58601" positionX="0" positionZ="0.35238" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="47" />
+                <Property name="model3d" value="sm_cadillac_xts_lod_2/sm_cadillac_xts_lod_2.fbx" />
+                <Property name="zhName" value="凯迪卡拉 XTS加长版 2018" />
+                <Property name="enName" value="Cadillac XTSLimousine 2018" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="MercedesBenz_Arocs_3240" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="2.60887" y="0" z="1.85449" />
+                <Dimensions width="2.82824" length="8.55871" height="3.7092" />
+            </BoundingBox>
+            <Performance maxSpeed="44.4" maxAcceleration="2.9" maxDeceleration="7.7" />
+            <Axles>
+                <FrontAxle maxSteering="0.45" wheelDiameter="1.14179" trackWidth="1.92246" positionX="5.39591" positionZ="0.57089" />
+                <RearAxle maxSteering="0.45" wheelDiameter="1.14179" trackWidth="1.92246" positionX="0" positionZ="0.57089" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="48" />
+                <Property name="model3d" value="sm_benz_arocs3240_lod_2/sm_benz_arocs3240_lod_2.fbx" />
+                <Property name="zhName" value="奔驰 Arocs 3240" />
+                <Property name="enName" value="MercedesBenz Arocs 3240" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="BMW_X6_2014" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="1.36685" y="0" z="0.85519" />
+                <Dimensions width="2.203" length="4.91036" height="1.71038" />
+            </BoundingBox>
+            <Performance maxSpeed="76.7" maxAcceleration="4.2" maxDeceleration="8.9" />
+            <Axles>
+                <FrontAxle maxSteering="0.6" wheelDiameter="0.75648" trackWidth="1.62837" positionX="2.93031" positionZ="0.37824" />
+                <RearAxle maxSteering="0.6" wheelDiameter="0.75648" trackWidth="1.62837" positionX="0" positionZ="0.37824" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="49" />
+                <Property name="model3d" value="sm_bmw_x6_lod_2/sm_bmw_x6_lod_2.fbx" />
+                <Property name="zhName" value="宝马 X6 2014" />
+                <Property name="enName" value="BMW X6 2014" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Mobike_Classic2" vehicleCategory="bicycle">
+            <BoundingBox>
+                <Center x="0.564" y="0" z="0.895" />
+                <Dimensions width="0.708167" length="1.88902" height="1.78922" />
+            </BoundingBox>
+            <Performance maxSpeed="15" maxAcceleration="1" maxDeceleration="3" />
+            <Axles>
+                <FrontAxle maxSteering="0.52" wheelDiameter="0.726938" trackWidth="0" positionX="1.145" positionZ="0.363469" />
+                <RearAxle maxSteering="0.52" wheelDiameter="0.726938" trackWidth="0" positionX="0" positionZ="0.363469" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="206" />
+                <Property name="model3d" value="sm_bike_redwheel/sm_bike_redwheel.fbx" />
+                <Property name="zhName" value="摩拜单车 经典版二代" />
+                <Property name="enName" value="Mobike Classic2" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="bike" />
+            </Properties>
+        </Vehicle>
+        <Vehicle name="Unloaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="7.582" y="0.0" z="1.9" />
+                <Dimensions width="3.39096" length="25.1608" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="515" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_wuxiang_dm.fbx" />
+                <Property name="zhName" value="空载长挂车" />
+                <Property name="enName" value="Unloaded Trailer" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Half_loaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="7.54" y="0.0" z="1.9" />
+                <Dimensions width="3.4" length="25.2444" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="516" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_xiaoxiang_dm.fbx" />
+                <Property name="zhName" value="半载长挂车" />
+                <Property name="enName" value="Half-Loaded Trailer" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Full_loaded_Trailer" vehicleCategory="car">
+            <BoundingBox>
+                <Center x="6.04" y="0.0" z="1.9" />
+                <Dimensions width="5" length="28.2444" height="3.80002" />
+            </BoundingBox>
+            <Performance maxSpeed="55.56" maxAcceleration="12" maxDeceleration="10" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.10477" trackWidth="1.908" positionX="16.72" positionZ="0.552385" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.10477" trackWidth="1.908" positionX="0" positionZ="0.552385" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="517" />
+                <Property name="model3d" value="long-truck/sm_cgc_red_daxiang_dm.fbx" />
+                <Property name="zhName" value="满载长挂车" />
+                <Property name="enName" value="Fully Loaded Trailer" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+            <ReferencePoint origin="RearAxle_SnappedToGround" />
+        </Vehicle>
+        <Vehicle name="Truck_004" vehicleCategory="truck">
+            <BoundingBox>
+                <Center x="3.47046" y="0.0" z="2.16185" />
+                <Dimensions width="3.17184" length="12.0673" height="4.3237" />
+            </BoundingBox>
+            <Performance maxSpeed="69" maxAcceleration="10" maxDeceleration="30" />
+            <Axles>
+                <FrontAxle maxSteering="0.6981317" wheelDiameter="1.09418" trackWidth="2.21716" positionX="6.06448" positionZ="0.54709" />
+                <RearAxle maxSteering="0.034906585" wheelDiameter="1.09418" trackWidth="2.21716" positionX="0" positionZ="0.54709" />
+            </Axles>
+            <Properties>
+                <Property name="model_id" value="52" />
+                <Property name="model3d" value="sm_baisifu/sm_baisifu.fbx" />
+                <Property name="zhName" value="卡车004" />
+                <Property name="enName" value="Truck004" />
+                <Property name="Preset" value="true" />
+                <Property name="interfaceCategory" value="car" />
+            </Properties>
+        </Vehicle>
+    </Catalog>
+</OpenSCENARIO>

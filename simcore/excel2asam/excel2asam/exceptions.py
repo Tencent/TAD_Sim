@@ -30,12 +30,6 @@ class ColumnsDefineNotFoundError(Exception):
     pass
 
 
-class EmptyError(Exception):
-    """Raised when content is empty."""
-
-    pass
-
-
 class AfterFilterEmptyError(Exception):
     """Raised when content is empty after filter."""
 
@@ -56,5 +50,16 @@ class TestcaseEmptyError(Exception):
 
 class MapConfigError(Exception):
     """Raised when testcase is empty."""
+
+    pass
+
+class PermissionError(Exception):
+    """Raised when permission to get response."""
+
+    pass
+
+
+class RequestError(Exception):
+    """Raised when request with error."""
 
     pass

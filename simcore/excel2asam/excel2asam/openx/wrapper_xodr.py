@@ -49,10 +49,7 @@ class WrapperRoad:
             rule=xodr.TrafficRule.RHT,
         )
 
-        # 增加道路类型, 如果存在则增加道路限速
-        speed = None
-        if kroad.speedlimit:
-            speed = int(kroad.speedlimit)
+        speed = int(kroad.speedlimit) if kroad.speedlimit else None
         self.road.add_type(road_type=self.mapping_road_type[kroad.type], s=0, speed=speed, speed_unit="m/s")
 
         # elevationProfile 下需要有 elevation
@@ -242,7 +239,7 @@ class GenXodr:
 
         #
         if not junctioners and not roads:
-            print("no junctioner and no road")
+            print("no junctioner and no roads, use road_base")
             odr.add_road(road_base)
 
         # print(f"{len(roads) = }")

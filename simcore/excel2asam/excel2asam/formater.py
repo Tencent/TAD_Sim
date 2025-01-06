@@ -790,10 +790,6 @@ class _FilterTaskGeneralized:
         logger.opt(lazy=True).debug(f"{self.cols_classify_req = }")
         logger.opt(lazy=True).debug(f"{self.cols_nonreq = }")
 
-        #
-        self.define = self.define[[*settings.sys.generalized.cols.values(), *self.cols_classify]]
-        logger.opt(lazy=True).debug(f"{self.define.columns.tolist() = }")
-
     def _getcols_classify_replace_nonreq(self) -> tuple:
         # 计算交集从而获得 cols_classify, 并根据 dict_keys 的顺序进行排序
         dict_keys = list(self.classify_user_dict.keys())
@@ -888,6 +884,10 @@ class _FilterTaskGeneralized:
         # 异常处理, 检查是否存在语义生成需要的列
         cols_generalized_req = settings.sys.generalized.colset.reqs
         raise_error_reason_by_diff(cols_generalized_req, list(self.define.columns))
+
+        # 筛选出需要的列
+        self.define = self.define[[*settings.sys.generalized.cols.values(), *self.cols_classify]]
+        logger.opt(lazy=True).debug(f"{self.define.columns.tolist() = }")
 
         # 如果为非必须列 且 不存在于self.define中, 补充为空字符串
         cols_generalized_nonreq = set(settings.sys.generalized.cols.values()).difference(set(cols_generalized_req))

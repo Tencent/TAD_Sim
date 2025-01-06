@@ -23,6 +23,8 @@ import xmlschema
 
 # import allure
 
+REV_PATCH = "0"
+
 
 class ValidationSuffix(Enum):
     """Enum for Suffix"""
@@ -48,12 +50,10 @@ class XmlValidation:
         for item in pathdir_xsds.iterdir():
             # 对于文件夹, key 为文件夹名称, value 为其下 xsd 后缀且包含 "core" 的文件路径
             if item.is_dir():
-                core_files = list(item.rglob(f"*core*{suffix}"))
-                if core_files:
+                if core_files := list(item.rglob(f"*core*{suffix}")):
                     xsds[item.stem] = core_files[0]
                 else:
                     xsds[item.stem] = item
-            # 对于 xsd 后缀文件, key 为文件的名字, value 为文件的路径
             elif item.is_file() and item.suffix == suffix:
                 xsds[item.stem] = item
 
@@ -85,7 +85,7 @@ class XmlValidation:
             rev_major = file_header.get("revMajor", default)
             rev_minor = file_header.get("revMinor", default)
 
-        xsd_key = f"{name}_{rev_major}_{rev_minor}"
+        xsd_key = f"{name}_{rev_major}_{rev_minor}_{REV_PATCH}"
 
         return self.xsds[xsd_key]
 
@@ -94,7 +94,7 @@ class XmlValidation:
             # XML文档的结构良好性验证
             self.tree = ET.parse(pathfile_xml)
         except ET.ParseError as e:
-            raise AssertionError(f"XML structure error: {e}")
+            raise AssertionError(f"XML structure error: {e}") from e
 
     def xsd_syntax(self):
         try:
@@ -103,7 +103,7 @@ class XmlValidation:
             xsd = xmlschema.XMLSchema(pathfile_xsd)
             xsd.validate(self.tree)
         except xmlschema.XMLSchemaValidatorError as e:
-            raise AssertionError(f"XSD validation error: {e}")
+            raise AssertionError(f"XSD validation error: {e}") from e
 
     def validate(self, pathfile_xml: Path):
         if not self._dentifying_suffix(pathfile_xml):
@@ -162,13 +162,7 @@ def main():
     formatted_time = now.strftime("%Y-%m-%d_%H-%M-%S")
     filename_report = f"OpenSCENARIO_OpenDRIVE_Syntax_Check_Report_{formatted_time}.html"
 
-    # 获取参数 --f, 检查其后是否包含内容
-    f = None
-    for arg in sys.argv[1:]:
-        if arg.startswith("--f="):
-            f = arg  # .split("=")[1]
-            break
-
+    f = next((arg for arg in sys.argv[1:] if arg.startswith("--f=")), None)
     if f is None:
         print("错误: 请提供 --f 参数")
         print("使用方法: python3 test_xsd.py --f=path/to/input")

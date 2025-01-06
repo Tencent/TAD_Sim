@@ -13,86 +13,110 @@ from __future__ import annotations
 
 from datetime import datetime
 from pathlib import Path
+import inspect
 
 import pytest
 
-from excel2asam.config import settings
-from excel2asam.parser import ExcelParserFactory, FeishuBittableParserFactory
-from excel2asam.producer import LocalProducerFactory
+from excel2asam.producer import LocalProducer
+import excel2asam.exceptions as exp
 
 # 当前文件夹路径
 PATHDIR_CUR = Path(__file__).resolve().parent
 # 测试数据路径
 PATHDIR_TESTDATA = PATHDIR_CUR / "testdata"
+PATHDIR_CATALOGS = PATHDIR_TESTDATA / "catalogs"
+PATHDIR_MAPS = PATHDIR_TESTDATA / "maps"
 # 获得当日时间以 年月日 格式
 TIMEDATE = datetime.now().strftime("%Y%m%d")
 
 
-def get_pathfiles_by_suffixes(pathdir: Path, *suffixes: str) -> list:
-    """
-    This function takes a directory path and any number of file suffixes as
-    arguments, and returns a list of files in the directory (and its subdirectories)
-    that end with any of the given suffixes.
+def _get_expected(filename: str) -> str:
+    for name, obj in inspect.getmembers(exp, inspect.isclass):
+        # 确保类是在 exp 模块中定义的
+        if obj.__module__ != exp.__name__:
+            continue
 
-    Args:
-        pathdir (Path): The path of the directory to search for the files.
-        *suffixes (str): Any number of suffixes to filter the files.
+        #
+        if name in filename:
+            return name
 
-    Returns:
-        list: A list of files (including the full path), ordered by the file name,
-        that end with any of the given suffixes.
+    # 程序正常结束后, 需要
+    return ""
 
-    Raises:
-        Exception: If the provided pathdir is not a valid directory.
-    """
+
+def get_pathfiles_expecteds_by_suffixes_name(pathdir: Path, name: str, *suffixes: str) -> list:
     # Convert suffixes to tuples
     suffixes = tuple(f".{x}" if x[0] != "." else x for x in suffixes)
 
     if not pathdir.is_dir():
-        raise Exception(f"{pathdir} is not a valid directory.")
+        print(f"{pathdir} is not a valid directory.")
+        return []
 
-    # Use rglob for recursive search and sort the result for preserving order
-    return [f for f in sorted(pathdir.rglob("*")) if f.is_file() and f.suffix in suffixes]
+    return [
+        [f, _get_expected(f.stem)]
+        for f in sorted(pathdir.rglob("*"))
+        if f.is_file() and (f.suffix in suffixes) and (name in f.name)
+    ]
 
 
-@pytest.mark.parametrize("pathfile", get_pathfiles_by_suffixes(PATHDIR_TESTDATA, "xlsx", "xlsm"), ids=lambda x: x.name)
-def test_map_virtual_excel(pathfile):
+@pytest.mark.parametrize(
+    ("pathfile", "expected"),
+    get_pathfiles_expecteds_by_suffixes_name(PATHDIR_TESTDATA, "", "xlsx", "xlsm"),
+    ids=lambda x: x,
+)
+@pytest.mark.excel
+def test_map_virtual_excel(pathfile, expected):
     # 创建实例, 初始化, 处理文件
-    pder = LocalProducerFactory(
-        parser_factory=ExcelParserFactory(pathfile),
-        pathdir_catalog=PATHDIR_CUR.parent / "catalogs",
+    pder = LocalProducer(
+        input_mode="excel",
+        input_data=pathfile,
+        pathdir_catalogs=[PATHDIR_CATALOGS],
         pathdir_hadmap=Path(""),
         pathdir_output=Path(""),
         task_generalized_id=1023,
     )
-    pder.process()
+
+    if expected:
+        with pytest.raises(getattr(exp, expected)):
+            pder.process()
+    else:
+        pder.process()
 
 
-@pytest.mark.parametrize("pathfile", get_pathfiles_by_suffixes(PATHDIR_TESTDATA, "xlsx", "xlsm"), ids=lambda x: x.name)
-def test_map_real_excel(pathfile):
+@pytest.mark.parametrize(
+    ("pathfile", "expected"),
+    get_pathfiles_expecteds_by_suffixes_name(PATHDIR_TESTDATA, "真实地图", "xlsx", "xlsm"),
+    ids=lambda x: x,
+)
+@pytest.mark.excel
+def test_map_real_excel(pathfile, expected):
     # 创建实例, 初始化, 处理文件
-    pder = LocalProducerFactory(
-        parser_factory=ExcelParserFactory(pathfile),
-        pathdir_catalog=PATHDIR_CUR.parent / "catalogs",
-        pathdir_hadmap=PATHDIR_TESTDATA / "map",
+    pder = LocalProducer(
+        input_mode="excel",
+        input_data=pathfile,
+        pathdir_catalogs=[PATHDIR_CATALOGS],
+        pathdir_hadmap=PATHDIR_MAPS,
         pathdir_output=Path(""),
         task_generalized_id=1023,
     )
-    pder.process()
+
+    if expected:
+        with pytest.raises(getattr(exp, expected)):
+            pder.process()
+    else:
+        pder.process()
 
 
-def test_map_virtual_feishu_tadsim(dtype: str):
+@pytest.mark.skip(reason="without feishu info")
+@pytest.mark.feishu_bitable
+def test_map_virtual_feishu_bitable():
     # 创建实例, 初始化, 处理文件
-    pder = LocalProducerFactory(
-        parser_factory=FeishuBittableParserFactory(
-            app_id=settings.feishu.app_id,
-            app_secret=settings.feishu.app_secret,
-            app_token=settings.feishu.tadsim.app_token,
-        ),
-        pathdir_catalog=PATHDIR_CUR.parent / "catalogs",
+    pder = LocalProducer(
+        input_mode="feishu_bitable",
+        input_data="",
+        pathdir_catalogs=[PATHDIR_CATALOGS],
         pathdir_hadmap=Path(""),
         pathdir_output=Path(""),
         task_generalized_id=1023,
     )
-    pder.set_api()
     pder.process()

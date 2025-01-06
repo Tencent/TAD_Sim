@@ -398,7 +398,7 @@ class PrivateActionFactory(ActionFactory):
                 entity=kaction.ref,
                 dx=0,
                 dy=0,
-                orientation=xosc.Orientation(h=0, reference=xosc.ReferenceContext.relative),
+                orientation=xosc.Orientation(h=0),
             )
         ]
 
@@ -407,7 +407,7 @@ class PrivateActionFactory(ActionFactory):
                 entity=kaction.ref,
                 dx=0,
                 dy=0,
-                orientation=xosc.Orientation(h=kaction.value, reference=xosc.ReferenceContext.relative),
+                orientation=xosc.Orientation(h=kaction.value),
             )
         )
 

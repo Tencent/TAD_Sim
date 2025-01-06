@@ -1,0 +1,63 @@
+@startuml
+
+title Parser Class Diagram
+
+interface ParserFactory {
+    +get_names(key: str): List
+    +to_dataframe(*args): pd.DataFrame
+    +get_dicts(): dict
+    +get_info(*args): dict
+}
+
+class ExcelParser {
+    -pathfile_xlsx : Path
+    +get_dicts(): dict
+    +get_info(): pd.ExcelFile
+    +get_names(key: str): List
+    +to_dataframe(*args): pd.DataFrame
+}
+
+class FeishuBitableParser {
+    -app_id : str
+    -app_secret : str
+    -token : str
+    +get_dicts(): dict
+    +get_info(table_id: str, page_token: str): dict
+    +get_names(key: str): List
+    +to_dataframe(*args): pd.DataFrame
+}
+
+class FeishuSpreadsheetParser {
+    -app_id : str
+    -app_secret : str
+    -token : str
+    +get_dicts(): dict
+    +get_info(sheet_info: dict, page_token: str): dict
+    +get_names(key: str): List
+    +to_dataframe(*args): pd.DataFrame
+}
+
+class Feishu {
+    +request_api(url: str, method: str, payload: str, headers: dict, user: str = ""): dict
+    +get_tenant_access_token(app_id: str, app_secret: str): str
+    +update_token_from_wikispaces(tenant_access_token: str, token: str, obj_type: str = "wiki")
+}
+
+class Parser {
+    -input_mode : str
+    -input_data : str
+    -virtual_real_is_virtual : bool
+    +_get_parser_factory()
+    +_delete_explain_line(df: pd.DataFrame): pd.DataFrame
+    +_get_dataframe_define(pf: ParserFactory, multiindexnum: int = 1): pd.DataFrame
+    +_get_dataframe_by_key(pf: ParserFactory, key: str, multiindexnum: int = 1): pd.DataFrame
+}
+
+ParserFactory <|-- ExcelParser
+ParserFactory <|-- FeishuBitableParser
+ParserFactory <|-- FeishuSpreadsheetParser
+
+FeishuBitableParser --> Feishu
+FeishuSpreadsheetParser --> Feishu
+
+@enduml

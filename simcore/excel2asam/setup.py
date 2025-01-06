@@ -20,7 +20,7 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
-with open("requirements_dev.txt") as f:
+with open("requirements.txt") as f:
     required = f.read().splitlines()
 
 setuptools.setup(

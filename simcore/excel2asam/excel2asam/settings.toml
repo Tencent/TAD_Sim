@@ -1,6 +1,6 @@
 # ==============================================================================
 [sys]
-    naming = "numerical"                 # can be [numerical, parameter]
+    naming = "numerical" # can be [numerical, parameter]
     link_symbol = "_"
     split_symbol = ";|,|-"
     output_xosc = "data/scenario/scene/semantic_scene"
@@ -18,9 +18,11 @@
     odrmajor = 1
     odrminor = 5
 [sys.feishu]
-    host = "open.feishu.cn"
-    url_apps = "https://open.feishu.cn/open-apis/bitable/v1/apps"
-    url_tenant_access_token = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal"
+    host = "https://open.feishu.cn"
+    url_bitable = "open-apis/bitable/v1/apps"
+    url_spreadsheets = "open-apis/sheets/v3/spreadsheets"
+    url_wikispaces = "open-apis/wiki/v2/spaces/get_node"
+    url_tenant_access_token = "open-apis/auth/v3/tenant_access_token/internal"
 [sys.tadsim]
     host = "http://127.0.0.1:9000"
     url_semantic_statu = "http://127.0.0.1:9000/semantic/statu"

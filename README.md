@@ -48,7 +48,7 @@
 
 - 修改版本号
   ```txt
-  找到 TAD_Sim/simapp/package.json 文件, 并手动修改第 3 行 ("version" 对应的值)
+  找到 TAD_Sim/simapp/desktop/package.json 文件, 并手动修改第 3 行 ("version" 对应的值)
   注意格式需为 "x.x.x"
   ```
 
@@ -110,7 +110,7 @@
 
 - 修改版本号
   ```txt
-  找到 TAD_Sim/simapp/package.json 文件, 并手动修改第 3 行 ("version" 对应的值)
+  找到 TAD_Sim/simapp/desktop/package.json 文件, 并手动修改第 3 行 ("version" 对应的值)
   注意格式需为 "x.x.x"
   ```
 
@@ -122,7 +122,7 @@
   cd TAD_Sim
 
   # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
-  docker run -it --rm -v .:/build -w /build tadsim:desktop_v1.0 /bin/bash
+  docker run -it --rm -v .:/build -w /build tadsim/desktop:v1.0 /bin/bash
 
   # 执行编译
   # 此处添加了 > log.txt 2>&1, 将命令的输出重定向到文件
@@ -155,7 +155,7 @@
   cd simcore/sensors/display
 
   # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
-  docker run -it --rm -v .:/build -w /build tadsim:display_v1.0 /bin/bash
+  docker run -it --rm -v .:/build -w /build tadsim/display:v1.0 /bin/bash
 
   # 执行编译
   # 此处添加了 > log.txt 2>&1, 将命令的输出重定向到文件
@@ -188,7 +188,7 @@
 
     # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
     # 复用 desktop 的镜像
-    docker run -it --rm -v .:/build -w /build tadsim:desktop_v1.0 /bin/bash
+    docker run -it --rm -v .:/build -w /build tadsim/desktop:v1.0 /bin/bash
 
     # 切换到工作目录
     cd TAD_Sim/docs/user_guidelines
