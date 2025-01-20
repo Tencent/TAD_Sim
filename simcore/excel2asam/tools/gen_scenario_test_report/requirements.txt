@@ -2,5 +2,5 @@ allure-pytest==2.13.2
 easyocr==1.7.1
 loguru==0.7.2
 numpy==1.25.2
-opencv-python==4.8.0.76
+opencv-python==4.8.1.78
 openpyxl==3.1.2
