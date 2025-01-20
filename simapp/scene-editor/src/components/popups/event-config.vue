@@ -1096,7 +1096,7 @@ export default {
       })
         .map((o) => {
           return {
-            value: o.type === 'planner' ? `ego_${o.id}` : `${o.type === 'car' ? 'v' : 'p'}_${o.id}`,
+            value: o.type === 'planner' ? `ego_${String(o.id).padStart(3, '0')}` : `${o.type === 'car' ? 'v' : 'p'}_${o.id}`,
             label: $itemName(o),
           }
         })
