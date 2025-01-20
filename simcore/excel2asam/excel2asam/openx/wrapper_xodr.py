@@ -75,11 +75,10 @@ class WrapperJunctionersRoads:
 
     def set_junctioners_roads(self, kjunction: KJunction, road: xodr.Road) -> None:
         # self.roads, self.directjunction = CreatJunctionRoads().creat(kjunction.type, road)
+        self.junctioners, self.roads = [], []
         if kjunction.type != settings.sys.l1.JunctionType.enum.none or kjunction.num > 0:
             cjr = CreatJunctionRoads(road, kjunction.num, self.odrminor)
             self.junctioners, self.roads = cjr.creat(kjunction.type, kjunction)
-        else:
-            self.junctioners, self.roads = [], []
 
     def get_result(self) -> Tuple:
         return self.junctioners, self.roads

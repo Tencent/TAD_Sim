@@ -29,38 +29,42 @@ from loguru import logger
 from excel2asam.config import settings
 
 
+# web api
+def request_api(url: str, method: str, payload: str, headers: dict, user: str = "") -> dict:
+    try:
+        # 使用 requests 库
+        response = requests.request(method, url, headers=headers, data=payload)
+        # 获取响应数据
+        data = response.text
+
+        # # 使用 http.client 库
+        # import http.client
+        # from urllib.parse import urlparse
+        # # 解析 URL
+        # parsed_url = urlparse(url)
+        # conn = http.client.HTTPSConnection(parsed_url.netloc)
+        # # 发送请求
+        # conn.request(method, url, payload, headers)
+        # # 获取响应数据
+        # response = conn.getresponse()
+        # data = response.read()
+        # # 关闭连接
+        # conn.close()
+
+        # 将响应数据解析为 JSON
+        result = json.loads(data)
+
+        # 如果正常会返回 0
+        if result["code"]:
+            raise exp.PermissionError(f"{user}: {result}")
+        return result
+    except requests.exceptions.RequestException as e:
+        raise exp.RequestError(f"Request failed: {e}") from e
+
+
 #
 @dataclass(order=True)
 class Feishu:
-    # web api
-    def request_api(self, url: str, method: str, payload: str, headers: dict, user: str = "") -> dict:
-        try:
-            # 使用 requests 库
-            response = requests.request(method, url, headers=headers, data=payload)
-            # 获取响应数据
-            data = response.text
-
-            # # 使用 http.client 库
-            # # 发送请求
-            # import http.client
-            # conn = http.client.HTTPSConnection(settings.sys.feishu.host)
-            # conn.request(method, url, payload, headers)
-            # # 获取响应数据
-            # response = conn.getresponse()
-            # data = response.read()
-            # # 关闭连接
-            # conn.close()
-
-            # 将响应数据解析为 JSON
-            result = json.loads(data)
-
-            # 如果正常会返回 0
-            if result["code"]:
-                raise exp.PermissionError(f"{user}: {result}")
-            return result
-        except requests.exceptions.RequestException as e:
-            raise exp.RequestError(f"Request failed: {e}") from e
-
     def get_tenant_access_token(self, app_id: str, app_secret: str) -> str:
         """
         获取 tenant_access_token
@@ -73,7 +77,7 @@ class Feishu:
             str: The tenant access token.
         """
 
-        result = self.request_api(
+        result = request_api(
             url=f"{settings.sys.feishu.host}/{settings.sys.feishu.url_tenant_access_token}",
             method="POST",
             payload=json.dumps({"app_id": app_id, "app_secret": app_secret}),
@@ -90,7 +94,7 @@ class Feishu:
         try:
             # get token from wikispaces
             # https://https://open.feishu.cn/document/server-docs/docs/wiki-v2/space-node/get_node
-            result = self.request_api(
+            result = request_api(
                 url=f"{settings.sys.feishu.host}/{settings.sys.feishu.url_wikispaces}?obj_type={obj_type}&token={token}",
                 method="GET",
                 payload="",
@@ -181,11 +185,11 @@ class FeishuBitableParser(ParserFactory):
     def __post_init__(self):
         logger.opt(lazy=True).info(f"{' FeishuBitableParser: ':=^55}")
         # 初始化一个 Feishu 实例
-        self.feishu = Feishu()
+        feishu = Feishu()
         # 获取 access_token
-        self.tenant_access_token = self.feishu.get_tenant_access_token(self.app_id, self.app_secret)
+        self.tenant_access_token = feishu.get_tenant_access_token(self.app_id, self.app_secret)
         # 更新 token 如果飞书多维表格属于知识库
-        self.token = self.feishu.update_token_from_wikispaces(self.tenant_access_token, self.token)
+        self.token = feishu.update_token_from_wikispaces(self.tenant_access_token, self.token)
         # 获取所有数据表
         self.dicts = self.get_dicts()
 
@@ -197,7 +201,7 @@ class FeishuBitableParser(ParserFactory):
         url = f"{settings.sys.feishu.host}/{settings.sys.feishu.url_bitable}/{self.token}/tables"
 
         # 发送请求并获取响应
-        result = self.feishu.request_api(
+        result = request_api(
             url=url,
             method="GET",
             payload="",
@@ -218,7 +222,7 @@ class FeishuBitableParser(ParserFactory):
             url += f"&page_token={page_token}"
 
         # 发送请求并获取响应
-        return self.feishu.request_api(
+        return request_api(
             url=url,
             method="GET",
             payload="",
@@ -304,7 +308,7 @@ class FeishuSpreadsheetParser(ParserFactory):
         url = f"{settings.sys.feishu.host}/{settings.sys.feishu.url_spreadsheets}/{self.token}/sheets/query"
 
         # 发送请求并获取响应
-        result = self.feishu.request_api(
+        result = request_api(
             url=url,
             method="GET",
             payload="",
@@ -340,7 +344,7 @@ class FeishuSpreadsheetParser(ParserFactory):
         )
 
         # 发送请求并获取响应
-        return self.feishu.request_api(
+        return request_api(
             url=url,
             method="GET",
             payload="",

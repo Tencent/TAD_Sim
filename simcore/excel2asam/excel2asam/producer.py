@@ -130,10 +130,9 @@ class _BaseProducer:
         intersection = mapfiles_define.intersection(mapfiles_param).intersection(mapfiles)
 
         # 检查交集结果是否包含 mapfiles_define 的所有内容
-        if mapfiles_define.issubset(intersection):
-            return True
-        else:
+        if not mapfiles_define.issubset(intersection):
             raise exp.MapConfigError("The intersection does not contain all elements of mapfiles_define.")
+        return True
 
     def _cal_num_relationships(self, concrete: pd.DataFrame) -> pd.DataFrame:
         # 获得每一个功能场景下的逻辑场景数量
@@ -269,6 +268,25 @@ class _BaseProducer:
 
         return mapfiles_define
 
+    def _deal_virtual_map(self, concrete: pd.DataFrame) -> pd.DataFrame:
+        # 生成虚拟地图
+        concrete = VirtualMapper(concrete).process()
+        self._total_virtual_map += len(concrete.drop_duplicates([settings.sys.l0.cols.mapfile]))
+        return concrete
+
+    def _deal_real_map(self, concrete: pd.DataFrame, param: dict, mapfiles_define: Set) -> pd.DataFrame:
+        concrete_map_list = []
+        for mapfile in mapfiles_define:
+            logger.opt(lazy=True).info(f"{f' mapfile: {mapfile} ':-^55}")
+            concrete_map = concrete[concrete[settings.sys.generalized.cols.mapfile] == mapfile]
+            param_map = param[mapfile]
+
+            # 通过 Map 处理相对应的内容列
+            with MapManager(self.pathdir_hadmap / mapfile) as map_manager:
+                concrete_map_list.append(RealMapper(concrete_map, map_manager, param_map, self.scene_filter).process())
+        # 拼接所有 concrete
+        concrete = pd.concat(concrete_map_list, ignore_index=True)
+
     def step3_get_concrete(self, logic: pd.DataFrame, param: dict, mapfiles_define: Set) -> pd.DataFrame:
         logger.opt(lazy=True).info("Process logic")
 
@@ -283,25 +301,12 @@ class _BaseProducer:
         if settings.sys.model.enable == 1:
             concrete = ModelFilter(concrete, self.scene_filter).process()
 
-        # 处理虚拟地图情况
-        if self.virtual_real_is_virtual:
-            concrete = VirtualMapper(concrete).process()
-            self._total_virtual_map += len(concrete.drop_duplicates([settings.sys.l0.cols.mapfile]))
-        # 处理真实地图情况
-        else:
-            concrete_map_list = []
-            for mapfile in mapfiles_define:
-                logger.opt(lazy=True).info(f"{f' mapfile: {mapfile} ':-^55}")
-                concrete_map = concrete[concrete[settings.sys.generalized.cols.mapfile] == mapfile]
-                param_map = param[mapfile]
-
-                # 通过 Map 处理相对应的内容列
-                with MapManager(self.pathdir_hadmap / mapfile) as map_manager:
-                    concrete_map_list.append(
-                        RealMapper(concrete_map, map_manager, param_map, self.scene_filter).process()
-                    )
-            # 拼接所有 concrete
-            concrete = pd.concat(concrete_map_list, ignore_index=True)
+        # 基于地图虚拟/真实情况处理具体场景
+        concrete = (
+            self._deal_virtual_map(concrete)
+            if self.virtual_real_is_virtual
+            else self._deal_real_map(concrete, param, mapfiles_define)
+        )
 
         # 处理过滤后场景为空, 返回状态, 便于后续判断
         if concrete.empty:

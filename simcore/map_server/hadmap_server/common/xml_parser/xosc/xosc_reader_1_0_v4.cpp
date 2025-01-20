@@ -1992,11 +1992,14 @@ std::string XOSCReader_1_0_v4::formatOptRule(std::string rule) {
 
 std::string XOSCReader_1_0_v4::getEntryRef(const std::string name) {
   int index = 1;
-  if (CompareString(name, "ego")) return "ego_1";
+  if (CompareString(name, "ego")) return "ego_001";
   for (auto it : this->m_egoInfos) {
     if (CompareString(it.first, name)) {
-      return std::string("ego_") + std::to_string(index);
+      std::ostringstream oss;
+      oss << "ego_" << std::setw(3) << std::setfill('0') << index;
+      return oss.str();
     }
+    index++;
   }
   index = 1;
   for (auto it : this->m_mapVehicles) {
