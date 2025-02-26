@@ -2352,8 +2352,9 @@ void XOSCWriter_1_0_v4::AddVehicleTrigger_V_A_M(SceneEvent& singleSceneEvent, Ev
   for (auto it : singleSceneEvent.ConditionVec) {
     std::string ConditionVarName = "Condition_" + std::to_string(index);
     // convert
-    std::transform(it.strTargetElement.begin(), it.strTargetElement.end(), it.strTargetElement.begin(),
-                   [](unsigned char c) { return std::toupper(c); });
+    if (!it.strTargetElement.empty()) {
+      it.strTargetElement[0] = std::toupper(it.strTargetElement[0]);
+    }
 
     Condition condition = CreateCondition(it.strBoundary, "0", ConditionVarName);
     if (it.strType == "time_trigger") {
@@ -2953,7 +2954,7 @@ int XOSCWriter_1_0_v4::ConvertOnePedestrianVelocities(CPedestrianV2& p, CPedestr
     } else if (evItr->nTriggerType == TCT_TIME_RELATIVE) {
       TimeToCollisionConditionTarget time_to_collision_condition_target;
       EntityRef entity_ref;
-      entity_ref._entityRef = "Ego";
+      entity_ref._entityRef = "Ego_001";
       time_to_collision_condition_target.sub_EntityRef = entity_ref;
 
       string strBool = "true";
@@ -3008,7 +3009,7 @@ int XOSCWriter_1_0_v4::ConvertOnePedestrianVelocities(CPedestrianV2& p, CPedestr
       }
 
       osc::RelativeDistanceCondition relative_distance_condition;
-      relative_distance_condition._entityRef = "Ego";
+      relative_distance_condition._entityRef = "Ego_001";
       relative_distance_condition._freespace = "true";
       relative_distance_condition._relativeDistanceType = strRelativeDistanceMode;
       relative_distance_condition._rule = "lessThan";

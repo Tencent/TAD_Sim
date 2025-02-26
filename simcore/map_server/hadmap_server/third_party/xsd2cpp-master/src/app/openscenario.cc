@@ -746,6 +746,12 @@ bool __parse__ControlPoint(const tinyxml2::XMLElement *elem, ControlPoint &obj) 
 
 bool __parse__CustomCommandAction(const tinyxml2::XMLElement *elem, CustomCommandAction &obj) {
 
+	if(elem->Attribute("type") != nullptr)
+		obj._type = std::string(elem->Attribute("type"));
+
+	if(elem->GetText() != nullptr)
+		obj._text = std::string(elem->GetText());
+
 
 
 	return true;
@@ -4751,8 +4757,14 @@ bool __save__ControlPoint(const ControlPoint &obj, tinyxml2::XMLElement *elem, t
 
 bool __save__CustomCommandAction(const CustomCommandAction &obj, tinyxml2::XMLElement *elem, tinyxml2::XMLDocument &doc) {
 
+	if(obj._type.get() && obj._type->length() > 0)
+		elem->SetAttribute("type", obj._type->c_str());
+
+	if(obj._text.get() && obj._text->length() > 0)
+		elem->SetText(obj._text->c_str());
 
 
+		
 	return true;
 
 }
@@ -7032,7 +7044,7 @@ bool __save__Storyboard(const Storyboard &obj, tinyxml2::XMLElement *elem, tinyx
 		__save__Story(ob, e, doc);
 		elem->InsertEndChild(e);
 	}
-	
+
 	if (obj.sub_StopTrigger.get()) {
       tinyxml2::XMLElement *e = doc.NewElement("StopTrigger");
       __save__Trigger(*obj.sub_StopTrigger, e, doc);

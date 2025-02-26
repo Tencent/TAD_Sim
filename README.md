@@ -177,35 +177,35 @@
 
 ## 3.6 使用操作
 
-- 用户操作手册可通过如下方式进行编译, 生成本地版 html 静态网站, 可通过浏览器查看.
+用户操作手册可通过如下方式进行编译, 生成本地版 html 静态网站, 可通过浏览器查看.
 
-  - 编译指令:
-    ```bash
-    # for ubuntu
-    # 切换到项目根目录, 构建手册时需要使用仓库代码
-    # 所以在镜像中需要挂载完整仓库, 故此处需要再根目录下
-    cd TAD_Sim
+- 编译指令:
+  ```bash
+  # for ubuntu
+  # 切换到项目根目录, 构建手册时需要使用仓库代码
+  # 所以在镜像中需要挂载完整仓库, 故此处需要再根目录下
+  cd TAD_Sim
 
-    # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
-    # 复用 desktop 的镜像
-    docker run -it --rm -v .:/build -w /build tadsim/desktop:v1.0 /bin/bash
+  # 以交互方式运行 docker 容器, 将其设置为工作目录, 挂载代码, 并启动 Bash shell
+  # 复用 desktop 的镜像
+  docker run -it --rm -v .:/build -w /build tadsim/desktop:v1.0 /bin/bash
 
-    # 切换到工作目录
-    cd TAD_Sim/docs/user_guidelines
-    ./build.sh
-    ```
+  # 切换到工作目录
+  cd TAD_Sim/docs/user_guidelines
+  ./build.sh
+  ```
 
-    ```powershell
-    # for windows
-    cd TAD_Sim\docs\user_guidelines
-    .\build.bat
-    ```
+  ```powershell
+  # for windows
+  cd TAD_Sim\docs\user_guidelines
+  .\build.bat
+  ```
 
-  - 产物查看
-    ```txt
-    - 在 TAD_Sim/docs/user_guidelines/build/user_guidelines_desktop_standard 文件夹下:
-    - 点击 index.html 跳转到浏览器后查看
-    ```
+- 产物查看
+  ```txt
+  - 在 TAD_Sim/docs/user_guidelines/build/user_guidelines_desktop_standard 文件夹下:
+  - 点击 index.html 跳转到浏览器后查看
+  ```
 
 ## 3.7 经验积累
 存放于 docs/experience 文件夹. 这里记录了项目开发过程中在各个方面所积累的宝贵经验, 包括但不限于技术选型的考量, 高效的编程实践、优化策略等.
