@@ -1,4 +1,5 @@
-#!/bin/bash
+
+set -e
 BuildType=
 BnewPROJ=
 
@@ -15,6 +16,7 @@ fi
 
 # Setting build parmameters
 MAP_SDK_ROOT="$(cd "$(dirname "$0")";pwd)"
+export CMAKE_PREFIX_PATH="$MAP_SDK_ROOT/../../tad_deps"
 MAP_SDK_BUILD="$MAP_SDK_ROOT/hadmap"
 # Setting build parmameters DATAMODEL
 DATAMODEL_ROOT="$MAP_SDK_ROOT/datamodel"

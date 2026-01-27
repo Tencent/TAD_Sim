@@ -1,4 +1,5 @@
-#!/bin/bash
+
+set -e
 
 # Setting build parmameters
 GRADING_ROOT="$(cd "$(dirname "$0")";pwd)"

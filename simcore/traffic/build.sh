@@ -5,8 +5,8 @@ TRAFFIC_ROOT="$(cd "$(dirname "$0")";pwd)"
 TRAFFIC_BUILD="$TRAFFIC_ROOT/build"
 
 # clean & mkdir
-rm -rf "$TRAFFIC_BUILD"
-mkdir "$TRAFFIC_BUILD"
+# rm -rf "$TRAFFIC_BUILD"
+mkdir -p "$TRAFFIC_BUILD"
 
 # build
 cd "$TRAFFIC_BUILD"

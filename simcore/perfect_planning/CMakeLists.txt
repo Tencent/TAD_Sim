@@ -106,6 +106,7 @@ if(WIN32)
 else()
   include_directories(
     ../traffic/build/protobuf
+    ../../common/message/build
     ${EIGEN3_INCLUDE_DIR}
     ${TBB_INCLUDE_DIRS})
   add_definitions(${TBB_DEFINITIONS})

@@ -1,12 +1,13 @@
-#!/bin/bash
+
+set -e
 
 # Setting build parmameters
 ENVPB_ROOT="$(cd "$(dirname "$0")";pwd)"
 ENVPB_BUILD="$ENVPB_ROOT/build"
 
 # clean & mkdir
-rm -rf "$ENVPB_BUILD"
-mkdir "$ENVPB_BUILD"
+# rm -rf "$ENVPB_BUILD"
+mkdir -p "$ENVPB_BUILD"
 
 # build
 cd "$ENVPB_BUILD"

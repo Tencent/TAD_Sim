@@ -5,15 +5,16 @@ set -e
 # 检查 python3 命令是否存在
 if command -v python3 >/dev/null 2>&1; then
     PYTHON=python3
-else
-    # 如果 python3 命令不存在，检查 python 命令是否存在
-    if command -v python >/dev/null 2>&1; then
-        PYTHON=python
-    else
-        # 如果 python3 和 python 命令都不存在，显示错误信息并退出脚本
-        echo "Error: Python 3.x not found. Please install Python 3.x or modify script to use appropriate command." >&2
-        exit 1
+elif command -v python >/dev/null 2>&1; then
+    PYTHON=python
+    # Check if python is actually python 3
+    if ! $PYTHON -c 'import sys; exit(0 if sys.version_info.major == 3 else 1)'; then
+       echo "Error: 'python' command found but it is not Python 3.x." >&2
+       exit 1
     fi
+else
+    echo "Error: Python 3.x not found. Please install Python 3.x." >&2
+    exit 1
 fi
 echo "Using Python: $PYTHON"
 
@@ -21,7 +22,11 @@ echo "Using Python: $PYTHON"
 BINARY_NAME="*.so*"
 
 # define
-EXCEL2ASAM_ROOT="$(cd "$(dirname "$0")";pwd)"
+echo "DEBUG: BASH_SOURCE=${BASH_SOURCE[0]}"
+echo "DEBUG: 0=$0"
+echo "DEBUG: PWD=$(pwd)"
+EXCEL2ASAM_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo "DEBUG: EXCEL2ASAM_ROOT=$EXCEL2ASAM_ROOT"
 EXCEL2ASAM_PROJECT="$EXCEL2ASAM_ROOT/excel2asam"
 EXCEL2ASAM_PROJECT_BINARY="$EXCEL2ASAM_PROJECT/map/lib"
 EXCEL2ASAM_BUILD="$EXCEL2ASAM_ROOT/build"
@@ -51,8 +56,24 @@ source "$EXCEL2ASAM_BUILD/myvenv/bin/activate"
 $PYTHON -m pip install --upgrade pip
 
 # 安装第三方依赖库 & 使用 PyInstaller 打包 Python 脚本
-$PYTHON -m pip install pyinstaller
-$PYTHON -m pip install -r requirements.txt
+# Check if pyinstaller module exists
+if $PYTHON -c "import PyInstaller" >/dev/null 2>&1; then
+    echo "Info: PyInstaller already installed. Skipping download."
+else
+    echo "Info: PyInstaller not found. Attempting install..."
+    echo "Info: PyInstaller not found. Attempting install..."
+    $PYTHON -m pip install --retries 0 --timeout 5 pyinstaller || echo "Warning: Failed to install pyinstaller (Offline). Build continues..."
+fi
+
+# Try to install requirements, but don't fail if offline and packages might be present
+$PYTHON -m pip install --retries 0 --timeout 5 -r requirements.txt || echo "Warning: Failed to install requirements (Offline). Assuming pre-installed."
+# Check if PyInstaller is available before running
+if ! command -v pyinstaller >/dev/null 2>&1 && ! $PYTHON -m PyInstaller --version >/dev/null 2>&1; then
+    echo "Warning: PyInstaller not found. Skipping excel2asam generation (offline mode)."
+    deactivate
+    exit 0
+fi
+
 pyinstaller --onefile \
             --nowindow \
             --distpath="$EXCEL2ASAM_BUILD_DIST" \

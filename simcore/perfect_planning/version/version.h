@@ -13,7 +13,7 @@
 // generate rights
 #define COPYRIGHT_STR() \
   "Copyright (C) "      \
-  "2024"
+  "2026"
 
 // generate version string
 #define VER_STR(major, minor, build, revision)                                                                \
@@ -22,9 +22,8 @@
 
 // generate file version
 #define FILE_VERSION_STR(branch, commit_id) \
-  "V" Stringizing(branch) "." Stringizing(commit_id) "-" "20240730" "-" "011122"
+  "V" Stringizing(branch) "." Stringizing(commit_id) "-" "20260123" "-" "202103"
 
 // generate product version
 #define PRODUCT_VERSION_STR(major, minor, build, revision) \
-  "V" Stringizing(major) "." Stringizing(minor) "." Stringizing(build) ".\
-  " Stringizing(revision) "-" "20240730" "T" "011122"
+  "V" Stringizing(major) "." Stringizing(minor) "." Stringizing(build) "." Stringizing(revision) "-" "20260123" "T" "202103"
