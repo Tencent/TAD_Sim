@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
+set(Boost_NO_SYSTEM_PATHS ON)
+# set(BOOST_ROOT "/home/sunny/mds_workspace/TAD_Sim/tad_deps")
+set(Boost_INCLUDE_DIR "/usr/local/include")
+set(Boost_LIBRARY_DIR "/usr/local/lib")
 
 project(txSim)
 
@@ -82,6 +86,7 @@ if(WIN32)
   set(LIB_ABSL absl::any absl::log absl::base absl::bits)
 elseif(UNIX) # for linux only currently.
   add_definitions(-DBOOST_BIND_GLOBAL_PLACEHOLDERS)
+
   find_package(Boost REQUIRED COMPONENTS system filesystem program_options regex)
   find_package(GTest CONFIG REQUIRED)
   find_package(Protobuf CONFIG REQUIRED)

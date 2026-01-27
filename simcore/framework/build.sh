@@ -24,26 +24,36 @@ FRAMEWORK_TXSIM_DOC="$FRAMEWORK_TXSIM/doc"
 FRAMEWORK_TXSIM_EXAMPLE="$FRAMEWORK_TXSIM/example"
 SDK_NAME="txSimSDK.tar.gz"
 
-# Clean & mkdir
-rm -rf "$FRAMEWORK_BUILD"
-mkdir -p "$FRAMEWORK_BUILD"
-rm -rf "$FRAMEWORK_ROOT/src/node_addon/build"
-mkdir -p "$FRAMEWORK_TXSIM"
-mkdir -p "$FRAMEWORK_TXSIM_INC"
-mkdir -p "$FRAMEWORK_TXSIM_LIB"
-mkdir -p "$FRAMEWORK_TXSIM_MSG"
-mkdir -p "$FRAMEWORK_TXSIM_MSG/deps"
-mkdir -p "$FRAMEWORK_TXSIM_DOC"
-mkdir -p "$FRAMEWORK_TXSIM_EXAMPLE"
-rm -rf "$FRAMEWORK_ROOT/docs/api"
-rm -rf "$FRAMEWORK_ROOT/docs/sphinx"
+# Check if build already exists (Incremental Build)
+if [ -f "$FRAMEWORK_TXSIM/../bin/txsim-local-service" ]; then
+    echo "Info: Framework binary exists. Skipping clean and build."
+else
+    # Clean & mkdir
+    rm -rf "$FRAMEWORK_BUILD"
+    mkdir -p "$FRAMEWORK_BUILD"
+    rm -rf "$FRAMEWORK_ROOT/src/node_addon/build"
+    mkdir -p "$FRAMEWORK_TXSIM"
+    mkdir -p "$FRAMEWORK_TXSIM_INC"
+    mkdir -p "$FRAMEWORK_TXSIM_LIB"
+    mkdir -p "$FRAMEWORK_TXSIM_MSG"
+    mkdir -p "$FRAMEWORK_TXSIM_MSG/deps"
+    mkdir -p "$FRAMEWORK_TXSIM_DOC"
+    mkdir -p "$FRAMEWORK_TXSIM_EXAMPLE"
+    rm -rf "$FRAMEWORK_ROOT/docs/api"
+    rm -rf "$FRAMEWORK_ROOT/docs/sphinx"
 
-# build framework
-cd "$FRAMEWORK_BUILD"
-echo "framework build start..."
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DTXSIM_WITH_DOC=ON -DTXSIM_ENCRYPTION_TIMESTAMP_INT=$ENABLE_ENCRYPTION_TIMESTAMP ..
-ninja -j8
-echo -e "framework build successfully.\n"
+    # build framework
+    cd "$FRAMEWORK_BUILD"
+    echo "framework build start..."
+    cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DTXSIM_WITH_DOC=OFF -DTXSIM_ENCRYPTION_TIMESTAMP_INT=$ENABLE_ENCRYPTION_TIMESTAMP ..
+    ninja -j8
+    echo -e "framework build successfully.\n"
+fi
+
+# Ensure all deploy directories exist for subsequent copy commands
+mkdir -p "$FRAMEWORK_TXSIM" "$FRAMEWORK_TXSIM_INC" "$FRAMEWORK_TXSIM_LIB" \
+         "$FRAMEWORK_TXSIM_MSG" "$FRAMEWORK_TXSIM_MSG/deps" \
+         "$FRAMEWORK_TXSIM_DOC" "$FRAMEWORK_TXSIM_EXAMPLE"
 
 # build framework cli
 cd "$FRAMEWORK_CLI"
@@ -67,7 +77,11 @@ rm "$FRAMEWORK_TXSIM_MSG/moduleService.proto"
 rm "$FRAMEWORK_TXSIM_MSG/sim_cloud_service.proto"
 rm "$FRAMEWORK_TXSIM_MSG/sim_cloud_city_service.proto"
 cp -r "$FRAMEWORK_ROOT/examples/"* "$FRAMEWORK_TXSIM_EXAMPLE"
-cp -r "$FRAMEWORK_ROOT/docs/sphinx/"* "$FRAMEWORK_TXSIM_DOC/"
+if [ -d "$FRAMEWORK_ROOT/docs/sphinx" ] && [ "$(ls -A "$FRAMEWORK_ROOT/docs/sphinx" 2>/dev/null)" ]; then
+    cp -r "$FRAMEWORK_ROOT/docs/sphinx/"* "$FRAMEWORK_TXSIM_DOC/"
+else
+    echo "Warning: Sphinx documentation source missing. Skipping doc copy."
+fi
 tar zcvf "$FRAMEWORK_BUILD/$SDK_NAME" -C "$FRAMEWORK_TXSIM" .
 echo -e "txSim build successfully.\n"
 

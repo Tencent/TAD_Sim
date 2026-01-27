@@ -1,10 +1,14 @@
-#!/bin/bash
+
+set -e
+echo "Using protoc: $(which protoc)"
+protoc --version
+
 
 MESSAGE_ROOT=$(dirname $0)
 MESSAGE_BUILD="$MESSAGE_ROOT/build"
 
 # clean & mkdir
-rm -rf $MESSAGE_BUILD
+# rm -rf $MESSAGE_BUILD
 mkdir -p $MESSAGE_BUILD
 
 for f in $MESSAGE_ROOT/*.proto

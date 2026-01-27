@@ -3,18 +3,19 @@ module txsim/cli
 go 1.17
 
 require (
-	github.com/golang/protobuf v1.5.2
 	github.com/jhump/protoreflect v1.10.1
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.10.0
 	nhooyr.io/websocket v1.8.7
 )
 
+replace nhooyr.io/websocket => github.com/nhooyr/websocket v1.8.10
+
 require (
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/klauspost/compress v1.10.3 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/mitchellh/mapstructure v1.4.3 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect

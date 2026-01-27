@@ -423,7 +423,7 @@ void BuildEgoAction(const std::string& str, sim_msg::Event* pEventEgo) {
   Json::Value jsonValue = EncodeActionToJson(str);
   bool isArray = jsonValue.isArray();
   uint32_t eventSize = jsonValue.size();
-  Json::Reader jsonReader;
+
   for (const Json::Value& item : jsonValue) {
     sim_msg::Action* pActionEgo = pEventEgo->add_actions();
 

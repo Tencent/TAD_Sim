@@ -1,7 +1,7 @@
 get_filename_component(MAPSDK_PATH ${CMAKE_CURRENT_LIST_DIR}/../../common/map_sdk ABSOLUTE)
 if(NOT EXISTS ${MAPSDK_PATH}/hadmap)
 message(STATUS "build map_sdk")
-if(WIN32) 
+if(WIN32)
   set(cmd build.bat)
 else()
   set(cmd ./build.sh)
@@ -25,26 +25,26 @@ if(NOT MAPSDK_INCLUDE_DIR)
 endif()
 if(NOT MAPSDK_LIBRARYS)
   set(MAPSDK_LIBPATH ${MAPSDK_PATH}/hadmap/lib)
-  find_library(MAPSDK_LIBRARY_DATAMODEL
-    NAMES datamodel PATHS ${MAPSDK_LIBPATH})
+  # Force set libraries directly since find_library is failing
+  set(MAPSDK_LIBRARY_DATAMODEL "${MAPSDK_LIBPATH}/libdatamodel.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_DATAMODEL})
-  find_library(MAPSDK_LIBRARY_MAPENGINE
-    NAMES mapengine PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_MAPENGINE "${MAPSDK_LIBPATH}/libmapengine.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_MAPENGINE})
-  find_library(MAPSDK_LIBRARY_TRANSMISSION
-    NAMES transmission PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_TRANSMISSION "${MAPSDK_LIBPATH}/libtransmission.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_TRANSMISSION})
-  find_library(MAPSDK_LIBRARY_MAPDB
-    NAMES mapdb PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_MAPDB "${MAPSDK_LIBPATH}/libmapdb.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_MAPDB})
-  find_library(MAPSDK_LIBRARY_MAPIMPORT
-    NAMES mapimport PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_MAPIMPORT "${MAPSDK_LIBPATH}/libmapimport.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_MAPIMPORT})
-  find_library(MAPSDK_LIBRARY_ROUTINGMAP
-    NAMES routingmap PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_ROUTINGMAP "${MAPSDK_LIBPATH}/libroutingmap.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_ROUTINGMAP})
-  find_library(MAPSDK_LIBRARY_ROUTINPLAN
-    NAMES routeplan PATHS ${MAPSDK_LIBPATH})
+
+  set(MAPSDK_LIBRARY_ROUTINPLAN "${MAPSDK_LIBPATH}/librouteplan.so")
   list(APPEND MAPSDK_LIBRARYS ${MAPSDK_LIBRARY_ROUTINPLAN})
 
 endif()
@@ -60,7 +60,7 @@ message("copy_mapsdk_dep has been called.")
 else()
 message("copy mapsdk deps to ${destdir}")
 file(MAKE_DIRECTORY ${destdir})
-if(WIN32) 
+if(WIN32)
 file(GLOB DEP_FILES  ${MAPSDK_PATH}/hadmap/bin/*)
 else()
 file(GLOB DEP_FILES  ${MAPSDK_PATH}/hadmap/lib/*)
