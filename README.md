@@ -210,6 +210,47 @@
 ## 3.7 经验积累
 存放于 docs/experience 文件夹. 这里记录了项目开发过程中在各个方面所积累的宝贵经验, 包括但不限于技术选型的考量, 高效的编程实践、优化策略等.
 
+## 3.9 Stable & Portable Version (Recommended for Offline/Remote Deployment)
+
+This fork contains several critical stability and portability patches that allow **TAD_Sim** to be built and run on diverse Linux environments without internet access.
+
+### 3.9.1 Why use this version?
+*   **Offline Ready:** Includes `tad_deps/` with all necessary headers and pre-compiled dependencies.
+*   **Environment Stability:** Fixed broken download links (e.g., Boost) and Protobuf version mismatches.
+*   **True Portability:** Generates a 993MB "Golden Package" that carries its own 3D models and libraries.
+*   **Self-Correcting:** Includes a smart deployment script that fixes absolute paths and syncs configurations automatically.
+
+### 3.9.2 Quick Start Procedure
+
+1.  **Clone with LFS (Mandatory):**
+    ```bash
+    git clone https://github.com/zadkhosh/TAD_Sim_portable
+    cd TAD_Sim_portable
+    git lfs pull
+    ```
+
+2.  **Build the Stable Package (Inside Docker):**
+    ```bash
+    docker build . -t tadsim/desktop:v1.0
+    docker run -it --rm --network host -v "$(pwd)":/build -w /build tadsim/desktop:v1.0 ./build.sh
+    ```
+
+3.  **Deploy to Remote Machine:**
+    *   Transfer `build/tadsim_portable_linux_x64.tar.gz` to your target machine.
+    *   Extract: `mkdir tadsim && tar -xf tadsim_portable_linux_x64.tar.gz -C tadsim`
+    *   **Initialize (Crucial):** `cd tadsim && bash resources/app/service/deploy_runtime.sh`
+    *   **Run:** `./tadsim`
+
+### 3.9.3 How to Reset / Start Scratch
+If you encounter "Error Code 2" or want to perform a clean reinstall on your remote machine:
+```bash
+pkill -f txsim; pkill -f txSimService
+rm -rf ~/.config/tadsim
+# Now re-extract the tarball and run deploy_runtime.sh
+```
+
+For more detailed technical info, see the **[TAD_Sim Master Guide](./docs/TAD_Sim_Master_Guide.md)** or **[Final Deployment Guide](./docs/Final_Deployment_Guide.md)**.
+
 ## 3.8 问题排查记录
 存放于 docs/troubleshooting 文件夹. 当项目遇到问题时, 再此将问题的详细描述、排查过程、解决方案以及总结反思记录在此. 这不仅有助于快速定位和解决当前问题, 还能为未来可能出现的类似问题提供解决方案的思路, 提升项目的稳定性和可靠性.
 
