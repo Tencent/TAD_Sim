@@ -1,38 +1,26 @@
 {
   "appId": "com.qq.tadsim",
   "productName": "tadsim",
-  "directories": {
-    "output": "release"
-  },
-  "files": [
-    "build",
-    "service",
-    "scenario",
-    "web-config.json"
-  ],
+  "directories": { "output": "release" },
+  "files": ["build", "service", "scenario", "web-config.json"],
+  "extraResources": [{ "from": "data", "to": "data" }],
   "asar": false,
-  "win": {
-    "icon": "build/icons/icon.ico",
-    "artifactName": "${productName}-${version}.${ext}"
-  },
-  "nsis": {
-    "oneClick": false,
-    "perMachine": true,
-    "allowToChangeInstallationDirectory": true
-  },
-  "linux": {
-    "target": "deb",
-    "icon": "build/icons",
-    "category": "Utility"
-  },
-  "deb": {
-    "depends": [
-      "gconf2",
-      "gconf-service",
-      "libnotify4",
-      "libxtst6",
-      "libnss3"
-    ],
-    "compression": "gz"
-  }
+  "win":
+    {
+      "icon": "build/icons/icon.ico",
+      "artifactName": "${productName}-${version}.${ext}",
+    },
+  "nsis":
+    {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+    },
+  "linux": { "target": "deb", "icon": "build/icons", "category": "Utility" },
+  "deb":
+    {
+      "depends":
+        ["gconf2", "gconf-service", "libnotify4", "libxtst6", "libnss3"],
+      "compression": "gz",
+    },
 }

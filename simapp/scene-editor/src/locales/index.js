@@ -9,13 +9,13 @@ import enMessages from './lang/en.json'
 import zhMessages from './lang/zh.json'
 
 const messages = {}
-export const supportLanguages = ['zh-CN', 'en']
-const cachedLocale = _.get(window, 'electron.env.TADSIM_LANGUAGE', 'zh-CN')
-const fallbackLocale = supportLanguages[0]
-export const locale = cachedLocale
-
+export const supportLanguages = ['en', 'zh-CN']
+const cachedLocale = _.get(window, 'electron.env.TADSIM_LANGUAGE', 'en')
+const fallbackLocale = 'en'
 messages.en = enMessages
 messages['zh-CN'] = zhMessages
+
+export const locale = 'en' // Forced to English for international deployment
 
 const i18n = createI18n({
   locale,

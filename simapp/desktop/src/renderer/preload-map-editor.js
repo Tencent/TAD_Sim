@@ -16,7 +16,7 @@ initDefaultContent()
  */
 async function exposeApi () {
   const installPkg = fse.readJSONSync(join(AppUserDataPath, './sys/package.json'))
-  const { language = 'zh-CN' } = installPkg
+  const { language = 'en' } = installPkg
 
   try {
     const api = {

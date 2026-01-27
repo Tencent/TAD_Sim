@@ -78,6 +78,7 @@ function startSimService () {
   ]
   const options = {
     env,
+    cwd: path.dirname(command),
   }
 
   spawnService(command, args, options)

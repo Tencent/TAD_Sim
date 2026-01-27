@@ -7,13 +7,12 @@
     "map-editor"
   ],
   "scripts": {
-    "dev:scene": "npm run dev -w scene-editor",
+    "dev:scene": "cd scene-editor && npm run dev",
     "dev:desktop": "cd desktop && npm run dev && cd ..",
-    "dev:map": "npm run dev -w map-editor",
-    "build": "build.bat",
-    "build:scene": "npm run build -w scene-editor",
+    "dev:map": "cd map-editor && npm run dev",
+    "build:scene": "cd scene-editor && npm run build",
     "build:desktop": "cd desktop && npm run build && cd ..",
-    "build:map": "npm run build -w map-editor",
+    "build:map": "cd map-editor && npm run build",
     "lint": "eslint --fix ."
   },
   "dependencies": {},

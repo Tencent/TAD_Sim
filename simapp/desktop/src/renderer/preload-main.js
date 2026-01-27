@@ -79,7 +79,7 @@ function copyFile (destination) {
 async function exposeApi () {
   try {
     const installPkg = fse.readJSONSync(join(AppUserDataPath, './sys/package.json'))
-    const { language = 'zh-CN' } = installPkg
+    const { language = 'en' } = installPkg
 
     const api = {
       versions,
