@@ -1,8 +1,5 @@
-ARG BASE_MIRROR=docker.io/library/
-ARG BASE_IMAGE=ubuntu:18.04
+FROM ubuntu:18.04
 ARG BUILDPLATFORM=linux/amd64
-
-FROM --platform=${BUILDPLATFORM} ${BASE_MIRROR}${BASE_IMAGE}
 ARG TARGETPLATFORM
 RUN echo "I am running on ${BUILDPLATFORM}, building for ${TARGETPLATFORM}" > /log
 
@@ -75,10 +72,11 @@ RUN apt-get update \
     # building Chrono
     libeigen3-dev \
     #
-    libflann-dev \
-    libproj-dev \
-    libffi-dev \
-    liblog4cplus-dev \
+    libzmq3-dev \
+    libprotobuf-dev \
+    libtinyxml2.6.2v5 \
+    protobuf-compiler \
+    protobuf-compiler-grpc \
     doxygen \
     doxygen-latex \
     doxygen-doc \
@@ -106,7 +104,9 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #
-COPY tools/docker_libraries/* .
+# Force cache invalidation for library copy (timestamped to ensure uniqueness)
+ARG CACHEBUST=20260120_1545
+COPY tools/docker_libraries/* ./
 
 # Install ninja
 # RUN wget -O ninja-linux.zip https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/ninja-linux.zip \
@@ -117,7 +117,8 @@ RUN unzip ninja-linux.zip -d /usr/local/bin \
 
 # Install cmake
 # RUN wget -O cmake-${CMAKE_VERSION}-linux-x86_64.sh https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}-linux-x86_64.sh \
-RUN sh cmake-${CMAKE_VERSION}-linux-x86_64.sh --skip-license --prefix=/usr/local \
+RUN md5sum cmake-${CMAKE_VERSION}-linux-x86_64.sh \
+    && sh cmake-${CMAKE_VERSION}-linux-x86_64.sh --skip-license --prefix=/usr/local \
     && cmake --version \
     && rm cmake-${CMAKE_VERSION}-linux-x86_64.sh
 
@@ -175,7 +176,7 @@ RUN tar zxf cppzmq-${CPPZMQ_VERSION}.tar.gz \
     && rm -rf cppzmq*
 
 # Install Boost
-# RUN wget -O boost_${BOOST_VERSION}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_${BOOST_VERSION}.tar.bz2 \
+# RUN wget -O boost_${BOOST_VERSION}.tar.bz2 https://archives.boost.io/release/1.75.0/source/boost_${BOOST_VERSION}.tar.bz2 \
 RUN tar --bzip2 -xf boost_${BOOST_VERSION}.tar.bz2 \
     && cd boost_${BOOST_VERSION} \
     && ./bootstrap.sh --prefix=/usr/local \
@@ -280,7 +281,9 @@ RUN tar zxf soci-${SOCI_VERSION}.tar.gz \
     && cd ../.. \
     && rm -rf soci* \
     # Creating the ld.so configuration file
-    && echo /usr/local/lib64 > /etc/ld.so.conf.d/local_lib64.conf
+    && echo /usr/local/lib64 > /etc/ld.so.conf.d/local_lib64.conf \
+    && echo /usr/local/lib > /etc/ld.so.conf.d/local_lib.conf \
+    && ldconfig
 
 # Install GLM
 # RUN wget -O glm-${GLM_VERSION}.tar.gz https://github.com/g-truc/glm/archive/${GLM_VERSION}.tar.gz \
