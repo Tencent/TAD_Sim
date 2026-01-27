@@ -1,15 +1,11 @@
 # 设置自动转换换行符的规则
 * text=auto
-
 # 针对指定文件夹下的所有文件设置特定的换行符风格
 datas/* text eol=crlf
-
 # 将所有扩展名为.bat的文件视为文本文件, 并在Windows系统上使用CRLF作为换行符
 *.bat text eol=crlf
-
 # 将所有扩展名为.sh的文件视为文本文件, 并在Linux系统上使用LF作为换行符
 *.sh text eol=lf
-
 # simcore/sensors/display
 *.uaaset filter=lfs diff=lfs merge=lfs -text
 *.lib filter=lfs diff=lfs merge=lfs -text
@@ -23,16 +19,14 @@ datas/* text eol=crlf
 *.so filter=lfs diff=lfs merge=lfs -text
 *.ts filter=lfs diff=lfs merge=lfs -text
 *.so.* filter=lfs diff=lfs merge=lfs -text
-
 # simcore/sensors/display/Content
 *.uasset filter=lfs diff=lfs merge=lfs -text
-
 # simcore/tools/docker_libraries
 *.tar.gz filter=lfs diff=lfs merge=lfs -text
 *.zip filter=lfs diff=lfs merge=lfs -text
 *.tar.xz filter=lfs diff=lfs merge=lfs -text
 *.tar.bz2 filter=lfs diff=lts=lf merge=lfs -text
-
 #
 *.png binary
 *.ts text
+tad_deps/** filter=lfs diff=lfs merge=lfs -text
