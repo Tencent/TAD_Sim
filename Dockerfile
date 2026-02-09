@@ -170,7 +170,7 @@ RUN wget -O cppzmq-${CPPZMQ_VERSION}.tar.gz https://github.com/zeromq/cppzmq/arc
     && rm -rf cppzmq*
 
 # Install Boost
-RUN wget -O boost_${BOOST_VERSION}.tar.bz2 https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_${BOOST_VERSION}.tar.bz2 \
+RUN wget -O boost_${BOOST_VERSION}.tar.bz2 https://archives.boost.io/release/1.75.0/source/boost_${BOOST_VERSION}.tar.bz2 \
     && tar --bzip2 -xf boost_${BOOST_VERSION}.tar.bz2 \
     && cd boost_${BOOST_VERSION} \
     && ./bootstrap.sh --prefix=/usr/local \
