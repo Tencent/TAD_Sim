@@ -135,11 +135,23 @@ void CVehicleActorBuilder::BuildFromLocationUnion(const EvalMsg& msg, ActorRepos
   location_union.ParsePartialFromString(msg.GetPayload());
   ActorAgentsPtr actors = actor_repo[Actor_Vehicle];
 
+  // TEMP FIX: shadow ego slipped into collision detection and make false positive collision
+  std::string my_ego_group_name = getMyEgoGroupName();
+  if (my_ego_group_name.empty()) {
+    if (actorSceneEgos.size() == 1) {
+      // Single ego case: The only ego must be the one being evaluated
+      my_ego_group_name = actorSceneEgos[0].group();
+    } else if (actorSceneEgos.size() > 1) {
+      VLOG_0 << "WARNING: Multiple egos detected in scene.proto (" << actorSceneEgos.size() 
+             << " egos). Cannot reliably identify which one is being evaluated and God bless you\n";
+    }
+  }
+  
   // egos is between [0,egos_size) in actors
   size_t actor_index = 0;
   for (size_t i = 0; i < location_union.messages_size() && actor_index < actorSceneEgos.size(); ++i) {
     // ignore own location
-    if (getMyEgoGroupName() == location_union.messages().at(i).groupname()) continue;
+    if (my_ego_group_name == location_union.messages().at(i).groupname()) continue;
     // parse and check if is valid location
     sim_msg::Location fellow;
     const std::string& loc_content = location_union.messages().at(i).content();
