@@ -202,7 +202,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.time"
+                              v-model:value="scope.row.time"
                               :min="0"
                             />
                           </div>
@@ -226,7 +226,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.velocity"
+                              v-model:value="scope.row.velocity"
                               :min="0"
                               :max="100"
                             />
@@ -251,7 +251,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.acceleration"
+                              v-model:value="scope.row.acceleration"
                             />
                           </div>
                           <div
@@ -366,7 +366,7 @@
                               @click.stop
                             >
                               <InputStartEndSeparator
-                                :value="scope.row.offsets"
+                                v-model:value="scope.row.offsets"
                                 :min="0"
                                 :max="2.5"
                               />
@@ -396,7 +396,7 @@
                               @click.stop
                             >
                               <InputStartEndSeparator
-                                :value="scope.row.durations"
+                                v-model:value="scope.row.durations"
                                 :min="0.01"
                               />
                             </div>
@@ -510,7 +510,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.value"
+                              v-model:value="scope.row.value"
                               :min="getMinValue(scope.row.type.value, scope.row.distancemode.value)"
                             />
                           </div>
@@ -566,7 +566,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.velocity"
+                              v-model:value="scope.row.velocity"
                               :min="0"
                               :max="100"
                             />
@@ -592,7 +592,7 @@
                             @click.stop
                           >
                             <InputStartEndSeparator
-                              :value="scope.row.acceleration"
+                              v-model:value="scope.row.acceleration"
                             />
                           </div>
                           <div
@@ -710,7 +710,7 @@
                               @click.stop
                             >
                               <InputStartEndSeparator
-                                :value="scope.row.offsets"
+                                v-model="scope.row.offsets"
                                 :min="0"
                                 :max="2.5"
                               />
@@ -741,7 +741,7 @@
                               @click.stop
                             >
                               <InputStartEndSeparator
-                                :value="scope.row.durations"
+                                v-model:value="scope.row.durations"
                                 :min="0.01"
                               />
                             </div>
