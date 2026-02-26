@@ -196,13 +196,19 @@ void CDynamicActorFLUBuilder::BuildFromLocationUnion(const EvalMsg &msg, ActorRe
   // build traffic
   sim_msg::Union location_union;
   location_union.ParsePartialFromString(msg.GetPayload());
-  ActorAgentsPtr actors = actor_repo[Actor_Vehicle];
+  ActorAgentsPtr actors = actor_repo[Actor_Dynamic_FLU];
+
+  // determine own ego group name with fallback for single-ego case
+  std::string my_ego_group_name = getMyEgoGroupName();
+  if (my_ego_group_name.empty() && actorSceneEgos.size() == 1) {
+    my_ego_group_name = actorSceneEgos[0].group();
+  }
 
   // egos is between [0,egos_size) in actors
   size_t actor_index = 0;
   for (size_t i = 0; i < location_union.messages_size() && actor_index < actorSceneEgos.size(); ++i) {
     // ignore own location
-    if (getMyEgoGroupName() == location_union.messages().at(i).groupname()) continue;
+    if (my_ego_group_name == location_union.messages().at(i).groupname()) continue;
     // parse and check if is valid location
     sim_msg::Location fellow;
     const std::string &loc_content = location_union.messages().at(i).content();
@@ -212,12 +218,12 @@ void CDynamicActorFLUBuilder::BuildFromLocationUnion(const EvalMsg &msg, ActorRe
       continue;
     }
 
-    auto actor_ptr = dynamic_cast<CVehicleActor *>(actors->at(actor_index)->GetActorPtr());
+    auto actor_ptr = dynamic_cast<CDynamicActorFLUPtr>(actors->at(actor_index)->GetActorPtr());
     // todo: because lane id is deprecated and invalid
     actor_ptr->SetLaneID(fellow.ego_lane().roadpkid(), fellow.ego_lane().sectionpkid(), fellow.ego_lane().lanepkid());
 
     actor_ptr->MutableSimTime()->FromMilliseond(sim_t_ms);
-    actor_ptr->SetType(Actor_Vehicle);
+    actor_ptr->SetType(Actor_Dynamic_FLU);
     // if groupname is not like "Ego_001", use -6 as default.
     actor_ptr->SetID(-6);
     try {
