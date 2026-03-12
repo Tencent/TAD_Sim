@@ -863,7 +863,7 @@ class PlayerScene {
         // if (!replay) {
         //   Self.model.visible = store.state.playerViewConfig.sceneViewConfig.ego
         // }
-        if (ego === this.currentPlanner) {
+        if (self === this.currentPlanner) {
           this.processCamerasFollow(tmp)
         }
       }
