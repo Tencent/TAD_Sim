@@ -1,7 +1,7 @@
 <template>
   <div class="start-end-separator-input">
     <InputNumber
-      :model-value="value.start"
+      v-model="value.start"
       :precision="2"
       :min="min"
       :max="max"
@@ -9,7 +9,7 @@
     />
     -
     <InputNumber
-      :model-value="value.end"
+      v-model="value.end"
       :precision="2"
       :min="min"
       :max="max"
@@ -17,11 +17,11 @@
     />
     <span class="separator-icon">
       <el-tooltip effect="dark" :content="$t('interval')" placement="bottom">
-        <separator-svg />
+        <separator-svg tabindex="-1" />
       </el-tooltip>
     </span>
     <InputNumber
-      :model-value="value.sep"
+      v-model="value.sep"
       :precision="2"
       :min="0.01"
       :max="abs(value.end - value.start)"
@@ -39,7 +39,7 @@ export default {
     InputNumber,
   },
   props: {
-    value: {
+    value: { // v-model:value 双向绑定
       type: Object,
       required: true,
     },

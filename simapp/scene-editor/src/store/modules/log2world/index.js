@@ -24,7 +24,7 @@ export default {
       startTimestamp: 0,
     },
 
-    realSwitchTime: 0, // 相对时间
+    realSwitchTime: Infinity, // 相对时间
 
     // 提交的配置信息，用于保存
     committedForm: {
