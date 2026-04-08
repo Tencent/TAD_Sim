@@ -14,6 +14,7 @@
 #include <boost/format.hpp>
 #include <cmath>
 #include <fstream>
+#include <regex>
 #include <sstream>
 #include "../../database/entity/scenario.h"
 #include "../../engine/config.h"
@@ -37,6 +38,28 @@
 #include "parser.h"
 #include "sensors/sensors.h"
 #include "simulation.h"
+// 安全工具函数：校验场景名是否包含路径遍历字符
+static bool IsValidSceneName(const std::string& name) {
+  if (name.empty() || name.size() > 255) return false;
+  // 拒绝包含 ".."、"/"、"\"、空字节 的名称
+  if (name.find("..") != std::string::npos) return false;
+  if (name.find('/') != std::string::npos) return false;
+  if (name.find('\\') != std::string::npos) return false;
+  if (name.find('\0') != std::string::npos) return false;
+  // 仅允许安全字符
+  static const std::regex validPattern("^[a-zA-Z0-9][a-zA-Z0-9_\\+\\-\\.\\(\\)]*$");
+  return std::regex_match(name, validPattern);
+}
+
+// 安全工具函数：验证构造出的路径仍然在预期父目录下
+static bool SafeSceneChild(const boost::filesystem::path& parentDir, const boost::filesystem::path& childPath) {
+  boost::filesystem::path normalParent = parentDir.lexically_normal();
+  boost::filesystem::path normalChild = childPath.lexically_normal();
+  // 子路径必须以父路径为前缀
+  auto mismatch_pair = std::mismatch(normalParent.begin(), normalParent.end(), normalChild.begin());
+  return mismatch_pair.first == normalParent.end();
+}
+
 std::string doubleConvertoString(double value) {
   std::ostringstream strStream;
   strStream << value;
@@ -1932,6 +1955,11 @@ int CParserJson::SaveToXOSC(const char* pPath, const char* strFileName, sTagSimu
 
 int CParserJson::SaveToSim(const char* pPath, const char* strFileName, sTagSimuTraffic& scene,
                            std::string& strSimPath) {
+  // 安全校验：防止路径遍历攻击
+  if (!IsValidSceneName(std::string(strFileName))) {
+    SYSTEM_LOGGER_ERROR("SaveToSim: invalid scene file name: %s", strFileName);
+    return -1;
+  }
   // 初始化地图查询
   InitMapQuery(scene.m_simulation);
   // 保存路径计算
@@ -1940,6 +1968,11 @@ int CParserJson::SaveToSim(const char* pPath, const char* strFileName, sTagSimuT
   sceneDirPath /= "scene";
   boost::filesystem::path simFilePath = sceneDirPath;
   simFilePath /= strFileName;
+  // 路径边界校验
+  if (!SafeSceneChild(sceneDirPath, simFilePath)) {
+    SYSTEM_LOGGER_ERROR("SaveToSim: path traversal detected for file: %s", strFileName);
+    return -1;
+  }
   std::string strExt = simFilePath.extension().string();
   // std::string strStemName = simFilePath.stem().string();
   std::string strStemName = strFileName;
@@ -2618,6 +2651,11 @@ int CParserJson::ParseScenarioCreateParams(const char* strJson, sTagEntityScenar
     }
 
     param.m_strName = jParam["name"].asString();
+    // 安全校验：防止路径遍历攻击
+    if (!param.m_strName.empty() && !IsValidSceneName(param.m_strName)) {
+      SYSTEM_LOGGER_ERROR("ParseScenarioCreateParams: invalid scene name detected: %s", param.m_strName.c_str());
+      return -1;
+    }
     param.m_strMap = jParam["map"].asString();
     param.m_strInfo = jParam["info"].asString();
     param.m_strContent = jParam["content"].asString();
@@ -3094,6 +3132,16 @@ int CParserJson::ParseSceneRenameParams(const char* strJson, sTagSceneRenamePara
 
   param.m_oldName = root["oldName"].asString();
   param.m_newName = root["newName"].asString();
+
+  // 安全校验：防止路径遍历攻击
+  if (!IsValidSceneName(param.m_oldName)) {
+    SYSTEM_LOGGER_ERROR("ParseSceneRenameParams: invalid old scene name: %s", param.m_oldName.c_str());
+    return -1;
+  }
+  if (!IsValidSceneName(param.m_newName)) {
+    SYSTEM_LOGGER_ERROR("ParseSceneRenameParams: invalid new scene name: %s", param.m_newName.c_str());
+    return -1;
+  }
 
   return 0;
 }
