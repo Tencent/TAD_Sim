@@ -2225,6 +2225,17 @@ const wchar_t* CSceneData::RenameScenes(const wchar_t* wstrParams) {
     return LR"({"code":-1, "message":"Rename scene err!"})";
   }
 
+  // 安全校验：检查名称中不含路径遍历字符
+  if (param.m_oldName.find("..") != std::string::npos ||
+      param.m_oldName.find('/') != std::string::npos ||
+      param.m_oldName.find('\\') != std::string::npos ||
+      param.m_newName.find("..") != std::string::npos ||
+      param.m_newName.find('/') != std::string::npos ||
+      param.m_newName.find('\\') != std::string::npos) {
+    SYSTEM_LOGGER_ERROR("RenameScenes: path traversal detected in scene name");
+    return LR"({"code":-1, "message":"Invalid scene name!"})";
+  }
+
   // string 可能要加上有效性判断
   if (param.m_oldName != param.m_newName) {
     // 路径
@@ -2232,6 +2243,18 @@ const wchar_t* CSceneData::RenameScenes(const wchar_t* wstrParams) {
     scenePath.append("scene");
     boost::filesystem::path oldFullNamePath = scenePath / param.m_oldName;
     boost::filesystem::path newFullNamePath = scenePath / param.m_newName;
+
+    // 路径边界校验：确保规范化后的路径仍在 scene 目录下
+    boost::filesystem::path normalScene = scenePath.lexically_normal();
+    boost::filesystem::path normalOld = oldFullNamePath.lexically_normal();
+    boost::filesystem::path normalNew = newFullNamePath.lexically_normal();
+    auto mismatchOld = std::mismatch(normalScene.begin(), normalScene.end(), normalOld.begin());
+    auto mismatchNew = std::mismatch(normalScene.begin(), normalScene.end(), normalNew.begin());
+    if (mismatchOld.first != normalScene.end() || mismatchNew.first != normalScene.end()) {
+      SYSTEM_LOGGER_ERROR("RenameScenes: path escapes scene directory");
+      return LR"({"code":-1, "message":"Invalid scene path!"})";
+    }
+
     std::string strOldStem, strNewStem, strExt;
 
     if (boost::filesystem::exists(oldFullNamePath) && boost::filesystem::is_regular_file(oldFullNamePath)) {

@@ -24,6 +24,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"sync"
 	"syscall"
@@ -41,6 +42,26 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/tidwall/gjson"
 )
+
+// isValidSceneName 校验场景名称是否安全，防止路径遍历攻击
+// 规则：
+//  1. 不能包含 ".."、"/"、"\"、空字节
+//  2. 只允许字母、数字、下划线、连字符、点、加号、括号
+//  3. 不能以点开头（防止隐藏文件）
+var validSceneNameRegex = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9_\+\-\.\(\)]*$`)
+
+func isValidSceneName(name string) bool {
+	if len(name) == 0 || len(name) > 255 {
+		return false
+	}
+	if strings.Contains(name, "..") {
+		return false
+	}
+	if strings.ContainsAny(name, "/\\\x00") {
+		return false
+	}
+	return validSceneNameRegex.MatchString(name)
+}
 
 var log = logrus.New()
 
@@ -1740,6 +1761,14 @@ func saveSceneContentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// 安全校验：防止路径遍历攻击
+	if !isValidSceneName(sceneName) {
+		errStr := `{"code":-1, "message":"invalid scene name"}`
+		fmt.Fprintln(w, errStr)
+		log.Error("save scene: invalid scene name detected: ", sceneName)
+		return
+	}
+
 	if len(sceneContent) < 1 {
 
 		fmt.Fprintln(w, "save scene param error")
@@ -1773,6 +1802,15 @@ func saveSceneContentHandlerV2(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 
 		log.Error("read save scene body error!")
+		return
+	}
+
+	// 安全校验：解析 JSON 检查场景名，防止路径遍历攻击
+	sceneName := gjson.GetBytes(body, "name").String()
+	if len(sceneName) > 0 && !isValidSceneName(sceneName) {
+		errStr := `{"code":-1, "message":"invalid scene name"}`
+		fmt.Fprintln(w, errStr)
+		log.Error("save scene v2: invalid scene name detected: ", sceneName)
 		return
 	}
 
@@ -3484,6 +3522,23 @@ func renameSceneHandler(w http.ResponseWriter, r *http.Request) {
 
 		errStr := "{\"code\":-1, \"message\":\"renameSceneHandler parse body eror!!\"}"
 		fmt.Fprint(w, errStr)
+		return
+	}
+
+	// 安全校验：检查 oldName 和 newName，防止路径遍历攻击
+	oldName := gjson.GetBytes(body, "oldName").String()
+	newName := gjson.GetBytes(body, "newName").String()
+	if len(oldName) > 0 && !isValidSceneName(oldName) {
+		errStr := `{"code":-1, "message":"invalid old scene name"}`
+		fmt.Fprint(w, errStr)
+		log.Error("rename scene: invalid old scene name detected: ", oldName)
+		return
+	}
+	if len(newName) > 0 && !isValidSceneName(newName) {
+		errStr := `{"code":-1, "message":"invalid new scene name"}`
+		fmt.Fprint(w, errStr)
+		log.Error("rename scene: invalid new scene name detected: ", newName)
+		return
 	}
 
 	params := string(body)
