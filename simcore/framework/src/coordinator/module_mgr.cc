@@ -301,6 +301,12 @@ void ModuleManagerImpl::TerminateInactiveModules(const std::set<std::string>& cu
 //! @param[in] ret 一个包含字符串对的向量，用于存储模拟环境变量
 void ModuleManagerImpl::AddSimEnvVars(const ModuleConfig& config, std::vector<StringPair>& ret) {
   ret.emplace_back("LD_LIBRARY_PATH", boost::algorithm::join(config.dep_paths, ":"));
+  // [replay_pure_box_render] 把开关通过环境变量传给子模块进程（traffic 模块据此决定行人/障碍物注入门控）。
+  // 环境变量对所有启动方式（二进制 / 共享库）都可靠传递，且 init_args 变化会触发模块重启使值始终与系统配置一致。
+  const auto it_rpbr = config.init_args.find("_replay_pure_box_render");
+  if (it_rpbr != config.init_args.end()) {
+    ret.emplace_back("TADSIM_REPLAY_PURE_BOX_RENDER", it_rpbr->second);
+  }
   auto it = module_status_.find(config.name);
   if (it == module_status_.end() || it->second.uuid.empty()) return;
   ret.emplace_back(kChildModuleEnvUuid, it->second.uuid);

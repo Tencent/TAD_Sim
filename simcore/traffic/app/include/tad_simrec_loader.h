@@ -1020,6 +1020,25 @@ class Simrec_SceneLoader : public Base::ISceneLoader {
    */
   virtual sim_msg::Trajectory GetTrajectory(const txFloat time_stamp_s) const TX_NOEXCEPT;
 
+  /**
+   * @brief 按时间插值行人数据并追加到输出 Traffic 的 dynamicObstacles。
+   *
+   * ego-only l2w 模式下行人/障碍物无需成为"活元素"，直接从已加载的 simrec pb
+   * 线性插值后追加到输出 Traffic，供算法订阅与 2D 可视化使用。
+   *
+   * @param timeMs 相对场景起始的毫秒时间戳
+   * @param outTraffic 输出的 Traffic pb
+   */
+  virtual void InterpPedestrians(const Base::txFloat timeMs, sim_msg::Traffic& outTraffic) TX_NOEXCEPT;
+
+  /**
+   * @brief 按时间插值障碍物数据并追加到输出 Traffic 的 staticObstacles。
+   *
+   * @param timeMs 相对场景起始的毫秒时间戳
+   * @param outTraffic 输出的 Traffic pb
+   */
+  virtual void InterpObstacles(const Base::txFloat timeMs, sim_msg::Traffic& outTraffic) TX_NOEXCEPT;
+
  protected:
   /**
    * @brief 获取模拟任务的Ego类型
@@ -1153,6 +1172,9 @@ class Simrec_SceneLoader : public Base::ISceneLoader {
   SceneLoader::Sim::simulation_ptr m_DataSource_Scene = nullptr;
   Base::txLpsz _class_name;
   sim_msg::TrafficRecords4Logsim trafficRecords_;
+  // 行人/障碍物按 id 分组的 (相对时间ms -> pb) 插值缓存，供 InterpPedestrians/InterpObstacles 使用
+  std::unordered_map<Base::txSysId, std::map<Base::txFloat, sim_msg::DynamicObstacle>> m_pedestrianRecords;
+  std::unordered_map<Base::txSysId, std::map<Base::txFloat, sim_msg::StaticObstacle>> m_obstacleRecords;
   Base::txFloat _simrec_ego_start_timestamp_ms = 0.0;
   Base::txFloat _simrec_ego_end_timestamp_ms = 0.0;
   Base::txFloat _simrec_traffic_end_timestamp_ms = 0.0;

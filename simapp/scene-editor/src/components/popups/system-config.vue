@@ -107,6 +107,19 @@
                     />
                   </el-form-item>
                 </li>
+                <li class="config-item">
+                  <el-form-item
+                    label="回放纯Box渲染"
+                    title="开启后回放场景强制使用动态尺寸彩色盒子渲染，交通流L2W强制关闭"
+                    prop="replayPureBoxRender"
+                  >
+                    <el-checkbox
+                      id="replayPureBoxRender"
+                      v-model="form.simulation.replayPureBoxRender"
+                      name="replayPureBoxRender"
+                    />
+                  </el-form-item>
+                </li>
                 <li class="config-item block">
                   <el-form-item
                     :label="$t('system.evaluationScriptPath')" prop="gradingFeedbackProcess"
@@ -231,6 +244,7 @@ export default {
           autoReset: true,
           overrideUserLog: true,
           gradingFeedbackProcess: '',
+          replayPureBoxRender: false,
         },
         editor: {
           autoFollowRoadDirection: true,

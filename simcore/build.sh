@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 build_project() {
   project="$1"

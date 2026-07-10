@@ -48,9 +48,32 @@ echo -e "framework build successfully.\n"
 # build framework cli
 cd "$FRAMEWORK_CLI"
 echo "framework_cli build start..."
-go env -w GOPROXY=https://goproxy.io,direct
-go mod tidy -compat=1.17
-go build
+
+# Use a reliable multi-mirror proxy chain so Go never falls back to a direct
+# `cloud.google.com/go?go-get=1` fetch (which 429s under rate limiting).
+# `goproxy.cn` (Alibaba) is the most reliable mirror on CN networks; the other
+# mirrors are fallbacks before `direct`.
+# GOSUMDB=off skips the checksum-database lookup for extra reliability.
+go env -w GOPROXY=https://goproxy.cn,https://goproxy.io,https://proxy.golang.org,direct
+go env -w GOSUMDB=off
+go env -w GOFLAGS=-mod=mod
+
+# Retry wrapper to ride out intermittent 429 / network errors.
+go_with_retry() {
+  local attempt=1
+  until "$@"; do
+    if [ "$attempt" -ge 5 ]; then
+      echo "ERROR: go command failed after $attempt attempts: $*" >&2
+      return 1
+    fi
+    echo "go command failed (attempt $attempt), retrying in $((attempt*2))s..."
+    sleep $((attempt*2))
+    attempt=$((attempt+1))
+  done
+}
+
+go_with_retry go mod tidy -compat=1.17
+go_with_retry go build
 echo -e "framework_cli build successfully.\n"
 
 # deploy txSim

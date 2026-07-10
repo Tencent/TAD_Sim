@@ -172,7 +172,6 @@ class Trajectory {
    */
   render (data = []) {
     if (data.length < 2) {
-      console.warn('trajectory.render data.length < 2')
       return
     }
 

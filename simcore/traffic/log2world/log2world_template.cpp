@@ -8,6 +8,7 @@
 #include "tx_spatial_query.h"
 #include "tx_tadsim_flags.h"
 #include "tx_time_utils.h"
+#include <cstdlib>
 
 #define LogInfo LOG_IF(INFO, FLAGS_LogLevel_L2W)
 #define LogWarn LOG(WARNING)
@@ -15,6 +16,12 @@ TX_NAMESPACE_OPEN(TrafficFlow)
 
 void Log2WorldSimLoop::Init(tx_sim::InitHelper& helper) TX_NOEXCEPT {
   ParentClass::Init(helper);
+  // [replay_pure_box_render] 通过环境变量 TADSIM_REPLAY_PURE_BOX_RENDER 读取门控（由 coordinator 在启动子模块时注入）。
+  // 不使用 GetParameter：traffic 模块的 InitHelper::GetParameter 无法解析自定义 key（实测恒定返回空，导致门控永远 false）。
+  // init_args 变化会自动触发模块重启，因此该值始终与系统配置一致；ResetVars 内再读一次以兜底。
+  const char* env_rpbr = std::getenv("TADSIM_REPLAY_PURE_BOX_RENDER");
+  m_replay_pure_box_render = (env_rpbr != nullptr && std::string(env_rpbr) == "1");
+  FLAGS_ReplayPureBoxRender = m_replay_pure_box_render;
   helper.Subscribe(FLAGS_L2W_Switch_TopicName);
   helper.Publish(FLAGS_L2W_RawLocation_TopicName /*tx_sim::topic::kLocation*/);
   helper.Publish(FLAGS_L2W_RawTrajectory_TopicName /*tx_sim::topic::kTrajectory*/);
@@ -32,6 +39,10 @@ void Log2WorldSimLoop::CreateSystem() TX_NOEXCEPT {
 
 void Log2WorldSimLoop::ResetVars() TX_NOEXCEPT {
   m_l2w_status = L2W_Status::eLogsim;
+  // 兜底再读一次门控（正常情况下 init_args 变化已触发模块重启，此处保险）。
+  const char* env_rpbr = std::getenv("TADSIM_REPLAY_PURE_BOX_RENDER");
+  m_replay_pure_box_render = (env_rpbr != nullptr && std::string(env_rpbr) == "1");
+  FLAGS_ReplayPureBoxRender = m_replay_pure_box_render;
   ParentClass::ResetVars();
 }
 
@@ -143,6 +154,21 @@ void Log2WorldSimLoop::SimulationTraffic(tx_sim::StepHelper& helper,
   const Base::txBool res = TrafficSystemPtr()->Update(timeMgr);
   m_outputTraffic.Clear();
   TrafficSystemPtr()->FillingTrafficData(timeMgr, m_outputTraffic);
+  // ego-only l2w 下行人/障碍物不经 element 系统，直接从 simrec pb 插值追加，
+  // 使算法订阅 TRAFFIC 时也能收到 dynamicObstacles/staticObstacles（车辆已由 FillingTrafficData 填充）。
+  // 仅在 replay_pure_box_render 开启时注入（此时 traffic_switch 已被 coordinator 强制关闭，不会与 worldsim 重复）。
+  //
+  // 注意：开启此模式后，TRAFFIC 中会比关闭时多出 simrec 录制的行人和障碍物。
+  // Perfect_Planning（及任何订阅 TRAFFIC 的算法）会收到更多障碍物，可能导致被阻塞/减速等行为差异。
+  // 因此 pure_box=true 与 pure_box=false 下算法的表现很可能不同（包括 l2w 切换时的 ego 位置）。
+  if (m_replay_pure_box_render) {
+    const Base::txFloat rel_time_ms = Utils::SecondToMillisecond(timeMgr.AbsTime());
+    auto simrecLoader = Log2WorldTrafficSystemPtr()->SimrecSceneLoader();
+    if (NonNull_Pointer(simrecLoader)) {
+      simrecLoader->InterpPedestrians(rel_time_ms, m_outputTraffic);
+      simrecLoader->InterpObstacles(rel_time_ms, m_outputTraffic);
+    }
+  }
   TrafficSystemPtr()->FillingSpatialQuery();
   PublishMessage(helper, tx_sim::topic::kTraffic, m_outputTraffic);
 #if 1
@@ -155,6 +181,14 @@ void Log2WorldSimLoop::SimulationTraffic(tx_sim::StepHelper& helper,
           << TX_VARS_NAME(sample, oss.str()) << TX_VARS_NAME(send_note, m_outputTraffic.DebugString());
   {
     Log2WorldTrafficSystemPtr()->FillingTrafficDataShadow(timeMgr, m_output_ShadowTraffic);
+    if (m_replay_pure_box_render) {
+      const Base::txFloat rel_time_ms = Utils::SecondToMillisecond(timeMgr.AbsTime());
+      auto simrecLoader = Log2WorldTrafficSystemPtr()->SimrecSceneLoader();
+      if (NonNull_Pointer(simrecLoader)) {
+        simrecLoader->InterpPedestrians(rel_time_ms, m_output_ShadowTraffic);
+        simrecLoader->InterpObstacles(rel_time_ms, m_output_ShadowTraffic);
+      }
+    }
     PublishMessage(helper, FLAGS_L2W_RawTraffic_TopicName, m_output_ShadowTraffic);
     oss.str("");
     if (FLAGS_LogLevel_L2W && m_output_ShadowTraffic.cars_size() > 0) {

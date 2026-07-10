@@ -144,6 +144,7 @@ class PlayerScene {
       type: 'player',
       catalogs: () => this.catalogs,
       prefix: 'assets/models',
+      replayPureBoxRender: () => this.replayPureBoxRender,
     })
   }
 
@@ -164,6 +165,15 @@ class PlayerScene {
       map[o.catalogParams.properties.modelId] = o.variable
     })
     return map
+  }
+
+  /**
+   * 回放纯 box 渲染模式开关（从 Vuex system store 读取）
+   * 开启时：回放使用彩色盒子渲染 + 放宽障碍物/行人匹配 + 仅非回放路径清理冗余
+   * 关闭时：恢复 trunk 原始渲染逻辑
+   */
+  get replayPureBoxRender () {
+    return store.state.system?.simulation?.replayPureBoxRender || false
   }
 
   /**
@@ -1196,32 +1206,38 @@ class PlayerScene {
 
     toBeRemoved.splice(0, toBeRemoved.length)
 
-    // obstacle
-    this.trafficOMap.forEach((obstacle) => {
-      if (!trafficLoc.obstacleMap.has(obstacle.id)) {
-        toBeRemoved.push(obstacle)
+    // 静态障碍物 / 动态障碍物（行人）冗余清理：
+    // - replayPureBoxRender ON：replay=true 时传入的是空的 TRAFFIC_REPLAY 数据，
+    //   若仍清理会误删非 replay 路径创建的障碍物，因此仅在非回放路径下做冗余清理。
+    // - replayPureBoxRender OFF（trunk 行为）：全路径清理。
+    if (!replay || !this.replayPureBoxRender) {
+      // obstacle
+      this.trafficOMap.forEach((obstacle) => {
+        if (!trafficLoc.obstacleMap.has(obstacle.id)) {
+          toBeRemoved.push(obstacle)
+        }
+      })
+
+      for (let i = 0; i < toBeRemoved.length; ++i) {
+        const ele = toBeRemoved[i]
+        this.trafficOMap.delete(ele.id)
+        this.scene.remove(ele.model)
+        ele.model = null
       }
-    })
 
-    for (let i = 0; i < toBeRemoved.length; ++i) {
-      const ele = toBeRemoved[i]
-      this.trafficOMap.delete(ele.id)
-      this.scene.remove(ele.model)
-      ele.model = null
-    }
+      // dynamic obstacle
+      this.trafficPMap.forEach((dynamicObstacle) => {
+        if (!trafficLoc.dynamicObstacleMap.has(dynamicObstacle.id)) {
+          toBeRemoved.push(dynamicObstacle)
+        }
+      })
 
-    // dynamic obstacle
-    this.trafficPMap.forEach((dynamicObstacle) => {
-      if (!trafficLoc.dynamicObstacleMap.has(dynamicObstacle.id)) {
-        toBeRemoved.push(dynamicObstacle)
+      for (let i = 0; i < toBeRemoved.length; ++i) {
+        const ele = toBeRemoved[i]
+        this.trafficPMap.delete(ele.id)
+        this.scene.remove(ele.model)
+        ele.model = null
       }
-    })
-
-    for (let i = 0; i < toBeRemoved.length; ++i) {
-      const ele = toBeRemoved[i]
-      this.trafficPMap.delete(ele.id)
-      this.scene.remove(ele.model)
-      ele.model = null
     }
   }
 
@@ -1250,6 +1266,18 @@ class PlayerScene {
           const catalog = this.modelsManager.findCatalogByModelId('car', v.id)
           if (catalog) {
             v.boundingBox = catalog.catalogParams[0].boundingBox
+          }
+        }
+        // 回放数据（如 tadbag 转换的 xosc）中交通车可能既不在场景定义里也不在 catalog 中，
+        // 此时用交通流消息自带的真实尺寸 length/width/height 兜底，避免 boundingBox 为 undefined 导致崩溃
+        if (!v.boundingBox || !v.boundingBox.dimensions) {
+          v.boundingBox = {
+            center: v.boundingBox?.center || { x: 0, y: 0, z: 0 },
+            dimensions: {
+              length: +v.length > 0 ? +v.length : 1,
+              width: +v.width > 0 ? +v.width : 1,
+              height: +v.height > 0 ? +v.height : 1,
+            },
           }
         }
         v.angle = +sv?.angle || 0
@@ -1330,8 +1358,19 @@ class PlayerScene {
       if (trafficLoc.obstacles[i].id == undefined) {
         continue
       }
-      // 类型为已知类型
-      if (trafficLoc.obstacles[i].type in this.obstacleTypesMap) {
+      // 静态障碍物渲染：
+      // - replayPureBoxRender ON（回放纯 box 模式）：type 为运行期类别（1/2/3/4…），与 catalog modelId 不匹配，
+      //   仅跳过地图已知元素（700~800），其余均按静态障碍物渲染。
+      // - replayPureBoxRender OFF（trunk 行为）：强匹配 catalog 已知类型 `type in obstacleTypesMap`，
+      //   未匹配的收集到 unknownStaticObstacleTypeSet 做诊断。
+      const soType = trafficLoc.obstacles[i].type
+      const shouldRenderObstacle = this.replayPureBoxRender
+        ? !(soType >= 700 && soType < 800)
+        : (soType in this.obstacleTypesMap)
+      if (!this.replayPureBoxRender && !shouldRenderObstacle) {
+        unknownStaticObstacleTypeSet.add(soType)
+      }
+      if (shouldRenderObstacle) {
         // 障碍物
         let o = this.trafficOMap.get(trafficLoc.obstacles[i].id)
         if (o == undefined) {
@@ -1341,17 +1380,18 @@ class PlayerScene {
           if (so) {
             o.boundingBox = so.boundingBox
           } else {
-            console.log(`场景文件中未找到静态障碍物定义：${o.id}`)
             const catalog = this.modelsManager.findCatalogByModelId('obstacle', `${o.id}`)
             if (catalog) {
               o.boundingBox = catalog.catalogParams.boundingBox
             } else {
+              // 优先使用交通流消息自带的真实包围盒尺寸
+              // 仅当缺失（<=0）时才退化为单位立方体，否则障碍物会一直是 1×1×1 小方块
               o.boundingBox = {
                 center: { x: 0, y: 0, z: 0.5 },
                 dimensions: {
-                  width: 1,
-                  height: 1,
-                  length: 1,
+                  width: +o.width > 0 ? +o.width : 1,
+                  height: +o.height > 0 ? +o.height : 1,
+                  length: +o.length > 0 ? +o.length : 1,
                 },
               }
             }
@@ -1385,12 +1425,6 @@ class PlayerScene {
           o.model.rotation.z = o.heading
         }
         o.model.updateMatrixWorld(true)
-      } else {
-        if (trafficLoc.obstacles[i].type >= 700 && trafficLoc.obstacles[i].type < 800) {
-          // 地图已知元素，TRAFFIC 发布给别的算法使用
-        } else {
-          unknownStaticObstacleTypeSet.add(trafficLoc.obstacles[i].type)
-        }
       }
     }
 
@@ -1408,14 +1442,29 @@ class PlayerScene {
       }
 
       // 行人
-      if (trafficLoc.dynamicObstacles[i].type >= 0) {
+      // - replayPureBoxRender ON：proto3 JSON 序列化会省略默认零值 type（行人默认 0），前端读到 undefined；
+      //   把 undefined 也视为行人（type 0）处理。
+      // - replayPureBoxRender OFF：保持原判断 `type >= 0`，undefined 时不渲染。
+      const doType = trafficLoc.dynamicObstacles[i].type
+      if (this.replayPureBoxRender ? (doType === undefined || doType >= 0) : (doType >= 0)) {
         let p = this.trafficPMap.get(trafficLoc.dynamicObstacles[i].id)
         if (p == undefined) {
           p = new TrafficDO()
           p.copyFromNet(trafficLoc.dynamicObstacles[i])
           const sp = this.sceneParser.findDynamicObstacleInMap(`${-p.id}`)
           p.angle = +sp?.angle || 0
-          p.boundingBox = sp.boundingBox
+          p.boundingBox = sp?.boundingBox
+          // 回放数据中行人/动态障碍物可能不在场景定义里，用消息自带的真实尺寸兜底，避免 boundingBox 为 undefined 导致崩溃
+          if (!p.boundingBox || !p.boundingBox.dimensions) {
+            p.boundingBox = {
+              center: p.boundingBox?.center || { x: 0, y: 0, z: 0 },
+              dimensions: {
+                length: +p.length > 0 ? +p.length : 1,
+                width: +p.width > 0 ? +p.width : 1,
+                height: +p.height > 0 ? +p.height : 1,
+              },
+            }
+          }
           p.model = this.modelsManager.loadPedestrianModelSync(p)
           this.scene.add(p.model)
           this.trafficPMap.set(p.id, p)

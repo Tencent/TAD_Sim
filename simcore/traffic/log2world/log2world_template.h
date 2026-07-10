@@ -167,6 +167,7 @@ class Log2WorldSimLoop : public WorldsimSimLoop {
   L2W_Status m_l2w_status = L2W_Status::eLogsim;
   sim_msg::Log2worldTriggerType m_l2w_trigger_cmd = sim_msg::Log2worldTriggerType::LOG2WORLD_TRIGGER_NONE;
   sim_msg::Traffic m_output_ShadowTraffic;
+  bool m_replay_pure_box_render = false;  // 回放纯 box 渲染模式开关，由环境变量 TADSIM_REPLAY_PURE_BOX_RENDER 设置（coordinator 注入）
 };
 
 using Log2WorldSimLoopPtr = std::shared_ptr<Log2WorldSimLoop>;

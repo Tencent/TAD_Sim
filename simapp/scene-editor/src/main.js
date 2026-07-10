@@ -39,6 +39,9 @@ app.use(store)
 app.use(pinia)
 app.use(router)
 
+// 应用启动即加载系统配置，使l2w设置对话框与回放渲染在打开任意场景前就能拿到与数据库一致的配置，
+store.dispatch('system/getConfig')
+
 // 配置 Element Plus 的本地化
 const epLocale = {
   'zh-CN': epZhCn,

@@ -19,6 +19,88 @@
 
 #define LogInfo LOG_IF(INFO, FLAGS_LogLevel_SceneReader)
 #define LogWarn LOG(WARNING)
+
+namespace {
+// Plan B: 行人/障碍物插值辅助，逻辑直接移植自 interpolate_player_module.cc 的 interp()。
+// ego-only l2w 永不切 worldsim，行人/障碍物只需回放，无需成为活元素。
+constexpr double kBBoxPI = 3.1415926536;
+constexpr double kBBoxTwoPI = kBBoxPI * 2.0;
+
+inline double bbox_lerp(double t1, double t2, double v1, double v2, double t) {
+  return v1 + (v2 - v1) * (t - t1) / (t2 - t1);
+}
+
+inline double bbox_lerp_angle(double t1, double t2, double a1, double a2, double t) {
+  if (a2 - a1 > kBBoxPI) {
+    a1 += kBBoxTwoPI;
+  } else if (a1 - a2 > kBBoxPI) {
+    a2 += kBBoxTwoPI;
+  }
+  double res = bbox_lerp(t1, t2, a1, a2, t);
+  if (res > kBBoxPI) {
+    res -= kBBoxTwoPI;
+  }
+  return res;
+}
+
+sim_msg::DynamicObstacle interp_pedestrian(double t1, double t2, const sim_msg::DynamicObstacle& a,
+                                           const sim_msg::DynamicObstacle& b, double t) {
+  sim_msg::DynamicObstacle res = a;
+  res.set_t(Utils::MillisecondToSecond(t));
+  res.set_x(bbox_lerp(t1, t2, a.x(), b.x(), t));
+  res.set_y(bbox_lerp(t1, t2, a.y(), b.y(), t));
+  res.set_z(bbox_lerp(t1, t2, a.z(), b.z(), t));
+  res.set_heading(bbox_lerp_angle(t1, t2, a.heading(), b.heading(), t));
+  res.set_v(bbox_lerp(t1, t2, a.v(), b.v(), t));
+  res.set_vl(bbox_lerp(t1, t2, a.vl(), b.vl(), t));
+  res.set_age(bbox_lerp(t1, t2, a.age(), b.age(), t));
+  res.set_length(bbox_lerp(t1, t2, a.length(), b.length(), t));
+  res.set_width(bbox_lerp(t1, t2, a.width(), b.width(), t));
+  res.set_height(bbox_lerp(t1, t2, a.height(), b.height(), t));
+  return res;
+}
+
+sim_msg::StaticObstacle interp_obstacle(double t1, double t2, const sim_msg::StaticObstacle& a,
+                                        const sim_msg::StaticObstacle& b, double t) {
+  sim_msg::StaticObstacle res = a;
+  res.set_t(Utils::MillisecondToSecond(t));
+  res.set_x(bbox_lerp(t1, t2, a.x(), b.x(), t));
+  res.set_y(bbox_lerp(t1, t2, a.y(), b.y(), t));
+  res.set_z(bbox_lerp(t1, t2, a.z(), b.z(), t));
+  res.set_heading(bbox_lerp_angle(t1, t2, a.heading(), b.heading(), t));
+  res.set_length(bbox_lerp(t1, t2, a.length(), b.length(), t));
+  res.set_width(bbox_lerp(t1, t2, a.width(), b.width(), t));
+  res.set_height(bbox_lerp(t1, t2, a.height(), b.height(), t));
+  res.set_age(bbox_lerp(t1, t2, a.age(), b.age(), t));
+  return res;
+}
+
+// 优先保留录制尺寸；缺失才查 catalog 兜底（复用 interpolate_player_module.cc:651-692 模式）
+void ensure_pedestrian_dim(sim_msg::DynamicObstacle& ped) TX_NOEXCEPT {
+  if (ped.length() > 0.0 && ped.width() > 0.0 && ped.height() > 0.0) {
+    return;
+  }
+  Base::CatalogCache::Catalog_Pedestrian cat;
+  if (CallSucc(Base::CatalogCache::Query_Pedestrian_Catalog(__int2enum__(PEDESTRIAN_TYPE, ped.type()), cat))) {
+    ped.set_length(cat.bbx.dim.dbLength);
+    ped.set_width(cat.bbx.dim.dbWidth);
+    ped.set_height(cat.bbx.dim.dbHeight);
+  }
+}
+
+void ensure_obstacle_dim(sim_msg::StaticObstacle& obs) TX_NOEXCEPT {
+  if (obs.length() > 0.0 && obs.width() > 0.0 && obs.height() > 0.0) {
+    return;
+  }
+  Base::CatalogCache::Catalog_MiscObject cat;
+  if (CallSucc(Base::CatalogCache::Query_Obstacle_Catalog(__int2enum__(STATIC_ELEMENT_TYPE, obs.type()), cat))) {
+    obs.set_length(cat.bbx.dim.dbLength);
+    obs.set_width(cat.bbx.dim.dbWidth);
+    obs.set_height(cat.bbx.dim.dbHeight);
+  }
+}
+}  // namespace
+
 TX_NAMESPACE_OPEN(SceneLoader)
 
 Simrec_SceneLoader::Simrec_SceneLoader() : _class_name(__func__) {}
@@ -128,6 +210,8 @@ Base::txBool Simrec_SceneLoader::Release() TX_NOEXCEPT {
   _simrec_ego_start_timestamp_ms = 0.0;
   _simrec_ego_end_timestamp_ms = 0.0;
   mSpaceTimeCarListWithSameId.clear();
+  m_pedestrianRecords.clear();
+  m_obstacleRecords.clear();
   mSpaceTimeEgoPtr = nullptr;
   m_map_rid2routePtr.clear();
   m_route_base = 1;
@@ -138,6 +222,8 @@ Base::txBool Simrec_SceneLoader::FrameData2ObjectData(
     const Base::txFloat time_diff_, std::map<Base::txFloat, sim_msg::Location> &locations_,
     std::unordered_map<Base::txSysId, std::map<Base::txFloat, sim_msg::Car>> &cars_) TX_NOEXCEPT {
   cars_.clear();
+  m_pedestrianRecords.clear();
+  m_obstacleRecords.clear();
   // 遍历仿真场景中的交通记录
   for (const auto &traffic : trafficRecords_.traffic_record()) {
     // 遍历交通记录中的车辆信息
@@ -146,6 +232,15 @@ Base::txBool Simrec_SceneLoader::FrameData2ObjectData(
       LogInfo << "car " << car.id() << " time: " << (car.t() - time_diff_);
       // 将车辆信息添加到车辆信息映射中
       cars_[car.id()][car.t() - time_diff_].CopyFrom(car);
+    }
+    // 同步收集行人/障碍物，按 id 分组、时间键对齐车辆（相对场景起始 ms）
+    for (int i = 0; i < traffic.dynamicobstacles_size(); ++i) {
+      const auto &ped = traffic.dynamicobstacles(i);
+      m_pedestrianRecords[ped.id()][ped.t() - time_diff_].CopyFrom(ped);
+    }
+    for (int i = 0; i < traffic.staticobstacles_size(); ++i) {
+      const auto &obs = traffic.staticobstacles(i);
+      m_obstacleRecords[obs.id()][obs.t() - time_diff_].CopyFrom(obs);
     }
   }
   // 清空位置信息
@@ -871,6 +966,47 @@ sim_msg::Trajectory Simrec_SceneLoader::GetTrajectory(const txFloat time_stamp_s
     }
   }
   return std::move(ret_traj);
+}
+
+void Simrec_SceneLoader::InterpPedestrians(const Base::txFloat timeMs, sim_msg::Traffic& outTraffic) TX_NOEXCEPT {
+  // 遍历每个行人 id 的时序采样，找到包络 [t_prev, t_curr] 后线性插值追加到 outTraffic
+  for (auto& kv : m_pedestrianRecords) {
+    std::map<Base::txFloat, sim_msg::DynamicObstacle>& refMap = kv.second;
+    if (refMap.empty() || refMap.begin()->first > timeMs) {
+      continue;
+    }
+    auto it2 = std::next(refMap.begin());
+    while (it2 != refMap.end()) {
+      if (std::prev(it2)->first <= timeMs && it2->first >= timeMs) {
+        sim_msg::DynamicObstacle ped = interp_pedestrian(std::prev(it2)->first, it2->first,
+                                                         std::prev(it2)->second, it2->second, timeMs);
+        ensure_pedestrian_dim(ped);
+        *outTraffic.add_dynamicobstacles() = std::move(ped);
+        break;
+      }
+      ++it2;
+    }
+  }
+}
+
+void Simrec_SceneLoader::InterpObstacles(const Base::txFloat timeMs, sim_msg::Traffic& outTraffic) TX_NOEXCEPT {
+  for (auto& kv : m_obstacleRecords) {
+    std::map<Base::txFloat, sim_msg::StaticObstacle>& refMap = kv.second;
+    if (refMap.empty() || refMap.begin()->first > timeMs) {
+      continue;
+    }
+    auto it2 = std::next(refMap.begin());
+    while (it2 != refMap.end()) {
+      if (std::prev(it2)->first <= timeMs && it2->first >= timeMs) {
+        sim_msg::StaticObstacle obs = interp_obstacle(std::prev(it2)->first, it2->first,
+                                                      std::prev(it2)->second, it2->second, timeMs);
+        ensure_obstacle_dim(obs);
+        *outTraffic.add_staticobstacles() = std::move(obs);
+        break;
+      }
+      ++it2;
+    }
+  }
 }
 
 TX_NAMESPACE_CLOSE(SceneLoader)

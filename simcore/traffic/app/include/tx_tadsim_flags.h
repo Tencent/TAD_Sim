@@ -28,6 +28,7 @@ DECLARE_bool(LogLevel_AI_Arterial);
 DECLARE_bool(LogLevel_XOSC_Replay);
 DECLARE_bool(LogLevel_TrajFollow);
 DECLARE_bool(LogLevel_L2W);
+DECLARE_bool(ReplayPureBoxRender);  // 回放纯 box 渲染模式门控（由 coordinator 经环境变量 TADSIM_REPLAY_PURE_BOX_RENDER 注入）
 DECLARE_bool(LogLevel_RelativeTrajectoryFollow);
 DECLARE_bool(LogLevel_Preview);
 DECLARE_bool(LogLevel_MapObject);

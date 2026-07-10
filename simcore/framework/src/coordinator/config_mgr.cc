@@ -195,7 +195,25 @@ void ConfigManager::InitConfigData(const std::string& default_config_path, const
   ExecSqliteRoutine(TXSIM_SQL_CREATE_KPI_GROUP_TABLE);
   ExecSqliteRoutine(
       "create table if not exists config_version(version integer default 0 not null);"
-      "insert or ignore into config_version (rowid, version) values (1, 7);");
+      "insert or ignore into config_version (rowid, version) values (1, 8);");
+
+  // migrate sys_config: add replay_pure_box_render column if missing (config_version < 8)
+  {
+    int32_t db_version = 7;
+    ExecSqliteRoutine(
+        "select version from config_version where rowid = 1;",
+        [](void* data_ptr, int column_count, char** columns, char** column_names) -> int {
+          *static_cast<int32_t*>(data_ptr) = std::stoi(columns[0]);
+          return 0;
+        },
+        &db_version);
+    if (db_version < 8) {
+      ExecSqliteRoutine(
+          "alter table sys_config add column replay_pure_box_render INTEGER DEFAULT 0 NOT NULL;");
+      ExecSqliteRoutine("update config_version set version = 8 where rowid = 1;");
+      LOG(INFO) << "migrated sys_config table: added replay_pure_box_render column. db version " << db_version << " -> 8";
+    }
+  }
 
   if (!boost::filesystem::exists(default_config_path)) return;
 
@@ -1240,12 +1258,14 @@ void ConfigManager::SetSysConfigs(const CoordinatorConfig& config) {
   ExecSqliteRoutineWithAllocatedSqlStr(sqlite3_mprintf(TXSIM_SQL_UPDATE_SYS_CONFIG, config.control_rate,
                                                        config.scenario_time_limit, config.coord_mode, config.auto_reset,
                                                        config.adding_initial_location_msg, config.override_user_log,
-                                                       config.custom_grading_feedback_process.c_str()));
+                                                       config.custom_grading_feedback_process.c_str(),
+                                                       config.replay_pure_box_render ? 1 : 0));
   LOG(INFO) << "set system configs with control_rate = " << config.control_rate
             << " scenario_time_limit = " << config.scenario_time_limit << " coord_mode = " << config.coord_mode
             << " auto_reset = " << config.auto_reset << " initial_location = " << config.adding_initial_location_msg
             << " override_user_log = " << config.override_user_log
-            << " grading_feedback_process = " << config.custom_grading_feedback_process;
+            << " grading_feedback_process = " << config.custom_grading_feedback_process
+            << " replay_pure_box_render = " << config.replay_pure_box_render;
 }
 
 //! @brief 函数名：GetSysConfigs
@@ -1269,6 +1289,7 @@ void ConfigManager::GetSysConfigs(CoordinatorConfig& config) {
         data.adding_initial_location_msg = (std::stoi(columns[4]) == 1);
         data.override_user_log = (std::stoi(columns[5]) == 1);
         if (columns[6]) data.custom_grading_feedback_process = columns[6];
+        data.replay_pure_box_render = (std::stoi(columns[7]) == 1);
         return 0;
       },
       &config);
@@ -1278,7 +1299,8 @@ void ConfigManager::GetSysConfigs(CoordinatorConfig& config) {
             << ", auto_reset=" << config.auto_reset << ", auto_stop=" << default_config_.auto_stop
             << ", adding_initial_location_msg=" << config.adding_initial_location_msg
             << ", override_user_log=" << config.override_user_log
-            << ", grading_feedback_process=" << config.custom_grading_feedback_process << ")";
+            << ", grading_feedback_process=" << config.custom_grading_feedback_process
+            << ", replay_pure_box_render=" << config.replay_pure_box_render << ")";
 }
 
 //! @brief 函数名：UpdatePlayList
@@ -1708,7 +1730,8 @@ void ConfigManager::AddDefaultSysConfigsIfNotExist() {
   ExecSqliteRoutineWithAllocatedSqlStr(sqlite3_mprintf(
       TXSIM_SQL_INSERT_SYS_CONFIG, default_config_.control_rate, default_config_.scenario_time_limit,
       default_config_.coord_mode, default_config_.auto_reset, default_config_.adding_initial_location_msg,
-      default_config_.override_user_log, default_config_.custom_grading_feedback_process.c_str()));
+      default_config_.override_user_log, default_config_.custom_grading_feedback_process.c_str(),
+      default_config_.replay_pure_box_render ? 1 : 0));
 }
 
 //! @brief 函数名：UpsertDefaultModules
