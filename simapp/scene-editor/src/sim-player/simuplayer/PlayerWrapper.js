@@ -143,7 +143,6 @@ class PlayerWrapper {
     const { playerScene } = this
     if (playerScene.localReceiver) {
       const lastFrame = playerScene.localReceiver.applyLatestData()
-      lastFrame && console.debug('render', lastFrame)
     }
     if (this.canvasTextPayload) {
       this.renderCanvasText(this.canvasTextPayload)

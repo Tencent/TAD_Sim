@@ -137,12 +137,12 @@
   "CREATE TABLE IF NOT EXISTS " TXSIM_SQL_TABLE_NAME_SYS_CONFIG                                            \
   "(play_rate INTEGER, scenario_limit INTEGER, coord_mode INTEGER, auto_reset INTEGER DEFAULT 1 NOT NULL," \
   " initial_location INTEGER DEFAULT 1 NOT NULL, override_user_log INTEGER DEFAULT 1 NOT NULL,"            \
-  " grading_feedback_process TEXT)"
+  " grading_feedback_process TEXT, replay_pure_box_render INTEGER DEFAULT 0 NOT NULL)"
 
 #define TXSIM_SQL_SYS_CONFIG_COLUMN_NAMES "play_rate, scenario_limit, coord_mode, auto_reset, initial_location," \
-  " override_user_log, grading_feedback_process"
+  " override_user_log, grading_feedback_process, replay_pure_box_render"
 
-#define TXSIM_SQL_SYS_CONFIG_COLUMN_VALUES "%u, %u, %u, %u, %u, %u, %Q"
+#define TXSIM_SQL_SYS_CONFIG_COLUMN_VALUES "%u, %u, %u, %u, %u, %u, %Q, %u"
 
 #define TXSIM_SQL_INSERT_SYS_CONFIG                                                                  \
   "INSERT INTO " TXSIM_SQL_TABLE_NAME_SYS_CONFIG " (" TXSIM_SQL_SYS_CONFIG_COLUMN_NAMES ") VALUES (" \
@@ -150,7 +150,8 @@
 
 #define TXSIM_SQL_UPDATE_SYS_CONFIG                                                                                   \
   "UPDATE " TXSIM_SQL_TABLE_NAME_SYS_CONFIG " SET play_rate = %u, scenario_limit = %u, coord_mode = %u, auto_reset =" \
-  " %u, initial_location = %u, override_user_log = %u, grading_feedback_process = %Q WHERE rowid = 1;"
+  " %u, initial_location = %u, override_user_log = %u, grading_feedback_process = %Q, replay_pure_box_render = %u" \
+  " WHERE rowid = 1;"
 
 #define TXSIM_SQL_SELECT_SYS_CONFIG \
   "SELECT " TXSIM_SQL_SYS_CONFIG_COLUMN_NAMES " FROM " TXSIM_SQL_TABLE_NAME_SYS_CONFIG " WHERE rowid = 1;"

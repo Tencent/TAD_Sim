@@ -112,6 +112,10 @@ static const std::string kJsonKeyGradingFeedbackProcess = "gradingFeedbackProces
 //!
 static const std::string kJsonKeyOverrideUserLog = "overrideUserLog";
 //!
+//! @brief 静态常量字符串，表示回放纯box渲染模式的键名
+//!
+static const std::string kJsonKeyReplayPureBoxRender = "replayPureBoxRender";
+//!
 //! @brief 静态常量字符串，表示日志转换为世界坐标的键名
 //!
 static const std::string kJsonKeyLog2World = "log2world";
@@ -681,6 +685,7 @@ void CoordinatorConfig::Encode(Json::Value& root) const {
   root[kJsonKeyEnablePerfLogging] = log_perf;
   root[kJsonKeyGradingFeedbackProcess] = custom_grading_feedback_process;
   root[kJsonKeyOverrideUserLog] = override_user_log;
+  root[kJsonKeyReplayPureBoxRender] = replay_pure_box_render;
   log2world_config.Encode(root[kJsonKeyLog2World]);
   Json::Value& module_configs_node = root[kJsonKeyModuleConfigs];
   module_configs_node = Json::arrayValue;  // to explicitly construct a empty [] when there's no module configs.
@@ -714,6 +719,7 @@ void CoordinatorConfig::Decode(const Json::Value& root) {
   log_perf = root.get(kJsonKeyEnablePerfLogging, kDefaultPerfLoggingEnabled).asBool();
   custom_grading_feedback_process = root.get(kJsonKeyGradingFeedbackProcess, "").asString();
   override_user_log = root.get(kJsonKeyOverrideUserLog, kDefaultOverrideUserLog).asBool();
+  replay_pure_box_render = root.get(kJsonKeyReplayPureBoxRender, false).asBool();
   log2world_config.Decode(root[kJsonKeyLog2World]);
   const Json::Value& module_configs_node = root[kJsonKeyModuleConfigs];
   for (const Json::Value& p : module_configs_node) {
@@ -746,7 +752,8 @@ bool CoordinatorConfig::operator==(const CoordinatorConfig& rhs) const {
          coord_mode == rhs.coord_mode && auto_reset == rhs.auto_reset && auto_stop == rhs.auto_stop &&
          adding_initial_location_msg == rhs.adding_initial_location_msg &&
          custom_grading_feedback_process == rhs.custom_grading_feedback_process &&
-         override_user_log == rhs.override_user_log;
+         override_user_log == rhs.override_user_log &&
+         replay_pure_box_render == rhs.replay_pure_box_render;
 }
 
 //! @brief 函数名:

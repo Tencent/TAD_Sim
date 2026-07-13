@@ -42,6 +42,7 @@ export default {
       autoReset: true,
       overrideUserLog: true,
       gradingFeedbackProcess: '',
+      replayPureBoxRender: false,
     },
     /**
      * 天气

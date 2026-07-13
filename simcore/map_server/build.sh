@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Setting build parmameters
 MAP_SERVER_ROOT="$(cd "$(dirname "$0")";pwd)"
@@ -48,9 +49,32 @@ echo -e "map_parser build successfully.\n"
 # build server (txSimService)
 cd "$SERVER_ROOT"
 echo "service build start..."
-go env -w GOPROXY=https://goproxy.io,direct
-go mod tidy
-go build
+
+# Use a reliable multi-mirror proxy chain so Go never falls back to a direct
+# `cloud.google.com/go?go-get=1` fetch (which 429s under rate limiting).
+# `goproxy.cn` (Alibaba) is the most reliable mirror on CN networks; the other
+# mirrors are fallbacks before `direct`.
+# GOSUMDB=off skips the checksum-database lookup for extra reliability.
+go env -w GOPROXY=https://goproxy.cn,https://goproxy.io,https://proxy.golang.org,direct
+go env -w GOSUMDB=off
+go env -w GOFLAGS=-mod=mod
+
+# Retry wrapper to ride out intermittent 429 / network errors.
+go_with_retry() {
+  local attempt=1
+  until "$@"; do
+    if [ "$attempt" -ge 5 ]; then
+      echo "ERROR: go command failed after $attempt attempts: $*" >&2
+      return 1
+    fi
+    echo "go command failed (attempt $attempt), retrying in $((attempt*2))s..."
+    sleep $((attempt*2))
+    attempt=$((attempt+1))
+  done
+}
+
+go_with_retry go mod tidy
+go_with_retry go build
 # deploy server
 cp "$SERVER_ROOT/service" "$MAP_SERVER_BUILD/bin/txSimService"
 echo -e "service build successfully.\n"

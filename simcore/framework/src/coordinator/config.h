@@ -354,6 +354,7 @@ struct CoordinatorConfig : public JsonConfig {
   std::string custom_grading_feedback_process;
   std::string m_module_log_directory;
   bool override_user_log{tx_sim::impl::kDefaultOverrideUserLog};
+  bool replay_pure_box_render{false};  // 回放场景纯 box 渲染模式，默认关闭；系统级配置
   //!
   //! @brief 函数名：Encode
   //! @details 函数功能：将 CoordinatorConfig 对象编码为 Json::Value 对象

@@ -644,39 +644,51 @@ void InterpolatePlayerModule::Step(tx_sim::StepHelper& helper) TX_NOEXCEPT {
     }
 
     // Set the size and display attributes of traffic participants
+    // 优先保留录制数据自带的真实包围盒尺寸（如 tadbag 转换的回放含真实 L/W/H）；
+    // 仅当录制数据缺失尺寸（<=0）时，才按类型查询 catalog 的默认尺寸兜底。
+    // 否则 catalog 查询失败（tadbag 自定义类型不在 catalog 中）会把尺寸清零，
+    // 回放端被迫退化成单位立方体（小方块）。
     for (int i = 0; i < traffic.cars_size(); ++i) {
-      double length = 0.0, width = 0.0, height = 0.0;
-      QueryCatalog(__int2enum__(VEHICLE_TYPE, traffic.cars().at(i).type()), length, width, height);
-
-      InfoLog << TX_VARS_NAME(vehicleType, __int2enum__(VEHICLE_TYPE, traffic.cars().at(i).type()))
-              << TX_VARS_NAME(vehicleTypeStr,
-                              __enum2lpsz__(VEHICLE_TYPE, __int2enum__(VEHICLE_TYPE, traffic.cars().at(i).type())))
-              << TX_VARS(length) << TX_VARS(width) << TX_VARS(height);
-      traffic.mutable_cars(i)->set_length(length);
-      traffic.mutable_cars(i)->set_width(width);
-      traffic.mutable_cars(i)->set_height(height);
-      // traffic.mutable_cars(i)->set_show_abs_velocity(traffic.cars().at(i).v());
-      // traffic.mutable_cars(i)->set_show_abs_acc(traffic.cars().at(i).acc());
+      const bool hasRecordedDim = traffic.cars().at(i).length() > 0.0 && traffic.cars().at(i).width() > 0.0 &&
+                                  traffic.cars().at(i).height() > 0.0;
+      if (!hasRecordedDim) {
+        double length = 0.0, width = 0.0, height = 0.0;
+        if (QueryCatalog(__int2enum__(VEHICLE_TYPE, traffic.cars().at(i).type()), length, width, height)) {
+          traffic.mutable_cars(i)->set_length(length);
+          traffic.mutable_cars(i)->set_width(width);
+          traffic.mutable_cars(i)->set_height(height);
+        }
+      }
     }
 
     for (int i = 0; i < traffic.dynamicobstacles_size(); ++i) {
-      double length = 0.0, width = 0.0, height = 0.0;
-      QueryCatalog(__int2enum__(PEDESTRIAN_TYPE, traffic.dynamicobstacles().at(i).type()), length, width, height);
-
-      traffic.mutable_dynamicobstacles(i)->set_length(length);
-      traffic.mutable_dynamicobstacles(i)->set_width(width);
-      traffic.mutable_dynamicobstacles(i)->set_height(height);
-      // traffic.mutable_dynamicobstacles(i)->set_show_abs_velocity(traffic.dynamicobstacles().at(i).v());
-      // traffic.mutable_dynamicobstacles(i)->set_show_abs_acc(traffic.dynamicobstacles().at(i).acc());
+      const bool hasRecordedDim = traffic.dynamicobstacles().at(i).length() > 0.0 &&
+                                  traffic.dynamicobstacles().at(i).width() > 0.0 &&
+                                  traffic.dynamicobstacles().at(i).height() > 0.0;
+      if (!hasRecordedDim) {
+        double length = 0.0, width = 0.0, height = 0.0;
+        if (QueryCatalog(__int2enum__(PEDESTRIAN_TYPE, traffic.dynamicobstacles().at(i).type()), length, width,
+                         height)) {
+          traffic.mutable_dynamicobstacles(i)->set_length(length);
+          traffic.mutable_dynamicobstacles(i)->set_width(width);
+          traffic.mutable_dynamicobstacles(i)->set_height(height);
+        }
+      }
     }
 
     for (int i = 0; i < traffic.staticobstacles_size(); ++i) {
-      double length = 0.0, width = 0.0, height = 0.0;
-      QueryCatalog(__int2enum__(STATIC_ELEMENT_TYPE, traffic.staticobstacles().at(i).type()), length, width, height);
-
-      traffic.mutable_staticobstacles(i)->set_length(length);
-      traffic.mutable_staticobstacles(i)->set_width(width);
-      traffic.mutable_staticobstacles(i)->set_height(height);
+      const bool hasRecordedDim = traffic.staticobstacles().at(i).length() > 0.0 &&
+                                  traffic.staticobstacles().at(i).width() > 0.0 &&
+                                  traffic.staticobstacles().at(i).height() > 0.0;
+      if (!hasRecordedDim) {
+        double length = 0.0, width = 0.0, height = 0.0;
+        if (QueryCatalog(__int2enum__(STATIC_ELEMENT_TYPE, traffic.staticobstacles().at(i).type()), length, width,
+                         height)) {
+          traffic.mutable_staticobstacles(i)->set_length(length);
+          traffic.mutable_staticobstacles(i)->set_width(width);
+          traffic.mutable_staticobstacles(i)->set_height(height);
+        }
+      }
     }
 
     InfoLog << time_stamp << " num cars = " << traffic.cars_size();

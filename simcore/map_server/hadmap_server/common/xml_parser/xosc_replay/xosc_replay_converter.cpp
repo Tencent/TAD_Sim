@@ -1127,7 +1127,11 @@ void XOSCReplayConverter::SerializeCommon(const SIM::OSC::ScenarioObjectPtr inpu
   object->set_id(input->id);
   object->set_age(input->age);
   object->set_type(input->type.second);
+  // 写入 xosc BoundingBox 的真实包围盒尺寸（L/W/H），供回放时按真实尺寸渲染/计算；
   const auto& dimensions = input->Dimensions();
+  object->set_length(dimensions.length);
+  object->set_width(dimensions.width);
+  object->set_height(dimensions.height);
 }
 
 template <typename T>

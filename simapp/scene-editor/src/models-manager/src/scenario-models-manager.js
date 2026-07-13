@@ -1,10 +1,12 @@
 import { isArray, isEmpty, isFunction, memoize } from 'lodash-es'
-import { signlightArrowImgs, signlightURLs, simpleCarWhiteUrl } from './scene/constants'
+import { signlightArrowImgs, signlightURLs } from './scene/constants'
 import { fileURLToPath } from './utils/loader'
 import { findCarInCatalog, findPedestrianInCatalog } from './catalogs/utils'
 import {
   BoxGeometry,
+  BufferGeometry,
   DoubleSide,
+  Float32BufferAttribute,
   Group,
   Mesh,
   MeshBasicMaterial,
@@ -58,13 +60,55 @@ async function _loadSignlightArrow (textureUrl) {
 }
 
 const loadSignArrow = memoize(_loadSignlightArrow)
-// 蓝盒子模型
+// 盒子共享几何体（单位立方体，按真实包围盒尺寸缩放）
 const boxGeo = new BoxGeometry(1, 1, 1)
-const boxMat = new MeshLambertMaterial({
-  color: 0x16D1F3,
-  side: DoubleSide,
-})
-const boxMesh = new Mesh(boxGeo, boxMat)
+
+// 播放(player)模式下所有 actor 都渲染为「按真实包围盒尺寸缩放」的彩色盒子，并按类型着色以便区分
+const BOX_COLORS = {
+  car: 0x16D1F3, // 青蓝 - 车辆
+  pedestrian: 0xDEE048, // 黄 - 动态障碍物如行人、自行车
+  obstacle: 0x615E66, // 灰色 - 静态障碍物
+}
+// 共享几何体，按颜色生成各类型盒子网格
+function createColoredBox (color) {
+  return new Mesh(boxGeo, new MeshLambertMaterial({ color, side: DoubleSide }))
+}
+const boxMeshCar = createColoredBox(BOX_COLORS.car)
+const boxMeshPedestrian = createColoredBox(BOX_COLORS.pedestrian)
+const boxMeshObstacle = createColoredBox(BOX_COLORS.obstacle)
+
+// 朝向指示箭头：共享几何体与材质（性能优先，所有 box 复用同一份资源，
+// 每个实例只创建一个轻量 Mesh 并设置 scale/position，不增加每帧开销）
+// 单位尺寸、位于 XY 平面、指向 +X（即 box 的车头/朝向方向）的扁平三角形
+const headingArrowGeo = new BufferGeometry()
+headingArrowGeo.setAttribute('position', new Float32BufferAttribute([
+  0.45, 0, 0, // 箭头尖端，指向前方 +X
+  -0.25, 0.28, 0, // 左后角
+  -0.25, -0.28, 0, // 右后角
+], 3))
+headingArrowGeo.computeVertexNormals()
+// 白色、双面、不受光照（MeshBasic）以便在各种颜色 box 上都清晰可见
+const headingArrowMat = new MeshBasicMaterial({ color: 0xFFFFFF, side: DoubleSide })
+
+/**
+ * 创建一个指示 box 朝向的扁平箭头（指向 +X，即 box 前向），贴在 box 顶面之上。
+ * 复用共享几何体与材质，仅按各自包围盒尺寸设置 scale 与位置，性能开销极低。
+ * @param {object} boundingBox - 含 center 与 dimensions(length/width/height)
+ * @returns {Mesh}
+ */
+function createHeadingArrow (boundingBox) {
+  const { center = { x: 0, y: 0, z: 0 }, dimensions } = boundingBox || {}
+  const length = +dimensions?.length > 0 ? +dimensions.length : 1
+  const width = +dimensions?.width > 0 ? +dimensions.width : 1
+  const height = +dimensions?.height > 0 ? +dimensions.height : 1
+  const arrow = new Mesh(headingArrowGeo, headingArrowMat)
+  // 扁平三角形按 box 的长宽缩放（z 不缩放），尺寸与 box 顶面匹配
+  arrow.scale.set(length, width, 1)
+  // 放在顶面略上方，避免与顶面 z-fighting
+  arrow.position.set(+center.x, +center.y, +center.z + height / 2 + 0.05)
+  arrow.renderOrder = 1
+  return arrow
+}
 
 /**
  * 修复材质编码
@@ -141,10 +185,11 @@ class ScenarioModelsManager {
    * @param {string} options.prefix
    */
   constructor (options) {
-    const { type, catalogs, prefix } = options
+    const { type, catalogs, prefix, replayPureBoxRender } = options
     this.type = type
     this._catalogs = catalogs
     this.prefix = prefix
+    this._replayPureBoxRender = replayPureBoxRender ?? false
     this.modelsMapObstacle = {}
     this.modelsMapObstacleLogsim = {}
     this.modelsMapPedestrian = {}
@@ -196,6 +241,34 @@ class ScenarioModelsManager {
   }
 
   /**
+   * 获取 replayPureBoxRender 开关状态（支持函数动态读取）
+   * @returns {boolean}
+   */
+  get replayPureBoxRender () {
+    if (isFunction(this._replayPureBoxRender)) {
+      return this._replayPureBoxRender()
+    }
+    return this._replayPureBoxRender
+  }
+
+  /**
+   * 依据当前 pure box 模式返回 forceBox，并在模式翻转时清空车辆/行人/障碍物模型缓存。
+   * 解决：回放过程中切换系统“纯 box 渲染”开关后，已缓存的模型仍沿用旧形态
+   * （纯 box 缓存不被刷新，需重启 tadsim 才能恢复）的状态不一致问题。
+   * @returns {boolean}
+   */
+  syncForceBoxCache () {
+    const forceBox = this.type === 'player' && this.replayPureBoxRender
+    if (this._lastForceBox !== undefined && this._lastForceBox !== forceBox) {
+      this.clearModelCache('car')
+      this.clearModelCache('pedestrian')
+      this.clearModelCache('obstacle')
+    }
+    this._lastForceBox = forceBox
+    return forceBox
+  }
+
+  /**
    * 获取模型最终路径
    * @param {object} catalog - 目录对象
    * @param {string} model3d - 模型3D路径
@@ -213,19 +286,13 @@ class ScenarioModelsManager {
     const {
       type: runMode,
       catalogs,
-      prefix,
       modelsMapCar,
       modelsMapCarLogsim,
     } = this
     let catalog
+    // 播放模式下强制车辆渲染为按真实包围盒尺寸缩放的彩色盒子
+    const forceBox = this.syncForceBoxCache()
     if (runMode === 'player') {
-      // 播放1000的车固定用白盒子
-      if (code === 1000) {
-        return {
-          model: new Group(),
-          promise: loadModel(`${prefix}/${simpleCarWhiteUrl}`).then(mesh => mesh.clone()),
-        }
-      }
       // player模式把 traffic code转成 type
       catalog = findCarInCatalog(catalogs, code)
     } else {
@@ -236,12 +303,16 @@ class ScenarioModelsManager {
     const model = new Group()
     const map = logsim ? modelsMapCarLogsim : modelsMapCar
     let promise
+    // 同步可用的 mesh（缓存命中或纯色盒子分支）。用于让调用方同步挂载，
+    // 避免 promise.then 的微任务晚于本帧 renderScene 执行，导致回放时盒子闪烁/消失。
+    let syncMesh = null
     if (map[type]) {
       const mesh = map[type]
+      syncMesh = mesh
       promise = Promise.resolve(mesh)
     } else {
-      if (!catalog) {
-        console.warn(`未找到 vehicle 定义：${code}。使用默认蓝盒子模型。`)
+      if (forceBox || !catalog) {
+        if (!catalog) console.warn(`未找到 vehicle 定义：${code}。使用默认盒子模型。`)
         const {
           center,
           dimensions: {
@@ -250,7 +321,7 @@ class ScenarioModelsManager {
             width,
           },
         } = boundingBox
-        const mesh = boxMesh.clone()
+        const mesh = boxMeshCar.clone()
         mesh.scale.set(length, width, height)
         modelsMapCar[type] = mesh
         const meshTransparent = mesh.clone()
@@ -258,6 +329,7 @@ class ScenarioModelsManager {
         setTransparent(meshTransparent)
         mesh.position.set(+center.x, +center.y, +center.z)
         meshTransparent.position.set(+center.x, +center.y, +center.z)
+        syncMesh = logsim ? meshTransparent : mesh
         promise = Promise.resolve(logsim ? meshTransparent : mesh)
       } else {
         const [{
@@ -284,7 +356,7 @@ class ScenarioModelsManager {
       }
     }
     model.ignoreScale = true
-    return { model, promise }
+    return { model, promise, syncMesh }
   }
 
   /**
@@ -310,10 +382,20 @@ class ScenarioModelsManager {
    */
   loadCarModelSync (car, logsim = false) {
     const { type: code, boundingBox } = car
-    const { model, promise } = this[loadCar](`${code}`, boundingBox, logsim)
-    promise.then((mesh) => {
-      model.add(mesh.clone())
-    })
+    const { model, promise, syncMesh } = this[loadCar](`${code}`, boundingBox, logsim)
+    // 盒子/缓存 mesh 可同步挂载，确保本帧 renderScene 前模型已就绪（修复回放闪烁）；
+    // 仅 GLTF 真异步加载时才走 promise。
+    if (syncMesh) {
+      model.add(syncMesh.clone())
+    } else {
+      promise.then((mesh) => {
+        model.add(mesh.clone())
+      })
+    }
+    // 播放模式下 box 渲染，叠加朝向指示箭头，便于直观判断车头方向
+    if (this.type === 'player') {
+      model.add(createHeadingArrow(boundingBox))
+    }
     return model
   }
 
@@ -327,6 +409,8 @@ class ScenarioModelsManager {
     } = this
     let type
     let catalog
+    // 播放模式下强制行人渲染为按真实包围盒尺寸缩放的彩色盒子
+    const forceBox = this.syncForceBoxCache()
     if (runMode === 'player') {
       // player模式把 traffic code转成 type
       catalog = findPedestrianInCatalog(catalogs, code)
@@ -338,8 +422,10 @@ class ScenarioModelsManager {
 
     const model = new Group()
     let promise
+    let syncMesh = null
     if (map[type]) {
       const mesh = map[type]
+      syncMesh = mesh
       promise = Promise.resolve(mesh)
     } else {
       let center
@@ -370,8 +456,8 @@ class ScenarioModelsManager {
         }
       }
 
-      if (!catalog) {
-        console.warn(`未找到 pedestrian: ${code}`)
+      if (forceBox || !catalog) {
+        if (!catalog) console.warn(`未找到 pedestrian: ${code}`)
         const {
           center,
           dimensions: {
@@ -380,7 +466,7 @@ class ScenarioModelsManager {
             width,
           },
         } = boundingBox
-        const mesh = boxMesh.clone()
+        const mesh = boxMeshPedestrian.clone()
         mesh.scale.set(length, width, height)
         modelsMapPedestrian[type] = mesh
         const meshTransparent = mesh.clone()
@@ -388,6 +474,7 @@ class ScenarioModelsManager {
         setTransparent(meshTransparent)
         mesh.position.set(+center.x, +center.y, +center.z)
         meshTransparent.position.set(+center.x, +center.y, +center.z)
+        syncMesh = logsim ? meshTransparent : mesh
         promise = Promise.resolve(logsim ? meshTransparent : mesh)
       } else {
         promise = loadModel(this.getModelFinalPath(catalog, model3d)).then((mesh) => {
@@ -403,7 +490,7 @@ class ScenarioModelsManager {
         })
       }
     }
-    return { model, promise }
+    return { model, promise, syncMesh }
   }
 
   /**
@@ -428,10 +515,18 @@ class ScenarioModelsManager {
    */
   loadPedestrianModelSync (ped, logsim) {
     const { subType: code, boundingBox } = ped
-    const { model, promise } = this[loadPedestrian](`${code}`, boundingBox, logsim)
-    promise.then((mesh) => {
-      model.add(mesh.clone())
-    })
+    const { model, promise, syncMesh } = this[loadPedestrian](`${code}`, boundingBox, logsim)
+    if (syncMesh) {
+      model.add(syncMesh.clone())
+    } else {
+      promise.then((mesh) => {
+        model.add(mesh.clone())
+      })
+    }
+    // 播放模式下 box 渲染，叠加朝向指示箭头
+    if (this.type === 'player') {
+      model.add(createHeadingArrow(boundingBox))
+    }
     return model
   }
 
@@ -443,6 +538,8 @@ class ScenarioModelsManager {
       modelsMapObstacleLogsim,
     } = this
     let catalog
+    // 播放模式下强制障碍物渲染为按真实包围盒尺寸缩放的彩色盒子
+    const forceBox = this.syncForceBoxCache()
     if (runMode === 'player') {
       // player模式把 traffic code转成 type
       catalog = catalogs.obstacleList.find(v => v.catalogParams.properties.modelId === code)
@@ -454,12 +551,14 @@ class ScenarioModelsManager {
     const model = new Group()
     const map = logsim ? modelsMapObstacleLogsim : modelsMapObstacle
     let promise
+    let syncMesh = null
     if (map[type]) {
       const mesh = map[type]
+      syncMesh = mesh
       promise = Promise.resolve(mesh)
     } else {
-      if (!catalog) {
-        console.warn(`未找到 obstacle 定义：${code}`)
+      if (forceBox || !catalog) {
+        if (!catalog) console.warn(`未找到 obstacle 定义：${code}`)
         const {
           center,
           dimensions: {
@@ -468,7 +567,7 @@ class ScenarioModelsManager {
             width,
           },
         } = boundingBox
-        const mesh = boxMesh.clone()
+        const mesh = boxMeshObstacle.clone()
         mesh.scale.set(length, width, height)
         modelsMapObstacle[type] = mesh
         const meshTransparent = mesh.clone()
@@ -476,6 +575,7 @@ class ScenarioModelsManager {
         setTransparent(meshTransparent)
         mesh.position.set(+center.x, +center.y, +center.z)
         meshTransparent.position.set(+center.x, +center.y, +center.z)
+        syncMesh = logsim ? meshTransparent : mesh
         promise = Promise.resolve(logsim ? meshTransparent : mesh)
       } else {
         const { boundingBox: { center }, model3d } = catalog.catalogParams
@@ -496,7 +596,7 @@ class ScenarioModelsManager {
         })
       }
     }
-    return { model, promise }
+    return { model, promise, syncMesh }
   }
 
   /**
@@ -516,10 +616,15 @@ class ScenarioModelsManager {
 
   loadObstacleModelSync (obs, logsim) {
     const { type: code, boundingBox } = obs
-    const { model, promise } = this[loadObstacle](`${code}`, boundingBox, logsim)
-    promise.then((mesh) => {
-      model.add(mesh.clone())
-    })
+    const { model, promise, syncMesh } = this[loadObstacle](`${code}`, boundingBox, logsim)
+    if (syncMesh) {
+      model.add(syncMesh.clone())
+    } else {
+      promise.then((mesh) => {
+        model.add(mesh.clone())
+      })
+    }
+    // 静态障碍物不需要朝向箭头
     return model
   }
 
@@ -736,7 +841,7 @@ class ScenarioModelsManager {
       case 'pedestrian':
         return catalogs.pedestrianList.find(v => v.catalogParams.properties.modelId === modelId)
       case 'obstacle':
-        return catalogs.pedestrianList.find(v => v.catalogParams.properties.modelId === modelId)
+        return catalogs.obstacleList.find(v => v.catalogParams.properties.modelId === modelId)
     }
     return undefined
   }

@@ -222,9 +222,14 @@ void Coordinator::ParseLog2WorldParams(const CommandInfo& cmd_info) {
   if (last_l2w_play_config_ == nullptr) last_l2w_play_config_.reset(new Log2WorldPlayConfig);
   *last_l2w_play_config_ = c;
 
+  // pure box 模式下强制关闭 traffic l2w（交通流走录制数据，worldsim 交通流无意义且会重复）
+  if (current_config_.replay_pure_box_render) {
+    last_l2w_play_config_->traffic_switch = false;
+  }
+
   int32_t switch_point = 0;
   std::ostringstream switch_type_log_substr;
-  if (!c.ego_switch && !c.traffic_switch) {
+  if (!last_l2w_play_config_->ego_switch && !last_l2w_play_config_->traffic_switch) {
     // 如果主车和交通车不切换,切换时间设置为最大值,使切换时间永远到达不了
     switch_point = std::numeric_limits<int32_t>::max();
     switch_type_log_substr << "NONE<switch disabled>";
@@ -266,12 +271,12 @@ void Coordinator::ParseLog2WorldParams(const CommandInfo& cmd_info) {
   // 该topic数据为调度发送给仿真系统算法的topic数据,算法通过该结构获取切换状态
   sim_msg::Log2worldTrigger l2w_trigger;
   // 主车和交通车同时切换
-  if (c.ego_switch && c.traffic_switch) l2w_trigger.set_type(sim_msg::LOG2WORLD_TRIGGER_BOTH);
+  if (last_l2w_play_config_->ego_switch && last_l2w_play_config_->traffic_switch) l2w_trigger.set_type(sim_msg::LOG2WORLD_TRIGGER_BOTH);
   // 主车切换
-  else if (c.ego_switch)
+  else if (last_l2w_play_config_->ego_switch)
     l2w_trigger.set_type(sim_msg::LOG2WORLD_TRIGGER_EGO);
   // 交通车切换
-  else if (c.traffic_switch)
+  else if (last_l2w_play_config_->traffic_switch)
     l2w_trigger.set_type(sim_msg::LOG2WORLD_TRIGGER_TRAFFIC);
   // 不切换
   else
@@ -599,6 +604,8 @@ void Coordinator::ApplyConfiguration(const InitParamList& extra_init_params, Com
       config.init_args[tx_sim::constant::kInitKeyModuleExecutePeriod] = std::to_string(config.execute_period);
     if (!sim_mode.empty() && config.init_args.find(kModuleInitArgKeySimMode) == config.init_args.end())
       config.init_args[kModuleInitArgKeySimMode] = sim_mode;
+    // pass replay_pure_box_render to traffic module so it can gate peds/obs injection
+    config.init_args["_replay_pure_box_render"] = current_config_.replay_pure_box_render ? "1" : "0";
     for (const auto& kv : extra_init_params)
       if (config.init_args.find(kv.first) == config.init_args.end()) config.init_args[kv.first] = kv.second;
   }

@@ -59,6 +59,9 @@ DEFINE_bool(EnableRearComfortGap, true, "");
 DEFINE_string(L2W_Switch_TopicName, ".log2world_trigger", "");
 DEFINE_string(L2W_RawTraffic_TopicName, "TRAFFIC_REPLAY", "");
 DEFINE_bool(LogLevel_L2W, false, "");
+DEFINE_bool(ReplayPureBoxRender, false,
+            "replay_pure_box_render gate: inject peds/obstacles into TRAFFIC when on; value set via env "
+            "TADSIM_REPLAY_PURE_BOX_RENDER by coordinator.");
 DEFINE_double(L2W_Switch_SpecialTime, -1.0, "");
 DEFINE_bool(L2W_Vehicle_Position_Linear_Interpolation, true, "l2w scene vehicle replay with smooth interpolation.");
 DEFINE_bool(L2W_Ego_Position_Linear_Interpolation, true, "");

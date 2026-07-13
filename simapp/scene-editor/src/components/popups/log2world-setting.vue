@@ -14,10 +14,11 @@
         <el-switch
           v-model="trafficSwitch"
           class="planner-switch"
-          :disabled="playingStatus === 'playing' || isPaused"
+          :disabled="playingStatus === 'playing' || isPaused || replayPureBoxRender"
           active-color="#16d1f3"
           inactive-color="#3F3F3F"
         />
+        <span v-if="replayPureBoxRender" class="traffic-disabled-tip">纯Box渲染模式下已禁用</span>
       </el-form-item>
       <el-form-item label="Log2World切换时机">
         <el-radio-group v-model="switchType">
@@ -92,6 +93,10 @@ export default {
       'timestamp',
     ]),
 
+    replayPureBoxRender () {
+      return this.$store.state.system?.simulation?.replayPureBoxRender || false
+    },
+
     eventsLength () {
       return this.events?.events.length || 0
     },
@@ -108,6 +113,8 @@ export default {
     },
     trafficSwitch: {
       get () {
+        // pure box 模式不支持 traffic l2w
+        if (this.replayPureBoxRender) return false
         return this.form.trafficSwitch
       },
       set (val) {
@@ -261,6 +268,12 @@ export default {
     border-top: 1px solid @darker-bg;
     margin-top: 15px;
     padding-top: 15px;
+  }
+
+  .traffic-disabled-tip {
+    color: #999;
+    font-size: 12px;
+    margin-left: 8px;
   }
 
 }
