@@ -126,7 +126,7 @@ RUN wget -O node-v${NODE_VERSION}-linux-x64.tar.xz https://nodejs.org/download/r
     && cp -r * /usr/local/ \
     && cd .. \
     && node --version \
-    && npm install -g cmake-js node-addon-api \
+    && npm install -g cmake-js node-addon-api@7.1.0 \
     && rm -rf node* \
     && mkdir -p /home/${USERNAME}/.cmake-js/node-x64/v${NODE_VERSION}/include/node \
     && cp -r /usr/local/include/node/* /home/${USERNAME}/.cmake-js/node-x64/v${NODE_VERSION}/include/node
@@ -230,7 +230,7 @@ RUN wget -O librdkafka-${LIBRDKAFKA_VERSION}.tar.gz https://github.com/edenhill/
     && rm -rf librdkafka*
 
 # Install log4cpp
-RUN wget -O log4cpp-${LOG4CPP_VERSION}.tar.gz https://nchc.dl.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-${LOG4CPP_VERSION}.tar.gz \
+RUN wget -O log4cpp-${LOG4CPP_VERSION}.tar.gz https://zenlayer.dl.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-${LOG4CPP_VERSION}.tar.gz \
     && tar zxf log4cpp-${LOG4CPP_VERSION}.tar.gz \
     && cd log4cpp \
     && ./configure --prefix=/usr/local \
